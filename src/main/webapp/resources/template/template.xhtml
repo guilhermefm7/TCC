@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+      
+	<h:head>
+    	<meta charset="utf-8"/>
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+    	
+		<title><ui:insert name="titulo" >RecMusic</ui:insert></title>
+    	<meta name="description" content=""/>
+    	<meta name="author" content=""/>
+    	
+		<link href="/RecoMusic/resources/css/common-style.css" type="text/css" rel="stylesheet"/>
+		<link href="/RecoMusic/resources/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+		<link href="/RecoMusic/resources/css/jumbotron.css" type="text/css" rel="stylesheet"/>
+		<link rel="shortcut icon" href="/RecoMusic/resources/imagens/icones/logotipo.jpg"/>
+		
+		<ui:insert name="definicioesPre"></ui:insert>
+		
+	</h:head>
+    
+    <h:body>
+    
+	<div id="header">
+		<ui:insert name="header">
+			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target=".navbar-collapse">
+							<span class="sr-only">RecMusic</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">RecMusic</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
+							<h:form class="navbar-form navbar-right">
+									<div class="form-group">
+										<h:inputText value="#{UsuarioBean.email}" pt:placeHolder="Email" class="form-control" />
+									</div>
+									<div class="form-group">
+										<h:inputSecret pt:placeHolder="Password" value="#{UsuarioBean.senha}" class="form-control" />
+									</div>
+									<h:commandLink class="btn btn-success" value="Sign In" actionListener="#{UsuarioBean.logar}"/>
+							</h:form>
+						</h:panelGroup>
+						<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
+							<h:form class="navbar-form navbar-right">
+								<div class="form-group">
+									<h:outputLabel value="Bem-Vindo #{UsuarioBean.email}"/>	
+								</div>
+								<h:commandLink class="btn btn-success" value="Logout" actionListener="#{UsuarioBean.deslogar}"/>
+							</h:form>
+						</h:panelGroup>
+					</div>
+					<!--/.navbar-collapse -->
+				</div>
+			</div>
+		</ui:insert>
+	</div>
+
+
+	<div id="content">
+		<ui:insert name="content">
+			<!-- Quando for chamado por uma pagina vai ser chamado pelo content -->
+		</ui:insert>
+	</div>
+
+	<div id="folder">
+		<ui:insert name="folder">
+			<!-- Folder -->
+		</ui:insert>
+	</div>
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="/RecoMusic/resources/js/bootstrap.min.js" type="text/javascript"/>
+    </h:body>
+</html>
