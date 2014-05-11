@@ -7,7 +7,7 @@ import javax.faces.view.ViewScoped;
  
 @ManagedBean(name="UsuarioBean")
 @ViewScoped
-public class UserBean implements Serializable
+public class UsuarioBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -16,7 +16,7 @@ public class UserBean implements Serializable
 	
 	private boolean logado;
 	
-	public UserBean()
+	public UsuarioBean()
 	{
 		logado = false;
 	}
