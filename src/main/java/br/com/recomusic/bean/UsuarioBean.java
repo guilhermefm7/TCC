@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
+
+import br.com.recomusic.dao.UsuarioDAO;
  
 @ManagedBean(name="UsuarioBean")
 @ViewScoped
@@ -23,7 +25,8 @@ public class UsuarioBean implements Serializable
 	
 	public void logar()
 	{
-		this.logado = true;
+		boolean validacaoUsuario = new UsuarioDAO().validarUsuario(this.email, this.senha);
+		this.logado = validacaoUsuario;
 	}
 	
 	public void deslogar()
