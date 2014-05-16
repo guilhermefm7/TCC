@@ -29,7 +29,7 @@ public class Cadastro implements Serializable
 	@Type(type="date")
 	private Date dataNascimento;
 	private int sexo;
-	private int status = Constantes.TIPO_STATUS_ATIVO;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@ManyToOne @JoinColumn(name="fkUsuario")
 	private Usuario usuario;

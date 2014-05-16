@@ -22,7 +22,7 @@ public class AmigosUsuario implements Serializable
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkAmigosUsuario;
-	private int status = Constantes.TIPO_STATUS_ATIVO;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@ManyToOne @JoinColumn(name="fkUsuario")
 	private Usuario usuario;

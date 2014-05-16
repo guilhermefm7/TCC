@@ -2,14 +2,7 @@
 <classpath>
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry excluding="**/*.java|/" kind="src" path="src/main/resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSF2.0 Implementation">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-			<attribute name="owner.project.facets" value="jst.jsf"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/javax.faces-2.2.4.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/javax.faces-2.2.4.jar" sourcepath="C:/Users/Guilherme/.m2/repository/org/glassfish/javax.faces/2.2.4/javax.faces-2.2.4-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/hibernate-commons-annotations-4.0.4.Final.jar"/>
@@ -23,6 +16,15 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jboss-logging-annotations-1.2.0.Beta1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/postgresql-9.3-1101.jdbc41.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="#system#;jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

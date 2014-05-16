@@ -31,7 +31,7 @@ public class Usuario implements Serializable
 	@Type(type="timestamp")
 	private Date lancamento;
 	private String emailUsuario;
-	private int status = Constantes.TIPO_STATUS_ATIVO;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@OneToMany(mappedBy="usuario")
 	private List<Cadastro> cadastros;

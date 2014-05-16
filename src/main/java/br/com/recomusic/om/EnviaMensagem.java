@@ -24,12 +24,12 @@ public class EnviaMensagem implements Serializable
 	private long EnviaMensagem;
 	@Type(type="text")
 	private String mensagem;
-	private int mensagemEnviada;
+	private Integer mensagemEnviada;
 
-	@ManyToOne @JoinColumn(name="fkUsuario")
+	@ManyToOne @JoinColumn(name="fkUsuarioEnviou")
 	private Usuario usuarioEnviou;
 
-	@ManyToOne @JoinColumn(name="fkUsuario")
+	@ManyToOne @JoinColumn(name="fkUsuarioRecebeu")
 	private Usuario usuarioRecebeu;
 
 

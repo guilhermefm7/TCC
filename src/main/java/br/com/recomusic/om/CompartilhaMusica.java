@@ -27,7 +27,7 @@ public class CompartilhaMusica implements Serializable
 	private long pkCompartilhaMusica;
 	@Type(type="timestamp")
 	private Date lancamento;
-	private int status = Constantes.TIPO_STATUS_ATIVO;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@ManyToOne @JoinColumn(name="fkUsuario")
 	private Usuario usuario;

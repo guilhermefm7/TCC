@@ -1,18 +1,23 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.UsuarioDAO;
+import br.com.recomusic.om.Usuario;
+import br.com.recomusic.singleton.ConectaBanco;
+
+
  
 @ManagedBean(name="UsuarioBean")
 @ViewScoped
 public class UsuarioBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	
+	private UsuarioDAO usuarioDAO;
 	private String email;
 	private String senha;
 	
@@ -20,13 +25,22 @@ public class UsuarioBean implements Serializable
 	
 	public UsuarioBean()
 	{
-		logado = false;
-	}
+        usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
+        logado = false;
+    }
 	
 	public void logar()
 	{
-		boolean validacaoUsuario = new UsuarioDAO().validarUsuario(this.email, this.senha);
-		this.logado = validacaoUsuario;
+        try
+        {
+        	boolean validacaoUsuario = usuarioDAO.validarUsuario(email, senha);
+			this.logado = validacaoUsuario;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            ConectaBanco.getInstance().rollBack();
+        }
 	}
 	
 	public void deslogar()
@@ -34,6 +48,25 @@ public class UsuarioBean implements Serializable
 		this.logado = false;
 	}
 	
+	 public void save(Usuario usuario)
+	 {
+	        try
+	        {
+	        	ConectaBanco.getInstance().beginTransaction();
+	            usuarioDAO.save(usuario);
+	            ConectaBanco.getInstance().commit();
+	        }
+	        catch(Exception e)
+	        {
+	            e.printStackTrace();
+	            ConectaBanco.getInstance().rollBack();
+	        }
+	    }
+	     
+	    public List<Usuario> findAll()
+	    {
+	        return usuarioDAO.findAll();
+	    }
 	
 	// 		Getters and Setters			//
 	

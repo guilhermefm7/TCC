@@ -10,18 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.recomusic.singleton.ConectaBanco;
+
 /**
  * Servlet implementation class MainRecMusic
  */
 @WebServlet("/MainRecMusic")
 public class MainRecMusic extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
-	public void init(ServletConfig config) throws ServletException {
+	public void init(ServletConfig config) throws ServletException 
+	{
 		//Conecta no Banco de Dados
 		System.out.println("RecMusic Incializado com Sucesso!");
 	}
@@ -29,14 +30,17 @@ public class MainRecMusic extends HttpServlet {
 	/**
 	 * @see Servlet#destroy()
 	 */
-	public void destroy() {
+	public void destroy() 
+	{
+		ConectaBanco.getInstance().close();
 		System.out.println("RecMusic Fechado com Sucesso!");
 	}
 
 	/**
 	 * @see Servlet#getServletConfig()
 	 */
-	public ServletConfig getServletConfig() {
+	public ServletConfig getServletConfig() 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -44,7 +48,8 @@ public class MainRecMusic extends HttpServlet {
 	/**
 	 * @see Servlet#getServletInfo()
 	 */
-	public String getServletInfo() {
+	public String getServletInfo() 
+	{
 		// TODO Auto-generated method stub
 		return null; 
 	}
@@ -52,7 +57,8 @@ public class MainRecMusic extends HttpServlet {
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
 		// TODO Auto-generated method stub
 	}
 }

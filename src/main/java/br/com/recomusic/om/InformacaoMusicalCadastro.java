@@ -23,7 +23,7 @@ public class InformacaoMusicalCadastro implements Serializable
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkInformacaoMusicalCadastro;
-	private int status = Constantes.TIPO_STATUS_ATIVO;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@OneToMany(mappedBy="informacaoMusicalCadastro")
 	private List<Cadastro> cadastros;

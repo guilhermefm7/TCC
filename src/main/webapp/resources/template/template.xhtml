@@ -16,10 +16,9 @@
     	<meta name="description" content=""/>
     	<meta name="author" content=""/>
     	
-		<link href="/JavaServerFaces/resources/css/common-style.css" type="text/css" rel="stylesheet"/>
-		<link href="/JavaServerFaces/resources/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-		<link href="/JavaServerFaces/resources/css/jumbotron.css" type="text/css" rel="stylesheet"/>
-		<link rel="shortcut icon" href="/JavaServerFaces/resources/imagens/icones/logotipo.jpg"/>
+		<link href="/RecoMusic/resources/css/bootstrap-min.css" type="text/css" rel="stylesheet"/>
+		<link href="/RecoMusic/resources/css/especifico.css" type="text/css" rel="stylesheet"/>
+		<link rel="shortcut icon" href="/RecoMusic/resources/imagens/icones/logotipo.jpg"/>
 		
 		<ui:insert name="definicioesPre"></ui:insert>
 		
@@ -50,16 +49,16 @@
 								<div class="form-group">
 									<h:inputSecret pt:placeHolder="Password" value="#{UsuarioBean.senha}" class="form-control" />
 								</div>
-								<h:commandLink type="submit" class="btn btn-success" value="Sign In" actionListener="#{UsuarioBean.logar}"/>
+								<h:commandLink type="submit" class="btn btn-success" value="Sign In" actionListener="#{UsuarioBean.logar()}"/>
 							</h:form>
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
 							<h:form class="navbar-form navbar-right" role="form">
 								<div class="form-group">
-									<h:outputLabel value="Bem-Vindo #{UsuarioBean.email}"/>
+									<h:outputLabel value="Bem-Vindo #{UsuarioBean.email}" style="margin-left:-300px"/>
 								</div>
-								<h:commandLink type="submit" class="btn btn-success" value="Logout" actionListener="#{UsuarioBean.deslogar}"/>
+								<h:commandLink type="submit" class="btn btn-success" value="Logout" actionListener="#{UsuarioBean.deslogar()}"/>
 							</h:form>
 						</h:panelGroup>
 						
@@ -71,15 +70,18 @@
 	</div>
 
 	<!-- /Corpo da página -->
-	<!-- <div id="content"> -->
-		<!-- <ui:insert name="content"> -->
-		<!-- </ui:insert> -->
-	<!-- </div> -->
+	<div id="content">
+		<ui:insert name="content">
+		</ui:insert> 
+	</div>
+	
+	<ui:define name="definicoesPre">
 
+	</ui:define>
 
 	<div id="folder">
 		<ui:insert name="folder">
-		 <div class="container">
+		 <div class="container" style="margin-left: 362px">
 			<p>&copy; RecMusic 2014</p>
 			</div>
 		</ui:insert>
@@ -88,6 +90,6 @@
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="/RecoMusic/resources/js/bootstrap.min.js" type="text/javascript"/>
+	<script src="/RecoMusic/resources/js/bootstrap-min.js" type="text/javascript"/>
     </h:body>
 </html>

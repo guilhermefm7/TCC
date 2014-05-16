@@ -27,7 +27,7 @@ public class PlaylistMusica implements Serializable
 	private long pkPlaylistMusica;
 	@Type(type="timestamp")
 	private Date lancamento;
-	private int status = Constantes.TIPO_STATUS_ATIVO;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@ManyToOne @JoinColumn(name="fkMusica")
 	private Musica musica;
