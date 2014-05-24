@@ -18,11 +18,14 @@
     	
 		<link href="/RecoMusic/resources/css/bootstrap-min.css" type="text/css" rel="stylesheet"/>
 		<link href="/RecoMusic/resources/css/especifico.css" type="text/css" rel="stylesheet"/>
+		<link href="/RecoMusic/resources/css/jumbotron-narrow.css" type="text/css" rel="stylesheet"/>
+		<link href="/RecoMusic/resources/css/signin.css" type="text/css" rel="stylesheet"/>
 		<link rel="shortcut icon" href="/RecoMusic/resources/imagens/icones/logotipo.jpg"/>
+		<!-- <link href="/RecoMusic/resources/css/bootstrap-v00206960.css" rel="stylesheet" type="text/css"/> -->
 		
 		<ui:insert name="definicioesPre"></ui:insert>
-		
-	</h:head>
+
+</h:head>
     
     <h:body>
     
@@ -37,28 +40,28 @@
 							<span class="icon-bar"></span>
 							 <span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">RecMusic</a>
+						<a class="navbar-brand" href="#" style="color: #5cb85c">RecMusic</a>
 					</div>
 					<div class="navbar-collapse collapse">
 					
 						<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
 							<h:form class="navbar-form navbar-right" role="form">
 								<div class="form-group">
-									<h:inputText value="#{UsuarioBean.email}" pt:placeHolder="Email" class="form-control" />
+									<h:inputText value="#{UsuarioBean.emailUsuario}" pt:placeHolder="Email" class="form-control" />
 								</div>
 								<div class="form-group">
 									<h:inputSecret pt:placeHolder="Password" value="#{UsuarioBean.senha}" class="form-control" />
 								</div>
-								<h:commandLink type="submit" class="btn btn-success" value="Sign In" actionListener="#{UsuarioBean.logar()}"/>
+								<h:commandLink type="submit" class="btn btn-success" value="Sign In" actionListener="#{UsuarioBean.logar}"/>
 							</h:form>
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
 							<h:form class="navbar-form navbar-right" role="form">
 								<div class="form-group">
-									<h:outputLabel value="Bem-Vindo #{UsuarioBean.email}" style="margin-left:-300px"/>
+									<h:outputLabel value="Bem-Vindo #{UsuarioBean.emailUsuario}" style="margin-left:-300px;color: #5cb85c"/>
 								</div>
-								<h:commandLink type="submit" class="btn btn-success" value="Logout" actionListener="#{UsuarioBean.deslogar()}"/>
+								<h:commandLink type="submit" class="btn btn-success" value="Logout" actionListener="#{UsuarioBean.deslogar}"/>
 							</h:form>
 						</h:panelGroup>
 						
@@ -75,14 +78,14 @@
 		</ui:insert> 
 	</div>
 	
-	<ui:define name="definicoesPre">
-
+	<ui:define name="definicoesPre" >
+	
 	</ui:define>
 
 	<div id="folder">
 		<ui:insert name="folder">
 		 <div class="container" style="margin-left: 362px">
-			<p>&copy; RecMusic 2014</p>
+			<p style="color: #5cb85c">&copy; RecMusic 2014</p>
 			</div>
 		</ui:insert>
 	</div>

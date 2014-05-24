@@ -1,32 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:body>
-    	<ui:composition template="/resources/template/template.xhtml">
-			<ui:define name="titulo">RecMusic</ui:define>
-				
- 		<ui:define name="definicoesPre">
-		</ui:define>
-		
-		<ui:define name="content">
-			<form class="form-signin" role="form" style="margin:0 auto;position:relative;width:950px">
-		        <h2 class="form-signin-heading" style="color: #333333">Please sign in</h2>
-		        <input type="email" class="form-control" placeholder="Email address"/>
-		        <input type="password" class="form-control" placeholder="Password" />
-		        <label class="checkbox">
-		          <input type="checkbox" value="remember-me"/> Remember me
-		        </label>
-		        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      		</form>
-			
-		</ui:define>
-			
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fb="http://www.facebook.com/2008/fbml"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:body>
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
 
-			
-		</ui:composition>
+		<ui:define name="definicoesPre">
+		</ui:define>
 		
-    </h:body>
+			<ui:define name="content">
+			
+				<h:panelGroup layout="block" class="container" style="margin-left: -15px; margin-bottom: 10%" rendered="#{UsuarioBean.logado eq false}">
+					<div class="jumbotron" style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%">
+						<h2 class="form-signin-heading" style="text-align: left;">Inscreva-se</h2>
+						<div class="footer" style="border-top-color: #eee"></div>
+						
+						<h:form role="form-signin">
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="form-group" id="registroNome">
+										<h:inputText value="#{UsuarioBean.nome}" pt:placeHolder="Nome" class="form-control" />
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div class="form-group" id="registroSobrenome">
+										<h:inputText value="#{UsuarioBean.sobrenome}" pt:placeHolder="Sobrenome" class="form-control" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group" id="registroEmail">
+								<h:inputText value="#{UsuarioBean.emailUsuario}" pt:placeHolder="Email" class="form-control" />
+							</div>
+	
+							<div class="form-group" id="registroSenha">
+								<h:inputSecret pt:placeHolder="Password" value="#{UsuarioBean.senha}"  class="form-control" />
+							</div>
+	
+						<div class="input-group">
+							<div class="form-group" id="radioButtonSexo">
+								<input type="radio" value="feminino"> Feminino</input> 
+								<input type="radio" value="masculino" style="margin-left: 10px"> Masculino</input>
+							</div>
+						</div>
+						<div class="footer" style="border-top-color: #eee"></div>
+						<div class="form-group" id="botaoInscreve">
+							<h:commandLink type="submit" class="btn btn-primary" style="padding:3px 32px;" value="Sign In" actionListener="#{UsuarioBean.salvar}"/>
+						</div>
+						<div class="form-group" id="botaoFacebook">
+							<button id="register_create_account_fb"
+								class="btn btn-facebook evt-click "
+								style="padding: 3px 16px; background-color: #5f78ab; border-color: #405a91"
+								type="button" data-login-redirect="false"
+								data-register-facebook="1" data-tracking="1"
+								data-tracking-tag="unlogged_home_click"
+								data-tracking-params="{'type': 'facebook'}">
+								<span class="label">Facebook</span>
+							</button>
+						</div>
+						</h:form>
+					</div>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" class="container" style="margin-left: -15px; margin-bottom: 10%" rendered="#{UsuarioBean.logado eq true}">
+
+				</h:panelGroup>
+				
+			</ui:define>
+		
+	</ui:composition>
+</h:body>
 </html>
