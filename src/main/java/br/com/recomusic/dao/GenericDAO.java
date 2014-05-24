@@ -43,14 +43,12 @@ public class GenericDAO<PK, T>
  
     public List<T> findAll()
     {
-        return entityManager.createQuery(("FROM " + getTypeClass().getName()))
-                .getResultList();
+        return entityManager.createQuery(("FROM " + getTypeClass().getName())).getResultList();
     }
  
     private Class<?> getTypeClass()
     {
-        Class<?> clazz = (Class<?>) ((ParameterizedType) this.getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[1];
+        Class<?> clazz = (Class<?>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         return clazz;
     }
 }
