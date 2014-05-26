@@ -1,70 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-      
-	<h:head>
-    	<meta charset="utf-8"/>
-    	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-    	
-		<title><ui:insert name="titulo" >RecMusic</ui:insert></title>
-    	<meta name="description" content=""/>
-    	<meta name="author" content=""/>
-    	
-		<link href="/RecoMusic/resources/css/bootstrap-min.css" type="text/css" rel="stylesheet"/>
-		<link href="/RecoMusic/resources/css/especifico.css" type="text/css" rel="stylesheet"/>
-		<link href="/RecoMusic/resources/css/jumbotron-narrow.css" type="text/css" rel="stylesheet"/>
-		<link href="/RecoMusic/resources/css/signin.css" type="text/css" rel="stylesheet"/>
-		<link rel="shortcut icon" href="/RecoMusic/resources/imagens/icones/logotipo.jpg"/>
-		<!-- <link href="/RecoMusic/resources/css/bootstrap-v00206960.css" rel="stylesheet" type="text/css"/> -->
-		
-		<ui:insert name="definicioesPre"></ui:insert>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta property="fb:app_id" content="577169682402524"/>
+	<title><ui:insert name="titulo">RecMusic</ui:insert></title>
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+
+	<link href="/RecoMusic/resources/css/bootstrap-min.css" type="text/css"
+		rel="stylesheet" />
+	<link href="/RecoMusic/resources/css/especifico.css" type="text/css"
+		rel="stylesheet" />
+	<link href="/RecoMusic/resources/css/jumbotron-narrow.css"
+		type="text/css" rel="stylesheet" />
+	<link href="/RecoMusic/resources/css/signin.css" type="text/css"
+		rel="stylesheet" />
+	<link rel="shortcut icon"
+		href="/RecoMusic/resources/imagens/icones/logotipo.jpg" />
+	<!-- <link href="/RecoMusic/resources/css/bootstrap-v00206960.css" rel="stylesheet" type="text/css"/> -->
+
+	<ui:insert name="definicioesPre"></ui:insert>
 
 </h:head>
+
+<h:body>
+
+<div id="fb-root"></div>
+
+<script>
+//A função abaixo é executada assim que o SDK é carregado.
+
+
+
+
+ // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+      console.log('statusChangeCallback');
+      console.log(response);
+      // The response object is returned with a status field that lets the
+      // app know the current login status of the person.
+      // Full docs on the response object can be found in the documentation
+      // for FB.getLoginStatus().
+      if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        testAPI();
+      } else if (response.status === 'not_authorized') {
+        // The person is logged into Facebook, but not your app.
+        loginFacebook();
+        document.getElementById('status').innerHTML = 'Please log ' +
+          'into this app.';F
+      } else {
+        // The person is not logged into Facebook, so we're not sure if
+        // they are logged into this app or not.
+        loginFacebook();
+        document.getElementById('status').innerHTML = 'Please log ' +
+          'into Facebook.';
+      }
+    }
+
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    function loginFacebook() {
+        FB.login(function(response) {
+                if (response.authResponse) {
+                        window.location.replace("URL_TO_REDIRECT");
+                }
+        }, {scope: 'email,publish_stream,user_photos,friends_about_me' });
+} 
     
-    <h:body>
-    
+ // A função abaixo é executada assim que o SDK é carregado
+    window.fbAsyncInit = function() {
+    FB.init({
+    	// Essa é a função de inicialização do SDK. É necessário configurar alguns parâmetros na inicialização do SDK.
+      appId      : '577169682402524',
+      cookie     : true,  // // Habilita o uso de cokie
+      status	 : true,  // Informa ao SDK que para checar o staus do login do usuário.
+      xfbml      : true,  // habilita o uso da linguagem XFBML
+      version    : 'v2.0' // use version 2.0
+    });
+
+    // Now that we've initialized the JavaScript SDK, we call 
+    // FB.getLoginStatus().  This function gets the state of the
+    // person visiting this page and can return one of three states to
+    // the callback you provide.  They can be:
+    //
+    // 1. Logged into your app ('connected')
+    // 2. Logged into Facebook, but not your app ('not_authorized')
+    // 3. Not logged into Facebook and can't tell if they are logged into
+    //    your app or not.
+    //
+    // These three cases are handled in the callback function.
+
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+
+    };
+
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";  //"//connect.facebook.net/pt_BR/all.js"
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+ // Função de exemplo que é executada quando o usuário esta logado e já deu as permissões para o aplicativo.
+    function testAPI() {
+        // Com a função FB.api, é possível fazer chamadas para o Graph API.
+        // Usando o parâmetro /me , você pode solicitar informações do usuário conectado.
+      console.log('Welcome!  Fetching your information.... ');
+      FB.api('/me', function(response) {
+        console.log('Successful login for: ' + response.name);
+        document.getElementById('status').innerHTML =
+          'Thanks for logging in, ' + response.name + '!';
+      });
+    }
+
+
+
+     
+</script>
+
 	<div id="header">
 		<ui:insert name="header">
 			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 				<div class="container">
 					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-							<span class="sr-only">RecMusic</span> 
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							 <span class="icon-bar"></span>
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target=".navbar-collapse">
+							<span class="sr-only">RecMusic</span> <span class="icon-bar"></span>
+							<span class="icon-bar"></span> <span class="icon-bar"></span>
 						</button>
 						<a class="navbar-brand" href="#" style="color: #5cb85c">RecMusic</a>
 					</div>
 					<div class="navbar-collapse collapse">
-					
-						<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
+
+						<h:panelGroup layout="block"
+							rendered="#{UsuarioBean.logado eq false}">
 							<h:form class="navbar-form navbar-right" role="form">
 								<div class="form-group">
-									<h:inputText value="#{UsuarioBean.emailUsuario}" pt:placeHolder="Email" class="form-control" />
+									<h:inputText value="#{UsuarioBean.emailLogin}"
+										pt:placeHolder="Login/Email" class="form-control" />
 								</div>
 								<div class="form-group">
-									<h:inputSecret pt:placeHolder="Password" value="#{UsuarioBean.senha}" class="form-control" />
+									<h:inputSecret pt:placeHolder="Password"
+										value="#{UsuarioBean.usuario.senha}" class="form-control" />
 								</div>
-								<h:commandLink type="submit" class="btn btn-success" value="Sign In" actionListener="#{UsuarioBean.logar}"/>
+								<h:commandLink type="submit" class="btn btn-success"
+									value="Sign In" actionListener="#{UsuarioBean.logar}" />
 							</h:form>
 						</h:panelGroup>
-						
-						<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
+
+						<h:panelGroup layout="block"
+							rendered="#{UsuarioBean.logado eq true}">
 							<h:form class="navbar-form navbar-right" role="form">
 								<div class="form-group">
-									<h:outputLabel value="Bem-Vindo #{UsuarioBean.emailUsuario}" style="margin-left:-300px;color: #5cb85c"/>
+									<h:outputLabel value="Bem-Vindo #{UsuarioBean.emailLogin}"
+										style="margin-left:-300px;color: #5cb85c" />
 								</div>
-								<h:commandLink type="submit" class="btn btn-success" value="Logout" actionListener="#{UsuarioBean.deslogar}"/>
+								<h:commandLink type="submit" class="btn btn-success"
+									value="Logout" actionListener="#{UsuarioBean.deslogar}" />
 							</h:form>
 						</h:panelGroup>
-						
+
 					</div>
 					<!--/.navbar-collapse -->
 				</div>
@@ -75,24 +191,26 @@
 	<!-- /Corpo da página -->
 	<div id="content">
 		<ui:insert name="content">
-		</ui:insert> 
+		</ui:insert>
 	</div>
-	
-	<ui:define name="definicoesPre" >
-	
+
+	<ui:define name="definicoesPre">
+
 	</ui:define>
 
 	<div id="folder">
 		<ui:insert name="folder">
-		 <div class="container" style="margin-left: 362px">
-			<p style="color: #5cb85c">&copy; RecMusic 2014</p>
+			<div class="container" style="margin-left: 362px">
+				<p style="color: #5cb85c">&copy; RecMusic 2014</p>
 			</div>
 		</ui:insert>
 	</div>
 
 
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="/RecoMusic/resources/js/bootstrap-min.js" type="text/javascript"/>
-    </h:body>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="/RecoMusic/resources/js/bootstrap-min.js"
+		type="text/javascript" />
+</h:body>
 </html>

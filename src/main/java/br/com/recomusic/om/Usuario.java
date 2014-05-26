@@ -26,11 +26,16 @@ public class Usuario implements Serializable
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkUsuario;
+	private String emailUsuario;
 	private String login;
 	private String senha;
+	private String nome;
+	private String sobrenome;
 	@Type(type="timestamp")
 	private Date lancamento;
-	private String emailUsuario;
+	@Type(type="date")
+	private Date dataNascimento;
+	private int sexo;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@OneToMany(mappedBy="usuario")
@@ -82,6 +87,18 @@ public class Usuario implements Serializable
 
 	public String getSenha() { return senha; }
 	public void setSenha(String senha) { this.senha = senha; }
+	
+	public String getNome() { return nome; }
+	public void setNome(String nome) { this.nome = nome; }
+
+	public Date getDataNascimento() { return dataNascimento; }
+	public void setDataNascimento(Date dataNascimento) { this.dataNascimento = dataNascimento; }
+
+	public int getSexo() { return sexo; }
+	public void setSexo(int sexo) { this.sexo = sexo; }
+
+	public String getSobrenome() { return sobrenome; }
+	public void setSobrenome(String sobrenome) { this.sobrenome = sobrenome; }
 
 	public Date getLancamento() { return lancamento; }
 	public void setLancamento(Date lancamento) { this.lancamento = lancamento; }
