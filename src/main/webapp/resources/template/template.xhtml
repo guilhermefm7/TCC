@@ -11,18 +11,24 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta property="fb:app_id" content="577169682402524"/>
+	<meta property="fb:app_id" content="577169682402524" />
 	<title><ui:insert name="titulo">RecMusic</ui:insert></title>
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 
 	<link href="/RecoMusic/resources/css/bootstrap-min.css" type="text/css"
 		rel="stylesheet" />
+	<link href="/RecoMusic/resources/css/painel.css" type="text/css"
+		rel="stylesheet" />
 	<link href="/RecoMusic/resources/css/especifico.css" type="text/css"
 		rel="stylesheet" />
 	<link href="/RecoMusic/resources/css/jumbotron-narrow.css"
 		type="text/css" rel="stylesheet" />
 	<link href="/RecoMusic/resources/css/signin.css" type="text/css"
+		rel="stylesheet" />
+	<link href="/RecoMusic/resources/css/dashboard.css" type="text/css"
+		rel="stylesheet" />
+	<link href="/RecoMusic/resources/css/blog.css" type="text/css"
 		rel="stylesheet" />
 	<link rel="shortcut icon"
 		href="/RecoMusic/resources/imagens/icones/logotipo.jpg" />
@@ -34,9 +40,9 @@
 
 <h:body>
 
-<div id="fb-root"></div>
+	<div id="fb-root"></div>
 
-<script>
+	<script>
 //A função abaixo é executada assim que o SDK é carregado.
 
 
@@ -52,18 +58,18 @@
       // for FB.getLoginStatus().
       if (response.status === 'connected') {
         // Logged into your app and Facebook.
+      // loginFacebook();
         testAPI();
+        
       } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not your app.
         loginFacebook();
-        document.getElementById('status').innerHTML = 'Please log ' +
-          'into this app.';F
+        
       } else {
         // The person is not logged into Facebook, so we're not sure if
         // they are logged into this app or not.
         loginFacebook();
-        document.getElementById('status').innerHTML = 'Please log ' +
-          'into Facebook.';
+
       }
     }
 
@@ -79,11 +85,11 @@
     function loginFacebook() {
         FB.login(function(response) {
                 if (response.authResponse) {
-                        window.location.replace("URL_TO_REDIRECT");
+                        window.location.replace("http://localhost:8080/RecoMusic/");
                 }
-        }, {scope: 'email,publish_stream,user_photos,friends_about_me' });
+        },  {scope: "email"})
 } 
-    
+    //offline_access", "publish_stream", "user_photos", "publish_checkins","photo_upload
  // A função abaixo é executada assim que o SDK é carregado
     window.fbAsyncInit = function() {
     FB.init({
@@ -107,20 +113,16 @@
     //
     // These three cases are handled in the callback function.
 
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
-
     };
 
     // Load the SDK asynchronously
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js";  //"//connect.facebook.net/pt_BR/all.js"
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+		(function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
 
  // Função de exemplo que é executada quando o usuário esta logado e já deu as permissões para o aplicativo.
     function testAPI() {
@@ -134,22 +136,19 @@
       });
     }
 
-
-
-     
 </script>
 
 	<div id="header">
 		<ui:insert name="header">
 			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="container">
-					<div class="navbar-header">
+				<div class="container-fluid">
+					<div class="navbar-header" style="font-family: fantasy">
 						<button type="button" class="navbar-toggle" data-toggle="collapse"
 							data-target=".navbar-collapse">
 							<span class="sr-only">RecMusic</span> <span class="icon-bar"></span>
-							<span class="icon-bar"></span> <span class="icon-bar"></span>
+
 						</button>
-						<a class="navbar-brand" href="#" style="color: #5cb85c">RecMusic</a>
+						<a class="navbar-brand" href="#" style="color: #428bca">RecMusic</a>
 					</div>
 					<div class="navbar-collapse collapse">
 
@@ -164,47 +163,97 @@
 									<h:inputSecret pt:placeHolder="Password"
 										value="#{UsuarioBean.usuario.senha}" class="form-control" />
 								</div>
-								<h:commandLink type="submit" class="btn btn-success"
-									value="Sign In" actionListener="#{UsuarioBean.logar}" />
+								<div class="form-group">
+									<h:commandLink type="submit" class="btn btn-success"
+										value="Entrar" actionListener="#{UsuarioBean.logar}"
+										style="background-color:#428bca; border-color: #428bca" />
+								</div>
 							</h:form>
 						</h:panelGroup>
+
 
 						<h:panelGroup layout="block"
 							rendered="#{UsuarioBean.logado eq true}">
 							<h:form class="navbar-form navbar-right" role="form">
+							<div class="form-group">
+							<h:inputText type="text" class="form-control" pt:placeholder="Pesquisar Música..."/>
+							</div>
 								<div class="form-group">
 									<h:outputLabel value="Bem-Vindo #{UsuarioBean.emailLogin}"
-										style="margin-left:-300px;color: #5cb85c" />
+										style="margin-left:-300px;color: #428bca;font-family: fantasy" />
 								</div>
-								<h:commandLink type="submit" class="btn btn-success"
-									value="Logout" actionListener="#{UsuarioBean.deslogar}" />
+								<div class="form-group">
+									<h:commandLink type="submit" class="btn btn-success"
+										value="Cadastro"
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" action="#{UsuarioBean.mudarPagina}"
+										 />
+								</div>
+								<div class="form-group">
+									<h:commandLink type="submit" class="btn btn-success"
+										value="Amigos"
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" />
+								</div>
+								<div class="form-group">
+									<h:commandLink type="submit" class="btn btn-success"
+										value="Playlists"
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy"
+										/>
+								</div>
+								<div class="form-group">
+									<h:commandLink type="submit" class="btn btn-success"
+										value="Recomendação"
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy"
+										/>
+								</div>
+								<div class="form-group">
+									<h:commandLink type="submit" class="btn btn-success"
+										value="Deslogar"
+										style="background-color:#428bca; border-color: #428bca;font-family: fantasy"
+										actionListener="#{UsuarioBean.deslogar}" />
+								</div>
+								
 							</h:form>
 						</h:panelGroup>
-
 					</div>
-					<!--/.navbar-collapse -->
 				</div>
 			</div>
+<!-- 			<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
+				<div class="col-sm-3 col-md-2 sidebar"
+					style="background-color: #D5D5D5; border-right: #222; border-top: #222">
+					<ul class="nav nav-sidebar" style="color: #453FD8">
+						<li class="active"><a href="/RecoMusic/resources/cadastro/"
+							style="font-family: fantasy">Cadastro</a></li>
+						<li><a href="#" style="font-family: fantasy">Amigos</a></li>
+						<li><a href="#" style="font-family: fantasy">Músicas</a></li>
+						<li><a href="#" style="font-family: fantasy">Playlist</a></li>
+						<li><a href="#" style="font-family: fantasy">Sistema de
+								Recomendação</a></li>
+					</ul>
+				</div>
+			</h:panelGroup> -->
 		</ui:insert>
 	</div>
+
 
 	<!-- /Corpo da página -->
-	<div id="content">
-		<ui:insert name="content">
-		</ui:insert>
+	<div id="content ">
+		<div class="painel">
+			<ui:insert name="content" >
+			</ui:insert>
+		</div>
 	</div>
 
-	<ui:define name="definicoesPre">
+	<!-- 	<ui:define name="definicoesPre">
 
-	</ui:define>
+	</ui:define> -->
 
-	<div id="folder">
+	<!-- 	<div id="folder">
 		<ui:insert name="folder">
 			<div class="container" style="margin-left: 362px">
 				<p style="color: #5cb85c">&copy; RecMusic 2014</p>
 			</div>
 		</ui:insert>
-	</div>
+	</div> -->
 
 
 

@@ -1,12 +1,11 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.UsuarioDAO;
@@ -14,32 +13,26 @@ import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.singleton.ConectaBanco;
 
+import com.restfb.Connection;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.NamedFacebookType;
+
 
 @ManagedBean(name="UsuarioBean")
 @ViewScoped
 public class UsuarioBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private UsuarioDAO usuarioDAO;
-	private Usuario usuario;
+	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
+	private Usuario usuario = new Usuario();
 	private String emailLogin;
-	private boolean logado;
-	private boolean emailCorreto;
+	private boolean logado = true;
+	private boolean emailCorreto = false;
+	private String mensagemErroLogin = null;
+	private String sexo = null;
 
-	public UsuarioBean()
-	{
-		this.usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
-		this.logado = false;
-		this.emailCorreto = false;
-		usuario = new Usuario();
-	}
-
-	public void message(String message)
-	{
-
-        FacesContext instance = FacesContext.getCurrentInstance();
-        instance.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
-    }
+	public UsuarioBean() { }
 
 	public void logar()
 	{
@@ -48,7 +41,7 @@ public class UsuarioBean implements Serializable
 			Usuario usuarioRecebido = null;
 			if(emailLogin!=null && emailLogin.contains("@") && usuario.getSenha()!=null && usuario.getSenha().length()>=6)
 			{
-				usuarioRecebido = usuarioDAO.validarUsuario(emailLogin, usuario.getSenha());
+				usuarioRecebido = usuarioDAO.validarUsuarioEmail(emailLogin, usuario.getSenha());
 			}
 			
 			if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
@@ -59,9 +52,9 @@ public class UsuarioBean implements Serializable
 			if(!this.logado)
 			{
 				usuarioRecebido = null;
-				if(emailLogin!=null && emailLogin.length()>=4)
+				if(emailLogin!=null && emailLogin.length()>=4 && usuario.getSenha()!=null && usuario.getSenha().length()>=6)
 				{
-					usuarioRecebido = usuarioDAO.validarLogin(emailLogin);
+					usuarioRecebido = usuarioDAO.validarUsuarioLogin(emailLogin, usuario.getSenha());
 					
 					if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
 					{
@@ -81,100 +74,40 @@ public class UsuarioBean implements Serializable
 	{
 		try
 		{
-			Usuario validaEmail;
-			if(usuario.getEmailUsuario().contains("@"))
+			mensagemErroLogin = verificaConsistencia();
+			
+			if(mensagemErroLogin=="")
 			{
-				validaEmail = null;
+				Usuario validaEmail = null;
 				if(usuario.getEmailUsuario()!=null)
 				{
 					validaEmail = usuarioDAO.validarEmail(usuario.getEmailUsuario());
 				}
-
-				if(validaEmail!=null && validaEmail.getPkUsuario()>0)
+				
+				if(!(validaEmail!=null && validaEmail.getPkUsuario()>0))
 				{
-					message("Endereço de email informado já está cadastrado!");
 					validaEmail = null;
-					if(usuario.getLogin()!=null && usuario.getLogin().length()>=4)
+					if(usuario.getLogin()!=null)
 					{
 						validaEmail = usuarioDAO.validarLogin(usuario.getLogin());
-						
-						if(validaEmail!=null && validaEmail.getPkUsuario()>0)
+						if(!((validaEmail!=null && validaEmail.getPkUsuario()>0)))
 						{
-							message("Login digitado já existe!");
+							usuario.setSexo(Integer.valueOf(this.sexo));
+							usuario.setStatus(Constantes.TIPO_STATUS_ATIVO);
+							usuario.setLancamento(new Date());
+							save(usuario);
+							this.emailLogin = usuario.getLogin();
+							this.logado = true;
 						}
-					}
-					else
-					{
-						message("Login deve ter no mínimo 4 caracteres!");
+						else
+						{
+							mensagemErroLogin = "Login informado já existe";
+						}
 					}
 				}
 				else
 				{
-					if(usuario.getSenha().length()>=6)
-					{
-						validaEmail = null;
-						if(usuario.getLogin()!=null && usuario.getLogin().length()>=4)
-						{
-							validaEmail = usuarioDAO.validarLogin(usuario.getLogin());
-							
-							if(validaEmail!=null && validaEmail.getPkUsuario()>0)
-							{
-								message("Login digitado já existe!");
-							}
-							else
-							{
-								usuario.setStatus(Constantes.TIPO_STATUS_ATIVO);
-								usuario.setLancamento(new Date());
-								save(usuario);
-								this.logado = true;
-							}
-						}
-						else
-						{
-							message("Login deve ter no mínimo 4 caracteres!");
-						}
-					}
-					else
-					{
-						message("Senha deve possuir no mínimo 6 caracteres!");
-						validaEmail = null;
-						if(usuario.getLogin()!=null && usuario.getLogin().length()>=4)
-						{
-							validaEmail = usuarioDAO.validarLogin(usuario.getLogin());
-							
-							if(validaEmail!=null && validaEmail.getPkUsuario()>0)
-							{
-								message("Login digitado já existe!");
-							}
-						}
-						else
-						{
-							message("Login deve ter no mínimo 4 caracteres!");
-						}
-					}
-				}
-			}
-			else
-			{
-				message("Email inválido!");
-				if(usuario.getSenha().length()<6)
-				{
-					message("Senha deve possuir no mínimo 6 caracteres!");
-				}
-				
-				validaEmail = null;
-				if(usuario.getLogin()!=null && usuario.getLogin().length()>=4)
-				{
-					validaEmail = usuarioDAO.validarLogin(usuario.getLogin());
-					
-					if(validaEmail!=null && validaEmail.getPkUsuario()>0)
-					{
-						message("Login digitado já existe!");
-					}
-				}
-				else
-				{
-					message("Login deve ter no mínimo 4 caracteres!");
+					mensagemErroLogin = "Email informado já foi cadastrado";
 				}
 			}
 		}
@@ -184,7 +117,59 @@ public class UsuarioBean implements Serializable
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
+	
+	
+	public String verificaConsistencia() throws Exception
+	{
+		List<String> erros = new ArrayList<String>();
+		
+		if(usuario.getLogin()==null || usuario.getLogin().length()==0) { erros.add("Login");  }
+		if(usuario.getNome()==null || usuario.getNome().length()==0) { erros.add("Nome");  }
+		if(usuario.getSobrenome()==null || usuario.getSobrenome().length()==0) { erros.add("Sobrenome");  }
+		if(usuario.getEmailUsuario()==null || usuario.getEmailUsuario().length()==0) { erros.add("Email");  }
+		if(usuario.getSenha()==null || usuario.getSenha().length()==0) { erros.add("Senha");  }
+		if(this.sexo==null || this.sexo.length()==0) { erros.add("Sexo");  }
+		
+		if(erros.size()>1) 								{ return "Os campos " + erros.toString() + " são requeridos." ;	}
+		else if(erros.size()==1) 						{ return "O campo " + erros.toString() + " é requerido."; 		}
+		
+		if(!(usuario.getEmailUsuario().contains("@")))	{ return "Email informado inválido" ; 							}	
+		if(usuario.getLogin().length()<4)				{ return "Login deve possuir no mínimo 4 caracteres" ; 			}	
+		if(usuario.getSenha().length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}	
+		
+		return "";
+	}
 
+	public void imprime()
+	{
+		//User user = ConectaFacebook.getInstance().fetchObject("me", User.class);
+		//Page page = ConectaFacebook.getInstance().fetchObject("cocacola", Page.class);
+
+		//System.out.println("User name: " + user.getName());
+		//System.out.println("Page likes: " + page.getLikes());
+		 FacebookClient facebookClient = new DefaultFacebookClient("577169682402524|q9EqT9Zbgx8mBMhwPC2WQPh8xx8");
+		 Connection<NamedFacebookType> music = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
+		// Connection<NamedFacebookType> likes = facebookClient.fetchConnection("me/likes", NamedFacebookType.class);
+		 for (int i = 0; i < music.getData().size(); i++)
+		 {
+			 System.out.println(music.getData().get(i).getName());
+		 }
+	}
+	
+	public String mudarPagina()
+	{
+		try
+		{
+			return "logado?faces-redirect=true";
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+		return "";
+	}
+	
 	public void deslogar()
 	{
 		this.logado = false;
@@ -242,5 +227,20 @@ public class UsuarioBean implements Serializable
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
+	public String getMensagemErroLogin() {
+		return mensagemErroLogin;
+	}
+
+	public void setMensagemErroLogin(String mensagemErroLogin) {
+		this.mensagemErroLogin = mensagemErroLogin;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
 }

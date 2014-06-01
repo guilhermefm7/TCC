@@ -11,91 +11,102 @@
 
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
+		<!-- 		<ui:define name="definicoesPre">
+		</ui:define> -->
 
-		<ui:define name="definicoesPre">
-		</ui:define>
-		
-			<ui:define name="content">
-			
-				<h:panelGroup layout="block" class="container" style="margin-left: -15px; margin-bottom: 10%" rendered="#{UsuarioBean.logado eq false}">
-					<h:panelGroup layout="block"  class="jumbotron" style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%">
-						
-						<h2 class="form-signin-heading" style="text-align: left;">Inscreva-se</h2>
-						<h:panelGroup layout="block" class="footer" style="border-top-color: #eee"></h:panelGroup>
-						
-						<h:messages errorStyle="color: red" showSummary="true" showDetail="false" globalOnly="true"/> 
-						
-						<h:form role="form-signin">
-						
-							<h:panelGroup layout="block" class="form-group" id="registroLogin">
-								<h:inputText value="#{UsuarioBean.usuario.login}" id="validaLogin" pt:placeHolder="Login" type="login" class="form-control" required="true" requiredMessage="Digite seu login para o site" />
-								<h:messages for="validaLogin" errorStyle="color: red" class="erro" showSummary="true" showDetail="false" globalOnly="true"/>
-							</h:panelGroup>
-						
-							<h:panelGroup layout="block" class="row">
-							
-								<h:panelGroup layout="block" class="col-xs-6">
-									<h:panelGroup class="form-group" id="registroNome">
-										<h:inputText value="#{UsuarioBean.usuario.nome}" id="validaNome" pt:placeHolder="Nome" class="form-control" required="true" requiredMessage="Nome"/>
-										<h:messages for="validaNome" errorStyle="color: red" class="erro" showSummary="true" showDetail="false" globalOnly="true"/>
-									</h:panelGroup>
+		<ui:define name="content">
+			<h:panelGroup layout="block" class="container"
+				style="margin-left: 10px ;margin-bottom: 10%;margin-top:10%"
+				rendered="#{UsuarioBean.logado eq false}">
+
+				<h:panelGroup layout="block" class="jumbotron"
+					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%">
+
+					<h2 class="form-signin-heading" style="text-align: center;">Inscreva-se</h2>
+					<h:panelGroup layout="block" class="footer"
+						style="border-top-color: #eee"></h:panelGroup>
+
+					<h:form role="form-signin">
+
+						<h:panelGroup layout="block" class="form-group" id="registroLogin">
+							<h:inputText value="#{UsuarioBean.usuario.login}"
+								id="validaLogin" pt:placeHolder="Login" type="login"
+								class="form-control" />
+
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" class="row">
+
+							<h:panelGroup layout="block" class="col-xs-6">
+								<h:panelGroup class="form-group" id="registroNome">
+									<h:inputText value="#{UsuarioBean.usuario.nome}"
+										id="validaNome" pt:placeHolder="Nome" class="form-control" />
+
 								</h:panelGroup>
-								
-								<h:panelGroup layout="block" class="col-xs-6">
-									<h:panelGroup layout="block" class="form-group" id="registroSobrenome">
-										<h:inputText value="#{UsuarioBean.usuario.sobrenome}" id="validaSobrenome" pt:placeHolder="Sobrenome" class="form-control" requiredMessage="Sobrenome"/>
-										<h:messages for="validaSobrenome" errorStyle="color: red" showSummary="true" showDetail="false" globalOnly="true"/>
-									</h:panelGroup>
-								</h:panelGroup>
-								
 							</h:panelGroup>
-							
+
+							<h:panelGroup layout="block" class="col-xs-6">
+								<h:panelGroup layout="block" class="form-group"
+									id="registroSobrenome">
+									<h:inputText value="#{UsuarioBean.usuario.sobrenome}"
+										id="validaSobrenome" pt:placeHolder="Sobrenome"
+										class="form-control" />
+								</h:panelGroup>
+							</h:panelGroup>
+
+						</h:panelGroup>
+
 						<h:panelGroup layout="block" class="form-group" id="registroEmail">
-							<h:inputText value="#{UsuarioBean.usuario.emailUsuario}" id="validaEmail" pt:placeHolder="Email address" type="email" class="form-control" required="true" requiredMessage="Informe seu endereço de email" />
-							<h:messages for="validaEmail" errorStyle="color: red" class="erro" showSummary="true" showDetail="false" globalOnly="true"/>
-						</h:panelGroup>
-							
-
-						<h:panelGroup layout="block" id="registroSenha" class="form-group">
-								<h:inputSecret pt:placeHolder="Password" id="validaSenha" value="#{UsuarioBean.usuario.senha}"  class="form-control" required="true" requiredMessage="É necessário digitar uma senha"/>
-								<h:messages for="validaSenha" errorStyle="color: red" showSummary="true" showDetail="false" globalOnly="true"/>
+							<h:inputText value="#{UsuarioBean.usuario.emailUsuario}"
+								id="validaEmail" pt:placeHolder="Endereço de Email" type="email"
+								class="form-control" />
 						</h:panelGroup>
 
-						
-						<h:panelGroup layout="block" class="form-group" id="registroDataNascimento">
-							<h:inputText pt:placeHolder="Nascimento" id="validaDataNascimento" value="#{UsuarioBean.usuario.dataNascimento}" type="date" class="form-control"  style="width:40%" size="10" maxlength="10" required="true" requiredMessage="Informe sua data de nascimento">
-							<f:convertDateTime type="date" pattern="dd/mm/yyyy"/>
-							</h:inputText>
-							<h:messages for="validaDataNascimento" errorStyle="color: red" showSummary="true" showDetail="false" globalOnly="true"/>
+
+						<h:panelGroup layout="block" class="form-group" id="registroSenha">
+							<h:inputSecret pt:placeHolder="Senha" id="validaSenha"
+								value="#{UsuarioBean.usuario.senha}" class="form-control" />
 						</h:panelGroup>
-						
-						<h:panelGroup layout="block" class="form-group" style="margin:4px 10px 0px" id="registroSexo">
-							<h:selectOneRadio value="#{UsuarioBean.usuario.sexo}" id="validaSexo" required="true" requiredMessage="Selecione masculino ou feminino">
-								<f:selectItem itemValue="1" itemLabel=" Feminino" ></f:selectItem>
-								<td align="right" style="width: 55%">
-								<f:selectItem itemValue="2" style="margin:4px 10px 0px" itemLabel=" Masculino"></f:selectItem>
-								</td>
+
+
+						<h:panelGroup layout="block" class="form-group" id="registroSexo">
+							<h:selectOneRadio value="#{UsuarioBean.sexo}" id="validaSexo">
+								<div class="col-xs-6 col-sm-3">
+									<f:selectItem itemValue="1" itemLabel=" Feminino "></f:selectItem>
+									<f:selectItem itemValue="2" itemLabel=" Masculino "></f:selectItem>
+								</div>
 							</h:selectOneRadio>
-							<h:messages for="validaSexo" errorStyle="color: red" showSummary="true" showDetail="false" globalOnly="true"/>
 						</h:panelGroup>
-						
-						<h:panelGroup layout="block" class="footer" style="border-top-color: #eee"></h:panelGroup>
-						
-						<h:panelGroup layout="block" class="form-group" id="botaoInscreve">
-							<h:commandLink type="submit" class="btn btn-primary" style="padding:3px 32px;" value="Sign In" actionListener="#{UsuarioBean.salvar}"/>
-						</h:panelGroup>
-						
-						</h:form>
-						<h:panelGroup layout="block"  class="form-group" id="botaoFacebook">
-							<fb:login-button autologoutlink="true" perms="email,user_birthday,status_update,publish_stream" data-size="xlarge"></fb:login-button>
-						</h:panelGroup>
-						
-					</h:panelGroup>
-				</h:panelGroup>
 
-				
-			</ui:define>
-		
+						<h:panelGroup layout="block" class="form-group"
+							rendered="#{UsuarioBean.mensagemErroLogin !=null}">
+							<h:outputText id="mensagemErro"
+								value="#{UsuarioBean.mensagemErroLogin}" style="color:#b94a48" />
+						</h:panelGroup>
+						<h:panelGroup layout="block" class="footer"
+							style="border-top-color: #eee"></h:panelGroup>
+
+						<h:panelGroup layout="block" class="form-group" id="botaoInscreve">
+							<h:commandLink type="submit" class="btn btn-primary"
+								style="padding:3px 32px;" value="Inscreva-se"
+								actionListener="#{UsuarioBean.salvar}" />
+						</h:panelGroup>
+
+					</h:form>
+					<h:panelGroup layout="block" class="form-group" id="botaoFacebook">
+
+						<fb:login-button autologoutlink="true"
+							perms="public_profile,email" data-size="xlarge"></fb:login-button>
+					</h:panelGroup>
+
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" class="container"
+				style="margin-left: 10px ;margin-bottom: 10%;margin-top:50%"
+				rendered="#{UsuarioBean.logado eq true}">
+			</h:panelGroup>
+
+		</ui:define>
 	</ui:composition>
 </h:body>
 </html>
