@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:body>
+
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+		<!-- 		<ui:define name="definicoesPre">
+		</ui:define> -->
+
+		<ui:define name="content">
+			<h:panelGroup layout="block" class="container"
+				style="margin-left: 10px ;margin-bottom: 10%;margin-top:10%"
+				rendered="#{UsuarioBean.logado eq true}">
+									<h:panelGroup layout="block" class="jumbotron"
+					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%">
+					</h:panelGroup>
+				
+			</h:panelGroup>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
