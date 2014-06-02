@@ -36,107 +36,42 @@
 
 	<ui:insert name="definicioesPre"></ui:insert>
 
+	<div id="fb-root"></div>
+	<script src="http://connect.facebook.net/en_US/all.js"></script>
+	<script>
+
+     FB.init({ 
+        appId: '577169682402524',          //ID da aplicação web definido no Facebook
+        channelUrl : 'http://localhost:8080/RecoMusic/index.xhtml', // Channel File
+        cookie: true,                               // permitir cookies para poder acessar a sessão
+        status: true,                               // verificar o status do login
+        xfbml: true,                              // usar ou não tags do Facebook
+        oauth: true                                // autenticação via OAuth 2.0
+     });
+
+
+    function loginWithFacebook()
+    {
+        FB.login(function(response) 
+        {
+           if (response.authResponse) 
+           {
+            	window.location = "http://localhost:8080/RecoMusic/index.xhtml?token="+response.authResponse.accessToken;
+           }
+           else
+           {
+        	   console.log('User cancelled login or did not fully authorize.');
+           }
+        }, {scope: 'email,user_likes'});
+    } 
+ 
+
+
+	 
+    </script>
 </h:head>
 
 <h:body>
-
-	<div id="fb-root"></div>
-
-	<script>
-//A função abaixo é executada assim que o SDK é carregado.
-
-
-
-
- // This is called with the results from from FB.getLoginStatus().
-    function statusChangeCallback(response) {
-      console.log('statusChangeCallback');
-      console.log(response);
-      // The response object is returned with a status field that lets the
-      // app know the current login status of the person.
-      // Full docs on the response object can be found in the documentation
-      // for FB.getLoginStatus().
-      if (response.status === 'connected') {
-        // Logged into your app and Facebook.
-      // loginFacebook();
-        testAPI();
-        
-      } else if (response.status === 'not_authorized') {
-        // The person is logged into Facebook, but not your app.
-        loginFacebook();
-        
-      } else {
-        // The person is not logged into Facebook, so we're not sure if
-        // they are logged into this app or not.
-        loginFacebook();
-
-      }
-    }
-
-    // This function is called when someone finishes with the Login
-    // Button.  See the onlogin handler attached to it in the sample
-    // code below.
-    function checkLoginState() {
-      FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
-      });
-    }
-
-    function loginFacebook() {
-        FB.login(function(response) {
-                if (response.authResponse) {
-                        window.location.replace("http://localhost:8080/RecoMusic/");
-                }
-        },  {scope: "email"})
-} 
-    //offline_access", "publish_stream", "user_photos", "publish_checkins","photo_upload
- // A função abaixo é executada assim que o SDK é carregado
-    window.fbAsyncInit = function() {
-    FB.init({
-    	// Essa é a função de inicialização do SDK. É necessário configurar alguns parâmetros na inicialização do SDK.
-      appId      : '577169682402524',
-      cookie     : true,  // // Habilita o uso de cokie
-      status	 : true,  // Informa ao SDK que para checar o staus do login do usuário.
-      xfbml      : true,  // habilita o uso da linguagem XFBML
-      version    : 'v2.0' // use version 2.0
-    });
-
-    // Now that we've initialized the JavaScript SDK, we call 
-    // FB.getLoginStatus().  This function gets the state of the
-    // person visiting this page and can return one of three states to
-    // the callback you provide.  They can be:
-    //
-    // 1. Logged into your app ('connected')
-    // 2. Logged into Facebook, but not your app ('not_authorized')
-    // 3. Not logged into Facebook and can't tell if they are logged into
-    //    your app or not.
-    //
-    // These three cases are handled in the callback function.
-
-    };
-
-    // Load the SDK asynchronously
-		(function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-
- // Função de exemplo que é executada quando o usuário esta logado e já deu as permissões para o aplicativo.
-    function testAPI() {
-        // Com a função FB.api, é possível fazer chamadas para o Graph API.
-        // Usando o parâmetro /me , você pode solicitar informações do usuário conectado.
-      console.log('Welcome!  Fetching your information.... ');
-      FB.api('/me', function(response) {
-        console.log('Successful login for: ' + response.name);
-        document.getElementById('status').innerHTML =
-          'Thanks for logging in, ' + response.name + '!';
-      });
-    }
-
-</script>
 
 	<div id="header">
 		<ui:insert name="header">
@@ -166,7 +101,7 @@
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
 										value="Entrar" actionListener="#{UsuarioBean.logar}"
-										style="background-color:#428bca; border-color: #428bca" />
+										style="background-color:#428bca; border-color: #428bca;font-family: fantasy" />
 								</div>
 							</h:form>
 						</h:panelGroup>
@@ -175,35 +110,36 @@
 						<h:panelGroup layout="block"
 							rendered="#{UsuarioBean.logado eq true}">
 							<h:form class="navbar-form navbar-right" role="form">
-							<div class="form-group">
-							<h:inputText type="text" class="form-control" pt:placeholder="Pesquisar Música..."/>
-							</div>
 								<div class="form-group">
 									<h:outputLabel value="Bem-Vindo #{UsuarioBean.emailLogin}"
 										style="margin-left:-300px;color: #428bca;font-family: fantasy" />
 								</div>
 								<div class="form-group">
+									<h:inputText type="text" class="form-control"
+										pt:placeholder="Pesquisar Música..." />
+								</div>
+								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
-										value="Cadastro"
-										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" action="#{UsuarioBean.mudarPagina}"
-										 />
+										value="Cadastro" data-toggle="modal"
+										onclick="$('#myModal').modal('show')" data-target="#myModal"
+										style="background-color:#222; border-color: #222; color:#428bca; font-family:fantasy">
+										<f:ajax execute="@this"></f:ajax>
+									</h:commandLink>
 								</div>
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
 										value="Amigos"
-										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" />
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" action="#{UsuarioBean.mudarPagina}" />
 								</div>
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
 										value="Playlists"
-										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy"
-										/>
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" />
 								</div>
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
 										value="Recomendação"
-										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy"
-										/>
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" />
 								</div>
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
@@ -211,26 +147,12 @@
 										style="background-color:#428bca; border-color: #428bca;font-family: fantasy"
 										actionListener="#{UsuarioBean.deslogar}" />
 								</div>
-								
 							</h:form>
 						</h:panelGroup>
 					</div>
 				</div>
 			</div>
-<!-- 			<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
-				<div class="col-sm-3 col-md-2 sidebar"
-					style="background-color: #D5D5D5; border-right: #222; border-top: #222">
-					<ul class="nav nav-sidebar" style="color: #453FD8">
-						<li class="active"><a href="/RecoMusic/resources/cadastro/"
-							style="font-family: fantasy">Cadastro</a></li>
-						<li><a href="#" style="font-family: fantasy">Amigos</a></li>
-						<li><a href="#" style="font-family: fantasy">Músicas</a></li>
-						<li><a href="#" style="font-family: fantasy">Playlist</a></li>
-						<li><a href="#" style="font-family: fantasy">Sistema de
-								Recomendação</a></li>
-					</ul>
-				</div>
-			</h:panelGroup> -->
+
 		</ui:insert>
 	</div>
 
@@ -238,7 +160,7 @@
 	<!-- /Corpo da página -->
 	<div id="content ">
 		<div class="painel">
-			<ui:insert name="content" >
+			<ui:insert name="content">
 			</ui:insert>
 		</div>
 	</div>
@@ -255,6 +177,71 @@
 		</ui:insert>
 	</div> -->
 
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Atualizar Cadastro</h4>
+				</div>
+				<div class="modal-body">
+			
+					<h:panelGroup layout="block" class="form-group" id="registroLogin">
+					<h:outputLabel value="Login:"/>
+						<h:inputText value="#{UsuarioBean.usuario.login}" id="validaLogin" data-prompt-position="topLeft"
+							pt:placeHolder="Login" type="login" class="form-control" /> 
+					</h:panelGroup>
+
+					<h:panelGroup layout="block" class="row">
+
+						<h:panelGroup layout="block" class="col-xs-6">
+							<h:panelGroup class="form-group" id="registroNome">
+							<h:outputLabel value="Nome:"/>
+								<h:inputText value="#{UsuarioBean.usuario.nome}" id="validaNome"
+									pt:placeHolder="Nome" class="form-control" />
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" class="col-xs-6">
+							<h:panelGroup layout="block" class="form-group"
+								id="registroSobrenome">
+								<h:outputLabel value="Sobrenome:"/>
+								<h:inputText value="#{UsuarioBean.usuario.sobrenome}"
+									id="validaSobrenome" pt:placeHolder="Sobrenome"
+									class="form-control" />
+
+							</h:panelGroup>
+						</h:panelGroup>
+
+					</h:panelGroup>
+
+					
+					<h:panelGroup layout="block" id="registroSenha" class="form-group">
+					<h:outputLabel value="Senha:"/>
+						<h:inputSecret pt:placeHolder="Senha" id="validaSenha"
+							value="#{UsuarioBean.usuario.senha}" class="form-control" />
+
+					</h:panelGroup>
+					
+					<h:panelGroup layout="block" id="registroSenhaNovamente" class="form-group">
+						<h:outputLabel value="Senha Novamente:"/>
+						<h:inputSecret pt:placeHolder="Senha Novamente" id="validaSenhaNovamentes"
+							value="#{UsuarioBean.usuario.senha}" class="form-control" />
+
+					</h:panelGroup>
+
+
+				</div>
+				<h:form role="form-signin">
+				<div class="modal-footer">
+					<h:commandLink type="submit" class="btn btn-default" value="Cancelar" />
+					 <h:commandLink type="submit" class="btn btn-primary" value="Salvar" style="background-color:#428bca; border-color: #428bca" />
+				</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
 
 
 	<script

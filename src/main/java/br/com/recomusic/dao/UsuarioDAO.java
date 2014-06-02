@@ -66,6 +66,21 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     	}  
     }
     
+    public Usuario validarID(String idFacebook) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Usuario as u where u.idFacebook = :usuario_idFacebook"));
+    		query.setParameter("usuario_idFacebook", idFacebook);
+    		Usuario usuario =  (Usuario) query.getSingleResult();
+    		return usuario;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
     public Usuario validarLogin(String login) throws Exception
     {
     	try

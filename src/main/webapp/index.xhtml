@@ -8,7 +8,10 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:body>
-
+	<f:metadata>
+		<f:viewParam name="token" value="#{UsuarioBean.token}" />
+		<f:event type="preRenderView" listener="#{UsuarioBean.logarComFacebook}" />
+	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 		<!-- 		<ui:define name="definicoesPre">
@@ -16,11 +19,11 @@
 
 		<ui:define name="content">
 			<h:panelGroup layout="block" class="container"
-				style="margin-left: 10px ;margin-bottom: 10%;margin-top:10%"
+				style="margin-left: 10px ;margin-bottom: 15%;margin-top:10%"
 				rendered="#{UsuarioBean.logado eq false}">
 
 				<h:panelGroup layout="block" class="jumbotron"
-					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%">
+					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%; height:20%">
 
 					<h2 class="form-signin-heading" style="text-align: center;">Inscreva-se</h2>
 					<h:panelGroup layout="block" class="footer"
@@ -92,12 +95,11 @@
 								actionListener="#{UsuarioBean.salvar}" />
 						</h:panelGroup>
 
-					</h:form>
-					<h:panelGroup layout="block" class="form-group" id="botaoFacebook">
+						<h:panelGroup layout="block" class="form-group" id="botaoFacebook">
+							<fb:login-button scope="public_profile,email,user_likes,user_friends,user_actions.music,publish_actions" onlogin="loginWithFacebook();" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false">Facebook</fb:login-button>
+						</h:panelGroup>
 
-						<fb:login-button autologoutlink="true"
-							perms="public_profile,email" data-size="xlarge"></fb:login-button>
-					</h:panelGroup>
+					</h:form>
 
 				</h:panelGroup>
 			</h:panelGroup>

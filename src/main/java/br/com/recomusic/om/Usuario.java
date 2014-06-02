@@ -36,6 +36,7 @@ public class Usuario implements Serializable
 	@Type(type="date")
 	private Date dataNascimento;
 	private int sexo;
+	private String idFacebook;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@OneToMany(mappedBy="usuario")
@@ -106,8 +107,11 @@ public class Usuario implements Serializable
 	public String getEmailUsuario() { return emailUsuario; }
 	public void setEmailUsuario(String emailUsuario) { this.emailUsuario = emailUsuario; }
 
-	public int getStatus() { return status; }
-	public void setStatus(int status) { this.status = status; }
+	public Integer getStatus() { return status; }
+	public void setStatus(Integer status) { this.status = status; }
+	
+	public String getIdFacebook() { return idFacebook; }
+	public void setIdFacebook(String idFacebook) { this.idFacebook = idFacebook; }
 
 	public List<Cadastro> getCadastros() { if(cadastros==null) { cadastros = new ArrayList<Cadastro>(); } return cadastros; }
 	public void setCadastros(List<Cadastro> cadastros) { this.cadastros = cadastros; }
