@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.Usuario;
@@ -22,18 +22,25 @@ import com.restfb.types.User;
 
 
 @ManagedBean(name="UsuarioBean")
-@ViewScoped
+@SessionScoped
 public class UsuarioBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
 	private Usuario usuario = new Usuario();
 	private String emailLogin = null;
+	private String email = null;
+	private String login = null;
+	private String nome = null;
+	private String sobrenome = null;
+	private String senha = null;
+	private String sexo = null;
 	private String token;
 	private boolean logado = false;
-	private boolean emailCorreto = false;
 	private String mensagemErroLogin = null;
-	private String sexo = null;
+	private String mensagemErroAtualizarCadastro = null;
+	private boolean atualizarCadastro = false;
+	private String nomeMusica = null;
 
 	public UsuarioBean() { }
 
@@ -42,9 +49,9 @@ public class UsuarioBean implements Serializable
 		try
 		{
 			Usuario usuarioRecebido = null;
-			if(emailLogin!=null && emailLogin.contains("@") && usuario.getSenha()!=null && usuario.getSenha().length()>=6)
+			if(emailLogin!=null && emailLogin.contains("@") && senha!=null && senha.length()>=6)
 			{
-				usuarioRecebido = usuarioDAO.validarUsuarioEmail(emailLogin, usuario.getSenha());
+				usuarioRecebido = usuarioDAO.validarUsuarioEmail(emailLogin, senha);
 			}
 			
 			if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
@@ -55,9 +62,9 @@ public class UsuarioBean implements Serializable
 			if(!this.logado)
 			{
 				usuarioRecebido = null;
-				if(emailLogin!=null && emailLogin.length()>=4 && usuario.getSenha()!=null && usuario.getSenha().length()>=6)
+				if(emailLogin!=null && emailLogin.length()>=4 && senha!=null && senha.length()>=6)
 				{
-					usuarioRecebido = usuarioDAO.validarUsuarioLogin(emailLogin, usuario.getSenha());
+					usuarioRecebido = usuarioDAO.validarUsuarioLogin(emailLogin, senha);
 					
 					if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
 					{
@@ -65,6 +72,8 @@ public class UsuarioBean implements Serializable
 					}
 				}
 			}
+			usuario = new Usuario();
+			usuario = usuarioRecebido;
 		}
 		catch(Exception e)
 		{
@@ -86,9 +95,11 @@ public class UsuarioBean implements Serializable
 				     User facebookUser = facebookClient.fetchObject("me", User.class);
 				     if(facebookUser!=null && facebookUser.getId().length()>0)
 				     {
-				    	 Usuario usuario = usuarioDAO.validarID(facebookUser.getId());
-				    	 if(usuario!=null && usuario.getPkUsuario()>0)
+				    	 Usuario usuarioFacebook = usuarioDAO.validarID(facebookUser.getId());
+				    	 if(usuarioFacebook!=null && usuarioFacebook.getPkUsuario()>0)
 				    	 {
+							 usuario = new Usuario();
+							 usuario = usuarioFacebook;
 				    		 this.emailLogin = facebookUser.getEmail();
 				    		 this.logado = true;
 				    	 }
@@ -96,29 +107,31 @@ public class UsuarioBean implements Serializable
 				    	 {
 				    		 if(facebookUser.getEmail()!=null && facebookUser.getEmail().length()>0)
 				    		 {
-				    			 usuario = usuarioDAO.validarEmail(facebookUser.getEmail());
-				    			 if(usuario!=null && usuario.getPkUsuario()>0)
+				    			 usuarioFacebook = usuarioDAO.validarEmail(facebookUser.getEmail());
+				    			 if(usuarioFacebook!=null && usuarioFacebook.getPkUsuario()>0)
 				    			 {
 				    				 mensagemErroLogin = "Este email já está cadastrado em outro usuário";
 				    			 }
 				    			 else
 				    			 {
-					    			 usuario = new Usuario();
-					    			 usuario.setEmailUsuario(facebookUser.getEmail());
-					    			 usuario.setIdFacebook(facebookUser.getId());
-					    			 usuario.setNome(facebookUser.getFirstName());
-					    			 usuario.setSobrenome(facebookUser.getLastName());
-					    			 usuario.setLancamento(new Date());
+					    			 usuarioFacebook = new Usuario();
+					    			 usuarioFacebook.setEmailUsuario(facebookUser.getEmail());
+					    			 usuarioFacebook.setIdFacebook(facebookUser.getId());
+					    			 usuarioFacebook.setNome(facebookUser.getFirstName());
+					    			 usuarioFacebook.setSobrenome(facebookUser.getLastName());
+					    			 usuarioFacebook.setLancamento(new Date());
 					    			 if(facebookUser.getGender()!=null && facebookUser.getGender().length()>0 && (facebookUser.getGender().equals("male")))
 					    			 {
-					    				 usuario.setSexo(Constantes.TIPO_GENERO_MASCULINO);
+					    				 usuarioFacebook.setSexo(Constantes.TIPO_GENERO_MASCULINO);
 					    			 }
 					    			 else if(facebookUser.getGender()!=null && facebookUser.getGender().length()>0 && (facebookUser.getGender().equals("female")))
 					    			 {
-					    				 usuario.setSexo(Constantes.TIPO_GENERO_FEMININO);
+					    				 usuarioFacebook.setSexo(Constantes.TIPO_GENERO_FEMININO);
 					    			 }
-					    			 save(usuario);
+					    			 save(usuarioFacebook);
 					    			 this.emailLogin = facebookUser.getEmail();
+									 usuario = new Usuario();
+									 usuario = usuarioFacebook;
 					    			 this.logado = true;
 				    			 }
 				    		 }
@@ -154,23 +167,32 @@ public class UsuarioBean implements Serializable
 			if(mensagemErroLogin=="")
 			{
 				Usuario validaEmail = null;
-				if(usuario.getEmailUsuario()!=null)
+				if(email!=null)
 				{
-					validaEmail = usuarioDAO.validarEmail(usuario.getEmailUsuario());
+					validaEmail = usuarioDAO.validarEmail(email);
 				}
 				
 				if(!(validaEmail!=null && validaEmail.getPkUsuario()>0))
 				{
 					validaEmail = null;
-					if(usuario.getLogin()!=null)
+					if(login!=null)
 					{
-						validaEmail = usuarioDAO.validarLogin(usuario.getLogin());
+						validaEmail = usuarioDAO.validarLogin(login);
 						if(!((validaEmail!=null && validaEmail.getPkUsuario()>0)))
 						{
-							usuario.setSexo(Integer.valueOf(this.sexo));
-							usuario.setStatus(Constantes.TIPO_STATUS_ATIVO);
-							usuario.setLancamento(new Date());
-							save(usuario);
+							Usuario usuarioSalvo = new Usuario();
+							
+							usuarioSalvo.setLogin(login);
+							usuarioSalvo.setEmailUsuario(email);
+							usuarioSalvo.setNome(nome);
+							usuarioSalvo.setSenha(senha);
+							usuarioSalvo.setNome(nome);
+							usuarioSalvo.setSexo(Integer.valueOf(this.sexo));
+							usuarioSalvo.setStatus(Constantes.TIPO_STATUS_ATIVO);
+							usuarioSalvo.setLancamento(new Date());
+							save(usuarioSalvo);
+							usuario = new Usuario();
+							usuario = usuarioSalvo;
 							this.emailLogin = usuario.getLogin();
 							this.logado = true;
 						}
@@ -193,24 +215,40 @@ public class UsuarioBean implements Serializable
 		}
 	}
 	
+	public void atualizar()
+	{
+		try
+		{
+			mensagemErroAtualizarCadastro = "Senha";
+			atualizarCadastro = true;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
 	
 	public String verificaConsistencia() throws Exception
 	{
 		List<String> erros = new ArrayList<String>();
 		
-		if(usuario.getLogin()==null || usuario.getLogin().length()==0) { erros.add("Login");  }
-		if(usuario.getNome()==null || usuario.getNome().length()==0) { erros.add("Nome");  }
-		if(usuario.getSobrenome()==null || usuario.getSobrenome().length()==0) { erros.add("Sobrenome");  }
-		if(usuario.getEmailUsuario()==null || usuario.getEmailUsuario().length()==0) { erros.add("Email");  }
-		if(usuario.getSenha()==null || usuario.getSenha().length()==0) { erros.add("Senha");  }
-		if(this.sexo==null || this.sexo.length()==0) { erros.add("Género");  }
+		if(login==null || login.length()==0) { erros.add("Login");  }
+		if(nome==null || nome.length()==0) { erros.add("Nome");  }
+		if(sobrenome==null || sobrenome.length()==0) { erros.add("Sobrenome");  }
+		if(email==null || email.length()==0) { erros.add("Email");  }
+		if(senha==null || senha.length()==0) { erros.add("Senha");  }
+		if(sexo==null || sexo.length()==0) { erros.add("Género");  }
 		
 		if(erros.size()>1) 								{ return "Os campos " + erros.toString() + " são requeridos." ;	}
 		else if(erros.size()==1) 						{ return "O campo " + erros.toString() + " é requerido."; 		}
 		
-		if(!(usuario.getEmailUsuario().contains("@")))	{ return "Email informado inválido" ; 							}	
-		if(usuario.getLogin().length()<4)				{ return "Login deve possuir no mínimo 4 caracteres" ; 			}	
-		if(usuario.getSenha().length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}	
+		if(!(email.contains("@")))	{ return "Email informado inválido" ; 							}	
+		if(login.length()<4)				{ return "Login deve possuir no mínimo 4 caracteres" ; 			}	
+		if(senha.length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}	
+		
+		usuario = new Usuario();
 		
 		return "";
 	}
@@ -219,6 +257,14 @@ public class UsuarioBean implements Serializable
 	{
 		try
 		{
+/*			Spotify sp = new Spotify();
+			Results<Track> results = sp.searchTrack("Nirvana",  "Come as You Are");
+		    for (Track track : results.getItems()) { 
+		       System.out.printf("Artista " + track.getArtistName() + "Album" + track.getAlbum() + "Musica " + track.getId()) ;
+		    }
+		    Results<Artist> artista = sp.searchArtist("Nirvana");
+		    System.out.println(artista.getItems().get(0).getName());
+		    System.out.println(artista.getItems().get(0).getId());*/
 			return "logado?faces-redirect=true";
 		}
 		catch(Exception e)
@@ -229,8 +275,28 @@ public class UsuarioBean implements Serializable
 		return "";
 	}
 	
+	public void procurarMusica()
+	{
+		try
+		{
+/*			Spotify sp = new Spotify();
+			Results<Track> results = sp.searchTrack("nomeMusica");
+			//String pegaUrl = nomeMusica;
+			String pegaUrl = "0MKGH8UMfCnq5w7nG06oM5"*/;
+			nomeMusica = null;
+			String pegaUrl = null;
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/logado.xhtml?l=");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
 	public void deslogar()
 	{
+		
 		this.logado = false;
 	}
 
@@ -263,13 +329,6 @@ public class UsuarioBean implements Serializable
 	public void setLogado(boolean logado) {
 		this.logado = logado;
 	}
-	public boolean getEmailCorreto() {
-		return emailCorreto;
-	}
-	
-	public void setEmailCorreto(boolean emailCorreto) {
-		this.emailCorreto = emailCorreto;
-	} 
 	
 	public String getEmailLogin() {
 		return emailLogin;
@@ -309,5 +368,70 @@ public class UsuarioBean implements Serializable
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getSobrenome() {
+		return sobrenome;
+	}
+
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String getMensagemErroAtualizarCadastro() {
+		return mensagemErroAtualizarCadastro;
+	}
+
+	public void setMensagemErroAtualizarCadastro(
+			String mensagemErroAtualizarCadastro) {
+		this.mensagemErroAtualizarCadastro = mensagemErroAtualizarCadastro;
+	}
+
+	public boolean getAtualizarCadastro() {
+		return atualizarCadastro;
+	}
+
+	public void setAtualizarCadastro(boolean atualizarCadastro) {
+		this.atualizarCadastro = atualizarCadastro;
+	}
+
+	public String getNomeMusica() {
+		return nomeMusica;
+	}
+
+	public void setNomeMusica(String nomeMusica) {
+		this.nomeMusica = nomeMusica;
 	}
 }

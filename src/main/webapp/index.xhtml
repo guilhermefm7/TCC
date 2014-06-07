@@ -32,7 +32,7 @@
 					<h:form role="form-signin">
 
 						<h:panelGroup layout="block" class="form-group" id="registroLogin">
-							<h:inputText value="#{UsuarioBean.usuario.login}"
+							<h:inputText value="#{UsuarioBean.login}"
 								id="validaLogin" pt:placeHolder="Login" type="login"
 								class="form-control" />
 
@@ -42,7 +42,7 @@
 
 							<h:panelGroup layout="block" class="col-xs-6">
 								<h:panelGroup class="form-group" id="registroNome">
-									<h:inputText value="#{UsuarioBean.usuario.nome}"
+									<h:inputText value="#{UsuarioBean.nome}"
 										id="validaNome" pt:placeHolder="Nome" class="form-control" />
 
 								</h:panelGroup>
@@ -51,7 +51,7 @@
 							<h:panelGroup layout="block" class="col-xs-6">
 								<h:panelGroup layout="block" class="form-group"
 									id="registroSobrenome">
-									<h:inputText value="#{UsuarioBean.usuario.sobrenome}"
+									<h:inputText value="#{UsuarioBean.sobrenome}"
 										id="validaSobrenome" pt:placeHolder="Sobrenome"
 										class="form-control" />
 								</h:panelGroup>
@@ -60,7 +60,7 @@
 						</h:panelGroup>
 
 						<h:panelGroup layout="block" class="form-group" id="registroEmail">
-							<h:inputText value="#{UsuarioBean.usuario.emailUsuario}"
+							<h:inputText value="#{UsuarioBean.email}"
 								id="validaEmail" pt:placeHolder="Endereço de Email" type="email"
 								class="form-control" />
 						</h:panelGroup>
@@ -68,7 +68,7 @@
 
 						<h:panelGroup layout="block" class="form-group" id="registroSenha">
 							<h:inputSecret pt:placeHolder="Senha" id="validaSenha"
-								value="#{UsuarioBean.usuario.senha}" class="form-control" />
+								value="#{UsuarioBean.senha}" class="form-control" />
 						</h:panelGroup>
 
 
@@ -96,7 +96,7 @@
 						</h:panelGroup>
 
 						<h:panelGroup layout="block" class="form-group" id="botaoFacebook">
-							<fb:login-button scope="public_profile,email,user_likes,user_friends,user_actions.music,publish_actions" onlogin="loginWithFacebook();" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false">Facebook</fb:login-button>
+							<fb:login-button scope="public_profile,email,user_likes,user_friends,user_actions.music,publish_actions" onlogin="loginWithFacebook();" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" >Facebook</fb:login-button>
 						</h:panelGroup>
 
 					</h:form>
@@ -106,6 +106,8 @@
 			<h:panelGroup layout="block" class="container"
 				style="margin-left: 10px ;margin-bottom: 10%;margin-top:50%"
 				rendered="#{UsuarioBean.logado eq true}">
+				
+				
 			</h:panelGroup>
 
 		</ui:define>
