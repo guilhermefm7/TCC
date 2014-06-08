@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.recomusic.singleton.ConectaBanco;
-import br.com.recomusic.singleton.ConectaFacebook;
 
 /**
  * Servlet implementation class MainRecMusic
@@ -24,7 +23,6 @@ public class MainRecMusic extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException 
 	{
-		ConectaFacebook.getInstance();
 		
 		//Conecta no Banco de Dados
 		System.out.println("RecMusic Incializado com Sucesso!");

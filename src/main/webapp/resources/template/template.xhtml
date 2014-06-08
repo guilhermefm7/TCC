@@ -34,7 +34,8 @@
 		rel="stylesheet" />
 	<link href="/RecoMusic/resources/css/github.css" type="text/css"
 		rel="stylesheet" />
-	<link href='/RecoMusic/resources/css/css.css' rel='stylesheet' type='text/css'/>
+	<link href='/RecoMusic/resources/css/css.css' rel='stylesheet'
+		type='text/css' />
 	<link rel="shortcut icon"
 		href="/RecoMusic/resources/imagens/icones/logotipo.jpg" />
 
@@ -73,7 +74,7 @@
 
 	 
     </script>
-    
+
 </h:head>
 
 <h:body>
@@ -87,7 +88,9 @@
 							data-target=".navbar-collapse">
 							<span class="sr-only">RecMusic</span> <span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="http://localhost:8080/RecoMusic/index.xhtml" style="color: #428bca">RecMusic</a>
+						<a class="navbar-brand"
+							href="http://localhost:8080/RecoMusic/index.xhtml"
+							style="color: #428bca">RecMusic</a>
 					</div>
 					<div class="navbar-collapse collapse">
 
@@ -119,30 +122,32 @@
 										style="margin-left:-300px;color: #428bca;font-family: fantasy" />
 								</div>
 								<div class="form-group">
-									<h:inputText type="text" class="form-control" value="#{UsuarioBean.nomeMusica}" pt:placeholder="Pesquisar Música..." actionListener="#{UsuarioBean.procurarMusica}"/>
-										<h:commandLink type="submit" class="btn btn-success"
-										value="Playlists"
-										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" actionListener="#{UsuarioBean.procurarMusica}"/>
+									<h:inputText type="text" class="form-control"
+										value="#{UsuarioBean.nomeMusica}"
+										pt:placeholder="Pesquisar Música..."
+										actionListener="#{UsuarioBean.procurarMusica}" />
+									<!-- <h:commandLink type="submit" class="btn btn-success" value="Procurar" style="background-color:#222; border-color: #222; color:#FFFFFF;font-family: fantasy"/> -->
 								</div>
+								
 								<div class="form-group">
-									<h:commandLink type="submit" class="btn btn-success"
-										value="Cadastro" data-toggle="modal"
-										onclick="$('#myModal').modal('show')" data-target="#myModal"
-										style="background-color:#222; border-color: #222; color:#428bca; font-family:fantasy">
-										<f:ajax execute="@this"></f:ajax>
-									</h:commandLink>
+									<h:commandLink type="submit" class="btn btn-success" actionListener="#{UsuarioBean.redirecionarAlterarCadastro}"
+										value="Cadastro"  style="background-color:#222; border-color: #222; color:#428bca; font-family:fantasy"/>
+										<!-- data-toggle="modal" onclick="$('#myModal').modal('show')" data-target="#myModal" -->
+										<!-- <f:ajax execute="@this" /> -->
 								</div>
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
 										value="Amigos"
-										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" action="#{UsuarioBean.mudarPagina}" />
-										
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy"
+										action="#{UsuarioBean.mudarPagina}" />
+
 								</div>
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
 										value="Playlists"
-										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy" />
-										
+										style="background-color:#222; border-color: #222; color:#428bca;font-family: fantasy"
+										actionListener="#{UsuarioBean.procurarMusica}" />
+
 								</div>
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success"
@@ -187,78 +192,76 @@
 
 	<div layout="block" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content" >
+			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Atualizar Cadastro</h4>
 				</div>
 				<div class="modal-body">
-			
+
 					<h:panelGroup layout="block" class="form-group" id="registroLogin">
-					<h:outputLabel value="Login:"/>
-						<h:inputText value="#{UsuarioBean.usuario.login}" id="validaLogin" data-prompt-position="topLeft"
-							pt:placeHolder="Login" type="login" class="form-control" /> 
+						<h:outputLabel value="Login:" />
+						<h:inputText value="#{UsuarioBean.usuario.login}" id="validaLogin" data-prompt-position="topLeft" pt:placeHolder="Login" type="login" class="form-control" />
 					</h:panelGroup>
 
 					<h:panelGroup layout="block" class="row">
 
 						<h:panelGroup layout="block" class="col-xs-6">
 							<h:panelGroup class="form-group" id="registroNome">
-							<h:outputLabel value="Nome:"/>
-								<h:inputText value="#{UsuarioBean.usuario.nome}" id="validaNome"
-									pt:placeHolder="Nome" class="form-control" />
+								<h:outputLabel value="Nome:" />
+								<h:inputText value="#{UsuarioBean.usuario.nome}" id="validaNome" pt:placeHolder="Nome" class="form-control" />
 							</h:panelGroup>
 						</h:panelGroup>
 
 						<h:panelGroup layout="block" class="col-xs-6">
-							<h:panelGroup layout="block" class="form-group"
-								id="registroSobrenome">
-								<h:outputLabel value="Sobrenome:"/>
-								<h:inputText value="#{UsuarioBean.usuario.sobrenome}"
-									id="validaSobrenome" pt:placeHolder="Sobrenome"
-									class="form-control" />
-
+							<h:panelGroup layout="block" class="form-group" id="registroSobrenome">
+								<h:outputLabel value="Sobrenome:" />
+								<h:inputText value="#{UsuarioBean.usuario.sobrenome}" id="validaSobrenome" pt:placeHolder="Sobrenome" class="form-control" />
 							</h:panelGroup>
 						</h:panelGroup>
 
 					</h:panelGroup>
 
-					
+
 					<h:panelGroup layout="block" id="registroSenha" class="form-group">
-					<h:outputLabel value="Senha:"/>
-						<h:inputSecret pt:placeHolder="Senha" id="validaSenha"
-							value="#{UsuarioBean.usuario.senha}" class="form-control" />
+						<h:outputLabel value="Senha:" />
+						<h:inputSecret pt:placeHolder="Senha" id="validaSenha" value="#{UsuarioBean.usuario.senha}" class="form-control" />
 
 					</h:panelGroup>
-					
+
 					<h:panelGroup layout="block" id="registroSenhaNovamente" class="form-group">
-						<h:outputLabel value="Senha Novamente:"/>
-						<h:inputSecret pt:placeHolder="Senha Novamente" id="validaSenhaNovamentes"
-							value="#{UsuarioBean.usuario.senha}" class="form-control" />
+						<h:outputLabel value="Senha Novamente:" />
+						<h:inputSecret pt:placeHolder="Senha Novamente" id="validaSenhaNovamentes" value="#{UsuarioBean.usuario.senha}" class="form-control" />
 
 					</h:panelGroup>
-
 
 				</div>
+				
 				<h:form role="form-signin">
-				<div class="modal-footer">
-					<h:commandLink type="submit" class="btn btn-default" value="Cancelar" />
-					<h:commandButton type="submit" class="btn btn-primary" value="Salvar" style="background-color:#428bca; border-color: #428bca" actionListener="#{UsuarioBean.atualizar}"/>
-						<h:panelGroup layout="block" class="form-group"
-							rendered="#{UsuarioBean.mensagemErroLogin ne ''}">
-							<h:outputText id="mensagemErro"
-								value="#{UsuarioBean.mensagemErroLogin}" style="color:#b94a48" />
+					<div class="modal-footer">
+						<h:panelGroup layout="block" class="form-group">
+							<h:commandLink type="submit" class="btn btn-default" value="Cancelar" />
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" class="form-group">
+							<h:commandButton type="submit" class="btn btn-primary" value="Salvar" style="background-color:#428bca; border-color: #428bca" actionListener="#{UsuarioBean.atualizar}" />
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" class="form-group" rendered="#{UsuarioBean.mensagemErroLogin ne ''}">
+							<h:outputText id="mensagemErro" value="#{UsuarioBean.mensagemErroLogin}" style="color:#b94a48" />
 						</h:panelGroup>
 					</div>
 				</h:form>
+				
 			</div>
 		</div>
 	</div>
 
 
+
+
 	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"/>
 	<script src="/RecoMusic/resources/js/bootstrap-min.js"
 		type="text/javascript" />
 	<script src="/RecoMusic/resources/js/rainbow-custom.min.js"
@@ -266,10 +269,10 @@
 	<script src="/RecoMusic/resources/js/tutorial.js"
 		type="text/javascript" />
 	<script src="/RecoMusic/resources/js/jquery.min.js"
-		type="text/javascript"/>
-	<script src="/RecoMusic/resources/js/get.key.with.callback.js" 
-		type="text/javascript"/>
-	<script src="/RecoMusic/resources/js/chamador.js" 
-		type="text/javascript"/>
+		type="text/javascript" />
+	<script src="/RecoMusic/resources/js/get.key.with.callback.js"
+		type="text/javascript" />
+	<script src="/RecoMusic/resources/js/chamador.js"
+		type="text/javascript" />
 </h:body>
 </html>

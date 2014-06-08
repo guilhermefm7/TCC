@@ -1,41 +1,104 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.Usuario;
+import br.com.recomusic.persistencia.utils.Criptografia;
+import br.com.recomusic.persistencia.utils.UtilidadesTelas;
 import br.com.recomusic.singleton.ConectaBanco;
 
 
 @ManagedBean(name="CadastroBean")
 @ViewScoped
-public class CadastroBean implements Serializable
+public class CadastroBean extends UtilidadesTelas implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
-	private Usuario usuario = new Usuario();
+	private Usuario usuario = null;
+	private String falhaAtualizarCadastro = null;
+	private String senhaDigitada = null;
+	private String senhaDigitadaNovamente = null;
 
 	public CadastroBean() { }
 	
-	public String mudarPagina()
+	/**
+	 * Responsavel por iniciar a pagina desktop.xhtml, carregando tdo oq ela precisa,
+	 * verificando sessao, etc.
+	 */
+	public void iniciar()
 	{
 		try
 		{
-			return "cadastro?faces-redirect=true";
+			if(UtilidadesTelas.verificarSessao())
+			{
+				setUsuario(getUsuarioGlobal());
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void atualizarCadastro()
+	{
+		try
+		{
+			falhaAtualizarCadastro = verificaConsistencia();
+			
+			if(falhaAtualizarCadastro=="" || falhaAtualizarCadastro==null)
+			{
+				Usuario pegaUsuario = usuarioDAO.getUsuarioPk(getUsuarioGlobal().getPkUsuario());
+				if(pegaUsuario!=null && pegaUsuario.getPkUsuario()>0)
+				{
+					pegaUsuario.setLogin(usuario.getLogin());
+					pegaUsuario.setNome(usuario.getNome());
+					pegaUsuario.setSobrenome(usuario.getSobrenome());
+					
+					String cript = Criptografia.md5(senhaDigitada);
+					
+					pegaUsuario.setSenha(cript);
+					
+					save(pegaUsuario);
+					setUsuarioGlobal(pegaUsuario);
+					falhaAtualizarCadastro = null;
+					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+				}
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			ConectaBanco.getInstance().rollBack();
 		}
+	}
+
+	public String verificaConsistencia() throws Exception
+	{
+		List<String> erros = new ArrayList<String>();
+		
+		if(usuario.getLogin()==null || usuario.getLogin().length()==0) { erros.add("Login");  }
+		if(usuario.getNome()==null || usuario.getNome().length()==0) { erros.add("Nome");  }
+		if(usuario.getSobrenome()==null || usuario.getSobrenome().length()==0) { erros.add("Sobrenome");  }
+		if((senhaDigitada==null || senhaDigitada.length()==0) || 
+				(senhaDigitadaNovamente==null || senhaDigitadaNovamente.length()==0)) { erros.add("Senha");  }
+		
+		if(erros.size()>1) 																{ return "Os campos " + erros.toString() + " são requeridos." ;	}
+		else if(erros.size()==1) 														{ return "O campo " + erros.toString() + " é requerido."; 		}
+		
+		if(usuario.getLogin().length()<4)												{ return "Login deve possuir no mínimo 4 caracteres" ; 			}	
+		if(!(senhaDigitada.equals(senhaDigitadaNovamente)))								{ return "Senhas diferentes" ; 									}	
+		if(senhaDigitada.length()<6 && senhaDigitadaNovamente.length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}	
+		
 		return "";
 	}
 	
-
 	public void save(Usuario usuario)
 	{
 		try
@@ -66,4 +129,27 @@ public class CadastroBean implements Serializable
 		this.usuario = usuario;
 	}
 
+	public String getFalhaAtualizarCadastro() {
+		return falhaAtualizarCadastro;
+	}
+
+	public void setFalhaAtualizarCadastro(String falhaAtualizarCadastro) {
+		this.falhaAtualizarCadastro = falhaAtualizarCadastro;
+	}
+
+	public String getSenhaDigitada() {
+		return senhaDigitada;
+	}
+
+	public void setSenhaDigitada(String senhaDigitada) {
+		this.senhaDigitada = senhaDigitada;
+	}
+
+	public String getSenhaDigitadaNovamente() {
+		return senhaDigitadaNovamente;
+	}
+
+	public void setSenhaDigitadaNovamente(String senhaDigitadaNovamente) {
+		this.senhaDigitadaNovamente = senhaDigitadaNovamente;
+	}
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:body>
+	<f:metadata>
+		<f:viewParam name="t" value="#{AlterarSenhaBean.tokenRecebido}"/>
+	</f:metadata>
+	
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+
+		<ui:define name="content">
+			<h:panelGroup layout="block" class="container"
+				style="margin-left: 0 ;margin-bottom: 15%;margin-top:10%">
+
+				<h:panelGroup layout="block" class="jumbotron"
+					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 10%; padding-top: 5%; width: 55%; height:20%; margin-left: 15%">
+
+					<h2 class="form-signin-heading" style="text-align: center;">Alterar
+						Senha</h2>
+
+					<h:panelGroup layout="block" class="footer"
+						style="border-top-color: #eee"></h:panelGroup>
+
+					<h:form class="form-signin">
+
+						<h:panelGroup layout="block" class="form-group"
+							id="textoAlterarSenha">
+							<div class="row">
+								<div class="col-xs-6">
+									<h:outputText value="Digite sua senha"
+										id="textoAlterarValidaCampoEmail" />
+								</div>
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" class="form-group"
+							id="validaAlterarSenha">
+							<h:inputSecret value="#{AlterarSenhaBean.senhaDigitada}"
+								id="validaCampoAlterarSenha" pt:placeHolder="Senha"
+								class="form-control" />
+						</h:panelGroup>
+
+
+						<h:panelGroup layout="block" class="form-group"
+							id="textoAlterarSenhaNovamente">
+							<div class="row">
+								<div class="col-xs-6">
+									<h:outputText value="Repita a senha"
+										id="textoAlterarValidaCampoEmailNovamente" />
+								</div>
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" class="form-group"
+							id="validaAlterarSenhaNovamente">
+							<h:inputSecret value="#{AlterarSenhaBean.senhaDigitadaNovamente}"
+								id="validaCampoAlterarSenhaNovamente" pt:placeHolder="Senha"
+								class="form-control" />
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" class="footer"
+							style="border-top-color: #eee"></h:panelGroup>
+
+						<h:panelGroup layout="block" class="form-group"
+							id="botaRelembrarSenha">
+							<h:commandLink type="submit" class="btn-primary"
+								style="padding:5px 20px;" value="Alterar Senha"
+								actionListener="#{AlterarSenhaBean.alterarSenha}" />
+						</h:panelGroup>
+
+					</h:form>
+
+					<h:panelGroup layout="block"
+						rendered="#{(AlterarSenhaBean.falhaSenha != null) and (AlterarSenhaBean.falhaSenha ne 'Senha alterada com sucesso')}">
+						<div class="alert alert-danger">
+							<h:outputText value="#{AlterarSenhaBean.falhaSenha}"
+								escape="false" />
+						</div>
+					</h:panelGroup>
+
+					<h:panelGroup layout="block" id="mensagemAlterarSenha"
+						rendered="#{(AlterarSenhaBean.falhaSenha != null) and (AlterarSenhaBean.falhaSenha eq 'Senha alterada com sucesso')}">
+						<div class="alert alert-success" id="mensagemErroSenha">
+							<h:outputText value="#{AlterarSenhaBean.falhaSenha}"
+								escape="false" />
+						</div>
+					</h:panelGroup>
+
+				</h:panelGroup>
+
+			</h:panelGroup>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

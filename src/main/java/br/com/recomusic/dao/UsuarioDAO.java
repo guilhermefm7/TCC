@@ -95,4 +95,32 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     		return null;  
     	}  
     }
+    
+    public Usuario getUsuarioPk(long pkUsuario) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Usuario as u where u.pkUsuario = :usuario_pkUsuario"));
+    		query.setParameter("usuario_pkUsuario", pkUsuario);
+    		Usuario usuario =  (Usuario) query.getSingleResult();
+    		return usuario;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
+    public void salvarUsuario(Usuario usuario) throws Exception
+    {
+    	try
+    	{
+    		UsuarioDAO.this.save(usuario);
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		nre.printStackTrace();
+			ConectaBanco.getInstance().rollBack(); 
+    	}  
+    }
 }

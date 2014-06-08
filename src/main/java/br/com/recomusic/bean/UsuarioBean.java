@@ -1,5 +1,6 @@
 package br.com.recomusic.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,8 @@ import javax.faces.context.FacesContext;
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
+import br.com.recomusic.persistencia.utils.Criptografia;
+import br.com.recomusic.persistencia.utils.UtilidadesTelas;
 import br.com.recomusic.singleton.ConectaBanco;
 
 import com.restfb.Connection;
@@ -23,7 +26,7 @@ import com.restfb.types.User;
 
 @ManagedBean(name="UsuarioBean")
 @SessionScoped
-public class UsuarioBean implements Serializable
+public class UsuarioBean extends UtilidadesTelas implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
@@ -51,7 +54,8 @@ public class UsuarioBean implements Serializable
 			Usuario usuarioRecebido = null;
 			if(emailLogin!=null && emailLogin.contains("@") && senha!=null && senha.length()>=6)
 			{
-				usuarioRecebido = usuarioDAO.validarUsuarioEmail(emailLogin, senha);
+				String cript = Criptografia.md5(senha);
+				usuarioRecebido = usuarioDAO.validarUsuarioEmail(emailLogin, cript);
 			}
 			
 			if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
@@ -64,7 +68,8 @@ public class UsuarioBean implements Serializable
 				usuarioRecebido = null;
 				if(emailLogin!=null && emailLogin.length()>=4 && senha!=null && senha.length()>=6)
 				{
-					usuarioRecebido = usuarioDAO.validarUsuarioLogin(emailLogin, senha);
+					String cript = Criptografia.md5(senha);
+					usuarioRecebido = usuarioDAO.validarUsuarioLogin(emailLogin, cript);
 					
 					if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
 					{
@@ -74,6 +79,7 @@ public class UsuarioBean implements Serializable
 			}
 			usuario = new Usuario();
 			usuario = usuarioRecebido;
+			setUsuarioGlobal(usuario);
 		}
 		catch(Exception e)
 		{
@@ -132,6 +138,7 @@ public class UsuarioBean implements Serializable
 					    			 this.emailLogin = facebookUser.getEmail();
 									 usuario = new Usuario();
 									 usuario = usuarioFacebook;
+									 setUsuarioGlobal(usuario);
 					    			 this.logado = true;
 				    			 }
 				    		 }
@@ -185,7 +192,8 @@ public class UsuarioBean implements Serializable
 							usuarioSalvo.setLogin(login);
 							usuarioSalvo.setEmailUsuario(email);
 							usuarioSalvo.setNome(nome);
-							usuarioSalvo.setSenha(senha);
+							String cript = Criptografia.md5(senha);
+							usuarioSalvo.setSenha(cript);
 							usuarioSalvo.setNome(nome);
 							usuarioSalvo.setSexo(Integer.valueOf(this.sexo));
 							usuarioSalvo.setStatus(Constantes.TIPO_STATUS_ATIVO);
@@ -193,6 +201,7 @@ public class UsuarioBean implements Serializable
 							save(usuarioSalvo);
 							usuario = new Usuario();
 							usuario = usuarioSalvo;
+							setUsuarioGlobal(usuario);
 							this.emailLogin = usuario.getLogin();
 							this.logado = true;
 						}
@@ -275,17 +284,37 @@ public class UsuarioBean implements Serializable
 		return "";
 	}
 	
+	public void redirecionaEsqueceuSuaSenha()
+	{
+		try
+		{
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/redefinirSenha/index.xhtml");
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void procurarMusica()
 	{
 		try
 		{
-/*			Spotify sp = new Spotify();
-			Results<Track> results = sp.searchTrack("nomeMusica");
-			//String pegaUrl = nomeMusica;
-			String pegaUrl = "0MKGH8UMfCnq5w7nG06oM5"*/;
 			nomeMusica = null;
-			String pegaUrl = null;
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/logado.xhtml?l=");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/logado.xhtml");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
+	public void redirecionarAlterarCadastro()
+	{
+		try
+		{
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/cadastro/index.xhtml");
 		}
 		catch(Exception e)
 		{
@@ -296,8 +325,16 @@ public class UsuarioBean implements Serializable
 	
 	public void deslogar()
 	{
-		
-		this.logado = false;
+		try
+		{
+			//encerrarSessao();
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+			this.logado = false;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void save(Usuario usuario)
