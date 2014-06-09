@@ -99,6 +99,20 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 		return "";
 	}
 	
+	public void cancelar()
+	{
+		try
+		{
+			falhaAtualizarCadastro = null;
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
 	public void save(Usuario usuario)
 	{
 		try

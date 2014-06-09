@@ -74,23 +74,26 @@ body {
 
 		<ui:define name="content">
 			<h:panelGroup layout="block" class="container"
-				style="margin-bottom: 10%;margin-top:20%">
+				style="margin-bottom: 20%;margin-top:10%">
 
 
 				<h:panelGroup layout="block" class="jumbotron"
-					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%; height:20%">
+					style="background-color: #FAFAFA; min-width: 340px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%; height:20%">
 
 					<div id='header'>
 						<h1>Procura Música</h1>
 						Enter an artist: <input id='artist-name' type='text' />
 					</div>
+					
+					<h:panelGroup layout="block" id="coluna" class="form-group">
+					
+					</h:panelGroup>
+					
+					<h:panelGroup layout="block" class="footer"
+						style="border-top-color: #eee"></h:panelGroup>
 					<div id="info"></div>
 					<div id='playlist'></div>
-					<div id='footer'>
-						Powered by The Echo Nest and Deezer. See <a
-							href='http://blog.echonest.com'> The Echo Nest blog</a> for more
-						info.
-					</div>
+					<div id='footer'></div>
 				</h:panelGroup>
 
 

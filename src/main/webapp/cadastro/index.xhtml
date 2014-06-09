@@ -8,9 +8,9 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:body>
-<f:metadata>
-    <f:event type="preRenderView" listener="#{CadastroBean.iniciar}" />
-</f:metadata>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{CadastroBean.iniciar}" />
+	</f:metadata>
 
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
@@ -71,13 +71,14 @@
 							class="form-group">
 							<h:outputLabel value="Repita a senha" />
 							<h:inputSecret pt:placeHolder="Senha Novamente"
-								id="validaSenhaNovamentes" value="#{CadastroBean.senhaDigitadaNovamente}"
+								id="validaSenhaNovamentes"
+								value="#{CadastroBean.senhaDigitadaNovamente}"
 								class="form-control" />
 						</h:panelGroup>
 
 						<h:panelGroup layout="block" class="footer"
 							style="border-top-color: #eee"></h:panelGroup>
-							
+
 						<h:panelGroup layout="block" class="form-group"
 							id="botaRelembrarSenha">
 							<h:commandLink type="submit" class="btn-primary"
