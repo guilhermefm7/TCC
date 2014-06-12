@@ -25,6 +25,7 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 	private String falhaAtualizarCadastro = null;
 	private String senhaDigitada = null;
 	private String senhaDigitadaNovamente = null;
+	private String tokenRecebido = null;
 
 	public CadastroBean() { }
 	
@@ -39,6 +40,11 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 			if(UtilidadesTelas.verificarSessao())
 			{
 				setUsuario(getUsuarioGlobal());
+			}
+			
+			if( tokenRecebido!=null && tokenRecebido.length()>0 && tokenRecebido.equals("1")  )
+			{
+				falhaAtualizarCadastro = null;
 			}
 		}
 		catch (Exception e)
@@ -72,6 +78,10 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 				}
 			}
+			else
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/cadastro/index.xhtml?t=2");
+			}
 		}
 		catch(Exception e)
 		{
@@ -94,7 +104,9 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 		
 		if(usuario.getLogin().length()<4)												{ return "Login deve possuir no mínimo 4 caracteres" ; 			}	
 		if(!(senhaDigitada.equals(senhaDigitadaNovamente)))								{ return "Senhas diferentes" ; 									}	
-		if(senhaDigitada.length()<6 && senhaDigitadaNovamente.length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}	
+		if(senhaDigitada.length()<6 && senhaDigitadaNovamente.length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}
+		
+		if(usuarioDAO.existeLogin(usuario.getLogin()))									{ return "Login já existente" ; 								}	
 		
 		return "";
 	}
@@ -165,5 +177,13 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 
 	public void setSenhaDigitadaNovamente(String senhaDigitadaNovamente) {
 		this.senhaDigitadaNovamente = senhaDigitadaNovamente;
+	}
+	
+	public String getTokenRecebido() {
+		return tokenRecebido;
+	}
+
+	public void setTokenRecebido(String tokenRecebido) {
+		this.tokenRecebido = tokenRecebido;
 	}
 }

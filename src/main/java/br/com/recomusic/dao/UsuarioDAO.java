@@ -111,6 +111,26 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     	}  
     }
     
+    public boolean existeLogin(String login) throws Exception
+    {
+    	try
+    	{
+    		Usuario usuario = null;
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Usuario as u where UPPER(u.login) = UPPER(:usuario_login)"));
+    		query.setParameter("usuario_login", login.trim());
+    		usuario =  (Usuario) query.getSingleResult();
+    		if(usuario!=null && usuario.getPkUsuario()>0)
+    		{
+    			return true;
+    		}
+    		return false;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return false;
+    	}  
+    }
+    
     public void salvarUsuario(Usuario usuario) throws Exception
     {
     	try
@@ -120,7 +140,7 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     	catch ( NoResultException nre )
     	{  
     		nre.printStackTrace();
-			ConectaBanco.getInstance().rollBack(); 
+    		ConectaBanco.getInstance().rollBack(); 
     	}  
     }
 }

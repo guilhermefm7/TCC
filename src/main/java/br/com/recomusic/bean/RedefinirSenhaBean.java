@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.UsuarioDAO;
@@ -23,7 +24,25 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 	private String email;
 	private String falhaFormulario = null;
 	private EnviarEmail ee = new EnviarEmail();
+	private String tokenRecebido = null;
 	public RedefinirSenhaBean() {	}
+
+	public void iniciar()
+	{
+		try
+		{
+			if( !(tokenRecebido!=null && tokenRecebido.length()>0 && tokenRecebido.equals("2"))  )
+			{
+				email = null;
+				falhaFormulario = null;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
 	
 	public void enviarSenha()
 	{
@@ -49,7 +68,8 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 						String mensagem = "<a href=\"" + getMsg + "\">Clique aqui</a> para redefinir sua senha";
 						
 						ee.enviaEmail(email, assunto, mensagem, validaEmailUsuario.getLogin());
-						falhaFormulario = "Email de redefinição de senha foi enviado a sua caixa de emails";
+						falhaFormulario = "Email de redefinição de senha foi enviado a sua caixa de email";
+						FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/redefinirSenha/index.xhtml?t=2");
 					}
 					else
 					{
@@ -88,5 +108,13 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 	public void setFalhaFormulario(String falhaFormulario)
 	{
 		this.falhaFormulario = falhaFormulario;
+	}
+
+	public String getTokenRecebido() {
+		return tokenRecebido;
+	}
+
+	public void setTokenRecebido(String tokenRecebido) {
+		this.tokenRecebido = tokenRecebido;
 	}
 }

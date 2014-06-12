@@ -9,15 +9,16 @@
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:body>
 	<f:metadata>
-		<f:viewParam name="t" value="#{AlterarSenhaBean.tokenRecebido}"/>
+		<f:viewParam name="t" value="#{AlterarSenhaBean.tokenRecebido}" />
+		<f:event type="preRenderView" listener="#{AlterarSenhaBean.iniciar}" />
 	</f:metadata>
-	
+
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 
 		<ui:define name="content">
 			<h:panelGroup layout="block" class="container"
-				style="margin-left: 0 ;margin-bottom: 15%;margin-top:10%">
+				style="margin-left: 0 ;margin-bottom: 15%;margin-top:15%">
 
 				<h:panelGroup layout="block" class="jumbotron"
 					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 10%; padding-top: 5%; width: 55%; height:20%; margin-left: 15%">
@@ -28,7 +29,7 @@
 					<h:panelGroup layout="block" class="footer"
 						style="border-top-color: #eee"></h:panelGroup>
 
-					<h:form class="form-signin">
+					<h:form class="form-signin" rendered="#{AlterarSenhaBean.falhaSenha ne 'Página de redefinição de senha expirada. Favor pedir a redefinição de senha novamente'}">
 
 						<h:panelGroup layout="block" class="form-group"
 							id="textoAlterarSenha">

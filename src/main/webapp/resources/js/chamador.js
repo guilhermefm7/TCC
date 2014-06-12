@@ -1,6 +1,6 @@
 
 var DEEZER_DEMO_API_KEY='9QB1EM63CLM2RR5V3';
-
+//138733
 var audio
 jQuery.ajaxSettings.traditional = true;
 
@@ -40,9 +40,30 @@ function fetchDeezerTrack(song, div) {
                 div.append(tdiv);
                 div.append(createPlayer(data.preview));
                 div.append($('<br clear="left">'));
-/*                div.append($('<h:panelGroup layout="block" class="form-group" id="btCurtirMusica">'));
-                div.append($('<h:commandLink type="submit" class="btn-primary" style="padding:5px 20px;" value="Curtir Musica" actionListener="#{MusicaBean.avaliarMusica}" />'));
-                div.append($('</h:panelGroup>'));*/
+               // var dl = 'alert('ddsdsds')'
+                div.append($('<h:panelGroup layout="block" class="form-group" id="btCurtirMusica"> <h:form class="form-signin"> <h:commandLink type="submit" class="btn btn-primary" >fdf <f:ajax listener="#{MusicaBean.avaliarMusica}" execute="@all" render="@all" event="click"/></h:commandLink>   </h:form> </h:panelGroup>'));  			
+                div.append($('<h:form class="form-signin">'));
+                
+                
+                div.append($('<a id="sharebutton" href="#" onclick="'+'compartilharFacebook(data.album.cover, data.artist.name, data.album.title);'+'" >Compartilhar no Facebook </a>'));
+                
+                function compartilharFacebook(img, artista, musica) {
+				FB.ui({
+		    		method: 'feed',
+		    		name: 'RecoMusic',
+		    		link: 'http://localhost:8080/RecoMusic/',
+		    		picture: img,
+		    		caption: musica,
+		    		description: musica + ' - ' + artista
+		    	});
+                }
+                var s = $("#songs");
+                s.append($('"<h:commandLink type="submit" class="btn btn-primary" >fdf <f:ajax listener="#{MusicaBean.avaliarMusica}"/>"'));
+               /// div.append($('<h:commandLink type="submit" class="btn btn-primary" value="Curtir" actionListener="#{MusicaBean.avaliarMusica}" >'));
+                //div.append($('<f:ajax execute="@this" render="@this" listener="#{MusicaBean.avaliarMusica}" event="click"/>'));
+/*                div.append($('</h:commandLink>'));
+                div.append($('</h:panelGroup>'));
+                div.append($('</h:form>'));*/
                 
             }
         );
@@ -62,6 +83,11 @@ function createPlayButton(audio) {
 function createPlayer(audio) {
     var player = $("<audio class='player' preload='none' controls='controls'>").attr("src", audio);
     return player;
+}
+
+function alerta() {
+	getProcesso();
+	
 }
 
 

@@ -10,6 +10,7 @@
 <h:body>
 	<f:metadata>
 		<f:event type="preRenderView" listener="#{CadastroBean.iniciar}" />
+		<f:viewParam name="t" value="#{CadastroBean.tokenRecebido}" />
 	</f:metadata>
 
 	<ui:composition template="/resources/template/template.xhtml">

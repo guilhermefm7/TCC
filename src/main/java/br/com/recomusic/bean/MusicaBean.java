@@ -46,7 +46,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			System.out.println(valorIdMusica);
+			System.out.println("dsdsudshu");
 		}
 		catch(Exception e)
 		{

@@ -88,6 +88,30 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		}
 	}
 	
+	public void logarTeste()
+	{
+		try
+		{
+			 FacebookClient facebookClient = new DefaultFacebookClient(token);
+		     User facebookUser = facebookClient.fetchObject("me", User.class);
+		     
+		     System.out.println(facebookUser.getFirstName() + " " + facebookUser.getEmail() + " " + facebookUser.getId() + "" + facebookUser.getGender());
+			 Connection<NamedFacebookType> musics = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
+			 if(musics.getData()!=null && musics.getData().size()>0)
+			 {
+				 for (int i = 0; i < musics.getData().size(); i++)
+				 {
+					System.out.println(musics.getData().get(i).getName());
+				 }
+			 }
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
 	public void logarComFacebook()
 	{
 		try
@@ -106,6 +130,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 				    	 {
 							 usuario = new Usuario();
 							 usuario = usuarioFacebook;
+							 setUsuarioGlobal(usuarioFacebook);
 				    		 this.emailLogin = facebookUser.getEmail();
 				    		 this.logado = true;
 				    	 }
@@ -238,6 +263,22 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		}
 	}
 	
+	public void logarAtualizacaoSenha()
+	{
+		try
+		{
+			setUsuarioGlobal(usuario);
+			this.emailLogin = usuario.getEmailUsuario();
+			this.logado = true;
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
 	
 	public String verificaConsistencia() throws Exception
 	{
@@ -288,7 +329,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/redefinirSenha/index.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/redefinirSenha/index.xhtml?t=1");
 		}
 		catch (IOException e)
 		{
@@ -314,7 +355,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/cadastro/index.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/cadastro/index.xhtml?t=1");
 		}
 		catch(Exception e)
 		{

@@ -8,6 +8,10 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:body>
+	<f:metadata>
+		<f:viewParam name="t" value="#{RedefinirSenhaBean.tokenRecebido}" />
+		<f:event type="preRenderView" listener="#{RedefinirSenhaBean.iniciar}" />
+	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 
@@ -48,13 +52,13 @@
 
 					</h:form>
 
-					<h:panelGroup layout="block" rendered="#{(RedefinirSenhaBean.falhaFormulario != null) and (RedefinirSenhaBean.falhaFormulario ne 'Email de redefinição de senha foi enviado a sua caixa de emails')}">
+					<h:panelGroup layout="block" rendered="#{(RedefinirSenhaBean.falhaFormulario != null) and (RedefinirSenhaBean.falhaFormulario ne 'Email de redefinição de senha foi enviado a sua caixa de email')}">
 						<div class="alert alert-danger">
 							<h:outputText value="#{RedefinirSenhaBean.falhaFormulario}"  escape="false" />
 						</div>
 					</h:panelGroup>
 
-					<h:panelGroup layout="block" id="mensagemErroEsquiciSenha" rendered="#{(RedefinirSenhaBean.falhaFormulario != null) and (RedefinirSenhaBean.falhaFormulario eq 'Email de redefinição de senha foi enviado a sua caixa de emails')}">
+					<h:panelGroup layout="block" id="mensagemErroEsquiciSenha" rendered="#{(RedefinirSenhaBean.falhaFormulario != null) and (RedefinirSenhaBean.falhaFormulario eq 'Email de redefinição de senha foi enviado a sua caixa de email')}">
 						<div class="alert alert-success" id="mensagemErroSenha">
 							<h:outputText value="#{RedefinirSenhaBean.falhaFormulario}" escape="false"/>
 						</div>

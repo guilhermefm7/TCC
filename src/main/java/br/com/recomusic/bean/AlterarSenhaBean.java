@@ -23,7 +23,23 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 	private String senhaDigitadaNovamente;
 	private String falhaSenha = null;
 	private String tokenRecebido = null;
-	public AlterarSenhaBean() {	}
+	public AlterarSenhaBean() {	 }
+	
+	public void iniciar()
+	{
+		try
+		{
+			if(!procuraTokenRecebido())
+			{
+				falhaSenha = "Página de redefinição de senha expirada. Favor pedir a redefinição de senha novamente";
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
 	
 	public void alterarSenha()
 	{
@@ -44,6 +60,9 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 						ConectaBanco.getInstance().commit();
 						falhaSenha = "Senha alterada com sucesso";
 						GuardaAlteracoesSenhas.getTokensAlteracaoSenhaUsuario().remove(tokenRecebido);
+						UsuarioBean usuarioBean = ((UsuarioBean) getBean("UsuarioBean"));
+						usuarioBean.setUsuario(usuarioRecente);
+						usuarioBean.logarAtualizacaoSenha();
 					}
 					else
 					{
