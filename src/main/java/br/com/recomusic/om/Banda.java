@@ -25,6 +25,7 @@ public class Banda implements Serializable
 	private long pkBanda;
 	private String nome;
 	private String ano;
+	private String idBanda;
 
 	@ManyToOne @JoinColumn(name="fkPais")
 	private Pais pais;
@@ -51,6 +52,9 @@ public class Banda implements Serializable
 
 	public String getAno() { return ano; }
 	public void setAno(String ano) { this.ano = ano; }
+	
+	public String getIdBanda() { return idBanda; }
+	public void setIdBanda(String idBanda) { this.idBanda = idBanda; }
 
 	public Pais getPais() { return pais; }
 	public void setPais(Pais pais) { this.pais = pais; }

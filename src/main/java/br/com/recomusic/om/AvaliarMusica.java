@@ -1,8 +1,7 @@
 package br.com.recomusic.om;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 public class AvaliarMusica implements Serializable
@@ -23,13 +23,15 @@ public class AvaliarMusica implements Serializable
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkAvaliarMusica;
-
+	@Type(type="timestamp")
+	private Date lancamento;
+	private Boolean resposta;
+	
 	@ManyToOne @JoinColumn(name="fkUsuario")
 	private Usuario usuario;
 
-	@OneToMany(mappedBy="avaliarMusica")
-	private List<AvaliarMusicaMusica> avaliarMusicaMusicas;
-
+	@ManyToOne @JoinColumn(name="fkMusica")
+	private Musica musica;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public AvaliarMusica() { }
@@ -41,6 +43,9 @@ public class AvaliarMusica implements Serializable
 	public Usuario getUsuario() { return usuario; }
 	public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
-	public List<AvaliarMusicaMusica> getAvaliarMusicaMusicas() { if(avaliarMusicaMusicas==null) { avaliarMusicaMusicas = new ArrayList<AvaliarMusicaMusica>(); } return avaliarMusicaMusicas; }
-	public void setAvaliarMusicaMusicas(List<AvaliarMusicaMusica> avaliarMusicaMusicas) { this.avaliarMusicaMusicas = avaliarMusicaMusicas; }
+	public Musica getMusica() {return musica;}
+	public void setMusica(Musica musica) {this.musica = musica;}
+	
+	public Boolean getResposta() { return resposta; }
+	public void setResposta(Boolean resposta) { this.resposta = resposta; }
 }

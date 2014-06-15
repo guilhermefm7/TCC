@@ -26,6 +26,7 @@ public class Musica implements Serializable
 	private String titulo;
 	private String ano;
 	private String album;
+	private String idMUsica;
 
 	@ManyToOne @JoinColumn(name="fkPais")
 	private Pais pais;
@@ -41,19 +42,9 @@ public class Musica implements Serializable
 
 	@OneToMany(mappedBy="musica")
 	private List<PlaylistMusica> playlistMusicas;
-
+	
 	@OneToMany(mappedBy="musica")
-	private List<AvaliarMusicaMusica> avaliarMusicaMusicas;
-
-	@OneToMany(mappedBy="musica")
-	private List<RecomendaMusica> recomendaMusicas;
-
-	@OneToMany(mappedBy="musica")
-	private List<CompartilhaMusica> compartilhaMusicas;
-
-	@OneToMany(mappedBy="musica")
-	private List<EspectroMusicalAnexo> espectroMusicalAnexos;
-
+	private List<AvaliarMusica> avaliarMusica;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public Musica() { }
@@ -71,6 +62,9 @@ public class Musica implements Serializable
 	public String getAlbum() { return album; }
 	public void setAlbum(String album) { this.album = album; }
 
+	public String getIdMUsica() { return idMUsica; }
+	public void setIdMUsica(String idMUsica) { this.idMUsica = idMUsica; }
+
 	public Pais getPais() { return pais; }
 	public void setPais(Pais pais) { this.pais = pais; }
 
@@ -86,15 +80,6 @@ public class Musica implements Serializable
 	public List<PlaylistMusica> getPlaylistMusicas() { if(playlistMusicas==null) { playlistMusicas = new ArrayList<PlaylistMusica>(); } return playlistMusicas; }
 	public void setPlaylistMusicas(List<PlaylistMusica> playlistMusicas) { this.playlistMusicas = playlistMusicas; }
 
-	public List<AvaliarMusicaMusica> getAvaliarMusicaMusicas() { if(avaliarMusicaMusicas==null) { avaliarMusicaMusicas = new ArrayList<AvaliarMusicaMusica>(); } return avaliarMusicaMusicas; }
-	public void setAvaliarMusicaMusicas(List<AvaliarMusicaMusica> avaliarMusicaMusicas) { this.avaliarMusicaMusicas = avaliarMusicaMusicas; }
-
-	public List<RecomendaMusica> getRecomendaMusicas() { if(recomendaMusicas==null) { recomendaMusicas = new ArrayList<RecomendaMusica>(); } return recomendaMusicas; }
-	public void setRecomendaMusicas(List<RecomendaMusica> recomendaMusicas) { this.recomendaMusicas = recomendaMusicas; }
-
-	public List<CompartilhaMusica> getCompartilhaMusicas() { if(compartilhaMusicas==null) { compartilhaMusicas = new ArrayList<CompartilhaMusica>(); } return compartilhaMusicas; }
-	public void setCompartilhaMusicas(List<CompartilhaMusica> compartilhaMusicas) { this.compartilhaMusicas = compartilhaMusicas; }
-
-	public List<EspectroMusicalAnexo> getEspectroMusicalAnexos() { if(espectroMusicalAnexos==null) { espectroMusicalAnexos = new ArrayList<EspectroMusicalAnexo>(); } return espectroMusicalAnexos; }
-	public void setEspectroMusicalAnexos(List<EspectroMusicalAnexo> espectroMusicalAnexos) { this.espectroMusicalAnexos = espectroMusicalAnexos; }
+	public List<AvaliarMusica> getAvaliarMusica() { return avaliarMusica; }
+	public void setAvaliarMusica(List<AvaliarMusica> avaliarMusica) { this.avaliarMusica = avaliarMusica; }
 }

@@ -20,6 +20,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
 	private Usuario usuario = null;
 	private String valorIdMusica = null;
+	private boolean curtiuMusica = false;
 
 	public MusicaBean() { }
 	
@@ -46,7 +47,19 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			System.out.println("dsdsudshu");
+			curtiuMusica = !curtiuMusica;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void pesquisaCurtiu()
+	{
+		try
+		{
+			
 		}
 		catch(Exception e)
 		{
@@ -54,7 +67,6 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 		}
 	}
 
-	
 	public void save(Usuario usuario)
 	{
 		try
@@ -91,5 +103,13 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 
 	public void setValorIdMusica(String valorIdMusica){
 		this.valorIdMusica = valorIdMusica;
+	}
+
+	public boolean isCurtiuMusica() {
+		return curtiuMusica;
+	}
+
+	public void setCurtiuMusica(boolean curtiuMusica) {
+		this.curtiuMusica = curtiuMusica;
 	}
 }

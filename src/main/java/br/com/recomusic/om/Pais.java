@@ -25,14 +25,10 @@ public class Pais implements Serializable
 	private String siglaPais;
 
 	@OneToMany(mappedBy="pais")
-	private List<Cadastro> cadastros;
-
-	@OneToMany(mappedBy="pais")
 	private List<Banda> bandas;
 
 	@OneToMany(mappedBy="pais")
 	private List<Musica> musicas;
-
 
 	/*-*-*-* Construtores *-*-*-*/
 	public Pais() { }
@@ -46,9 +42,6 @@ public class Pais implements Serializable
 
 	public String getSiglaPais() { return siglaPais; }
 	public void setSiglaPais(String siglaPais) { this.siglaPais = siglaPais; }
-
-	public List<Cadastro> getCadastros() { if(cadastros==null) { cadastros = new ArrayList<Cadastro>(); } return cadastros; }
-	public void setCadastros(List<Cadastro> cadastros) { this.cadastros = cadastros; }
 
 	public List<Banda> getBandas() { if(bandas==null) { bandas = new ArrayList<Banda>(); } return bandas; }
 	public void setBandas(List<Banda> bandas) { this.bandas = bandas; }

@@ -63,18 +63,9 @@ body {
 }
 </style>
 
-<title>Perfil Virtual - Tecnologia e Design</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta property="og:title" content="RecoMusic" />
-<meta property="og:url" content="www.perfilvirtual.com.br" />
-<meta property="og:image"
-	content="/RecoMusic/resources/imagens/icones/logotipo.jpg" />
 </head>
 
 <h:body>
-
-
-
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 		<!-- 		<ui:define name="definicoesPre">
@@ -90,38 +81,34 @@ body {
 
 					<div id='header'>
 						<h1>Procura Música</h1>
-						Enter an artist: <input id='artist-name' type='text' />
+						Enter an artist:
+						<h:inputText id='artist-name' type='text'>
+							<f:ajax render="@none" execute="@none" />
+						</h:inputText>
 					</div>
-
-					<h:panelGroup layout="block" id="coluna" class="form-group">
-						<a id="share-button" href="#" onclick=" FB.ui({
-				    		method: 'feed',
-				    		name: 'RecoMusic',
-				    		link: ' http://www.devmedia.com.br/',
-				    		picture: 'http://img2.wikia.nocookie.net/__cb20100528223948/wikinaruto/pt/images/0/03/Mangekyou_Madara_Icone.png',
-				    		caption: 'Come as You Are',
-				    		description: 'Nirvana - Come as you are'
-				    	});">
-							Compartilhar no Facebook </a>
-
-					</h:panelGroup>
 
 					<h:panelGroup layout="block" class="footer"
 						style="border-top-color: #eee"></h:panelGroup>
 					<div id="info"></div>
-					
+
 					<h:panelGroup layout="block" id='playlist'>
-						
-						<h:panelGroup layout="block" id='songs'>
-					
+
 					</h:panelGroup>
-						
-					</h:panelGroup>
+
+
 					<div id='footer'></div>
 				</h:panelGroup>
-
-
-
+				
+				<h:form id="hiddenForm" style="display: none;">
+					<h:inputHidden id="IHIdMusica" value="#{MusicaBean.valorIdMusica}" />
+					<h:inputHidden id="IHCurtiuMusica" value="#{MusicaBean.curtiuMusica}" />
+					<h:commandButton id="cbPesquisaCurtiu" >
+					<f:ajax execute="@form" listener="#{MusicaBean.pesquisaCurtiu}" />
+					</h:commandButton>
+					<h:commandButton id="cbAvaliaMusica" >
+					<f:ajax execute="@form" listener="#{MusicaBean.avaliarMusica}" />
+					</h:commandButton>
+				</h:form>
 			</h:panelGroup>
 		</ui:define>
 	</ui:composition>

@@ -24,8 +24,8 @@ public class InformacaoMusicalCadastroBanda implements Serializable
 	private long pkInformacaoMusicalCadastroBanda;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
-	@ManyToOne @JoinColumn(name="fkInformacaoMusicalCadastro")
-	private InformacaoMusicalCadastro informacaoMusicalCadastro;
+	@ManyToOne @JoinColumn(name="fkUsuario")
+	private Usuario usuario;
 
 	@ManyToOne @JoinColumn(name="fkBanda")
 	private Banda banda;
@@ -41,8 +41,8 @@ public class InformacaoMusicalCadastroBanda implements Serializable
 	public int getStatus() { return status; }
 	public void setStatus(int status) { this.status = status; }
 
-	public InformacaoMusicalCadastro getInformacaoMusicalCadastro() { return informacaoMusicalCadastro; }
-	public void setInformacaoMusicalCadastro(InformacaoMusicalCadastro informacaoMusicalCadastro) { this.informacaoMusicalCadastro = informacaoMusicalCadastro; }
+	public Usuario getUsuario() { return usuario; }
+	public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
 	public Banda getBanda() { return banda; }
 	public void setBanda(Banda banda) { this.banda = banda; }

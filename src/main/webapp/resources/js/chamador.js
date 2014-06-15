@@ -1,13 +1,46 @@
-
 var DEEZER_DEMO_API_KEY='9QB1EM63CLM2RR5V3';
-//138733
+
 var audio
 jQuery.ajaxSettings.traditional = true;
 
 
-function createSongDiv(song) {
-    var songDiv = $("<div class='sdiv' id=" + song.id + "-div>");
+function createSongDiv(song) 
+{
+    var songDiv = $("<div class='sdiv' id=" + song.id + "-div> " + mostrarCurtir(song.id));
+        
     return songDiv;
+}
+
+function mostrarCurtir(nome)
+{
+	document.getElementById('hiddenForm:IHIdMusica').value = nome;
+	document.getElementById('hiddenForm:cbPesquisaCurtiu').click(); 
+	
+	if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='true')
+	{
+		return "<div class=\"form-group\"><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"curtir('" + nome + "');\" class=\"btn-primary\"> <img id=\"btCurtirDescurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-16.png\" /></a></div>";
+	}
+	else
+	{
+		return "<div class=\"form-group\"><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"curtir('" + nome + "');\" class=\"btn-primary\"> <img id=\"btCurtirDescurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/stroke/53/Unlike-16.png\"/></a></div>";
+	}
+}
+
+function curtir(nome)
+{
+	
+	document.getElementById('hiddenForm:IHIdMusica').value = nome;
+	document.getElementById('hiddenForm:cbAvaliaMusica').click(); 
+	
+	if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='true')
+	{
+		document.getElementById('btCurtirDescurtir' + nome).src = "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-16.png";
+	}
+	else
+	{
+		document.getElementById('btCurtirDescurtir' + nome).src = "https://cdn3.iconfinder.com/data/icons/stroke/53/Unlike-16.png";
+	}
+	
 }
 
 function addSongs(songs) {
@@ -40,30 +73,6 @@ function fetchDeezerTrack(song, div) {
                 div.append(tdiv);
                 div.append(createPlayer(data.preview));
                 div.append($('<br clear="left">'));
-               // var dl = 'alert('ddsdsds')'
-                div.append($('<h:panelGroup layout="block" class="form-group" id="btCurtirMusica"> <h:form class="form-signin"> <h:commandLink type="submit" class="btn btn-primary" >fdf <f:ajax listener="#{MusicaBean.avaliarMusica}" execute="@all" render="@all" event="click"/></h:commandLink>   </h:form> </h:panelGroup>'));  			
-                div.append($('<h:form class="form-signin">'));
-                
-                
-                div.append($('<a id="sharebutton" href="#" onclick="'+'compartilharFacebook(data.album.cover, data.artist.name, data.album.title);'+'" >Compartilhar no Facebook </a>'));
-                
-                function compartilharFacebook(img, artista, musica) {
-				FB.ui({
-		    		method: 'feed',
-		    		name: 'RecoMusic',
-		    		link: 'http://localhost:8080/RecoMusic/',
-		    		picture: img,
-		    		caption: musica,
-		    		description: musica + ' - ' + artista
-		    	});
-                }
-                var s = $("#songs");
-                s.append($('"<h:commandLink type="submit" class="btn btn-primary" >fdf <f:ajax listener="#{MusicaBean.avaliarMusica}"/>"'));
-               /// div.append($('<h:commandLink type="submit" class="btn btn-primary" value="Curtir" actionListener="#{MusicaBean.avaliarMusica}" >'));
-                //div.append($('<f:ajax execute="@this" render="@this" listener="#{MusicaBean.avaliarMusica}" event="click"/>'));
-/*                div.append($('</h:commandLink>'));
-                div.append($('</h:panelGroup>'));
-                div.append($('</h:form>'));*/
                 
             }
         );
@@ -83,11 +92,6 @@ function createPlayButton(audio) {
 function createPlayer(audio) {
     var player = $("<audio class='player' preload='none' controls='controls'>").attr("src", audio);
     return player;
-}
-
-function alerta() {
-	getProcesso();
-	
 }
 
 
@@ -153,12 +157,7 @@ $(document).ready(function() {
 
 
 
-
-
-
 /*
-
-
 
 
 var DEEZER_DEMO_API_KEY='9QB1EM63CLM2RR5V3';
@@ -174,8 +173,8 @@ function createSongDiv(song) {
 
 function addSongs(songs) {
     var playlist = $("#playlist");
-
-    for (var i = 0; i < songs.length; i++) {
+    for (var i = 0; i < songs.length; i++) 
+    {
         var div = createSongDiv(songs[i]);
         playlist.append(div);
         fetchDeezerTrack(songs[i], div);
@@ -202,6 +201,10 @@ function fetchDeezerTrack(song, div) {
                 div.append(tdiv);
                 div.append(createPlayer(data.preview));
                 div.append($('<br clear="left">'));
+                div.append($('<h:panelGroup layout="block" class="form-group" id="btCurtirMusica">'));
+                div.append($('<h:commandLink type="submit" class="btn-primary" style="padding:5px 20px;" value="Curtir Musica" actionListener="#{MusicaBean.avaliarMusica}" />'));
+                div.append($('</h:panelGroup>'));
+                
             }
         );
     }
@@ -227,17 +230,16 @@ function info(msg) {
     $("#info").text(msg);
 }
 
-function fetchPlaylist(artist) {
-    info("Getting playlist for " + artist);
+function fetchPlaylist(music, artistName) {
+    info("Procurando pela musica " + music);
     $("#playlist").empty();
-    var url = 'http://developer.echonest.com/api/v4/playlist/static?callback=?'
+    if(artistName!=null && artistName.length > 0) {
+    		var url = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true&artist=' + artistName
+    	} else {
+	    	var url = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true'
+    	}
     jQuery.getJSON(url, 
-        {   artist:artist, 
-            type:'artist-radio', 
-            format:'jsonp', 
-            bucket: ['id:deezer', 'tracks'],
-            limit: true,
-            'api_key' : DEEZER_DEMO_API_KEY
+        { 
         },
         function(data) {
             info("");
@@ -245,7 +247,7 @@ function fetchPlaylist(artist) {
                 var songs = data.response.songs;
                 addSongs(songs);
             } else {
-                info("Can't create a playlist for " + artist);
+                info("Can't create a playlist for " + music);
             }
         }
     );
@@ -256,7 +258,10 @@ function initUI() {
         function(e) {
             if(e.which == 13) {
                 var artist = $("#artist-name").val();
-                fetchPlaylist(artist);
+                var music = artist.split('-')[0];
+                var artistName = null;
+                artistName = artist.split('-')[1];
+                fetchPlaylist(music, artistName);
             }
         }
     );
@@ -269,4 +274,5 @@ $(document).ready(function() {
         initUI();
     });
 });
+
 */

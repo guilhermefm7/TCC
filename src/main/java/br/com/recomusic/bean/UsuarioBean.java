@@ -10,7 +10,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.recomusic.dao.BandaDAO;
+import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
 import br.com.recomusic.dao.UsuarioDAO;
+import br.com.recomusic.om.Banda;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.persistencia.utils.Criptografia;
@@ -30,6 +33,8 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
+	private BandaDAO bandaDAO = new BandaDAO( ConectaBanco.getInstance().getEntityManager());
+	private InformacaoMusicalCadastroBandaDAO informacaoMusicalCadastroBandaDAO = new InformacaoMusicalCadastroBandaDAO( ConectaBanco.getInstance().getEntityManager());
 	private Usuario usuario = new Usuario();
 	private String emailLogin = null;
 	private String email = null;
@@ -44,7 +49,6 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	private String mensagemErroAtualizarCadastro = null;
 	private boolean atualizarCadastro = false;
 	private String nomeMusica = null;
-
 	public UsuarioBean() { }
 
 	public void logar()
@@ -121,6 +125,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 				FacesContext facesContext = FacesContext.getCurrentInstance();
 				if (!facesContext.isPostback() && !facesContext.isValidationFailed())
 				{
+					List<String> listaMusicas = new ArrayList<String>();
 					 FacebookClient facebookClient = new DefaultFacebookClient(token);
 				     User facebookUser = facebookClient.fetchObject("me", User.class);
 				     if(facebookUser!=null && facebookUser.getId().length()>0)
@@ -128,9 +133,31 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 				    	 Usuario usuarioFacebook = usuarioDAO.validarID(facebookUser.getId());
 				    	 if(usuarioFacebook!=null && usuarioFacebook.getPkUsuario()>0)
 				    	 {
+							 Connection<NamedFacebookType> musics = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
+							 if(musics.getData()!=null && musics.getData().size()>0)
+							 {
+								 for (int i = 0; i < musics.getData().size(); i++)
+								 {
+									 listaMusicas.add(musics.getData().get(i).getName());
+								 }
+							 }
+							 
+
+							 
 							 usuario = new Usuario();
 							 usuario = usuarioFacebook;
 							 setUsuarioGlobal(usuarioFacebook);
+							 
+							 List<Banda> listaBandas = pesquisaBanda(listaMusicas, true);
+							 
+							 if(listaBandas!=null && listaBandas.size()>0)
+							 {
+								 ConectaBanco.getInstance().beginTransaction();
+								 bandaDAO.salvarListaBanda(listaBandas);
+								 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(listaBandas, getUsuarioGlobal());
+								 ConectaBanco.getInstance().commit();
+							 }
+							 
 				    		 this.emailLogin = facebookUser.getEmail();
 				    		 this.logado = true;
 				    	 }
@@ -151,6 +178,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 					    			 usuarioFacebook.setNome(facebookUser.getFirstName());
 					    			 usuarioFacebook.setSobrenome(facebookUser.getLastName());
 					    			 usuarioFacebook.setLancamento(new Date());
+					    			 
 					    			 if(facebookUser.getGender()!=null && facebookUser.getGender().length()>0 && (facebookUser.getGender().equals("male")))
 					    			 {
 					    				 usuarioFacebook.setSexo(Constantes.TIPO_GENERO_MASCULINO);
@@ -159,7 +187,32 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 					    			 {
 					    				 usuarioFacebook.setSexo(Constantes.TIPO_GENERO_FEMININO);
 					    			 }
+					    			 
 					    			 save(usuarioFacebook);
+					    			 
+					    			 
+					    			 
+								    // System.out.println(facebookUser.getFirstName() + " " + facebookUser.getEmail() + " " + facebookUser.getId() + "" + facebookUser.getGender());
+									 Connection<NamedFacebookType> musics = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
+									 if(musics.getData()!=null && musics.getData().size()>0)
+									 {
+										 for (int i = 0; i < musics.getData().size(); i++)
+										 {
+											 listaMusicas.add(musics.getData().get(i).getName());
+											 System.out.println(musics.getData().get(i).getName());
+										 }
+									 }
+									 
+									 List<Banda> listaBandas = pesquisaBanda(listaMusicas, true);
+									 
+									 if(listaBandas!=null && listaBandas.size()>0)
+									 {
+										 ConectaBanco.getInstance().beginTransaction();
+										 bandaDAO.salvarListaBanda(listaBandas);
+										 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(listaBandas, getUsuarioGlobal());
+										 ConectaBanco.getInstance().commit();
+									 }
+									 
 					    			 this.emailLogin = facebookUser.getEmail();
 									 usuario = new Usuario();
 									 usuario = usuarioFacebook;
@@ -169,16 +222,6 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 				    		 }
 				    	 }
 				     }
-				     
-				     System.out.println(facebookUser.getFirstName() + " " + facebookUser.getEmail() + " " + facebookUser.getId() + "" + facebookUser.getGender());
-					 Connection<NamedFacebookType> musics = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
-					 if(musics.getData()!=null && musics.getData().size()>0)
-					 {
-						 for (int i = 0; i < musics.getData().size(); i++)
-						 {
-							System.out.println(musics.getData().get(i).getName());
-						 }
-					 }
 				}
 			}
 			token = null;
