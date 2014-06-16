@@ -2,6 +2,8 @@ package br.com.recomusic.persistencia.utils;
 
 import java.util.List;
 
+import br.com.recomusic.om.Musica;
+
 import com.echonest.api.v4.Artist;
 import com.echonest.api.v4.Biography;
 import com.echonest.api.v4.Blog;
@@ -18,7 +20,7 @@ import com.echonest.api.v4.examples.SearchSongsExample;
 
 public class TesteMusica
 {
-/*	
+	/*
 	 public static void procuraArtista(String artista)
 	 {
 		 try
@@ -52,15 +54,16 @@ public class TesteMusica
 				EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
 				SongParams p = new SongParams();
 				p.setArtist("Nirvana");
-			    p.addIDSpace("rdio-US");
+			    p.addIDSpace("deezer");
+			    p.addIDSpace("deezer");
 			    p.add("title", "come as you are");
-			    p.add("results", 3);	
+			    p.add("results", 1);	
 			    
 			    List<Song> songs = en.searchSongs(p);
 			    for (Song song : songs)
 			    {
-			        dumpSong(song);
-			        System.out.println();
+			        //dumpSong(song);
+			        System.out.println(song.getID());
 			    }
 			}
 			catch  (Exception e)
@@ -77,18 +80,47 @@ public class TesteMusica
 		    
 			Params p = new Params();
 	        p.add("name", "Nirvana");
+	        
 	        p.add("results", 1);
 
 	        List<Artist> artists = en.searchArtists(p);
 	        for (Artist artist : artists) {
 	        	 System.out.printf("%s\n", artist.getName());
 	        	 System.out.printf("%s\n", artist.getID());
+	        	 
 	             //System.out.printf("   fam   %.3f\n", artist.getBiographies().get(0).getText());
 	             //System.out.printf("   fam   %.3f\n", artist.getBiographies().get(0).getSite());
 	             //System.out.printf("   fam   %.3f\n", artist.getNews().get(0).getDateFound());
 	            // System.out.printf("   fam   %.3f\n", artist.getYearsActive());
 	             //dumpArtist(artist);
 	        }
+		 }
+		 catch  (Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+	 }
+	 
+	 public static void procuraMusicaa()
+	 {
+		 try
+		 {
+			 EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
+			 Musica musica = null;
+			 Params p = new Params();
+		     p.set("id", "SOMIVIZ12C0DD05759");
+			 //p.setID("SOMSJMX13770F238EB");
+		     //p.addIDSpace("deezer");
+		     p.add("results", 1);	
+		     List<Song> songs = en.getSongs(p);
+		     for (Song song : songs)
+		     {
+		    	 musica = new Musica();
+		    	 musica.setTitulo(song.getTitle());
+		    	 musica.setIdMUsica(song.getID());
+		    	 System.out.println(song.getTitle());
+		    	 System.out.println(song.getID());
+		     }
 		 }
 		 catch  (Exception e)
 		 {
@@ -174,7 +206,7 @@ public class TesteMusica
 
 	public static void main(String[] args)
 	{
-		procuraArtista();
-		//procurarMusica();
+		procurarMusica();
+		procuraMusicaa();
 	}*/
 }

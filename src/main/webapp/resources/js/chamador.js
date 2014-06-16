@@ -1,12 +1,12 @@
 var DEEZER_DEMO_API_KEY='9QB1EM63CLM2RR5V3';
 
-var audio
+var audio;
 jQuery.ajaxSettings.traditional = true;
 
 
 function createSongDiv(song) 
 {
-    var songDiv = $("<div class='sdiv' id=" + song.id + "-div> " + mostrarCurtir(song.id));
+    var songDiv = $("<div class='sdiv' id=" + song.id + "-div> ");
         
     return songDiv;
 }
@@ -15,14 +15,18 @@ function mostrarCurtir(nome)
 {
 	document.getElementById('hiddenForm:IHIdMusica').value = nome;
 	document.getElementById('hiddenForm:cbPesquisaCurtiu').click(); 
-	
-	if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='true')
+		
+	if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='true' && document.getElementById('hiddenForm:IHNaoCurtiuMusica').value=='false')
 	{
-		return "<div class=\"form-group\"><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"curtir('" + nome + "');\" class=\"btn-primary\"> <img id=\"btCurtirDescurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-16.png\" /></a></div>";
+		return "<div class=\"form-group\"><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"naoCurtir('" + nome + "');\" class=\"btn-default\"> <img id=\"btCurtirDescurtir" + nome + "\" src=\"https://cdn1.iconfinder.com/data/icons/business-votes/512/unlike_2-16.png\"/></a><a href=\"#\" style=\"padding:5px 20px;\"/><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"curtir('" + nome + "');\" class=\"btn-default\"> <img id=\"btCurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-16.png\"/></a></div>";
 	}
-	else
+	else if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='false' && document.getElementById('hiddenForm:IHNaoCurtiuMusica').value=='true')
 	{
-		return "<div class=\"form-group\"><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"curtir('" + nome + "');\" class=\"btn-primary\"> <img id=\"btCurtirDescurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/stroke/53/Unlike-16.png\"/></a></div>";
+		return "<div class=\"form-group\"><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"naoCurtir('" + nome + "');\" class=\"btn-default\"> <img id=\"btCurtirDescurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/stroke/53/Unlike-16.png\"/></a><a href=\"#\" style=\"padding:5px 20px;\"/><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"curtir('" + nome + "');\" class=\"btn-default\"> <img id=\"btCurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/wpzoom-developer-icon-set/500/138-16.png\"/></a></div>";
+	}
+	else if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='false' && document.getElementById('hiddenForm:IHNaoCurtiuMusica').value=='false')
+	{
+		return "<div class=\"form-group\"><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"naoCurtir('" + nome + "');\" class=\"btn-default\"> <img id=\"btCurtirDescurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/stroke/53/Unlike-16.png\"/></a><a href=\"#\" style=\"padding:5px 20px;\"/><a href=\"#\" style=\"padding:5px 20px;\" onclick=\"curtir('" + nome + "');\" class=\"btn-default\"> <img id=\"btCurtir" + nome + "\" src=\"https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-16.png\"/></a></div>";
 	}
 }
 
@@ -30,17 +34,33 @@ function curtir(nome)
 {
 	
 	document.getElementById('hiddenForm:IHIdMusica').value = nome;
-	document.getElementById('hiddenForm:cbAvaliaMusica').click(); 
+	document.getElementById('hiddenForm:cbAvaliaMusicaPositivamente').click(); 
 	
 	if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='true')
 	{
-		document.getElementById('btCurtirDescurtir' + nome).src = "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-16.png";
+		document.getElementById('btCurtir' + nome).src = "https://cdn3.iconfinder.com/data/icons/wpzoom-developer-icon-set/500/138-16.png";
+		document.getElementById('btCurtirDescurtir' + nome).src = "https://cdn1.iconfinder.com/data/icons/business-votes/512/unlike_2-16.png";
+	}
+	else 
+	{
+		document.getElementById('btCurtir' + nome).src = "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-16.png";
+	}
+}
+
+function naoCurtir(nome)
+{
+	
+	document.getElementById('hiddenForm:IHIdMusica').value = nome;
+	document.getElementById('hiddenForm:cbAvaliaMusicaNegativamente').click(); 
+	
+	if(document.getElementById('hiddenForm:IHNaoCurtiuMusica').value=='true')
+	{
+		document.getElementById('btCurtirDescurtir' + nome).src = "https://cdn1.iconfinder.com/data/icons/business-votes/512/unlike_2-16.png";
 	}
 	else
 	{
 		document.getElementById('btCurtirDescurtir' + nome).src = "https://cdn3.iconfinder.com/data/icons/stroke/53/Unlike-16.png";
 	}
-	
 }
 
 function addSongs(songs) {
@@ -57,8 +77,7 @@ function addSongs(songs) {
 function fetchDeezerTrack(song, div) {
     if (song.tracks.length > 0) {
         var tid = song.tracks[0].foreign_id.split(':')[2];
-        var url = 'http://api.deezer.com/2.0/track/' + tid + '?callback=?'
-
+        var url = 'http://api.deezer.com/2.0/track/' + tid + '?callback=?';
         jQuery.getJSON(url, { output:'jsonp'},
             function(data) {
                 var link = $("<a target='deezer'>").attr('href', data.link);
@@ -73,7 +92,7 @@ function fetchDeezerTrack(song, div) {
                 div.append(tdiv);
                 div.append(createPlayer(data.preview));
                 div.append($('<br clear="left">'));
-                
+                div.append($(mostrarCurtir(song.id)));
             }
         );
     }
@@ -102,10 +121,11 @@ function info(msg) {
 function fetchPlaylist(music, artistName) {
     info("Procurando pela musica " + music);
     $("#playlist").empty();
+    var url;
     if(artistName!=null && artistName.length > 0) {
-    		var url = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true&artist=' + artistName
+    		url = 'http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true&artist=' + artistName;
     	} else {
-	    	var url = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true'
+	    	url = 'http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true';
     	}
     jQuery.getJSON(url, 
         { 
@@ -154,11 +174,7 @@ $(document).ready(function() {
 
 
 
-
-
-
 /*
-
 
 var DEEZER_DEMO_API_KEY='9QB1EM63CLM2RR5V3';
 
@@ -185,7 +201,7 @@ function addSongs(songs) {
 function fetchDeezerTrack(song, div) {
     if (song.tracks.length > 0) {
         var tid = song.tracks[0].foreign_id.split(':')[2];
-        var url = 'http://api.deezer.com/2.0/track/' + tid + '?callback=?'
+        var url = 'http://api.deezer.com/2.0/track/' + tid + '?callback=?';
 
         jQuery.getJSON(url, { output:'jsonp'},
             function(data) {
@@ -201,10 +217,6 @@ function fetchDeezerTrack(song, div) {
                 div.append(tdiv);
                 div.append(createPlayer(data.preview));
                 div.append($('<br clear="left">'));
-                div.append($('<h:panelGroup layout="block" class="form-group" id="btCurtirMusica">'));
-                div.append($('<h:commandLink type="submit" class="btn-primary" style="padding:5px 20px;" value="Curtir Musica" actionListener="#{MusicaBean.avaliarMusica}" />'));
-                div.append($('</h:panelGroup>'));
-                
             }
         );
     }
@@ -233,11 +245,15 @@ function info(msg) {
 function fetchPlaylist(music, artistName) {
     info("Procurando pela musica " + music);
     $("#playlist").empty();
-    if(artistName!=null && artistName.length > 0) {
-    		var url = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true&artist=' + artistName
-    	} else {
-	    	var url = 'http://developer.echonest.com/api/v4/song/search?api_key=FILDTEOIK2HBORODV&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true'
-    	}
+    var url;
+    if(artistName!=null && artistName.length > 0)
+    {
+    	url = 'http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true&artist=' + artistName;
+    }
+    else
+    {
+	    url = 'http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true';
+    }
     jQuery.getJSON(url, 
         { 
         },
@@ -273,6 +289,4 @@ $(document).ready(function() {
         DEEZER_DEMO_API_KEY = api_key;
         initUI();
     });
-});
-
-*/
+});*/

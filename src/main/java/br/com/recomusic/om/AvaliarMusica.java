@@ -1,7 +1,6 @@
 package br.com.recomusic.om;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Type;
 
 @Entity
 public class AvaliarMusica implements Serializable
@@ -23,8 +20,6 @@ public class AvaliarMusica implements Serializable
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkAvaliarMusica;
-	@Type(type="timestamp")
-	private Date lancamento;
 	private Boolean resposta;
 	
 	@ManyToOne @JoinColumn(name="fkUsuario")

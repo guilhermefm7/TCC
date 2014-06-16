@@ -87,26 +87,30 @@ body {
 						</h:inputText>
 					</div>
 
-					<h:panelGroup layout="block" class="footer"
-						style="border-top-color: #eee"></h:panelGroup>
-					<div id="info"></div>
-
-					<h:panelGroup layout="block" id='playlist'>
+					<h:panelGroup layout="block" id="coluna" class="form-group">
 
 					</h:panelGroup>
 
-
+					<h:panelGroup layout="block" class="footer"
+						style="border-top-color: #eee"/>
+					<div id="info"></div>
+					<div id='playlist'></div>
 					<div id='footer'></div>
 				</h:panelGroup>
 				
 				<h:form id="hiddenForm" style="display: none;">
 					<h:inputHidden id="IHIdMusica" value="#{MusicaBean.valorIdMusica}" />
 					<h:inputHidden id="IHCurtiuMusica" value="#{MusicaBean.curtiuMusica}" />
+					<h:inputHidden id="IHNaoCurtiuMusica" value="#{MusicaBean.naoCurtiuMusica}" />
+					<h:inputHidden id="ValorReposta" value="#{MusicaBean.avaliarMusicaPrincipal.resposta}" />
 					<h:commandButton id="cbPesquisaCurtiu" >
 					<f:ajax execute="@form" listener="#{MusicaBean.pesquisaCurtiu}" />
 					</h:commandButton>
-					<h:commandButton id="cbAvaliaMusica" >
-					<f:ajax execute="@form" listener="#{MusicaBean.avaliarMusica}" />
+					<h:commandButton id="cbAvaliaMusicaNegativamente" >
+					<f:ajax execute="@form" listener="#{MusicaBean.avaliarMusicaNegativamente}" />
+					</h:commandButton>
+					<h:commandButton id="cbAvaliaMusicaPositivamente" >
+					<f:ajax execute="@form" listener="#{MusicaBean.avaliarMusicaPositivamente}" />
 					</h:commandButton>
 				</h:form>
 			</h:panelGroup>

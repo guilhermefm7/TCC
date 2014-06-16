@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import br.com.recomusic.bean.UsuarioBean;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
 import br.com.recomusic.om.Banda;
+import br.com.recomusic.om.Musica;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.singleton.ConectaBanco;
 
@@ -133,6 +134,13 @@ public class UtilidadesTelas
 		
 		
 		return listaBandas;
+	}
+	
+	public Musica pesquisaMusica(String idMusica) throws Exception
+	{
+		Musica musica = new Musica();
+		musica = PesquisaMusica.procuraMusica(en, idMusica);
+		return musica;
 	}
 
 	public static Usuario getUsuarioGlobal() {
