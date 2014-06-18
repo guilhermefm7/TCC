@@ -139,10 +139,9 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 								 for (int i = 0; i < musics.getData().size(); i++)
 								 {
 									 listaMusicas.add(musics.getData().get(i).getName());
+									 System.out.println(musics.getData().get(i).getName());
 								 }
 							 }
-							 
-
 							 
 							 usuario = new Usuario();
 							 usuario = usuarioFacebook;
@@ -192,7 +191,6 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 					    			 
 					    			 
 					    			 
-								    // System.out.println(facebookUser.getFirstName() + " " + facebookUser.getEmail() + " " + facebookUser.getId() + "" + facebookUser.getGender());
 									 Connection<NamedFacebookType> musics = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
 									 if(musics.getData()!=null && musics.getData().size()>0)
 									 {

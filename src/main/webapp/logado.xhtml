@@ -100,11 +100,10 @@ body {
 				
 				<h:form id="hiddenForm" style="display: none;">
 					<h:inputHidden id="IHIdMusica" value="#{MusicaBean.valorIdMusica}" />
-					<h:inputHidden id="IHCurtiuMusica" value="#{MusicaBean.curtiuMusica}" />
-					<h:inputHidden id="IHNaoCurtiuMusica" value="#{MusicaBean.naoCurtiuMusica}" />
-					<h:inputHidden id="ValorReposta" value="#{MusicaBean.avaliarMusicaPrincipal.resposta}" />
+					<h:inputHidden id="IHCurtiuMusica" value="#{GlobalBean.curtiuMusica}" />
+					<h:inputHidden id="IHNaoCurtiuMusica" value="#{GlobalBean.naoCurtiuMusica}" />
 					<h:commandButton id="cbPesquisaCurtiu" >
-					<f:ajax execute="@form" listener="#{MusicaBean.pesquisaCurtiu}" />
+					<f:ajax execute="@form" listener="#{MusicaBean.pesquisaCurtiu}" render="@this"/>
 					</h:commandButton>
 					<h:commandButton id="cbAvaliaMusicaNegativamente" >
 					<f:ajax execute="@form" listener="#{MusicaBean.avaliarMusicaNegativamente}" />

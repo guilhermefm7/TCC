@@ -26,8 +26,6 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	private AvaliarMusicaDAO avaliarMusicaDAO = new AvaliarMusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private Usuario usuario = null;
 	private String valorIdMusica = null;
-	private boolean curtiuMusica = false;
-	private boolean naoCurtiuMusica = false;
 	AvaliarMusica avaliarMusicaPrincipal = null;
 	public MusicaBean() { }
 	
@@ -54,22 +52,48 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			Musica musica = pesquisaMusica(valorIdMusica);
-			if(musica!=null)
+			if(getUsuarioGlobal()!=null)
 			{
-				ConectaBanco.getInstance().beginTransaction();
-				musicaDAO.save(musica);
-				ConectaBanco.getInstance().commit();
+				Musica musica = null;
+				musica = musicaDAO.procuraMusicaByID(valorIdMusica);
+				if(musica==null)
+				{
+					musica = pesquisaMusica(valorIdMusica);
+					if(musica!=null)
+					{
+						ConectaBanco.getInstance().beginTransaction();
+						musicaDAO.save(musica);
+						ConectaBanco.getInstance().commit();
+					}
+				}
+				
+				if(musica!=null)
+				{
+					ConectaBanco.getInstance().beginTransaction();
+					AvaliarMusica am = avaliarMusicaDAO.getAvaliacaoUsuario(musica, getUsuarioGlobal(), 1);
+					ConectaBanco.getInstance().commit();
+					avaliarMusicaPrincipal = am;
+					//curtiuMusica = !curtiuMusica;
+					
+					
+					if(am.getResposta()==null)
+					{
+						setNaoCurtiuMusica(false);
+					}
+					else
+					{
+						if(am.getResposta()==true)
+						{
+							setCurtiuMusica(true);
+						}
+					}
+
+				}
 			}
-			
-			ConectaBanco.getInstance().beginTransaction();
-			AvaliarMusica am = avaliarMusicaDAO.getAvaliacaoUsuario(musica, getUsuarioGlobal(), 1);
-			ConectaBanco.getInstance().commit();
-			avaliarMusicaPrincipal = am;
-			curtiuMusica = !curtiuMusica;
 		}
 		catch(Exception e)
 		{
+			ConectaBanco.getInstance().rollBack();
 			e.printStackTrace();
 		}
 	}
@@ -78,22 +102,47 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			Musica musica = pesquisaMusica(valorIdMusica);
-			if(musica!=null)
+			if(getUsuarioGlobal()!=null)
 			{
-				ConectaBanco.getInstance().beginTransaction();
-				musicaDAO.save(musica);
-				ConectaBanco.getInstance().commit();
+				Musica musica = null;
+				musica = musicaDAO.procuraMusicaByID(valorIdMusica);
+				if(musica==null)
+				{
+					musica = pesquisaMusica(valorIdMusica);
+					if(musica!=null)
+					{
+						ConectaBanco.getInstance().beginTransaction();
+						musicaDAO.save(musica);
+						ConectaBanco.getInstance().commit();
+					}
+				}
+				
+				if(musica!=null)
+				{
+					ConectaBanco.getInstance().beginTransaction();
+					AvaliarMusica am = avaliarMusicaDAO.getAvaliacaoUsuario(musica, getUsuarioGlobal(), 2);
+					ConectaBanco.getInstance().commit();
+					avaliarMusicaPrincipal = am;
+					//naoCurtiuMusica = !naoCurtiuMusica;
+					
+					if(am.getResposta()==null)
+					{
+						setNaoCurtiuMusica(false);
+					}
+					else
+					{
+						if(am.getResposta()==false)
+						{
+							setNaoCurtiuMusica(true);
+						}
+					}
+					
+				}
 			}
-			
-			ConectaBanco.getInstance().beginTransaction();
-			AvaliarMusica am = avaliarMusicaDAO.getAvaliacaoUsuario(musica, getUsuarioGlobal(), 2);
-			ConectaBanco.getInstance().commit();
-			avaliarMusicaPrincipal = am;
-			naoCurtiuMusica = !naoCurtiuMusica;
 		}
 		catch(Exception e)
 		{
+			ConectaBanco.getInstance().rollBack();
 			e.printStackTrace();
 		}
 	}
@@ -102,25 +151,30 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			Boolean resposta = avaliarMusicaDAO.pesquisaAvaliacaoUsuario(valorIdMusica, getUsuarioGlobal());
-			if(resposta!=null)
+			if(getUsuarioGlobal()!=null)
 			{
-				if(resposta)
+				setCurtiuMusica(false);
+				setNaoCurtiuMusica(false);
+				Boolean resposta = avaliarMusicaDAO.pesquisaAvaliacaoUsuario(valorIdMusica, getUsuarioGlobal());
+				System.out.println(resposta);
+				if(resposta!=null)
 				{
-					avaliarMusicaPrincipal.setResposta(true);
-					curtiuMusica = true;
-					naoCurtiuMusica = false;
+					if(resposta)
+					{
+						setCurtiuMusica(true);
+						setNaoCurtiuMusica(false);
+					}
+					else if(!resposta)
+					{
+						setCurtiuMusica(false);
+						setNaoCurtiuMusica(true);
+					}
 				}
-				else if(!resposta)
+				else
 				{
-					curtiuMusica = false;
-					naoCurtiuMusica = true;
+					setCurtiuMusica(false);
+					setNaoCurtiuMusica(false);
 				}
-			}
-			else
-			{
-				curtiuMusica = false;
-				naoCurtiuMusica = false;
 			}
 		}
 		catch(Exception e)
@@ -168,7 +222,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 		this.valorIdMusica = valorIdMusica;
 	}
 
-	public boolean isCurtiuMusica() {
+	/*public boolean isCurtiuMusica() {
 		return curtiuMusica;
 	}
 
@@ -182,7 +236,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 
 	public void setNaoCurtiuMusica(boolean naoCurtiuMusica) {
 		this.naoCurtiuMusica = naoCurtiuMusica;
-	}
+	}*/
 
 	public AvaliarMusica getAvaliarMusicaPrincipal() {
 		return avaliarMusicaPrincipal;

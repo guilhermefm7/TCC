@@ -20,8 +20,8 @@ import com.echonest.api.v4.examples.SearchSongsExample;
 
 public class TesteMusica
 {
-	/*
-	 public static void procuraArtista(String artista)
+	
+/*	 public static void procuraArtista(String artista)
 	 {
 		 try
 		 {
@@ -47,30 +47,6 @@ public class TesteMusica
 			 e.printStackTrace();
 		 }
 	 }
-	 public static void procurarMusica()
-	 {
-		 try
-			{
-				EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
-				SongParams p = new SongParams();
-				p.setArtist("Nirvana");
-			    p.addIDSpace("deezer");
-			    p.addIDSpace("deezer");
-			    p.add("title", "come as you are");
-			    p.add("results", 1);	
-			    
-			    List<Song> songs = en.searchSongs(p);
-			    for (Song song : songs)
-			    {
-			        //dumpSong(song);
-			        System.out.println(song.getID());
-			    }
-			}
-			catch  (Exception e)
-			{
-				e.printStackTrace();
-			}
-	 }
 	 
 	 public static void procuraArtista()
 	 {
@@ -87,12 +63,8 @@ public class TesteMusica
 	        for (Artist artist : artists) {
 	        	 System.out.printf("%s\n", artist.getName());
 	        	 System.out.printf("%s\n", artist.getID());
-	        	 
-	             //System.out.printf("   fam   %.3f\n", artist.getBiographies().get(0).getText());
-	             //System.out.printf("   fam   %.3f\n", artist.getBiographies().get(0).getSite());
-	             //System.out.printf("   fam   %.3f\n", artist.getNews().get(0).getDateFound());
-	            // System.out.printf("   fam   %.3f\n", artist.getYearsActive());
-	             //dumpArtist(artist);
+	        	
+	             dumpArtist(artist);
 	        }
 		 }
 		 catch  (Exception e)
@@ -182,6 +154,29 @@ public class TesteMusica
 	        }
 	    }
 	 
+	 public static void procurarMusica()
+	 {
+		 try
+			{
+				EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
+				SongParams p = new SongParams();
+				p.setArtist("Nirvana");
+			    p.addIDSpace("deezer");
+			    p.add("title", "Come as you are");
+			    p.add("results", 1);	
+			    
+			    List<Song> songs = en.searchSongs(p);
+			    for (Song song : songs)
+			    {
+			        dumpSong(song);
+			    }
+			}
+			catch  (Exception e)
+			{
+				e.printStackTrace();
+			}
+	 }
+	 
 	 *//**
 	  * Título da Música
 	  * Artista/Banda
@@ -196,10 +191,10 @@ public class TesteMusica
 	 public static void dumpSong(Song song) throws EchoNestException 
 	 {
 	        System.out.printf("%s\n", song.getTitle());
-	        System.out.printf("   Artist: %s\n", song.getArtistName());
-	        System.out.printf("   Dur   : %.3f\n", song.getDuration());
-	        System.out.printf("   BPM   : %.3f\n", song.getTempo());
-	        System.out.printf("   A loc : %s\n", song.getArtistLocation());
+	        System.out.printf("   Banda : %s\n", song.getArtistName());
+	        System.out.printf("   Duração (segundos)   : %.3f\n", song.getDuration());
+	        System.out.printf("   BPM (Batidas por minuto)  : %.3f\n", song.getTempo());
+	        System.out.printf("   Localização da banda : %s\n", song.getArtistLocation());
 	        System.out.printf("   Danc : %.3f\n", song.getDanceability());
 	        System.out.printf("   Ener : %.3f\n", song.getEnergy());
 	 }
@@ -207,6 +202,6 @@ public class TesteMusica
 	public static void main(String[] args)
 	{
 		procurarMusica();
-		procuraMusicaa();
+		//procuraArtista();
 	}*/
 }

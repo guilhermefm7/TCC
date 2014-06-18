@@ -53,6 +53,8 @@ public class PesquisaMusica
 		    	musica = new Musica();
 		    	musica.setTitulo(song.getTitle());
 		    	musica.setIdMUsica(song.getID());
+		    	musica.setBPMMUsica(song.getTempo());
+		    	musica.setEnergMusica(song.getEnergy());
 		    }
 			 return musica;
 		 }

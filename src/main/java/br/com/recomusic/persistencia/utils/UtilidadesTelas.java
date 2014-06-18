@@ -24,6 +24,8 @@ import com.echonest.api.v4.EchoNestAPI;
 public class UtilidadesTelas
 {
 	private static Usuario usuarioGlobal;
+	private  boolean curtiuMusica = false;
+	private  boolean naoCurtiuMusica = false;
 	EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
 	private InformacaoMusicalCadastroBandaDAO informacaoMusicalCadastroBandaDAO = new InformacaoMusicalCadastroBandaDAO( ConectaBanco.getInstance().getEntityManager());
     public UtilidadesTelas() {   }  
@@ -150,4 +152,22 @@ public class UtilidadesTelas
 	public static void setUsuarioGlobal(Usuario usuarioGlobal) {
 		UtilidadesTelas.usuarioGlobal = usuarioGlobal;
 	}
+
+	public  boolean isCurtiuMusica() {
+		return curtiuMusica;
+	}
+
+	public  void setCurtiuMusica(boolean curtiuMusica) {
+		this.curtiuMusica = curtiuMusica;
+	}
+
+	public  boolean isNaoCurtiuMusica() {
+		return naoCurtiuMusica;
+	}
+
+	public  void setNaoCurtiuMusica(boolean naoCurtiuMusica) {
+		this.naoCurtiuMusica = naoCurtiuMusica;
+	}
+	
+	
 }

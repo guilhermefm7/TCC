@@ -26,7 +26,9 @@ public class Musica implements Serializable
 	private String titulo;
 	private String ano;
 	private String album;
-	private String idMUsica;
+	private String idMusica;
+	private Double BPMMUsica;
+	private Double EnergMusica;
 
 	@ManyToOne @JoinColumn(name="fkPais")
 	private Pais pais;
@@ -62,14 +64,20 @@ public class Musica implements Serializable
 	public String getAlbum() { return album; }
 	public void setAlbum(String album) { this.album = album; }
 
-	public String getIdMUsica() { return idMUsica; }
-	public void setIdMUsica(String idMUsica) { this.idMUsica = idMUsica; }
+	public String getIdMUsica() { return idMusica; }
+	public void setIdMUsica(String idMUsica) { this.idMusica = idMUsica; }
 
 	public Pais getPais() { return pais; }
 	public void setPais(Pais pais) { this.pais = pais; }
 
 	public Banda getBanda() { return banda; }
 	public void setBanda(Banda banda) { this.banda = banda; }
+
+	public Double getBPMMUsica() { return BPMMUsica; }
+	public void setBPMMUsica(Double bPMMUsica) { BPMMUsica = bPMMUsica; }
+
+	public Double getEnergMusica() { return EnergMusica; }
+	public void setEnergMusica(Double energMusica) { EnergMusica = energMusica; }
 
 	public List<MusicaGenero> getMusicaGeneros() { if(musicaGeneros==null) { musicaGeneros = new ArrayList<MusicaGenero>(); } return musicaGeneros; }
 	public void setMusicaGeneros(List<MusicaGenero> musicaGeneros) { this.musicaGeneros = musicaGeneros; }

@@ -133,7 +133,7 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
     				if(avaliarMusica.getUsuario()!=null && avaliarMusica.getUsuario().getPkUsuario()>0 && 
     						avaliarMusica.getMusica()!=null && avaliarMusica.getMusica().getPkMusica()>0 &&
     						avaliarMusica.getUsuario().getPkUsuario()==usuario.getPkUsuario() && 
-    						avaliarMusica.getMusica().getIdMUsica()==valorIdMusic)
+    						avaliarMusica.getMusica().getIdMUsica().equals(valorIdMusic))
     				{
     					return avaliarMusica.getResposta();
     				}
