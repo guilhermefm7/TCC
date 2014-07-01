@@ -106,7 +106,7 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 		if(!(senhaDigitada.equals(senhaDigitadaNovamente)))								{ return "Senhas diferentes" ; 									}	
 		if(senhaDigitada.length()<6 && senhaDigitadaNovamente.length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}
 		
-		if(usuarioDAO.existeLogin(usuario.getLogin()))									{ return "Login já existente" ; 								}	
+		//if(usuarioDAO.existeLogin(usuario.getLogin()))									{ return "Login já existente" ; 								}	
 		
 		return "";
 	}

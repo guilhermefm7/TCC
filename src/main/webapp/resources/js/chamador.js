@@ -52,12 +52,11 @@ function compartilharFacebook(ID) {
 	
 }
 
-
 function curtir(nome)
 {
 	document.getElementById('hiddenForm:IHIdMusica').value = nome;
 	document.getElementById('hiddenForm:cbAvaliaMusicaPositivamente').click(); 
-
+	
 	if(document.getElementById('hiddenForm:IHCurtiuMusica').value=='true')
 	{
 		document.getElementById('btCurtir' + nome).src = "https://cdn3.iconfinder.com/data/icons/wpzoom-developer-icon-set/500/138-16.png";
@@ -180,7 +179,6 @@ function initUI() {
 			}
 	);
 }
-
 
 $(document).ready(function() {
 	fetchApiKey( function(api_key, isLoggedIn) {

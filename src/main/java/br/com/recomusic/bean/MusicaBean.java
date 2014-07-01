@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
@@ -78,7 +79,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 					
 					if(am.getResposta()==null)
 					{
-						setNaoCurtiuMusica(false);
+						setCurtiuMusica(false);
 					}
 					else
 					{
@@ -87,7 +88,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 							setCurtiuMusica(true);
 						}
 					}
-
+					System.out.println("Curtiu " + isCurtiuMusica() + "Não Curtiu " +  isNaoCurtiuMusica());
 				}
 			}
 		}
@@ -136,7 +137,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 							setNaoCurtiuMusica(true);
 						}
 					}
-					
+					System.out.println("Curtiu " + isCurtiuMusica() + "Não Curtiu " +  isNaoCurtiuMusica());
 				}
 			}
 		}
@@ -156,7 +157,6 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 				setCurtiuMusica(false);
 				setNaoCurtiuMusica(false);
 				Boolean resposta = avaliarMusicaDAO.pesquisaAvaliacaoUsuario(valorIdMusica, getUsuarioGlobal());
-				System.out.println(resposta);
 				if(resposta!=null)
 				{
 					if(resposta)

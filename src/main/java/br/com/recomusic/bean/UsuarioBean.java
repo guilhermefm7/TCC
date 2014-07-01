@@ -133,6 +133,16 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 				    	 Usuario usuarioFacebook = usuarioDAO.validarID(facebookUser.getId());
 				    	 if(usuarioFacebook!=null && usuarioFacebook.getPkUsuario()>0)
 				    	 {
+				    		 Connection<User> myFriends = facebookClient.fetchConnection("me/friends", User.class);
+							 if(myFriends.getData()!=null && myFriends.getData().size()>0)
+							 {
+								 for (int i = 0; i < myFriends.getData().size(); i++)
+								 {
+									 listaMusicas.add(myFriends.getData().get(i).getName());
+									 System.out.println(myFriends.getData().get(i).getName());
+								 }
+							 }
+				    		 
 							 Connection<NamedFacebookType> musics = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
 							 if(musics.getData()!=null && musics.getData().size()>0)
 							 {
@@ -260,7 +270,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 							usuarioSalvo.setNome(nome);
 							String cript = Criptografia.md5(senha);
 							usuarioSalvo.setSenha(cript);
-							usuarioSalvo.setNome(nome);
+							usuarioSalvo.setSobrenome(sobrenome);
 							usuarioSalvo.setSexo(Integer.valueOf(this.sexo));
 							usuarioSalvo.setStatus(Constantes.TIPO_STATUS_ATIVO);
 							usuarioSalvo.setLancamento(new Date());

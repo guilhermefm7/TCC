@@ -21,7 +21,7 @@ import com.echonest.api.v4.examples.SearchSongsExample;
 public class TesteMusica
 {
 	
-/*	 public static void procuraArtista(String artista)
+	 public static void procuraArtista(String artista)
 	 {
 		 try
 		 {
@@ -177,7 +177,7 @@ public class TesteMusica
 			}
 	 }
 	 
-	 *//**
+	 /**
 	  * Título da Música
 	  * Artista/Banda
 	  * Duração da música em segundos
@@ -187,7 +187,7 @@ public class TesteMusica
 	  * Quanto enérgica a música é
 	  * @param song
 	  * @throws EchoNestException
-	  *//*
+	  */
 	 public static void dumpSong(Song song) throws EchoNestException 
 	 {
 	        System.out.printf("%s\n", song.getTitle());
@@ -201,7 +201,7 @@ public class TesteMusica
 
 	public static void main(String[] args)
 	{
-		procurarMusica();
-		//procuraArtista();
-	}*/
+		//procurarMusica();
+		procuraArtista();
+	}
 }
