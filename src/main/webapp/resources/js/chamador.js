@@ -89,13 +89,14 @@ function addSongs(songs) {
 	var playlist = $("#playlist");
 	for (var i = 0; i < songs.length; i++) 
 	{
+		alert(songs[i].id);
 		var div = createSongDiv(songs[i]);
 		playlist.append(div);
 		fetchDeezerTrack(songs[i], div);
 	}
 }
 
-
+//http://developer.echonest.com/api/v4/artist/profile?api_key=9QB1EM63CLM2RR5V3&id=ARH3S5S1187FB4F76B&bucket=genre&format=json
 function fetchDeezerTrack(song, div) {
 	if (song.tracks.length > 0) {
 		var tid = song.tracks[0].foreign_id.split(':')[2];
@@ -158,6 +159,7 @@ function fetchPlaylist(music, artistName) {
 				info("");
 				if (data.response.status.code == 0) {
 					var songs = data.response.songs;
+					
 					addSongs(songs);
 				} else {
 					info("Can't create a playlist for " + music);

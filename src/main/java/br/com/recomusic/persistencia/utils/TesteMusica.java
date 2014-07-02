@@ -13,10 +13,30 @@ import com.echonest.api.v4.Image;
 import com.echonest.api.v4.News;
 import com.echonest.api.v4.Params;
 import com.echonest.api.v4.Review;
+import com.echonest.api.v4.Segment;
 import com.echonest.api.v4.Song;
 import com.echonest.api.v4.SongParams;
+import com.echonest.api.v4.TimedEvent;
+import com.echonest.api.v4.Track;
+import com.echonest.api.v4.TrackAnalysis;
 import com.echonest.api.v4.Video;
 import com.echonest.api.v4.examples.SearchSongsExample;
+
+import static org.junit.Assert.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.AfterClass;
+import java.util.HashMap;
+import java.util.Map;
+import static org.junit.Assert.*;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 public class TesteMusica
 {
@@ -63,6 +83,7 @@ public class TesteMusica
 	        for (Artist artist : artists) {
 	        	 System.out.printf("%s\n", artist.getName());
 	        	 System.out.printf("%s\n", artist.getID());
+	        	 System.out.printf("%s\n", artist.getForeignID("deezer"));
 	        	
 	             dumpArtist(artist);
 	        }
@@ -87,9 +108,9 @@ public class TesteMusica
 		     List<Song> songs = en.getSongs(p);
 		     for (Song song : songs)
 		     {
-		    	 musica = new Musica();
-		    	 musica.setTitulo(song.getTitle());
-		    	 musica.setIdMUsica(song.getID());
+		    	// musica = new Musica();
+		    	 //musica.setTitulo(song.getTitle());
+		    	// musica.setIdMUsica(song.getID());
 		    	 System.out.println(song.getTitle());
 		    	 System.out.println(song.getID());
 		     }
@@ -154,29 +175,143 @@ public class TesteMusica
 	        }
 	    }
 	 
-	 public static void procurarMusica()
+	 @Test
+	 public static void procurarMusica() throws EchoNestException
 	 {
-		 try
-			{
+
 				EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
 				SongParams p = new SongParams();
 				p.setArtist("Nirvana");
 			    p.addIDSpace("deezer");
 			    p.add("title", "Come as you are");
 			    p.add("results", 1);	
-			    
+			    p.includeTracks();
 			    List<Song> songs = en.searchSongs(p);
+			    Map data = new HashMap();
+			    data.put("id", "deezer");
+			    Map<String, Track> trackMap = new HashMap<String, Track>();
+			    Track track = trackMap.get("deezer");
+			    //trackFromID();
 			    for (Song song : songs)
 			    {
-			        dumpSong(song);
+			    	Track track1 = song.getTrack("deezer");
+			    	//System.out.printf("Spotify FID %s\n", track.getForeignID());
+			    	 //verifyAnalysis(song.getAnalysis());
+			    	//track.showAll();
+			    	System.out.println("Track " + track1.getForeignID());
+			    	//verifyTrack(track);
+			        //dumpSong(song);
 			    }
-			}
-			catch  (Exception e)
-			{
-				e.printStackTrace();
-			}
+
 	 }
-	 
+	    private static void verifyTrack(Track track) throws EchoNestException {
+	        assertTrue("status check", track.getStatus().equals(
+	                Track.AnalysisStatus.COMPLETE));
+	        track.showAll();
+	    }
+	    
+	    private static void verifyTrack1(Track track) throws EchoNestException {
+	        track.showAll();
+	        assertTrue("has analysis url", track.getAnalysisURL() != null);
+	        verifyAnalysis1(track.getAnalysis(), false);
+	        System.out.println("ds" +track.getAnalysisURL());
+	        System.out.println(track.getAudioUrl());
+	    }
+	    
+	    private static void verifyAnalysis1(TrackAnalysis analysis, boolean full) {
+	        System.out.println("num samples : " + analysis.getNumSamples());
+	        System.out.println("sample md5  : " + analysis.getMD5());
+	        System.out.println("num channels: " + analysis.getNumChannels());
+	        System.out.println("duration    : " + analysis.getDuration());
+
+	        if (full) {
+
+	            System.out.println(" Sections ");
+	            List<TimedEvent> sections = analysis.getSections();
+	            for (TimedEvent e : sections) {
+	                System.out.println(e);
+	            }
+
+	            System.out.println(" Bars ");
+	            List<TimedEvent> bars = analysis.getBars();
+	            for (TimedEvent e : bars) {
+	                System.out.println(e);
+	            }
+
+	            System.out.println(" Beats ");
+	            List<TimedEvent> beats = analysis.getBeats();
+	            for (TimedEvent e : beats) {
+	                System.out.println(e);
+	            }
+
+	            System.out.println(" Tatums ");
+	            List<TimedEvent> tatums = analysis.getTatums();
+	            for (TimedEvent e : tatums) {
+	                System.out.println(e);
+	            }
+
+	            System.out.println(" Segments ");
+	            List<Segment> segments = analysis.getSegments();
+	            for (Segment e : segments) {
+	                System.out.println(e);
+	            }
+	        }
+	    }
+	    
+	    private static void verifyAnalysis(TrackAnalysis analysis) {
+	        System.out.println("num samples : " + analysis.getNumSamples());
+	        System.out.println("sample md5  : " + analysis.getMD5());
+	        System.out.println("num channels: " + analysis.getNumChannels());
+	        System.out.println("duration    : " + analysis.getDuration());
+
+	        System.out.println(" Sections ");
+	        List<TimedEvent> sections = analysis.getSections();
+	        for (TimedEvent e : sections) {
+	            System.out.println(e);
+	        }
+
+	        System.out.println(" Bars ");
+	        List<TimedEvent> bars = analysis.getBars();
+	        for (TimedEvent e : bars) {
+	            System.out.println(e);
+	        }
+
+	        System.out.println(" Beats ");
+	        List<TimedEvent> beats = analysis.getBeats();
+	        for (TimedEvent e : beats) {
+	            System.out.println(e);
+	        }
+
+	        System.out.println(" Tatums ");
+	        List<TimedEvent> tatums = analysis.getTatums();
+	        for (TimedEvent e : tatums) {
+	            System.out.println(e);
+	        }
+
+	        System.out.println(" Segments ");
+	        List<Segment> segments = analysis.getSegments();
+	        for (Segment e : segments) {
+	            System.out.println(e);
+	        }
+	    }
+
+	    private void verifySong(Song song) throws EchoNestException {
+	        song.showAll();
+	    }
+	    
+	    public static void trackFromID() throws EchoNestException {
+	    	EchoNestAPI en1;
+	    	en1 = new EchoNestAPI("9QB1EM63CLM2RR5V3");
+	    	en1.setTraceSends(false);
+	    	en1.setTraceRecvs(false);
+	        String id = "TRWXVPA1296187FC15";
+	        Track track = en1.newTrackByID(id);
+	        assertTrue("track status",
+	                track.getStatus() == Track.AnalysisStatus.COMPLETE);
+	        assertTrue("track id", track.getID().equals(id));
+	        verifyTrack1(track);
+	    }
+	    
 	 /**
 	  * Título da Música
 	  * Artista/Banda
@@ -201,7 +336,17 @@ public class TesteMusica
 
 	public static void main(String[] args)
 	{
+		try
+		{
+			
+			procurarMusica();
+		}
+		catch (EchoNestException e)
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 		//procurarMusica();
-		procuraArtista();
+		//procuraArtista();
 	}
 }
