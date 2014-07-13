@@ -11,9 +11,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.recomusic.dao.BandaDAO;
+import br.com.recomusic.dao.BandaGeneroDAO;
+import br.com.recomusic.dao.GeneroDAO;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
+import br.com.recomusic.dao.InformacaoMusicalCadastroGeneroDAO;
 import br.com.recomusic.dao.UsuarioDAO;
+import br.com.recomusic.im.BandaGeneroIM;
 import br.com.recomusic.om.Banda;
+import br.com.recomusic.om.BandaGenero;
+import br.com.recomusic.om.Genero;
+import br.com.recomusic.om.InformacaoMusicalCadastroBanda;
+import br.com.recomusic.om.InformacaoMusicalCadastroGenero;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.persistencia.utils.Criptografia;
@@ -34,7 +42,10 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
 	private BandaDAO bandaDAO = new BandaDAO( ConectaBanco.getInstance().getEntityManager());
+	private GeneroDAO generoDAO = new GeneroDAO( ConectaBanco.getInstance().getEntityManager());
+	private BandaGeneroDAO bandaGeneroDAO = new BandaGeneroDAO( ConectaBanco.getInstance().getEntityManager());
 	private InformacaoMusicalCadastroBandaDAO informacaoMusicalCadastroBandaDAO = new InformacaoMusicalCadastroBandaDAO( ConectaBanco.getInstance().getEntityManager());
+	private InformacaoMusicalCadastroGeneroDAO informacaoMusicalCadastroGeneroDAO = new InformacaoMusicalCadastroGeneroDAO( ConectaBanco.getInstance().getEntityManager());
 	private Usuario usuario = new Usuario();
 	private String emailLogin = null;
 	private String email = null;
@@ -138,8 +149,8 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 							 {
 								 for (int i = 0; i < myFriends.getData().size(); i++)
 								 {
-									 listaMusicas.add(myFriends.getData().get(i).getName());
-									 System.out.println(myFriends.getData().get(i).getName());
+									 System.out.println("Amigos " + myFriends.getData().get(i).getName());
+									 System.out.println("Amigos " +  myFriends.getData().get(i).getId());
 								 }
 							 }
 				    		 
@@ -153,21 +164,78 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 								 }
 							 }
 							 
+							 //Setado para ser utilizado na pesquisa de Bandas
+				    		 this.emailLogin = facebookUser.getEmail();
 							 usuario = new Usuario();
 							 usuario = usuarioFacebook;
-							 setUsuarioGlobal(usuarioFacebook);
+							 setUsuarioGlobal(usuario);
 							 
-							 List<Banda> listaBandas = pesquisaBanda(listaMusicas, true);
+							 List<BandaGeneroIM> listaBGIM = null;
+							 listaBGIM = pesquisaBanda(listaMusicas, true);
+							 Genero getGenero;
+							 Banda getBanda;
+							 BandaGenero getBandaGenero;
+							 InformacaoMusicalCadastroGenero imcg;
+							 InformacaoMusicalCadastroBanda imcb;
 							 
-							 if(listaBandas!=null && listaBandas.size()>0)
+							 if(listaBGIM!=null && listaBGIM.size()>0)
 							 {
 								 ConectaBanco.getInstance().beginTransaction();
-								 bandaDAO.salvarListaBanda(listaBandas);
-								 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(listaBandas, getUsuarioGlobal());
+								 for (BandaGeneroIM bandaGeneroIM : listaBGIM)
+								 {
+									 getBanda = null;
+									 getBanda = bandaDAO.pesquisarBandaExiste(bandaGeneroIM.getBanda().getIdBanda());
+									 
+									 if(getBanda==null)
+									 {
+										 getBanda = new Banda();
+										 getBanda = bandaGeneroIM.getBanda();
+										 bandaDAO.salvarBanda(getBanda);
+									 }
+									 
+									 imcb = new InformacaoMusicalCadastroBanda();
+									 imcb.setBanda(getBanda);
+									 imcb.setUsuario(usuarioFacebook);
+									 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+									 
+									 for (String nomeGenero : bandaGeneroIM.getListaGeneros())
+									 {
+										 getGenero = null;
+										 getGenero = generoDAO.pesquisarGenero(nomeGenero);
+										 
+										 if(getGenero==null)
+										 {
+											 getGenero = new Genero();
+											 getGenero.setNomeGenero(nomeGenero);
+											 getGenero = generoDAO.salvaListaGeneros(nomeGenero);
+										 }
+										 
+										 getBandaGenero = null;
+										 getBandaGenero = bandaGeneroDAO.pesquisarBandaGenero(getBanda, getGenero);
+										 
+										 if(getBandaGenero==null)
+										 {
+											 getBandaGenero = new BandaGenero();
+											 getBandaGenero.setBanda(getBanda);
+											 getBandaGenero.setGenero(getGenero);
+											 bandaGeneroDAO.salvarBandaGenero(getBandaGenero);
+										 }
+										 
+										 imcg = null;
+										 imcg = informacaoMusicalCadastroGeneroDAO.pesquisarIMCG(usuarioFacebook, getGenero);
+										 if(imcg == null)
+										 {
+											 imcg = new InformacaoMusicalCadastroGenero();
+											 imcg.setUsuario(usuarioFacebook);
+											 imcg.setGenero(getGenero);
+											 informacaoMusicalCadastroGeneroDAO.salvarIMCG(imcg);
+										 }
+									 }
+								 }
+								 
 								 ConectaBanco.getInstance().commit();
 							 }
 							 
-				    		 this.emailLogin = facebookUser.getEmail();
 				    		 this.logado = true;
 				    	 }
 				    	 else
@@ -198,8 +266,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 					    			 }
 					    			 
 					    			 save(usuarioFacebook);
-					    			 
-					    			 
+
 					    			 
 									 Connection<NamedFacebookType> musics = facebookClient.fetchConnection("me/music", NamedFacebookType.class);
 									 if(musics.getData()!=null && musics.getData().size()>0)
@@ -211,20 +278,76 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 										 }
 									 }
 									 
-									 List<Banda> listaBandas = pesquisaBanda(listaMusicas, true);
-									 
-									 if(listaBandas!=null && listaBandas.size()>0)
-									 {
-										 ConectaBanco.getInstance().beginTransaction();
-										 bandaDAO.salvarListaBanda(listaBandas);
-										 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(listaBandas, getUsuarioGlobal());
-										 ConectaBanco.getInstance().commit();
-									 }
-									 
 					    			 this.emailLogin = facebookUser.getEmail();
 									 usuario = new Usuario();
 									 usuario = usuarioFacebook;
 									 setUsuarioGlobal(usuario);
+									 
+									 List<BandaGeneroIM> listaBGIM = null;
+									 listaBGIM = pesquisaBanda(listaMusicas, false);
+									 Genero getGenero;
+									 Banda getBanda;
+									 BandaGenero getBandaGenero;
+									 InformacaoMusicalCadastroGenero imcg;
+									 InformacaoMusicalCadastroBanda imcb;
+									 
+									 if(listaBGIM!=null && listaBGIM.size()>0)
+									 {
+										 ConectaBanco.getInstance().beginTransaction();
+										 for (BandaGeneroIM bandaGeneroIM : listaBGIM)
+										 {
+											 getBanda = null;
+											 getBanda = bandaDAO.pesquisarBandaExiste(bandaGeneroIM.getBanda().getIdBanda());
+											 
+											 if(getBanda==null)
+											 {
+												 getBanda = new Banda();
+												 getBanda = bandaGeneroIM.getBanda();
+												 bandaDAO.salvarBanda(getBanda);
+											 }
+											 
+											 imcb = new InformacaoMusicalCadastroBanda();
+											 imcb.setBanda(getBanda);
+											 imcb.setUsuario(usuarioFacebook);
+											 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+											 
+											 for (String nomeGenero : bandaGeneroIM.getListaGeneros())
+											 {
+												 getGenero = null;
+												 getGenero = generoDAO.pesquisarGenero(nomeGenero);
+												 
+												 if(getGenero==null)
+												 {
+													 getGenero = new Genero();
+													 getGenero.setNomeGenero(nomeGenero);
+													 getGenero = generoDAO.salvaListaGeneros(nomeGenero);
+												 }
+												 
+												 getBandaGenero = null;
+												 getBandaGenero = bandaGeneroDAO.pesquisarBandaGenero(getBanda, getGenero);
+												 
+												 if(getBandaGenero==null)
+												 {
+													 getBandaGenero = new BandaGenero();
+													 getBandaGenero.setBanda(getBanda);
+													 getBandaGenero.setGenero(getGenero);
+													 bandaGeneroDAO.salvarBandaGenero(getBandaGenero);
+												 }
+												 
+												 imcg = null;
+												 imcg = informacaoMusicalCadastroGeneroDAO.pesquisarIMCG(usuarioFacebook, getGenero);
+												 if(imcg == null)
+												 {
+													 imcg = new InformacaoMusicalCadastroGenero();
+													 imcg.setUsuario(usuarioFacebook);
+													 imcg.setGenero(getGenero);
+													 informacaoMusicalCadastroGeneroDAO.salvarIMCG(imcg);
+												 }
+											 }
+										 }
+										 ConectaBanco.getInstance().commit();
+									 }
+									 
 					    			 this.logado = true;
 				    			 }
 				    		 }
@@ -388,18 +511,15 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		}
 	}
 	
-	public void procurarMusica()
+	public String procurarMusica()
 	{
-		try
-		{
+		
+		
+			String nomeMusicaEscolhida = nomeMusica;
 			nomeMusica = null;
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/logado.xhtml");
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			ConectaBanco.getInstance().rollBack();
-		}
+			System.out.println(nomeMusicaEscolhida);
+			//FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/procurarMusica/index.xhtml");
+			return "procurarMusica/index.xhtml";
 	}
 	
 	public void redirecionarAlterarCadastro()

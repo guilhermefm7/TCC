@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+	
+<h:body>
+	<f:metadata>
+		<f:viewParam name="t" value="#{ProcurarMusicaBean.tokenRecebido}" />
+		<f:event type="preRenderView" listener="#{ProcurarMusicaBean.iniciar}" />
+	</f:metadata>
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+			<ui:define name="content">
+
+				<h:panelGroup layout="block" class="painelPesquisaMusica" style="width:100%;border-radius:0px">
+					<h1 style="color: #000;color: #4F7799;font-family:cursive">Resultados da pesquisa por</h1>
+<!-- 					<h:form>  
+		            	<h:dataTable value="#{ProcurarMusicaBean.listaMusicas}" var="o" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" >
+			    			<h:column>
+			    				column header
+			    				<f:facet name="header">Order No</f:facet>
+			    				row record
+			    				#{o.nomeMusica}
+			    			</h:column>
+			 
+			    			<h:column>
+			    				<f:facet name="header">Product Name</f:facet>
+			    				#{o.nomeArtista}
+			    			</h:column>
+	   					</h:dataTable>
+            		</h:form> -->
+				</h:panelGroup>
+			</ui:define>
+	</ui:composition>
+</h:body>
+</html>

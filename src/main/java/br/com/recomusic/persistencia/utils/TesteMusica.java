@@ -338,7 +338,6 @@ public class TesteMusica
 	{
 		try
 		{
-			
 			procurarMusica();
 		}
 		catch (EchoNestException e)

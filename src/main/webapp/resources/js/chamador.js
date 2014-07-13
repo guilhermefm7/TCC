@@ -89,7 +89,6 @@ function addSongs(songs) {
 	var playlist = $("#playlist");
 	for (var i = 0; i < songs.length; i++) 
 	{
-		alert(songs[i].id);
 		var div = createSongDiv(songs[i]);
 		playlist.append(div);
 		fetchDeezerTrack(songs[i], div);
@@ -152,6 +151,7 @@ function fetchPlaylist(music, artistName) {
 	} else {
 		url = 'http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&results=5&title=' + music +'&bucket=id:deezer&bucket=tracks&limit=true';
 	}
+	alert(url);
 	jQuery.getJSON(url, 
 			{ 
 			},

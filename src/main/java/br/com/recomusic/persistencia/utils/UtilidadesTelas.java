@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.recomusic.bean.UsuarioBean;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
+import br.com.recomusic.im.BandaGeneroIM;
 import br.com.recomusic.om.Banda;
 import br.com.recomusic.om.Musica;
 import br.com.recomusic.om.Usuario;
@@ -83,12 +84,22 @@ public class UtilidadesTelas
 	}
 	
 	/**
-	 * Responsavel por enerrar a sessao
+	 * Responsável por procurar se a lista de bandas curtidas pelo usuário existem e se elas já estão cadastradas nas informações de perfil do usuário
 	 */
-	public List<Banda> pesquisaBanda(List<String> listaMusicas, boolean existe) throws Exception
+	
+    /**
+     * @author Guilherme
+     * Responsável por procurar se a lista de bandas curtidas pelo usuário existem e se elas já estão cadastradas nas informações de perfil do usuário
+     * @param listaMusicas - lista de BANDAS, existe - se o usuário já existe no sistema
+     * @throws Exception
+     * return List<BandaGeneroIM>
+     */
+	public List<BandaGeneroIM> pesquisaBanda(List<String> listaMusicas, boolean existe) throws Exception
 	{
 		Banda banda = null;
-		List<Banda> listaBandas =  new ArrayList<Banda>();
+		//List<Banda> listaBandas =  new ArrayList<Banda>();
+		List<BandaGeneroIM> listaBGIM = new ArrayList<BandaGeneroIM>();
+		BandaGeneroIM bgIM;
 		
 		if(existe)
 		{
@@ -118,7 +129,11 @@ public class UtilidadesTelas
 				
 				if(!existeBanda)
 				{
-					listaBandas.add(bandaAux);
+					bgIM = new BandaGeneroIM();
+					bgIM.setListaGeneros(PesquisaMusica.requisitarGeneroBanda(bandaAux.getIdBanda()));
+					bgIM.setBanda(bandaAux);
+					listaBGIM.add(bgIM);
+					//listaBandas.add(bandaAux);
 				}
 			}
 		}
@@ -129,13 +144,16 @@ public class UtilidadesTelas
 				banda = PesquisaMusica.procuraArtista(en, string);
 				if(banda!=null)
 				{
-					listaBandas.add(banda);
+					bgIM = new BandaGeneroIM();
+					bgIM.setListaGeneros(PesquisaMusica.requisitarGeneroBanda(banda.getIdBanda()));
+					bgIM.setBanda(banda);
+					listaBGIM.add(bgIM);
+					//listaBandas.add(banda);
 				}
 			}
 		}
 		
-		
-		return listaBandas;
+		return listaBGIM;
 	}
 	
 	public Musica pesquisaMusica(String idMusica) throws Exception
@@ -143,6 +161,11 @@ public class UtilidadesTelas
 		Musica musica = new Musica();
 		musica = PesquisaMusica.procuraMusica(en, idMusica);
 		return musica;
+	}
+	
+	public void redirecionarErro() throws Exception
+	{
+		FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 	}
 
 	public static Usuario getUsuarioGlobal() {

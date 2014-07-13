@@ -7,6 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
+	
 <h:body>
 	<f:metadata>
 		<f:viewParam name="token" value="#{UsuarioBean.token}" />
@@ -15,18 +16,20 @@
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
-		<!-- 		<ui:define name="definicoesPre">
-		</ui:define> -->
 
 		<ui:define name="content">
+		
 			<h:panelGroup layout="block" class="container"
-				style="margin-left: 10px ;margin-bottom: 15%;margin-top:10%"
+				style="margin-left: 10px; width: 40%;margin-top:7%"
 				rendered="#{UsuarioBean.logado eq false}">
 
-				<h:panelGroup layout="block" class="jumbotron"
-					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 7%; padding-top: 3%; width: 55%; height:20%">
+				<h:panelGroup layout="block" class="painelCadastroPrincipal" >
 
-					<h2 class="form-signin-heading" style="text-align: center;">Inscreva-se</h2>
+					<h2 class="form-signin-heading" style="text-align: center;color: #000;">Inscreva-se</h2>
+					
+					<h:panelGroup layout="block" class="footer"
+						style="border-top-color: #FAFAFA"></h:panelGroup>
+					
 					<h:panelGroup layout="block" class="footer"
 						style="border-top-color: #eee"></h:panelGroup>
 
@@ -73,9 +76,9 @@
 
 
 						<h:panelGroup layout="block" class="form-group" id="registroSexo">
-							<h:selectOneRadio value="#{UsuarioBean.sexo}" id="validaSexo">
+							<h:selectOneRadio class="radioButton" value="#{UsuarioBean.sexo}" id="validaSexo" style="color: #000;font-size:medium;">
 								<f:selectItem itemValue="1" itemLabel=" Feminino "></f:selectItem>
-								<f:selectItem style="margin-left: 10px;" itemValue="2" itemLabel=" Masculino "></f:selectItem>
+								<f:selectItem  itemValue="2" itemLabel=" Masculino "></f:selectItem>
 							</h:selectOneRadio>
 						</h:panelGroup>
 
@@ -85,18 +88,17 @@
 								value="#{UsuarioBean.mensagemErroLogin}" style="color:#b94a48" />
 						</h:panelGroup>
 						<h:panelGroup layout="block" class="form-group">
-							<h:commandLink actionListener="#{UsuarioBean.redirecionaEsqueceuSuaSenha}">
-	          						Esqueceu sua senha? <strong>Lembrar</strong>
+							<h:commandLink actionListener="#{UsuarioBean.redirecionaEsqueceuSuaSenha}" style="color: #000;font-size:medium"> 
+	          						Esqueceu sua senha? <strong>Lembrar</strong> 
 							</h:commandLink>
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" class="footer"
-							style="border-top-color: #eee"></h:panelGroup>
+						<h:panelGroup layout="block" class="footer" ></h:panelGroup>
 
 
 						<h:panelGroup layout="block" class="form-group" id="botaoInscreve">
 							<h:commandLink type="submit" class="btn btn-primary"
-								style="padding:3px 32px;" value="Inscreva-se"
+								style="padding:5px 35px;border-radius: 2px;font-size:large" value="Inscreva-se"
 								actionListener="#{UsuarioBean.salvar}" />
 						</h:panelGroup>
 
@@ -105,18 +107,19 @@
 								scope="user_birthday,public_profile,email,user_likes,user_friends,user_actions.music,publish_actions,user_about_me"
 								onlogin="loginWithFacebook();" data-max-rows="1"
 								data-size="xlarge" data-show-faces="false"
-								data-auto-logout-link="false">Facebook</fb:login-button>
+								data-auto-logout-link="false" >Facebook</fb:login-button>
 						</h:panelGroup>
 
 					</h:form>
 
 				</h:panelGroup>
 			</h:panelGroup>
-			<h:panelGroup layout="block" class="container"
-				style="margin-left: 10px ;margin-bottom: 10%;margin-top:50%"
-				rendered="#{UsuarioBean.logado eq true}">
-
-
+			
+			<h:panelGroup layout="block" class="content" rendered="#{UsuarioBean.logado eq true}">
+				<h:panelGroup layout="block" class="painelPaginaPrincLogado" >
+					<h:outputLabel value="#{UsuarioBean.usuario.nome} #{UsuarioBean.usuario.sobrenome}"/>
+					<h:panelGroup layout="block" class="footerPaginaInicialNome" ></h:panelGroup>
+				</h:panelGroup>
 			</h:panelGroup>
 
 		</ui:define>

@@ -9,7 +9,6 @@ import javax.persistence.NoResultException;
 import br.com.recomusic.om.Banda;
 import br.com.recomusic.om.InformacaoMusicalCadastroBanda;
 import br.com.recomusic.om.Usuario;
-import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.singleton.ConectaBanco;
  
 /**
@@ -24,19 +23,17 @@ public class InformacaoMusicalCadastroBandaDAO extends GenericDAO<Long, Informac
         super(entityManager);
     }
     
-    public void salvarBandasCadastro(List<Banda> listaBandas, Usuario usuario) throws Exception
+    /**
+     * @author Guilherme
+     * Salva uma InformacaoMusicalCadastroBanda no banco de dados
+     * @param InformacaoMusicalCadastroBanda
+     * @throws Exception
+     */
+    public void salvarBandasCadastro(InformacaoMusicalCadastroBanda imcb) throws Exception
     {
     	try
     	{
-    		InformacaoMusicalCadastroBanda imcb;
-    		for (Banda banda : listaBandas)
-    		{
-    			imcb = new InformacaoMusicalCadastroBanda();
-    			imcb.setBanda(banda);
-    			imcb.setUsuario(usuario);
-    			imcb.setStatus(Constantes.TIPO_STATUS_ATIVO);
-    			InformacaoMusicalCadastroBandaDAO.this.save(imcb);
-			}
+    		InformacaoMusicalCadastroBandaDAO.this.save(imcb);
     	}
     	catch ( NoResultException nre )
     	{  

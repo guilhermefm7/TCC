@@ -17,11 +17,10 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 
-	<link href="/RecoMusic/resources/css/bootstrap-min.css" type="text/css"
-		rel="stylesheet" />
-	<link href="/RecoMusic/resources/css/painel.css" type="text/css"
-		rel="stylesheet" />
-	<link href="/RecoMusic/resources/css/especifico.css" type="text/css"
+<!-- 	<link href="/RecoMusic/resources/css/bootstrap-min.css" type="text/css"
+		rel="stylesheet" /> -->
+		
+<!-- 	<link href="/RecoMusic/resources/css/especifico.css" type="text/css"
 		rel="stylesheet" />
 	<link href="/RecoMusic/resources/css/jumbotron-narrow.css"
 		type="text/css" rel="stylesheet" />
@@ -36,17 +35,25 @@
 	<link href="/RecoMusic/resources/css/github.css" type="text/css"
 		rel="stylesheet" />
 	<link href='/RecoMusic/resources/css/css.css' rel='stylesheet'
-		type='text/css' />
-	<link rel="shortcut icon"
-		href="/RecoMusic/resources/imagens/icones/logotipo.jpg" />
+		type='text/css' /> -->
+		
+    <!-- Bootstrap Core CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	
+	<!-- Imagem de Fundo -->
+	<link href="/RecoMusic/resources/css/painel.css" type="text/css" rel="stylesheet" />	
+		
+	<!-- Logotipo -->
+	<link rel="shortcut icon"  href="/RecoMusic/resources/imagens/icones/logotipo.jpg" />
 
-	<ui:insert name="definicioesPre"></ui:insert>
+<!-- Removido, mas pode dar problema -->
+<!-- 	<ui:insert name="definicioesPre"></ui:insert> -->
 
 	<div id="fb-root"></div>
 	<script src="http://connect.facebook.net/en_US/all.js"></script>
 </h:head>
 
-<h:body>
+<h:body style="background-color: #000;">
 
 	<div id="header">
 		<ui:insert name="header">
@@ -71,7 +78,7 @@
 										pt:placeHolder="Login/Email" class="form-control" />
 								</div>
 								<div class="form-group">
-									<h:inputSecret pt:placeHolder="Password"
+									<h:inputSecret pt:placeHolder="Senha"
 										value="#{UsuarioBean.senha}" class="form-control" />
 								</div>
 								<div class="form-group">
@@ -91,9 +98,12 @@
 										style="margin-left:-300px;color: #428bca;font-family: fantasy" />
 								</div>
 								
-							<div class="form-group"> <h:inputText type="text" class="form-control" value="#{UsuarioBean.nomeMusica}" pt:placeholder="Pesquisar Música..." actionListener="#{UsuarioBean.procurarMusica}" /> </div>
-								
-								
+							<div class="form-group">  
+							<h:inputText type="text" class="form-control" onkeydown="procurarMusicas(value, event);" pt:placeholder="Pesquisar Música...">
+							<!-- <f:ajax execute="@this" listener="#{UsuarioBean.procurarMusica}" render="@this"/> -->
+							</h:inputText> 
+							
+							</div>
 								
 								<div class="form-group">
 									<h:commandLink type="submit" class="btn btn-success" actionListener="#{UsuarioBean.redirecionarAlterarCadastro}"
@@ -141,12 +151,24 @@
 
 
 	<!-- /Corpo da página -->
-	<div id="content ">
-		<div class="painel">
-			<ui:insert name="content">
-			</ui:insert>
-		</div>
-	</div>
+    <section class="intro">
+	    <h:panelGroup layout="block" class="content" rendered="#{UsuarioBean.logado eq true}">
+	    	<div class="container">
+                	<div class="row">
+                    	<div class="col-xs-8 col-md-12">
+							<ui:insert name="content" >
+								
+							</ui:insert>
+                    	</div>
+                    </div>
+        	</div>
+		</h:panelGroup>
+	    <h:panelGroup layout="block" class="content" rendered="#{UsuarioBean.logado eq false}">
+				<ui:insert name="content" >
+					
+				</ui:insert>
+				</h:panelGroup>
+	    </section>
 
 	<!-- 	<ui:define name="definicoesPre">
 
@@ -160,73 +182,14 @@
 		</ui:insert>
 	</div> -->
 
-	<div layout="block" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">Atualizar Cadastro</h4>
-				</div>
-				<div class="modal-body">
 
-					<h:panelGroup layout="block" class="form-group" id="registroLogin">
-						<h:outputLabel value="Login:" />
-						<h:inputText value="#{UsuarioBean.usuario.login}" id="validaLogin" data-prompt-position="topLeft" pt:placeHolder="Login" type="login" class="form-control" />
-					</h:panelGroup>
-
-					<h:panelGroup layout="block" class="row">
-
-						<h:panelGroup layout="block" class="col-xs-6">
-							<h:panelGroup class="form-group" id="registroNome">
-								<h:outputLabel value="Nome:" />
-								<h:inputText value="#{UsuarioBean.usuario.nome}" id="validaNome" pt:placeHolder="Nome" class="form-control" />
-							</h:panelGroup>
-						</h:panelGroup>
-
-						<h:panelGroup layout="block" class="col-xs-6">
-							<h:panelGroup layout="block" class="form-group" id="registroSobrenome">
-								<h:outputLabel value="Sobrenome:" />
-								<h:inputText value="#{UsuarioBean.usuario.sobrenome}" id="validaSobrenome" pt:placeHolder="Sobrenome" class="form-control" />
-							</h:panelGroup>
-						</h:panelGroup>
-
-					</h:panelGroup>
-
-
-					<h:panelGroup layout="block" id="registroSenha" class="form-group">
-						<h:outputLabel value="Senha:" />
-						<h:inputSecret pt:placeHolder="Senha" id="validaSenha" value="#{UsuarioBean.usuario.senha}" class="form-control" />
-
-					</h:panelGroup>
-
-					<h:panelGroup layout="block" id="registroSenhaNovamente" class="form-group">
-						<h:outputLabel value="Senha Novamente:" />
-						<h:inputSecret pt:placeHolder="Senha Novamente" id="validaSenhaNovamentes" value="#{UsuarioBean.usuario.senha}" class="form-control" />
-
-					</h:panelGroup>
-
-				</div>
-				
-				<h:form role="form-signin">
-					<div class="modal-footer">
-						<h:panelGroup layout="block" class="form-group">
-							<h:commandLink type="submit" class="btn btn-default" value="Cancelar" />
-						</h:panelGroup>
-
-						<h:panelGroup layout="block" class="form-group">
-							<h:commandButton type="submit" class="btn btn-primary" value="Salvar" style="background-color:#428bca; border-color: #428bca" actionListener="#{UsuarioBean.atualizar}" />
-						</h:panelGroup>
-
-						<h:panelGroup layout="block" class="form-group" rendered="#{UsuarioBean.mensagemErroLogin ne ''}">
-							<h:outputText id="mensagemErro" value="#{UsuarioBean.mensagemErroLogin}" style="color:#b94a48" />
-						</h:panelGroup>
-					</div>
-				</h:form>
-				
-			</div>
-		</div>
-	</div>
-
+	
+	<h:form id="hiddenFormPesquisa" style="display: none;">
+		<h:inputHidden id="idMusicaProcurada" value="#{UsuarioBean.nomeMusica}" />
+		<h:commandButton id="cbPesquisaMusicaSistema" style="display: none;">
+			<f:ajax execute="@form" listener="#{UsuarioBean.procurarMusica}" />
+		</h:commandButton>
+	</h:form>
 
 
 
@@ -245,6 +208,8 @@
 	<script src="/RecoMusic/resources/js/facebook.js"
 		type="text/javascript" />
 	<script src="/RecoMusic/resources/js/chamador.js"
+		type="text/javascript" />
+	<script src="/RecoMusic/resources/js/pesquisaMusica.js"
 		type="text/javascript" />
 		<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" 
 type="text/javascript"></script>
