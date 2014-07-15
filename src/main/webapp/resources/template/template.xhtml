@@ -38,10 +38,16 @@
 		type='text/css' /> -->
 		
     <!-- Bootstrap Core CSS -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<!--     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/> -->
+	
+	
+	<link href="/RecoMusic/resources/css/bootstrap3.css" type="text/css" rel="stylesheet" />
 	
 	<!-- Imagem de Fundo -->
-	<link href="/RecoMusic/resources/css/painel.css" type="text/css" rel="stylesheet" />	
+	<link href="/RecoMusic/resources/css/painel.css" rel="stylesheet" type="text/css"/>	
+	
+	<!-- Tabela das Músicas -->
+	<link href="/RecoMusic/resources/css/cssTabelaMusicas.css" rel="stylesheet" type="text/css"/>	
 		
 	<!-- Logotipo -->
 	<link rel="shortcut icon"  href="/RecoMusic/resources/imagens/icones/logotipo.jpg" />
@@ -151,24 +157,25 @@
 
 
 	<!-- /Corpo da página -->
-    <section class="intro">
-	    <h:panelGroup layout="block" class="content" rendered="#{UsuarioBean.logado eq true}">
-	    	<div class="container">
-                	<div class="row">
-                    	<div class="col-xs-8 col-md-12">
-							<ui:insert name="content" >
-								
-							</ui:insert>
-                    	</div>
-                    </div>
-        	</div>
-		</h:panelGroup>
-	    <h:panelGroup layout="block" class="content" rendered="#{UsuarioBean.logado eq false}">
-				<ui:insert name="content" >
+       <h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
+       		<section class="introLogadoTelaBranca">
+       			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<ui:insert name="content" >
 					
-				</ui:insert>
-				</h:panelGroup>
-	    </section>
+					</ui:insert>
+           		</div>
+            </section>
+		</h:panelGroup>
+		
+	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
+    	<section class="intro">
+   			<h:panelGroup layout="block" class="content" rendered="#{UsuarioBean.logado eq false}">
+			<ui:insert name="content" >
+			
+			</ui:insert>
+			</h:panelGroup>
+		</section>
+	</h:panelGroup>
 
 	<!-- 	<ui:define name="definicoesPre">
 

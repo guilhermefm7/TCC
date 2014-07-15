@@ -17,24 +17,96 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 			<ui:define name="content">
 
-				<h:panelGroup layout="block" class="painelPesquisaMusica" style="width:100%;border-radius:0px">
-					<h1 style="color: #000;color: #4F7799;font-family:cursive">Resultados da pesquisa por</h1>
-<!-- 					<h:form>  
-		            	<h:dataTable value="#{ProcurarMusicaBean.listaMusicas}" var="o" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" >
+				<div class="row">
+						<div class="col-md-4">
+						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Pesquisar Músicas</h1>
+					</div>
+					</div>
+					<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Resultados da pesquisa por: #{ProcurarMusicaBean.tokenRecebido}"/></h1>
+					<h:form>  
+					<h:panelGroup layout="block" class="table-responsive">
+		            	<h:dataTable class="table table-striped" value="#{ProcurarMusicaBean.listaMusicas}" var="o" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333">
 			    			<h:column>
-			    				column header
-			    				<f:facet name="header">Order No</f:facet>
-			    				row record
+			    				<f:facet name="header">Nome</f:facet>
 			    				#{o.nomeMusica}
 			    			</h:column>
 			 
 			    			<h:column>
-			    				<f:facet name="header">Product Name</f:facet>
+			    				<f:facet name="header">Banda</f:facet>
 			    				#{o.nomeArtista}
 			    			</h:column>
 	   					</h:dataTable>
-            		</h:form> -->
-				</h:panelGroup>
+	   					</h:panelGroup>
+            		</h:form>
+            		
+            		     <div class="table-responsive">
+            <table class="table table-striped" style="color: #000">
+              <thead>
+                <tr>
+                  <th>Header</th>
+                  <th>Header</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sed</td>
+                  <td>cursus</td>
+                </tr>
+                <tr>
+                  <td>diam</td>
+                  <td>Sed</td>
+                </tr>
+                <tr>
+                  <td>quis</td>
+                  <td>sem</td>
+                </tr>
+                <tr>
+                  <td>imperdiet</td>
+                  <td>Duis</td>
+                </tr>
+                <tr>
+                  <td>Praesent</td>
+                  <td>mauris</td>
+                </tr>
+                <tr>
+                  <td>tellus</td>
+                  <td>sed</td>
+                </tr>
+                <tr>
+                  <td>porta</td>
+                  <td>Mauris</td>
+                </tr>
+                <tr>
+                  <td>lacinia</td>
+                  <td>arcu</td>
+                </tr>
+                <tr>
+                  <td>Class</td>
+                  <td>aptent</td>
+                </tr>
+                <tr>
+                  <td>ad</td>
+                  <td>litora</td>
+                </tr>
+                <tr>
+                  <td>conubia</td>
+                  <td>nostra</td>
+                </tr>
+                <tr>
+                  <td>himenaeos</td>
+                  <td>Curabitur</td>
+                </tr>
+                <tr>
+                  <td>in</td>
+                  <td>libero</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+				
+<!-- 				<h:panelGroup layout="block" class="painelPesquisaMusicacomMusicas" style="border-radius:0px">
+				
+				</h:panelGroup> -->
 			</ui:define>
 	</ui:composition>
 </h:body>

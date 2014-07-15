@@ -511,15 +511,20 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		}
 	}
 	
-	public String procurarMusica()
+	public void procurarMusica()
 	{
-		
-		
+		try
+		{
 			String nomeMusicaEscolhida = nomeMusica;
 			nomeMusica = null;
 			System.out.println(nomeMusicaEscolhida);
-			//FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/procurarMusica/index.xhtml");
-			return "procurarMusica/index.xhtml";
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/procurarMusica/index.xhtml");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
 	}
 	
 	public void redirecionarAlterarCadastro()

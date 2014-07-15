@@ -1,0 +1,34 @@
+.order-table{   
+	border-collapse:collapse;
+	width: 100%;
+	max-width: 100%;
+	background-color: transparent;
+	border-spacing: 0;
+	border-collapse: collapse;
+	line-height: 2.5;
+	border-spacing: 2px;
+	margin-bottom: 20px
+	
+}
+ 
+.order-table-header{
+	text-align:left;
+	background:none repeat scroll 0 0;
+	border-bottom:2px solid #BBBBBB;
+}
+ 
+.order-table-odd-row{
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	text-align:left;
+	background:none repeat scroll 0 0 #FFFFFFF;
+	border-top:1px solid #BBBBBB;
+	padding:7px;
+}
+ 
+.order-table-even-row{
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	text-align:left;
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-top:1px solid #BBBBBB;
+	padding:7px;
+}
