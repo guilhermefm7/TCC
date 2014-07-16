@@ -1,3 +1,10 @@
+/* Focus nas Colunas */
+.order-table>tbody>tr:hover>td,
+ .order-table>tbody>tr:hover>th
+{
+	background-color: #f5f5f5;
+}
+
 .order-table{   
 	border-collapse:collapse;
 	width: 100%;
@@ -14,7 +21,7 @@
 .order-table-header{
 	text-align:left;
 	background:none repeat scroll 0 0;
-	border-bottom:2px solid #BBBBBB;
+	border-bottom:2px solid #BBBBBB
 }
  
 .order-table-odd-row{
@@ -22,7 +29,7 @@
 	text-align:left;
 	background:none repeat scroll 0 0 #FFFFFFF;
 	border-top:1px solid #BBBBBB;
-	padding:7px;
+	padding:7px
 }
  
 .order-table-even-row{
@@ -30,5 +37,7 @@
 	text-align:left;
 	background:none repeat scroll 0 0 #F9F9F9;
 	border-top:1px solid #BBBBBB;
-	padding:7px;
+	padding:7px
+	
 }
+

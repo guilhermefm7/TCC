@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
@@ -28,6 +27,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	private Usuario usuario = null;
 	private String valorIdMusica = null;
 	AvaliarMusica avaliarMusicaPrincipal = null;
+	private String tokenRecebido = null;
 	public MusicaBean() { }
 	
 	/**
@@ -41,6 +41,19 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 			if(UtilidadesTelas.verificarSessao())
 			{
 				setUsuario(getUsuarioGlobal());
+			}
+			else
+			{
+				redirecionarErro();
+			}
+			
+			if((tokenRecebido!=null && tokenRecebido.length()>0))
+			{
+				
+			}
+			else
+			{
+				redirecionarErro();
 			}
 		}
 		catch (Exception e)
@@ -240,6 +253,14 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 
 	public AvaliarMusica getAvaliarMusicaPrincipal() {
 		return avaliarMusicaPrincipal;
+	}
+	
+	public String getTokenRecebido() {
+		return tokenRecebido;
+	}
+
+	public void setTokenRecebido(String tokenRecebido) {
+		this.tokenRecebido = tokenRecebido;
 	}
 
 	public void setAvaliarMusicaPrincipal(AvaliarMusica avaliarMusicaPrincipal) {

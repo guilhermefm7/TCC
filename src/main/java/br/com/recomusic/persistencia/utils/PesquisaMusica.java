@@ -90,16 +90,18 @@ public class PesquisaMusica
 		 {
 			 List<MusicaIM> listaMusicas = new ArrayList<MusicaIM>();
 			 MusicaIM mIM;
-	         String url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + nomeMusica + "&bucket=id:deezer&bucket=tracks&limit=true&";
+	         String url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + nomeMusica + "&bucket=id:deezer&bucket=tracks&limit=true&results=100";
 	         String json = IOUtils.toString(new URL(url));
 	         JSONObject obj = new JSONObject(json);
 	       
 	         JSONArray jsonMusicas = (JSONArray) ((JSONObject)obj.get("response")).get("songs");
-	       
+	         int contador = 1;
 	         for (int i = 0; i < jsonMusicas.length(); i++)
 	         {
 	    	     mIM = new MusicaIM();
                  JSONObject dado = jsonMusicas.getJSONObject(i);
+                 mIM.setQtd(contador);
+                 contador++;
                  mIM.setIdMusica((String)dado.get("id"));
                  mIM.setNomeMusica((String)dado.get("title"));
                  mIM.setNomeArtista((String)dado.get("artist_name"));

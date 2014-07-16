@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+	
+<h:body>
+	<f:metadata>
+		<f:viewParam name="t" value="#{MusicaBean.tokenRecebido}" />
+		<f:event type="preRenderView" listener="#{MusicaBean.iniciar}" />
+	</f:metadata>
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+			<ui:define name="content">
+
+				<div class="row">
+					<div class="col-md-4">
+						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Pesquisar Músicas</h1>
+					</div>
+				</div>
+				<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Resultados da pesquisa por: #{ProcurarMusicaBean.tokenRecebido}"/></h1>
+	
+            		
+            	
+			</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -517,7 +517,6 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		{
 			String nomeMusicaEscolhida = nomeMusica;
 			nomeMusica = null;
-			System.out.println(nomeMusicaEscolhida);
 			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/procurarMusica/index.xhtml");
 		}
 		catch(Exception e)

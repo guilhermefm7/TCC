@@ -7,7 +7,17 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
-	
+<h:head>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.click8').click(function (event){
+                         var url = $(this).attr("href");
+                         window.open(url, "_blank");
+                         event.preventDefault();
+            });
+        });
+    </script>
+</h:head>	
 <h:body>
 	<f:metadata>
 		<f:viewParam name="t" value="#{ProcurarMusicaBean.tokenRecebido}" />
@@ -25,88 +35,25 @@
 					<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Resultados da pesquisa por: #{ProcurarMusicaBean.tokenRecebido}"/></h1>
 					<h:form>  
 					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-striped" value="#{ProcurarMusicaBean.listaMusicas}" var="o" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333">
+		            	<h:dataTable class="table table-striped" value="#{ProcurarMusicaBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333">
 			    			<h:column>
-			    				<f:facet name="header">Nome</f:facet>
-			    				#{o.nomeMusica}
+			    				<f:facet name="header">#</f:facet>
+			    				#{musicaAchada.qtd}
+			    			</h:column>
+			    			<h:column >
+			    				<f:facet name="header" >Nome</f:facet>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif" actionListener="#{ProcurarMusicaBean.teste(musicaAchada.idMusica)}" >#{musicaAchada.nomeMusica}
+			    				</h:commandLink>
+			    				
 			    			</h:column>
 			 
 			    			<h:column>
-			    				<f:facet name="header">Banda</f:facet>
-			    				#{o.nomeArtista}
+			    				<f:facet name="header">Artista/Banda</f:facet>
+			    				#{musicaAchada.nomeArtista}
 			    			</h:column>
 	   					</h:dataTable>
 	   					</h:panelGroup>
             		</h:form>
-            		
-            		     <div class="table-responsive">
-            <table class="table table-striped" style="color: #000">
-              <thead>
-                <tr>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                </tr>
-                <tr>
-                  <td>diam</td>
-                  <td>Sed</td>
-                </tr>
-                <tr>
-                  <td>quis</td>
-                  <td>sem</td>
-                </tr>
-                <tr>
-                  <td>imperdiet</td>
-                  <td>Duis</td>
-                </tr>
-                <tr>
-                  <td>Praesent</td>
-                  <td>mauris</td>
-                </tr>
-                <tr>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
-                <tr>
-                  <td>porta</td>
-                  <td>Mauris</td>
-                </tr>
-                <tr>
-                  <td>lacinia</td>
-                  <td>arcu</td>
-                </tr>
-                <tr>
-                  <td>Class</td>
-                  <td>aptent</td>
-                </tr>
-                <tr>
-                  <td>ad</td>
-                  <td>litora</td>
-                </tr>
-                <tr>
-                  <td>conubia</td>
-                  <td>nostra</td>
-                </tr>
-                <tr>
-                  <td>himenaeos</td>
-                  <td>Curabitur</td>
-                </tr>
-                <tr>
-                  <td>in</td>
-                  <td>libero</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-				
-<!-- 				<h:panelGroup layout="block" class="painelPesquisaMusicacomMusicas" style="border-radius:0px">
-				
-				</h:panelGroup> -->
 			</ui:define>
 	</ui:composition>
 </h:body>

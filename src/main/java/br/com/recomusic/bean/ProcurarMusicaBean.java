@@ -1,10 +1,10 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.im.MusicaIM;
@@ -44,6 +44,20 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 			{
 				redirecionarErro();
 			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+
+	public void teste(String n)
+	{
+		try
+		{
+			System.out.println("dsdsds " + n);
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ n);
 		}
 		catch(Exception e)
 		{

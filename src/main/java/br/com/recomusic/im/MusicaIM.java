@@ -4,6 +4,7 @@ package br.com.recomusic.im;
 public class MusicaIM
 {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
+	private int qtd;
 	private String idMusica;
 	private String nomeMusica;
 	private String nomeArtista;
@@ -12,13 +13,22 @@ public class MusicaIM
 	/*-*-*-* Construtores *-*-*-*/
 	public MusicaIM() { }
 
-	public MusicaIM(String nomeMusica, String nomeArtista, String albumMusica)
+	public MusicaIM(int qtd, String nomeMusica, String nomeArtista, String albumMusica)
 	{
+		this.qtd = qtd;
 		this.nomeMusica = nomeMusica;
 		this.nomeArtista = nomeArtista;
 		this.albumMusica = albumMusica;
 	}
 	
+	public int getQtd() {
+		return qtd;
+	}
+
+	public void setQtd(int qtd) {
+		this.qtd = qtd;
+	}
+
 	public String getIdMusica() {
 		return idMusica;
 	}
