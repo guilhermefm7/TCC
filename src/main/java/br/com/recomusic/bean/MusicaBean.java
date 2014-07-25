@@ -25,6 +25,9 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	private MusicaDAO musicaDAO = new MusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private AvaliarMusicaDAO avaliarMusicaDAO = new AvaliarMusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private Usuario usuario = null;
+	private String nomeCompletoMusica = null;
+	private String nomeMusica = null;
+	private String nomeArtista = null;
 	private String valorIdMusica = null;
 	AvaliarMusica avaliarMusicaPrincipal = null;
 	private String tokenRecebido = null;
@@ -38,18 +41,25 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			if(UtilidadesTelas.verificarSessao())
+			if((valorIdMusica!=null && valorIdMusica.length()>0) && (nomeMusica!=null && nomeMusica.length()>0))
 			{
-				setUsuario(getUsuarioGlobal());
-			}
-			else
-			{
-				redirecionarErro();
-			}
-			
-			if((tokenRecebido!=null && tokenRecebido.length()>0))
-			{
-				
+				if(UtilidadesTelas.verificarSessao())
+				{
+					setUsuario(getUsuarioGlobal());
+					
+					if(nomeArtista!=null && nomeArtista.length()>0)
+					{
+						nomeCompletoMusica = nomeMusica + " - " + nomeArtista;
+					}
+					else
+					{
+						nomeCompletoMusica = nomeMusica;
+					}
+				}
+				else
+				{
+					encerrarSessao();
+				}
 			}
 			else
 			{
@@ -251,10 +261,35 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 		this.naoCurtiuMusica = naoCurtiuMusica;
 	}*/
 
+	
 	public AvaliarMusica getAvaliarMusicaPrincipal() {
 		return avaliarMusicaPrincipal;
 	}
 	
+	public String getNomeCompletoMusica() {
+		return nomeCompletoMusica;
+	}
+
+	public void setNomeCompletoMusica(String nomeCompletoMusica) {
+		this.nomeCompletoMusica = nomeCompletoMusica;
+	}
+
+	public String getNomeMusica() {
+		return nomeMusica;
+	}
+
+	public void setNomeMusica(String nomeMusica) {
+		this.nomeMusica = nomeMusica;
+	}
+
+	public String getNomeArtista() {
+		return nomeArtista;
+	}
+
+	public void setNomeArtista(String nomeArtista) {
+		this.nomeArtista = nomeArtista;
+	}
+
 	public String getTokenRecebido() {
 		return tokenRecebido;
 	}

@@ -7,6 +7,7 @@
 
 .order-table{   
 	border-collapse:collapse;
+	font-weight: bold;
 	width: 100%;
 	max-width: 100%;
 	background-color: transparent;
@@ -14,26 +15,30 @@
 	border-collapse: collapse;
 	line-height: 2.5;
 	border-spacing: 2px;
+	font-family: sans-serif;
 	margin-bottom: 20px
-	
 }
  
 .order-table-header{
 	text-align:left;
+	font-family: sans-serif;
+	font-weight: bold;
 	background:none repeat scroll 0 0;
 	border-bottom:2px solid #BBBBBB
 }
  
 .order-table-odd-row{
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family: sans-serif;
 	text-align:left;
+	font-weight: bold;
 	background:none repeat scroll 0 0 #FFFFFFF;
 	border-top:1px solid #BBBBBB;
 	padding:7px
 }
  
 .order-table-even-row{
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family: sans-serif;
+	font-weight: bold;
 	text-align:left;
 	background:none repeat scroll 0 0 #F9F9F9;
 	border-top:1px solid #BBBBBB;

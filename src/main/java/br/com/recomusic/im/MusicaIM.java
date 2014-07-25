@@ -9,16 +9,19 @@ public class MusicaIM
 	private String nomeMusica;
 	private String nomeArtista;
 	private String albumMusica;
+	private String idDeezer;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public MusicaIM() { }
 
-	public MusicaIM(int qtd, String nomeMusica, String nomeArtista, String albumMusica)
+	public MusicaIM(int qtd, String nomeMusica, String nomeArtista, String albumMusica, String idDeezer)
 	{
 		this.qtd = qtd;
 		this.nomeMusica = nomeMusica;
 		this.nomeArtista = nomeArtista;
 		this.albumMusica = albumMusica;
+		this.albumMusica = albumMusica;
+		this.idDeezer = idDeezer;
 	}
 	
 	public int getQtd() {
@@ -61,5 +64,11 @@ public class MusicaIM
 		this.albumMusica = albumMusica;
 	}
 
+	public String getIdDeezer() {
+		return idDeezer;
+	}
 
+	public void setIdDeezer(String idDeezer) {
+		this.idDeezer = idDeezer;
+	}
 }

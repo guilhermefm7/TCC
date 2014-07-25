@@ -14,8 +14,8 @@ body {
     width: 100%;
     height: 100%;
     font-family: Lora,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    color: #fff;
-    background-color: #fff;
+    color: #FFF;
+    background-color: #FFF;
 }
 
 html {
@@ -89,7 +89,7 @@ a:focus {
   text-align: left;
   font-size:21px;
   padding: 70px 0;
-  background-color: #fff;
+  background-color: #FFF;
   font-weight:200;
   color:inherit;
   background-color: #FFF;
@@ -178,7 +178,7 @@ a:focus {
 
 
 .radioButton {
-	padding:40px 40px;
+	padding:10px 10px;     /* Alteraçao, corrigir qualquer coisa*/
     margin-left: 20px;
     margin: 4px 10px 0;
 }

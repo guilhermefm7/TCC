@@ -21,9 +21,19 @@ public class TesteJson
 	     JSONObject my_obj = new JSONObject(json);
 	     System.out.println(my_obj.toString());*/
 		
+		String s1 = "come as you are - ds";
+		String array1[] = new String[10];
+		array1 = s1.split("-"); 
 		
-	     
-	     
+		
+ 	   	//System.out.println("Array = " + array1[0].toString() + " dsds " + array1[1] );
+
+		System.out.println("dsds "  + array1.length);
+		
+
+ 	   	
+ 	   	System.out.println("Replace" + array1[0].replace(" ", "%"));
+ 	   	
 		//Pegar Gênero da música
 		
 	       String url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=come&bucket=id:deezer&bucket=tracks&limit=true&";
@@ -35,24 +45,36 @@ public class TesteJson
 	       
 	       JSONArray horarios =(JSONArray) ob.get("songs");
 	       System.out.println(horarios);
-	       	       for (int i = 0; i < horarios.length(); i++)
+	       for (int i = 0; i < horarios.length(); i++)
 	       {
                JSONObject dado = horarios.getJSONObject(i);
                System.out.println(dado.get("id"));
                System.out.println(dado.get("title"));
                System.out.println(dado.get("artist_name"));
                
-               //JSONArray horarios1 =(JSONArray) dado.get("songs");
+               JSONArray horarios1 =(JSONArray) dado.get("tracks");
+               System.out.println("dfdsfsddfs " + horarios1);
+    	       for (int x = 0; x < horarios1.length(); x++)
+    	       {
+    	    	   JSONObject dado1 = horarios1.getJSONObject(x);
+    	    	   System.out.println("dsds" + dado1);
+    	    	   System.out.println(dado1.get("foreign_id"));
+    	    	   String s = (String)dado1.get("foreign_id");
+    	    	   String array[] = new String[3];
+    	    	   array = s.split(":"); 
+    	    	   System.out.println(array[2]);
+    	       }
+               
                
                System.out.println();
-               System.out.println(dado.get("artist_name"));
+               //System.out.println(horarios1);
                System.out.println();
 	       }
 	       
-/*	       JSONObject ob1 = (JSONObject)ob.get("artist");
-	       JSONArray horarios =(JSONArray) ob1.get("genres");*/
+	       /*JSONObject ob1 = (JSONObject)ob.get("artist");
+	       JSONArray horarios =(JSONArray) ob1.get("genres");
 	       
-/*	       for (int i = 0; i < horarios.length(); i++)
+	       for (int i = 0; i < horarios.length(); i++)
 	       {
                JSONObject dado = horarios.getJSONObject(i);
                System.out.println(dado.get("name"));

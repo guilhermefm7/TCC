@@ -5,6 +5,7 @@ $(document).ready(function(){
 			DZ.player.seek((evt.offsetX/$(this).width()) * 100);
 		});
 	});
+
 	function event_listener_append() {
 		var pre = document.getElementById('event_listener');
 		var line = [];
@@ -13,6 +14,7 @@ $(document).ready(function(){
 		}
 		pre.innerHTML += line.join(' ') + "\n";
 	}
+	
 	function onPlayerLoaded() {
 		$("#controlers input").attr('disabled', false);
 		event_listener_append('player_loaded');
@@ -24,12 +26,39 @@ $(document).ready(function(){
 			$("#slider_seek").find('.bar').css('width', (100*arg[0]/arg[1]) + '%');
 		});
 	}
-
+	DZ.init(
+	{
+		appId  : '140663',
+		channelUrl : 'http://localhost:8080/RecoMusic/index.xhtml',
+		player : {
+			container : 'player',
+			cover : true,
+			playlist : true,
+			width : 650,
+			height : 300,
+			onload : onPlayerLoaded
+		}
+	});
 	
-	DZ.login(function(response) {
-		if (response.authResponse) {
+	DZ.getLoginStatus(function(response)
+	{
+		if (response.authResponse)
+		{
+			// logged in and connected user, someone you know
+		}
+		else
+		{
+			// no user session available, someone you dont know
+		}
+	});
+	
+	DZ.login(function(response)
+	{
+		if (response.authResponse)
+		{
 			console.log('Welcome!  Fetching your information.... ');
-			DZ.api('/user/me', function(response) {
+			DZ.api('/user/me', function(response)
+			{
 				console.log('Good to see you, ' + response.name + '.');
 			});
 		} else {
@@ -40,17 +69,5 @@ $(document).ready(function(){
 	
 	function TocaMusica()
 	{
-		DZ.init({
-			appId  : '140663',
-			channelUrl : 'http://localhost:8080/RecoMusic/index.xhtml',
-			player : {
-				container : 'player',
-				cover : true,
-				playlist : true,
-				width : 650,
-				height : 300,
-				onload : onPlayerLoaded
-			}
-		});
 		DZ.player.playTracks([68477709]);
 	}

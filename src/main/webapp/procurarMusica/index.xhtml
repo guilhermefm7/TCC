@@ -35,18 +35,15 @@
 					<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Resultados da pesquisa por: #{ProcurarMusicaBean.tokenRecebido}"/></h1>
 					<h:form>  
 					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-striped" value="#{ProcurarMusicaBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333">
+		            	<h:dataTable class="table table-striped" value="#{ProcurarMusicaBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
 			    			<h:column>
 			    				<f:facet name="header">#</f:facet>
 			    				#{musicaAchada.qtd}
 			    			</h:column>
 			    			<h:column >
 			    				<f:facet name="header" >Nome</f:facet>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif" actionListener="#{ProcurarMusicaBean.teste(musicaAchada.idMusica)}" >#{musicaAchada.nomeMusica}
-			    				</h:commandLink>
-			    				
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{ProcurarMusicaBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.nomeMusica, musicaAchada.nomeArtista)}" >#{musicaAchada.nomeMusica} </h:commandLink>
 			    			</h:column>
-			 
 			    			<h:column>
 			    				<f:facet name="header">Artista/Banda</f:facet>
 			    				#{musicaAchada.nomeArtista}

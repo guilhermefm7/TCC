@@ -33,7 +33,15 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 		{
 			if((tokenRecebido!=null && tokenRecebido.length()>0))
 			{
-				listaMusicas = PesquisaMusica.requisitarMusicaJson(tokenRecebido);
+				if(UtilidadesTelas.verificarSessao())
+				{
+					setUsuarioGlobal(getUsuarioGlobal());
+					listaMusicas = PesquisaMusica.requisitarMusicaJson(tokenRecebido);
+				}
+				else
+				{
+					encerrarSessao();
+				}
 				
 /*				for (MusicaIM musicaIM : listaMusicas)
 				{
@@ -52,12 +60,13 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 		}
 	}
 
-	public void teste(String n)
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica)
 	{
 		try
 		{
-			System.out.println("dsdsds " + n);
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ n);
+			System.out.println(nomeMusica);
+			System.out.println(artistaBandaMusica);
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica);
 		}
 		catch(Exception e)
 		{

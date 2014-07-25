@@ -90,7 +90,21 @@ public class PesquisaMusica
 		 {
 			 List<MusicaIM> listaMusicas = new ArrayList<MusicaIM>();
 			 MusicaIM mIM;
-	         String url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + nomeMusica + "&bucket=id:deezer&bucket=tracks&limit=true&results=100";
+			 
+			 String manipulaMusica[] = new String[10];
+			 manipulaMusica = nomeMusica.split("-"); 
+				
+			 String url;
+			 
+			 if(manipulaMusica.length>1)
+			 {
+				 url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + manipulaMusica[0].replace(" ", "%") + "&bucket=id:deezer&bucket=tracks&limit=true&results=100&artist=" + manipulaMusica[1].replace(" ", "%");
+			 }
+			 else
+			 {
+				 url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + manipulaMusica[0].replace(" ", "%") + "&bucket=id:deezer&bucket=tracks&limit=true&results=100";
+			 }
+			 
 	         String json = IOUtils.toString(new URL(url));
 	         JSONObject obj = new JSONObject(json);
 	       
@@ -105,6 +119,17 @@ public class PesquisaMusica
                  mIM.setIdMusica((String)dado.get("id"));
                  mIM.setNomeMusica((String)dado.get("title"));
                  mIM.setNomeArtista((String)dado.get("artist_name"));
+                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
+                 
+                 for (int x = 0; x < pegaIdDeezer.length(); x++)
+      	       	 {
+      	    	   JSONObject deezer = pegaIdDeezer.getJSONObject(x);
+      	    	   String pegaIDTrack = (String)deezer.get("foreign_id");
+      	    	   String array[] = new String[3];
+    	    	   array = pegaIDTrack.split(":"); 
+      	    	   mIM.setIdDeezer(array[2]);
+      	         }
+                 
                  listaMusicas.add(mIM);
 	         }
 			 

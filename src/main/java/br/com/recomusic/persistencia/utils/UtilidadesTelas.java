@@ -38,13 +38,9 @@ public class UtilidadesTelas
 	{
 		try
 		{
-			if(((UsuarioBean) getBean("UsuarioBean")).getUsuario()!=null)
+			if(((UsuarioBean) getBean("UsuarioBean")).getUsuario()!=null && ((UsuarioBean) getBean("UsuarioBean")).getUsuario().getPkUsuario()>0)
 			{ return true; }
-			else
-			{
-				encerrarSessao();
-				return false; 
-			}
+			else { return false; }
 		}
 		catch (Exception e)
 		{
@@ -75,7 +71,7 @@ public class UtilidadesTelas
 		    HttpSession session = (HttpSession)fc.getExternalContext().getSession(false);  
 		    session.invalidate();  
 
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/RecoMusic/login.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/RecoMusic/index.xhtml");
 		}
 		catch (Exception e)
 		{

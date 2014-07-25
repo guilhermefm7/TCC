@@ -7,38 +7,42 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
-	
+
+
 <h:body>
+
 	<f:metadata>
-		<f:viewParam name="t" value="#{MusicaBean.tokenRecebido}" />
+		<f:viewParam name="t" value="#{MusicaBean.valorIdMusica}" />
+		<f:viewParam name="m" value="#{MusicaBean.nomeMusica}" />
+		<f:viewParam name="a" value="#{MusicaBean.nomeArtista}" />
 		<f:event type="preRenderView" listener="#{MusicaBean.iniciar}" />
 	</f:metadata>
+	
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 			<ui:define name="content">
+
+			<script type="text/javascript">
+			window.onload = function()
+			{
+				DZ.player.playTracks(['#{MusicaBean.valorIdMusica}']);
+			}
+			</script>
 
 				<div class="row">
 					<div class="col-md-4">
 						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Pesquisar Músicas</h1>
 					</div>
 				</div>
-				<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Resultados da pesquisa por: #{ProcurarMusicaBean.tokenRecebido}"/></h1>
-	
-            		<div id="dz-root"></div>
+				<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="#{MusicaBean.nomeCompletoMusica}"/></h1>
+            		
+            		<div id="dz-root" >
+            			<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
+            		</div>
             		
 					<div id="player" style="width:100%;" align="center"></div>
 					<br/>
-					<div id="controlers">
-						<input type="button" onclick="DZ.player.playTracks(['1112998']); return false;" value="Play Daft Punk - Discovery"/>
 
-						<br/>
-						
-						<br/><br/><br/>
-					</div>
-					
-					<div id="slider_seek" class="progressbarplay" style="">
-					  <div class="bar" style="width: 0%;"></div>
-					</div>
 
 			</ui:define>
 	</ui:composition>
