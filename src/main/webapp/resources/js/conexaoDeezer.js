@@ -26,10 +26,11 @@ $(document).ready(function(){
 			$("#slider_seek").find('.bar').css('width', (100*arg[0]/arg[1]) + '%');
 		});
 	}
+	
 	DZ.init(
 	{
 		appId  : '140663',
-		channelUrl : 'http://localhost:8080/RecoMusic/index.xhtml',
+		channelUrl : 'http://blank.org',
 		player : {
 			container : 'player',
 			cover : true,
@@ -52,7 +53,8 @@ $(document).ready(function(){
 		}
 	});
 	
-	DZ.login(function(response)
+	
+	/*DZ.login(function(response)
 	{
 		if (response.authResponse)
 		{
@@ -65,9 +67,10 @@ $(document).ready(function(){
 			console.log('User cancelled login or did not fully authorize.');
 		}
 	}, {perms: 'basic_access,email'});
-	
+	*/
 	
 	function TocaMusica()
 	{
+		alert("ddsds");
 		DZ.player.playTracks([68477709]);
 	}

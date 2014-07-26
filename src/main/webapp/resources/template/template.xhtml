@@ -176,15 +176,29 @@
 	</div>
 
 
+
 	<!-- /Corpo da página -->
        <h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
        		<section class="introLogaintrodoTelaBranca">
+        
+			<div class="row">
+		        <div class="col-sm-3 col-md-2 sidebar">
+		          <ul class="nav nav-sidebar" style="background-color: #f5f5f5;margin-top: 50px;font-weight:bold" >
+		            <li class="active"><a href="#">Perfil</a></li>
+		            <li><a href="#">Curtidas</a></li>
+		            <li><a href="#">Playlists</a></li>
+		          </ul>
+		        </div>
+			</div>
+		
        			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<ui:insert name="content" >
 					
 					</ui:insert>
            		</div>
+           		
             </section>
+       
 		</h:panelGroup>
 		
 	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
@@ -240,7 +254,7 @@
 		type="text/javascript" />
 	<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" 
 		type="text/javascript"></script>
-	<script src="/RecoMusic/resources/js/conexaoDeezer1.js" 
+	<script src="/RecoMusic/resources/js/conexaoDeezer.js" 
 		type="text/javascript"></script>
 
 
