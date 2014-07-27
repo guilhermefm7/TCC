@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import br.com.recomusic.persistencia.utils.Constantes;
+
 @Entity
 public class Banda implements Serializable
 {
@@ -26,6 +28,7 @@ public class Banda implements Serializable
 	private String nome;
 	private String ano;
 	private String idBanda;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
 	@ManyToOne @JoinColumn(name="fkPais")
 	private Pais pais;
@@ -55,9 +58,12 @@ public class Banda implements Serializable
 	
 	public String getIdBanda() { return idBanda; }
 	public void setIdBanda(String idBanda) { this.idBanda = idBanda; }
-
+	
 	public Pais getPais() { return pais; }
 	public void setPais(Pais pais) { this.pais = pais; }
+	
+	public Integer getStatus() { return status; }
+	public void setStatus(Integer status) { this.status = status; }
 
 	public List<Musica> getMusicas() { if(musicas==null) { musicas = new ArrayList<Musica>(); } return musicas; }
 	public void setMusicas(List<Musica> musicas) { this.musicas = musicas; }

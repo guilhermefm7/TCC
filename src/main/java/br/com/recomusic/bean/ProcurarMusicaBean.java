@@ -18,12 +18,10 @@ import br.com.recomusic.singleton.ConectaBanco;
 public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	//private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
 	private String email;
 	private String tokenRecebido = null;
 	private List<String> listaNomesMusica = null;
 	private List<MusicaIM> listaMusicas  = null;
-	
 
 	public ProcurarMusicaBean() {	}
 
@@ -60,13 +58,18 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 		}
 	}
 
-	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica)
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho)
 	{
 		try
 		{
-			System.out.println(nomeMusica);
-			System.out.println(artistaBandaMusica);
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica);
+			if(album!=null && album.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
+			}
+			else
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
+			}
 		}
 		catch(Exception e)
 		{

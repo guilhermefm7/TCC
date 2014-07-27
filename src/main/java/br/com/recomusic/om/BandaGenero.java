@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import br.com.recomusic.persistencia.utils.Constantes;
+
 @Entity
 public class BandaGenero implements Serializable
 {
@@ -20,7 +22,8 @@ public class BandaGenero implements Serializable
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkBandaGenero;
-
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
+	
 	@ManyToOne @JoinColumn(name="fkGenero")
 	private Genero genero;
 
@@ -38,6 +41,9 @@ public class BandaGenero implements Serializable
 	public Genero getGenero() { return genero; }
 	public void setGenero(Genero genero) { this.genero = genero; }
 
+	public Integer getStatus() { return status; }
+	public void setStatus(Integer status) { this.status = status; }
+	
 	public Banda getBanda() { return banda; }
 	public void setBanda(Banda banda) { this.banda = banda; }
 }

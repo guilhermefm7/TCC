@@ -42,12 +42,13 @@ public class TesteJson
 	       JSONObject ob = (JSONObject)my_obj.get("response");
 	      // JSONObject ob1 = (JSONObject)ob.get("songs");
 	       System.out.println(ob);
-	       
+	       String id = "";
 	       JSONArray horarios =(JSONArray) ob.get("songs");
 	       System.out.println(horarios);
 	       for (int i = 0; i < horarios.length(); i++)
 	       {
                JSONObject dado = horarios.getJSONObject(i);
+
                System.out.println(dado.get("id"));
                System.out.println(dado.get("title"));
                System.out.println(dado.get("artist_name"));
@@ -58,11 +59,12 @@ public class TesteJson
     	       {
     	    	   JSONObject dado1 = horarios1.getJSONObject(x);
     	    	   System.out.println("dsds" + dado1);
-    	    	   System.out.println(dado1.get("foreign_id"));
+    	    	   System.out.println("IDDDDDD" + dado1.get("foreign_id"));
     	    	   String s = (String)dado1.get("foreign_id");
     	    	   String array[] = new String[3];
     	    	   array = s.split(":"); 
     	    	   System.out.println(array[2]);
+    	    	   id = array[2].toString();
     	       }
                
                
@@ -71,6 +73,25 @@ public class TesteJson
                System.out.println();
 	       }
 	       
+           System.out.println();
+           //System.out.println(horarios1);
+           System.out.println();
+           System.out.println();
+           //System.out.println(horarios1);
+           System.out.println();
+           System.out.println();
+           //System.out.println(horarios1);
+           System.out.println();
+           System.out.println("IDDDDDDDD " + id);
+           String url1 = "http://api.deezer.com/2.0/track/" + id + "?callback=?";
+           String json1 = IOUtils.toString(new URL(url1));
+           System.out.println(json1);
+           JSONObject my_obj1 = new JSONObject(json1);
+           System.out.println("ALBUMMM "  + ((JSONObject)my_obj1.get("album")).get("title"));
+/*           JSONObject ob11 = (JSONObject)my_obj1.get("album");
+           System.out.println("Album " + ob11.get("title"));*/
+
+           
 	       /*JSONObject ob1 = (JSONObject)ob.get("artist");
 	       JSONArray horarios =(JSONArray) ob1.get("genres");
 	       

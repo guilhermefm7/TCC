@@ -95,6 +95,7 @@ public class PesquisaMusica
 			 manipulaMusica = nomeMusica.split("-"); 
 				
 			 String url;
+			 String urlDeezer;
 			 
 			 if(manipulaMusica.length>1)
 			 {
@@ -106,10 +107,17 @@ public class PesquisaMusica
 			 }
 			 
 	         String json = IOUtils.toString(new URL(url));
+	         String jsonDeezer = "";
+	         String pegaAlbum = "";
+	         
 	         JSONObject obj = new JSONObject(json);
+	         JSONObject objDeezer = null;
+	         JSONObject objDeezerAux = null;
 	       
 	         JSONArray jsonMusicas = (JSONArray) ((JSONObject)obj.get("response")).get("songs");
+	         
 	         int contador = 1;
+	         
 	         for (int i = 0; i < jsonMusicas.length(); i++)
 	         {
 	    	     mIM = new MusicaIM();
@@ -123,11 +131,32 @@ public class PesquisaMusica
                  
                  for (int x = 0; x < pegaIdDeezer.length(); x++)
       	       	 {
-      	    	   JSONObject deezer = pegaIdDeezer.getJSONObject(x);
-      	    	   String pegaIDTrack = (String)deezer.get("foreign_id");
-      	    	   String array[] = new String[3];
-    	    	   array = pegaIDTrack.split(":"); 
-      	    	   mIM.setIdDeezer(array[2]);
+		  	    	   JSONObject deezer = pegaIdDeezer.getJSONObject(x);
+		  	    	   String pegaIDTrack = (String)deezer.get("foreign_id");
+		  	    	   String array[] = new String[3];
+			    	   array = pegaIDTrack.split(":"); 
+		  	    	   mIM.setIdDeezer(array[2].toString());
+		  	    	   mIM.setAlbumMusica("");
+		  	    	   urlDeezer = "http://api.deezer.com/2.0/track/" + mIM.getIdDeezer() + "?callback=?";
+		  	    	   jsonDeezer = IOUtils.toString(new URL(urlDeezer));
+		  	    	   objDeezer = new JSONObject(jsonDeezer);
+		  	    	   if(objDeezer!=null && objDeezer.length()>0)
+		  	    	   {
+		  	    		   if(objDeezer.toString().contains("album"))
+		  	    		   {
+		  	    			   objDeezerAux = (JSONObject)objDeezer.get("album");
+		  	    			   
+		  	    			   if(objDeezerAux!=null && objDeezerAux.length()>0)
+		  	    			   {
+		  	    				   pegaAlbum = (String)objDeezerAux.get("title");
+		  	    				   
+		  	    				   if(pegaAlbum.length()>0)
+		  	    				   {
+		  	    					   mIM.setAlbumMusica(pegaAlbum);
+		  	    				   }
+		  	    			   }
+		  	    		   }
+		  	    	   }
       	         }
                  
                  listaMusicas.add(mIM);
@@ -152,6 +181,7 @@ public class PesquisaMusica
 		 try
 		 {
 			 Musica musica = null;
+			 Banda banda = null;
 			 Params p = new Params();
 		     p.set("id", idMusica);
 		     p.add("results", 1);	
@@ -164,7 +194,16 @@ public class PesquisaMusica
 		    	musica.setIdMUsica(song.getID());
 		    	musica.setBPMMUsica(song.getTempo());
 		    	musica.setEnergMusica(song.getEnergy());
+		    	
+		    	///pesquisa idDeezer
+		    	///pesquisa Album
+		    	
+		    	banda = new Banda();
+		    	banda.setNome(song.getArtistName());
+		    	banda.setIdBanda(song.getArtistID());
+		    	musica.setBanda(banda);
 		    }
+		    
 			 return musica;
 		 }
 		 catch  (Exception e)

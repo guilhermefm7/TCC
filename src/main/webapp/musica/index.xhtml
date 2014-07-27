@@ -6,7 +6,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:fb="http://www.facebook.com/2008/fbml">
+	xmlns:fb="http://www.facebook.com/2008/fbml"
+	xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
 
 
 <h:body>
@@ -15,6 +16,8 @@
 		<f:viewParam name="t" value="#{MusicaBean.valorIdMusica}" />
 		<f:viewParam name="m" value="#{MusicaBean.nomeMusica}" />
 		<f:viewParam name="a" value="#{MusicaBean.nomeArtista}" />
+		<f:viewParam name="n" value="#{MusicaBean.nomeAlbum}" />
+		<f:viewParam name="i" value="#{MusicaBean.valorIdMusicaEcho}" />
 		<f:event type="preRenderView" listener="#{MusicaBean.iniciar}" />
 	</f:metadata>
 	
@@ -46,18 +49,50 @@
 					<div class="col-md-6">
 						<h2 style="color:#4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 20px" align="center"><h:outputLabel value="#{MusicaBean.nomeCompletoMusica}"/>
 						<br/> <br/> <br/>
-							<h:form>
+						
+							<h:form rendered="#{MusicaBean.curtiuMusica eq false}">
 							<h:panelGroup layout="block" class="form-group">
-							
-								<h:commandLink styleClass="" style="background-color: #FFF;">
+								<h:commandLink styleClass="" style="background-color: #FFF;" actionListener="#{MusicaBean.avaliarMusica}">
 	  								<img src="/RecoMusic/resources/imagens/icones/adicionar.png" alt="" />
 	  							</h:commandLink>
 	  							
 	  							<span></span>
 	  							
-								<h:commandLink styleClass="" style="background-color: #FFF;">
-								<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" />
+								<a id="sharebutton" href="#" onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
+									<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" />
+								</a>
+	  							
+	  						</h:panelGroup>
+	  						
+	  						<br/>
+	  						
+							<h:panelGroup layout="block" class="dropdown">
+								<h:commandLink class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+	  								<img src="/RecoMusic/resources/imagens/icones/playlist.png" alt="" />
+    									<span class="caret"></span>
 	  							</h:commandLink>
+	  							<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+							    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+							    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+							    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+							    <li role="presentation" class="divider"></li>
+							    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+							    </ul>
+							</h:panelGroup>
+							
+	  						</h:form>
+	  						
+							<h:form rendered="#{MusicaBean.curtiuMusica eq true}" >
+							<h:panelGroup layout="block" class="form-group">
+								<h:commandLink styleClass="" style="background-color: #FFF;" actionListener="#{MusicaBean.avaliarMusica}">
+	  								<img src="/RecoMusic/resources/imagens/icones/adicionado.png" alt="" />
+	  							</h:commandLink>
+	  							
+	  							<span></span>
+	  							
+								<a id="sharebutton" href="#" onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
+									<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" />
+								</a>
 	  							
 	  						</h:panelGroup>
 	  						
@@ -65,7 +100,7 @@
 	  						
 							<h:panelGroup layout="block" class="form-group">
 								<h:commandLink styleClass="" style="background-color: #FFF;">
-									<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" />
+	  								<img src="/RecoMusic/resources/imagens/icones/playlist.png" alt="" />
 	  							</h:commandLink>
 							</h:panelGroup>
 							

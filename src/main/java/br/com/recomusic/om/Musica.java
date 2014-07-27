@@ -27,6 +27,7 @@ public class Musica implements Serializable
 	private String ano;
 	private String album;
 	private String idMusica;
+	private String idDeezer;
 	private Double BPMMUsica;
 	private Double EnergMusica;
 
@@ -66,6 +67,9 @@ public class Musica implements Serializable
 
 	public String getIdMUsica() { return idMusica; }
 	public void setIdMUsica(String idMUsica) { this.idMusica = idMUsica; }
+	
+	public String getIdDeezer() { return idDeezer; }
+	public void setIdDeezer(String idDeezer) { this.idDeezer = idDeezer; }
 
 	public Pais getPais() { return pais; }
 	public void setPais(Pais pais) { this.pais = pais; }

@@ -193,10 +193,25 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 										 bandaDAO.salvarBanda(getBanda);
 									 }
 									 
-									 imcb = new InformacaoMusicalCadastroBanda();
-									 imcb.setBanda(getBanda);
-									 imcb.setUsuario(usuarioFacebook);
-									 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+									 imcb = null;
+									 imcb = informacaoMusicalCadastroBandaDAO.pesquisarIMCB(usuarioFacebook, getBanda);
+									 
+									 if(imcb == null )
+									 {
+										 imcb = new InformacaoMusicalCadastroBanda();
+										 imcb.setBanda(getBanda);
+										 imcb.setUsuario(usuarioFacebook);
+										 imcb.setStatus(Constantes.STATUS_BANDA_CURTIDA_FACEBOOK);
+										 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+									 }
+									 else
+									 {
+										 if(imcb.getStatus()!=Constantes.STATUS_BANDA_CURTIDA_FACEBOOK)
+										 {
+											 imcb.setStatus(Constantes.STATUS_BANDA_CURTIDA_FACEBOOK);
+											 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+										 }
+									 }
 									 
 									 for (String nomeGenero : bandaGeneroIM.getListaGeneros())
 									 {
@@ -228,7 +243,16 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 											 imcg = new InformacaoMusicalCadastroGenero();
 											 imcg.setUsuario(usuarioFacebook);
 											 imcg.setGenero(getGenero);
+											 imcg.setStatus(Constantes.STATUS_GENERO_CURTIDO_FACEBOOK);
 											 informacaoMusicalCadastroGeneroDAO.salvarIMCG(imcg);
+										 }
+										 else
+										 {
+											 if(imcg.getStatus()!=Constantes.STATUS_GENERO_CURTIDO_FACEBOOK)
+											 {
+												 imcg.setStatus(Constantes.STATUS_GENERO_CURTIDO_FACEBOOK);
+												 informacaoMusicalCadastroGeneroDAO.salvarIMCG(imcg);
+											 }
 										 }
 									 }
 								 }
@@ -306,10 +330,26 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 												 bandaDAO.salvarBanda(getBanda);
 											 }
 											 
-											 imcb = new InformacaoMusicalCadastroBanda();
-											 imcb.setBanda(getBanda);
-											 imcb.setUsuario(usuarioFacebook);
-											 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+											 imcb = null;
+											 imcb = informacaoMusicalCadastroBandaDAO.pesquisarIMCB(usuarioFacebook, getBanda);
+											 
+											 if(imcb == null )
+											 {
+												 imcb = new InformacaoMusicalCadastroBanda();
+												 imcb.setBanda(getBanda);
+												 imcb.setUsuario(usuarioFacebook);
+												 imcb.setStatus(Constantes.STATUS_BANDA_CURTIDA_FACEBOOK);
+												 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+											 }
+											 else
+											 {
+												 if(imcb.getStatus()!=Constantes.STATUS_BANDA_CURTIDA_FACEBOOK)
+												 {
+													 imcb.setStatus(Constantes.STATUS_BANDA_CURTIDA_FACEBOOK);
+													 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
+												 }
+											 }
+											 
 											 
 											 for (String nomeGenero : bandaGeneroIM.getListaGeneros())
 											 {
@@ -341,7 +381,16 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 													 imcg = new InformacaoMusicalCadastroGenero();
 													 imcg.setUsuario(usuarioFacebook);
 													 imcg.setGenero(getGenero);
+													 imcg.setStatus(Constantes.STATUS_GENERO_CURTIDO_FACEBOOK);
 													 informacaoMusicalCadastroGeneroDAO.salvarIMCG(imcg);
+												 }
+												 else
+												 {
+													 if(imcg.getStatus()!=Constantes.STATUS_GENERO_CURTIDO_FACEBOOK)
+													 {
+														 imcg.setStatus(Constantes.STATUS_GENERO_CURTIDO_FACEBOOK);
+														 informacaoMusicalCadastroGeneroDAO.salvarIMCG(imcg);
+													 }
 												 }
 											 }
 										 }

@@ -20,7 +20,6 @@ public class MusicaIM
 		this.nomeMusica = nomeMusica;
 		this.nomeArtista = nomeArtista;
 		this.albumMusica = albumMusica;
-		this.albumMusica = albumMusica;
 		this.idDeezer = idDeezer;
 	}
 	

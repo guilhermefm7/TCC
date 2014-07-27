@@ -23,6 +23,7 @@ public class InformacaoMusicalCadastroBanda implements Serializable
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkInformacaoMusicalCadastroBanda;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
+	private int quantidade;
 
 	@ManyToOne @JoinColumn(name="fkUsuario")
 	private Usuario usuario;
@@ -38,8 +39,11 @@ public class InformacaoMusicalCadastroBanda implements Serializable
 	public long getPkInformacaoMusicalCadastroBanda() { return pkInformacaoMusicalCadastroBanda; }
 	public void setPkInformacaoMusicalCadastroBanda(long pkInformacaoMusicalCadastroBanda) { this.pkInformacaoMusicalCadastroBanda = pkInformacaoMusicalCadastroBanda; }
 
-	public int getStatus() { return status; }
-	public void setStatus(int status) { this.status = status; }
+	public Integer getStatus() { return status; }
+	public void setStatus(Integer status) { this.status = status; }
+	
+	public int getQuantidade() { return quantidade; }
+	public void setQuantidade(int quantidade) { this.quantidade = quantidade; }
 
 	public Usuario getUsuario() { return usuario; }
 	public void setUsuario(Usuario usuario) { this.usuario = usuario; }

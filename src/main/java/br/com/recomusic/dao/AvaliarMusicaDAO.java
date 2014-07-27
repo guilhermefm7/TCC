@@ -1,13 +1,16 @@
 package br.com.recomusic.dao;
  
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import br.com.recomusic.om.AvaliarMusica;
 import br.com.recomusic.om.Musica;
 import br.com.recomusic.om.Usuario;
+import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.singleton.ConectaBanco;
  
 /**
@@ -22,6 +25,11 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
         super(entityManager);
     }
     
+    /**
+     * Salva um registro AvaliarMusica passado como parâmetro
+     * @param avaliarMusica
+     * @throws Exception
+     */
     public void salvarAvaliacao(AvaliarMusica avaliarMusica) throws Exception
     {
     	try
@@ -32,6 +40,92 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
     	{  
     		nre.printStackTrace();
     		ConectaBanco.getInstance().rollBack(); 
+    	}  
+    }
+    
+    /**
+     * Autor: Guilherme
+     * Procura a AvaliarMusica do Usuário e Musica Passados como Parâmetro
+     * Parametro String idMusicaDeezer
+     * Usuario usuario
+     * True caso seja verdadeiro e false caso contrário
+     */
+    public AvaliarMusica pesquisaUsuarioAvaliouMusica(String idMusicaDeezer, Usuario usuario) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario AND am.musica.idDeezer = :id_deezer AND am.status = :status_ativo"));
+    		query.setParameter("pk_usuario", usuario.getPkUsuario());
+    		query.setParameter("id_deezer", idMusicaDeezer);
+    		query.setParameter("status_ativo", Constantes.TIPO_STATUS_ATIVO);
+    		AvaliarMusica am =  (AvaliarMusica) query.getSingleResult();
+    		return am;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+            return null;  
+        }  
+    }
+    
+    /**
+     * Autor: Guilherme
+     * Procura se já existe uma AvaliarMusica da música e usuário passados como parâmetro
+     * Musica musica
+     * Usuario usuario
+     * True caso seja verdadeiro e false caso contrário
+     */
+    public AvaliarMusica pesquisaUsuarioAvaliouMusicaPelaMusica(Musica musica, Usuario usuario) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario AND am.musica.pkMusica = :pk_musica"));
+    		query.setParameter("pk_usuario", usuario.getPkUsuario());
+    		query.setParameter("pk_musica", musica.getPkMusica());
+    		AvaliarMusica am = (AvaliarMusica) query.getSingleResult();
+    		return am;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
+    /**
+     * Autor: Guilherme
+     * Procura todas as música que o usuário passado como parâmetro curtiu
+     * Usuario usuario
+     * lista com as Musicas
+     */
+    public List<Musica> getAvaliacoesUsuario(Usuario usuario) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario AND am.resposta = true"));
+    		query.setParameter("pk_usuario", usuario.getPkUsuario());
+    		List<AvaliarMusica> listaAM = (List<AvaliarMusica>) query.getResultList();
+    		
+    		if(listaAM!=null && listaAM.size()>0)
+    		{
+    			List<Musica> listaM = new ArrayList<Musica>();
+    			
+    			for (AvaliarMusica am : listaAM)
+    			{
+    				if(am.getResposta() && am.getMusica()!=null && am.getMusica().getPkMusica()>0)
+    				{
+    					listaM.add(am.getMusica());
+    				}
+    			}
+    			
+    			return listaM;
+    		}
+    		else
+    		{
+    			return null;
+    		}
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
     	}  
     }
     

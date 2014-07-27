@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import br.com.recomusic.persistencia.utils.Constantes;
+
 @Entity
 public class AvaliarMusica implements Serializable
 {
@@ -21,6 +23,7 @@ public class AvaliarMusica implements Serializable
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkAvaliarMusica;
 	private Boolean resposta;
+	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 	
 	@ManyToOne @JoinColumn(name="fkUsuario")
 	private Usuario usuario;
@@ -43,4 +46,7 @@ public class AvaliarMusica implements Serializable
 	
 	public Boolean getResposta() { return resposta; }
 	public void setResposta(Boolean resposta) { this.resposta = resposta; }
+	
+	public int getStatus() { return status; }
+	public void setStatus(int status) { this.status = status; }
 }

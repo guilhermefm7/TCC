@@ -19,6 +19,11 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
         super(entityManager);
     }
     
+    /**
+     * Salva uma música no banco de dados
+     * @param musica
+     * @throws Exception
+     */
     public void salvarMusica(Musica musica) throws Exception
     {
     	try
@@ -32,12 +37,18 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     	}  
     }
     
-    public Musica procuraMusicaByID(String idMusica) throws Exception
+    /**
+     * Procura uma música através de seu idDeezer passado como parâmetro
+     * @param String idMusicaDeezer
+     * return a música ou nulo caso não ache nada
+     * @throws Exception
+     */
+    public Musica procuraMusicaByID(String idMusicaDeezer) throws Exception
     {
     	try
     	{
-    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where m.idMusica = :musica_id"));
-    		query.setParameter("musica_id", idMusica);
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where m.idDeezer = :musica_id"));
+    		query.setParameter("musica_id", idMusicaDeezer);
     		Musica musica =  (Musica) query.getSingleResult();
     		return musica;
     	}

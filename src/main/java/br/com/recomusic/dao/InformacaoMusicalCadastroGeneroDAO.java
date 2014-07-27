@@ -23,7 +23,7 @@ public class InformacaoMusicalCadastroGeneroDAO extends GenericDAO<Long, Informa
     
     /**
      * @author Guilherme
-     * Pesquisa se a InformacaoMusicalCadastroGenero existe através da Banda e Genero passados como parâmetros
+     * Pesquisa se a InformacaoMusicalCadastroGenero existe através do Usuario e Genero passados como parâmetros
      * @param Usuario
      * @param genero
      * @return  InformacaoMusicalCadastroGenero caso exista ou null caso não exista

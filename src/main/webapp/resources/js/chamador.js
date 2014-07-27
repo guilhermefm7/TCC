@@ -42,7 +42,7 @@ function compartilharFacebook(ID) {
 		
 		FB.ui({
 			method: 'feed',
-			name: 'RecoMusic',
+			name: 'RecMusic',
 			link: 'http://localhost:8080/RecoMusic/',
 			picture: data.album.cover,
 			caption: data.title + ' - ' + data.artist.name,

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import br.com.recomusic.om.Banda;
 import br.com.recomusic.om.InformacaoMusicalCadastroBanda;
@@ -40,6 +41,30 @@ public class InformacaoMusicalCadastroBandaDAO extends GenericDAO<Long, Informac
     		nre.printStackTrace();
     		ConectaBanco.getInstance().rollBack(); 
     	}  
+    }
+    
+    /**
+     * @author Guilherme
+     * Pesquisa se a InformacaoMusicalCadastroBanda existe através da Banda e Usuario passados como parâmetros
+     * @param Usuario
+     * @param Banda
+     * @return  InformacaoMusicalCadastroBanda caso exista ou null caso não exista
+     * @throws Exception
+     */
+    public InformacaoMusicalCadastroBanda pesquisarIMCB(Usuario usuario, Banda banda) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.InformacaoMusicalCadastroBanda as imcBanda where imcBanda.usuario.pkUsuario = :pk_usuario AND imcBanda.banda.pkBanda = :pk_banda"));
+    		query.setParameter("pk_usuario", usuario.getPkUsuario());
+    		query.setParameter("pk_banda", banda.getPkBanda());
+    		InformacaoMusicalCadastroBanda imcb = (InformacaoMusicalCadastroBanda) query.getSingleResult();
+    	    return imcb;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	} 
     }
     
     public List<Banda> procurarBandasUsuario(Usuario usuario) throws Exception

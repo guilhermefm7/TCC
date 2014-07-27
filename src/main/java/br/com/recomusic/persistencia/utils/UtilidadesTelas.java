@@ -152,11 +152,26 @@ public class UtilidadesTelas
 		return listaBGIM;
 	}
 	
+	/*
+	 * Pesquisa uma música na API através do seu id passado como parâmetro
+	 * String idMusica
+	 * return Música
+	 */
 	public Musica pesquisaMusica(String idMusica) throws Exception
 	{
 		Musica musica = new Musica();
 		musica = PesquisaMusica.procuraMusica(en, idMusica);
 		return musica;
+	}
+	
+	/*
+	 * Pesquisa na API (através do JSON) todos os gêneros de uma determinada banda
+	 * String idBanda
+	 * return List<String> listaGeneros
+	 */
+	public static List<String> requisitarAPIGeneroBanda(String idBanda) throws Exception
+	{
+		return PesquisaMusica.requisitarGeneroBanda(idBanda);
 	}
 	
 	public void redirecionarErro() throws Exception
