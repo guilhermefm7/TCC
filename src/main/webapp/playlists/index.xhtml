@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:head>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.click8').click(function (event){
+                         var url = $(this).attr("href");
+                         window.open(url, "_blank");
+                         event.preventDefault();
+            });
+        });
+    </script>
+</h:head>	
+<h:body>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{PlaylistBean.iniciar}" />
+	</f:metadata>
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+			<ui:define name="content">
+
+				<div class="row">
+						<div class="col-md-4">
+						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
+					</div>
+					</div>
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você ainda não criou nenhuma playlists"/></h:outputLabel>
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists > 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/></h:outputLabel>
+					<h:form rendered="#{PlaylistBean.qtdPlaylists > 1}">  
+					<h:panelGroup layout="block" class="table-responsive">
+		            	<h:dataTable class="table table-striped" value="#{PlaylistBean.listaPIM}" var="playlistUsuario" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
+			    			<h:column>
+			    				<f:facet name="header">#</f:facet>
+			    				#{playlistUsuario.qtd}
+			    			</h:column>
+			    			<h:column >
+			    				<f:facet name="header" >Nome</f:facet>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#" >#{playlistUsuario.nomePlaylist} </h:commandLink>
+			    			</h:column>
+			    			<h:column>
+			    				<f:facet name="header">Data de Lançamento</f:facet>
+			    				#{playlistUsuario.dataLancamento}
+			    			</h:column>
+			    			<h:column>
+			    				<f:facet name="header">Número de Faixas</f:facet>
+			    				#{playlistUsuario.qtdFaixas}
+			    			</h:column>
+	   					</h:dataTable>
+	   					</h:panelGroup>
+            		</h:form>
+			</ui:define>
+	</ui:composition>
+</h:body>
+</html>

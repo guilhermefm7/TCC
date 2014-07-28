@@ -102,7 +102,29 @@
 							
 	  						</h:form>
 	  						
-
+							<h:form rendered="#{MusicaBean.curtiuMusica eq true}" >
+							<h:panelGroup layout="block" class="form-group">
+								<h:commandLink styleClass="" style="background-color: #FFF;" actionListener="#{MusicaBean.avaliarMusica}">
+	  								<img src="/RecoMusic/resources/imagens/icones/adicionado.png" alt="" />
+	  							</h:commandLink>
+	  							
+	  							<span></span>
+	  							
+								<a id="sharebutton" href="#" onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
+									<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" />
+								</a>
+	  							
+	  						</h:panelGroup>
+	  						
+	  						<br/>
+	  						
+							<h:panelGroup layout="block" class="form-group">
+								<h:commandLink styleClass="" style="background-color: #FFF;">
+	  								<img src="/RecoMusic/resources/imagens/icones/playlist.png" alt="" />
+	  							</h:commandLink>
+							</h:panelGroup>
+							
+	  						</h:form>
   						
   						</h2>
 					</div>
@@ -111,7 +133,18 @@
 			</ui:define>
 	</ui:composition>
 	
-
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+								</div>
+							</div>
+						</div>
+					</div>
 	
 	
 	

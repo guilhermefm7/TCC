@@ -32,7 +32,8 @@ public class Playlist implements Serializable
 	@Type(type="timestamp")
 	private Date lancamento;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
-
+	private int numeroMusicas;
+	
 	@ManyToOne @JoinColumn(name="fkUsuario")
 	private Usuario usuario;
 
@@ -56,6 +57,9 @@ public class Playlist implements Serializable
 	public int getStatus() { return status; }
 	public void setStatus(int status) { this.status = status; }
 
+	public int getNumeroMusicas() { return numeroMusicas; }
+	public void setNumeroMusicas(int numeroMusicas) { this.numeroMusicas = numeroMusicas; }
+	
 	public Usuario getUsuario() { return usuario; }
 	public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 

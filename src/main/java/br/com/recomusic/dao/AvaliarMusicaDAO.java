@@ -72,7 +72,7 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
      * Procura se já existe uma AvaliarMusica da música e usuário passados como parâmetro
      * Musica musica
      * Usuario usuario
-     * True caso seja verdadeiro e false caso contrário
+     * AvaliarMusica caso exista e null caso não exista
      */
     public AvaliarMusica pesquisaUsuarioAvaliouMusicaPelaMusica(Musica musica, Usuario usuario) throws Exception
     {
