@@ -113,6 +113,7 @@ public class TesteMusica
 		    	// musica.setIdMUsica(song.getID());
 		    	 System.out.println(song.getTitle());
 		    	 System.out.println(song.getID());
+		    	 verifySong(song);
 		     }
 		 }
 		 catch  (Exception e)
@@ -295,7 +296,7 @@ public class TesteMusica
 	        }
 	    }
 
-	    private void verifySong(Song song) throws EchoNestException {
+	    private static void verifySong(Song song) throws EchoNestException {
 	        song.showAll();
 	    }
 	    
@@ -336,16 +337,10 @@ public class TesteMusica
 
 	public static void main(String[] args)
 	{
-		try
-		{
-			procurarMusica();
-		}
-		catch (EchoNestException e)
-		{
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
+		
+		//procuraMusicaa();
+		
 		//procurarMusica();
-		//procuraArtista();
+		procuraArtista();
 	}
 }

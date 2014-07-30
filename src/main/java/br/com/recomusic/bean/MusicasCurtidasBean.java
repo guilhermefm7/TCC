@@ -41,17 +41,21 @@ public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
 				listaMusicas = new ArrayList<MusicaIM>();
 				MusicaIM mIM;
 				int contador = 0;
-				for (Musica musica : listaM)
+				
+				if(listaM!=null && listaM.size()>0)
 				{
-					mIM = new MusicaIM();
-					mIM.setNomeMusica(musica.getTitulo());
-					mIM.setNomeArtista(musica.getBanda().getNome());
-					mIM.setIdDeezer(musica.getIdDeezer());
-					mIM.setIdMusica(musica.getIdMUsica());
-					mIM.setQtd(contador+1);
-					mIM.setAlbumMusica(musica.getAlbum());
-					listaMusicas.add(mIM);
-					contador++;
+					for (Musica musica : listaM)
+					{
+						mIM = new MusicaIM();
+						mIM.setNomeMusica(musica.getTitulo());
+						mIM.setNomeArtista(musica.getBanda().getNome());
+						mIM.setIdDeezer(musica.getIdDeezer());
+						mIM.setIdMusica(musica.getIdMUsica());
+						mIM.setQtd(contador+1);
+						mIM.setAlbumMusica(musica.getAlbum());
+						listaMusicas.add(mIM);
+						contador++;
+					}
 				}
 				
 				this.qtdFaixas = contador;

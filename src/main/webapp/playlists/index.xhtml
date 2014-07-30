@@ -20,6 +20,7 @@
 </h:head>	
 <h:body>
 	<f:metadata>
+	<f:viewParam name="t" value="#{PlaylistSelecionadaBean.pkPlaylist}" />
 		<f:event type="preRenderView" listener="#{PlaylistBean.iniciar}" />
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
@@ -32,8 +33,8 @@
 					</div>
 					</div>
 					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você ainda não criou nenhuma playlists"/></h:outputLabel>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists > 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/></h:outputLabel>
-					<h:form rendered="#{PlaylistBean.qtdPlaylists > 1}">  
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/></h:outputLabel>
+					<h:form rendered="#{PlaylistBean.qtdPlaylists eq 1}">  
 					<h:panelGroup layout="block" class="table-responsive">
 		            	<h:dataTable class="table table-striped" value="#{PlaylistBean.listaPIM}" var="playlistUsuario" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
 			    			<h:column>
@@ -42,15 +43,18 @@
 			    			</h:column>
 			    			<h:column >
 			    				<f:facet name="header" >Nome</f:facet>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#" >#{playlistUsuario.nomePlaylist} </h:commandLink>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{PlaylistBean.redirecionaPaginaMPlaylist(playlistUsuario.pkPlaylist)}" >#{playlistUsuario.nomePlaylist} </h:commandLink>
 			    			</h:column>
 			    			<h:column>
 			    				<f:facet name="header">Data de Lançamento</f:facet>
 			    				#{playlistUsuario.dataLancamento}
 			    			</h:column>
 			    			<h:column>
-			    				<f:facet name="header">Número de Faixas</f:facet>
+			    				<f:facet name="header">Nº de Faixas</f:facet>
 			    				#{playlistUsuario.qtdFaixas}
+			    			</h:column>
+			    			<h:column>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" value="Excluir" actionListener="#{PlaylistBean.removePlaylist(playlistUsuario.pkPlaylist)}"/>
 			    			</h:column>
 	   					</h:dataTable>
 	   					</h:panelGroup>

@@ -40,11 +40,6 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 				{
 					encerrarSessao();
 				}
-				
-/*				for (MusicaIM musicaIM : listaMusicas)
-				{
-					listaNomesMusica.add(musicaIM.getNomeMusica());
-				}*/
 			}
 			else
 			{

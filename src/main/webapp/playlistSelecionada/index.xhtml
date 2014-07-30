@@ -6,147 +6,59 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:fb="http://www.facebook.com/2008/fbml"
-	xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
-
-
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:head>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.click8').click(function (event){
+                         var url = $(this).attr("href");
+                         window.open(url, "_blank");
+                         event.preventDefault();
+            });
+        });
+    </script>
+</h:head>	
 <h:body>
-
 	<f:metadata>
-		<f:viewParam name="t" value="#{MusicaBean.valorIdMusica}" />
-		<f:viewParam name="m" value="#{MusicaBean.nomeMusica}" />
-		<f:viewParam name="a" value="#{MusicaBean.nomeArtista}" />
-		<f:viewParam name="n" value="#{MusicaBean.nomeAlbum}" />
-		<f:viewParam name="i" value="#{MusicaBean.valorIdMusicaEcho}" />
-		<f:event type="preRenderView" listener="#{MusicaBean.iniciar}" />
+		<f:event type="preRenderView" listener="#{PlaylistSelecionadaBean.iniciar}" />
 	</f:metadata>
-	
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 			<ui:define name="content">
 
-			<script type="text/javascript">
-			window.onload = function()
-			{
-				DZ.player.playTracks(['#{MusicaBean.valorIdMusica}']);
-			}
-			</script>
-
 				<div class="row">
-					<div class="col-md-4">
-						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Pesquisar Músicas</h1>
+						<div class="col-md-4">
+						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
 					</div>
-				</div>
-				
-				<!-- <h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="#{MusicaBean.nomeCompletoMusica}"/></h1> -->
-				<div class="row">
-					<div class="col-md-4">
-            			<div id="dz-root" >
-            				<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
-            			</div>
-						<div id="player" style="width:60%" align="left"></div>
 					</div>
-					<div class="col-md-6">
-						<h2 style="color:#4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 20px" align="center"><h:outputLabel value="#{MusicaBean.nomeCompletoMusica}"/>
-						<br/> <br/> <br/>
-						
-							<h:form rendered="#{MusicaBean.curtiuMusica eq false}">
-							<h:panelGroup layout="block" class="form-group">
-								<h:commandLink styleClass="" style="background-color: #FFF;" actionListener="#{MusicaBean.avaliarMusica}">
-	  								<img src="/RecoMusic/resources/imagens/icones/adicionar.png" alt="" />
-	  							</h:commandLink>
-	  							
-	  							<span></span>
-	  							
-								<a id="sharebutton" href="#" onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
-									<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" />
-								</a>
-	  							
-	  						</h:panelGroup>
-	  						
-	  						<br/>
-							<h:panelGroup layout="block" class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	  								<img src="/RecoMusic/resources/imagens/icones/playlist.png" alt="" >
-	  								</img>
-	  							</a>
-	  							 <ul class="dropdown-menu" role="menu">
-				                    <li>
-								<h:commandLink class="btn-primary">
-
-								</h:commandLink> </li>
-									<li><a href="#" onclick="$('#mySmallModalLabel').modal('show')">Criar Playlist</a></li>
-				                    <li class="divider"></li>
-				                    <li><a href="#">Underground</a></li>
-				                    <li><a href="#">Rock</a></li>
-							    </ul>
-							</h:panelGroup>
-						 
-						<h:form role="form-signin">
-						
-			<h:commandLink class="btn btn-primary" data-toggle="modal" onclick="$('#mySmallModalLabel').modal('show')" data-target=".bs-example-modal-sm" >Criar Playlist</h:commandLink>
-
-						</h:form>
-<button class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Criar Playlist</button>
-
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      ...
-    </div>
-  </div>
-</div>
-
-
-
-							
-	  						</h:form>
-	  						
-							<h:form rendered="#{MusicaBean.curtiuMusica eq true}" >
-							<h:panelGroup layout="block" class="form-group">
-								<h:commandLink styleClass="" style="background-color: #FFF;" actionListener="#{MusicaBean.avaliarMusica}">
-	  								<img src="/RecoMusic/resources/imagens/icones/adicionado.png" alt="" />
-	  							</h:commandLink>
-	  							
-	  							<span></span>
-	  							
-								<a id="sharebutton" href="#" onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
-									<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" />
-								</a>
-	  							
-	  						</h:panelGroup>
-	  						
-	  						<br/>
-	  						
-							<h:panelGroup layout="block" class="form-group">
-								<h:commandLink styleClass="" style="background-color: #FFF;">
-	  								<img src="/RecoMusic/resources/imagens/icones/playlist.png" alt="" />
-	  							</h:commandLink>
-							</h:panelGroup>
-							
-	  						</h:form>
-  						
-  						</h2>
-					</div>
-				</div>
-
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você ainda não criou nenhuma playlists"/></h:outputLabel>
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/></h:outputLabel>
+					<h:form rendered="#{PlaylistBean.qtdPlaylists eq 1}">  
+					<h:panelGroup layout="block" class="table-responsive">
+		            	<h:dataTable class="table table-striped" value="#{PlaylistBean.listaPIM}" var="playlistUsuario" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
+			    			<h:column>
+			    				<f:facet name="header">#</f:facet>
+			    				#{playlistUsuario.qtd}
+			    			</h:column>
+			    			<h:column >
+			    				<f:facet name="header" >Nome</f:facet>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{PlaylistBean.redirecionaPaginaMPlaylist(playlistUsuario.pkPlaylist)}" >#{playlistUsuario.nomePlaylist} </h:commandLink>
+			    			</h:column>
+			    			<h:column>
+			    				<f:facet name="header">Data de Lançamento</f:facet>
+			    				#{playlistUsuario.dataLancamento}
+			    			</h:column>
+			    			<h:column>
+			    				<f:facet name="header">Nº de Faixas</f:facet>
+			    				#{playlistUsuario.qtdFaixas}
+			    			</h:column>
+			    			<h:column>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" value="Excluir" actionListener="#{PlaylistBean.remover(playlistUsuario.pkPlaylist)}"/>
+			    			</h:column>
+	   					</h:dataTable>
+	   					</h:panelGroup>
+            		</h:form>
 			</ui:define>
 	</ui:composition>
-	
-					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">&times;</button>
-									<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-	
-	
-	
 </h:body>
 </html>

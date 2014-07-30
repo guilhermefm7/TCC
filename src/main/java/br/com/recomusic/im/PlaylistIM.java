@@ -1,19 +1,27 @@
 package br.com.recomusic.im;
 
-import java.util.Date;
 
 
 public class PlaylistIM
 {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
+	private String pkPlaylist;
 	private int qtd;
 	private String nomePlaylist;
-	private Date dataLancamento;
+	private String dataLancamento;
 	private int qtdFaixas;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public PlaylistIM() { }
 	
+	public String getPkPlaylist() {
+		return pkPlaylist;
+	}
+
+	public void setPkPlaylist(String pkPlaylist) {
+		this.pkPlaylist = pkPlaylist;
+	}
+
 	public int getQtd() {
 		return qtd;
 	}
@@ -30,11 +38,11 @@ public class PlaylistIM
 		this.nomePlaylist = nomePlaylist;
 	}
 
-	public Date getDataLancamento() {
+	public String getDataLancamento() {
 		return dataLancamento;
 	}
 
-	public void setDataLancamento(Date dataLancamento) {
+	public void setDataLancamento(String dataLancamento) {
 		this.dataLancamento = dataLancamento;
 	}
 
