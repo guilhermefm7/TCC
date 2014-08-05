@@ -25,7 +25,7 @@ public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
 	private List<MusicaIM> listaMusicas  = null;
 	private MusicaDAO musicaDAO = new MusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private AvaliarMusicaDAO avaliarMusicaDAO = new AvaliarMusicaDAO( ConectaBanco.getInstance().getEntityManager());
-	private int qtdFaixas;
+	private int qtdFaixas = 0;
 
 	public MusicasCurtidasBean() {	}
 

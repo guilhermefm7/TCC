@@ -87,6 +87,10 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 						{
 							this.curtiuMusica = true;
 						}
+						else
+						{
+							this.curtiuMusica = false;
+						}
 					}
 					else
 					{

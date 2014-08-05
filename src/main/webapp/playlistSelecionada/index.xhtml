@@ -20,44 +20,71 @@
 </h:head>	
 <h:body>
 	<f:metadata>
+		<f:viewParam name="t" value="#{PlaylistSelecionadaBean.pkPlaylist}" />
 		<f:event type="preRenderView" listener="#{PlaylistSelecionadaBean.iniciar}" />
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 			<ui:define name="content">
 
+			<script type="text/javascript">
+			window.onload = function()
+			{
+				DZ.player.playTracks([#{PlaylistSelecionadaBean.playlistsTocadas}]);
+			}
+			</script>
+
 				<div class="row">
-						<div class="col-md-4">
-						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
+					<div class="col-md-4">
+						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Playlist</h1>
 					</div>
+				</div>
+				
+				<br/>
+				<div class="row">
+					<div class="col-md-4">
+						<h:outputLabel class="pageee" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;text-align:center" value="#{PlaylistSelecionadaBean.nomePlaylist}"></h:outputLabel>
 					</div>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você ainda não criou nenhuma playlists"/></h:outputLabel>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/></h:outputLabel>
-					<h:form rendered="#{PlaylistBean.qtdPlaylists eq 1}">  
+				</div>
+				
+				<br/>
+				<br/>
+         		<div id="dz-root" >
+         			<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
+         		</div>
+				<div id="player" style="width:100%" align="center"></div>
+				
+				<br/>
+				<br/>
+				<br/>
+				<h:outputLabel rendered="#{PlaylistSelecionadaBean.qtdPlaylists == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;" ><h:outputLabel value="Você não adicionou nenhuma música nesta playlist"/></h:outputLabel>	
+				<h:outputLabel rendered="#{PlaylistSelecionadaBean.qtdPlaylists eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;" ><h:outputLabel value="Número de faixas: #{PlaylistSelecionadaBean.qtdPlaylists} faixa"/></h:outputLabel>	
+				<h:outputLabel rendered="#{PlaylistSelecionadaBean.qtdPlaylists gt 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;" ><h:outputLabel value="Número de faixas: #{PlaylistSelecionadaBean.qtdPlaylists} faixas"/></h:outputLabel>	
+				<h:form rendered="#{PlaylistSelecionadaBean.qtdPlaylists ge 1}">  
 					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-striped" value="#{PlaylistBean.listaPIM}" var="playlistUsuario" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
+		            	<h:dataTable class="table table-striped" value="#{PlaylistSelecionadaBean.listaMusicas}" var="musicaPlaylist" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
 			    			<h:column>
 			    				<f:facet name="header">#</f:facet>
-			    				#{playlistUsuario.qtd}
+			    				#{musicaPlaylist.qtd}
 			    			</h:column>
 			    			<h:column >
 			    				<f:facet name="header" >Nome</f:facet>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{PlaylistBean.redirecionaPaginaMPlaylist(playlistUsuario.pkPlaylist)}" >#{playlistUsuario.nomePlaylist} </h:commandLink>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{PlaylistSelecionadaBean.redirecionaPaginaMusica(musicaPlaylist.idDeezer,musicaPlaylist.nomeMusica, musicaPlaylist.nomeArtista, musicaPlaylist.albumMusica, musicaPlaylist.idMusica)}" >#{musicaPlaylist.nomeMusica} </h:commandLink>
 			    			</h:column>
 			    			<h:column>
-			    				<f:facet name="header">Data de Lançamento</f:facet>
-			    				#{playlistUsuario.dataLancamento}
+			    				<f:facet name="header">Artista/Banda</f:facet>
+			    				#{musicaPlaylist.nomeArtista}
 			    			</h:column>
 			    			<h:column>
-			    				<f:facet name="header">Nº de Faixas</f:facet>
-			    				#{playlistUsuario.qtdFaixas}
+			    				<f:facet name="header">Álbum</f:facet>
+			    				#{musicaPlaylist.albumMusica}
 			    			</h:column>
 			    			<h:column>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" value="Excluir" actionListener="#{PlaylistBean.remover(playlistUsuario.pkPlaylist)}"/>
+			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" value="Excluir" actionListener="#{PlaylistSelecionadaBean.excluir(musicaPlaylist.idDeezer)}"/>
 			    			</h:column>
 	   					</h:dataTable>
 	   					</h:panelGroup>
-            		</h:form>
+           		</h:form>
 			</ui:define>
 	</ui:composition>
 </h:body>

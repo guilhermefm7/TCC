@@ -28,11 +28,14 @@
 
 				<div class="row">
 						<div class="col-md-4">
-						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
-					</div>
-					</div>
-					<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} faixas"/></h1>
-					<h:form>  
+							<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
+						</div>
+				</div>
+				
+					<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%"><h:outputLabel value="Você ainda não curtiu nenhuma música"/></h:outputLabel>
+					<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%"><h:outputLabel value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} música"/></h:outputLabel>
+					<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas gt 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%"><h:outputLabel value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} músicas"/></h:outputLabel>
+					<h:form rendered="#{MusicasCurtidasBean.qtdFaixas ge 1}">  
 					<h:panelGroup layout="block" class="table-responsive">
 		            	<h:dataTable class="table table-striped" value="#{MusicasCurtidasBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
 			    			<h:column>

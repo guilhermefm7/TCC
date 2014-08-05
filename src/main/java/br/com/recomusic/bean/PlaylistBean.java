@@ -25,7 +25,7 @@ public class PlaylistBean extends UtilidadesTelas implements Serializable
 	private List<String> listaNomesMusica = null;
 	private List<PlaylistIM> listaPIM  = null;
 	private PlaylistDAO playlistDAO = new PlaylistDAO( ConectaBanco.getInstance().getEntityManager());
-	private int qtdPlaylists;
+	private int qtdPlaylists = 0;
 
 	public PlaylistBean() {	}
 

@@ -53,13 +53,32 @@ public class PlaylistDAO extends GenericDAO<Long, Playlist>
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("UPDATE br.com.recomusic.om.Playlist set status = :status_removido where pkPlaylist = :pk_playlist"));
     		query.setParameter("status_removido", Constantes.TIPO_STATUS_REMOVIDO);
     		query.setParameter("pk_playlist", Long.valueOf(pkPlaylist));
-    		Long.valueOf(pkPlaylist);
     		query.executeUpdate();
     	}
     	catch ( NoResultException nre )
     	{  
     		nre.printStackTrace();
     		ConectaBanco.getInstance().rollBack(); 
+    	}  
+    }
+    
+    /**
+     * Procura uma Playlist de acordo com os parâmetros passados
+     * @param pkPlaylist
+     * @throws Exception
+     */
+    public Playlist getPlaylist(String pkPlaylist) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Playlist where pkPlaylist = :pk_playlist AND status = :status_ativo"));
+    		query.setParameter("pk_playlist", Long.valueOf(pkPlaylist));
+    		query.setParameter("status_ativo", Constantes.TIPO_STATUS_ATIVO);
+    		return (Playlist)query.getSingleResult();
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;
     	}  
     }
     
@@ -73,7 +92,7 @@ public class PlaylistDAO extends GenericDAO<Long, Playlist>
     {
     	try
     	{
-    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Playlist as p where p.usuario.pkUsuario = :pk_usuario AND p.status = :status_ativo"));
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Playlist as p where p.usuario.pkUsuario = :pk_usuario AND p.status = :status_ativo ORDER by p.lancamento"));
     		query.setParameter("pk_usuario", usuario.getPkUsuario());
     		query.setParameter("status_ativo", Constantes.TIPO_STATUS_ATIVO);
     		List<Playlist> listaP = (List<Playlist>) query.getResultList();
