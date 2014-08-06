@@ -32,9 +32,13 @@
 						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
 					</div>
 					</div>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você ainda não criou nenhuma playlists"/></h:outputLabel>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você possui #{PlaylistBean.qtdPlaylists} playlist"/></h:outputLabel>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists gt 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/></h:outputLabel>
+					
+					<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;">
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}" value="Você ainda não criou nenhuma playlists"/>
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists eq 1}" value="Você possui #{PlaylistBean.qtdPlaylists} playlist"/>
+					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists gt 1}" value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/>
+					</h1>
+					
 					<h:form rendered="#{PlaylistBean.qtdPlaylists ge 1}">  
 					<h:panelGroup layout="block" class="table-responsive">
 		            	<h:dataTable class="table table-striped" value="#{PlaylistBean.listaPIM}" var="playlistUsuario" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
