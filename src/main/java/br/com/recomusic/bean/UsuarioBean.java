@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -270,6 +271,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 				    			 if(usuarioFacebook!=null && usuarioFacebook.getPkUsuario()>0)
 				    			 {
 				    				 mensagemErroLogin = "Este email já está cadastrado em outro usuário";
+				    				 addMessage("Este email já está cadastrado em outro usuário", FacesMessage.SEVERITY_ERROR);
 				    			 }
 				    			 else
 				    			 {
@@ -418,6 +420,8 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		try
 		{
 			mensagemErroLogin = verificaConsistencia();
+
+			addMessage(verificaConsistencia(), FacesMessage.SEVERITY_ERROR);
 			
 			if(mensagemErroLogin=="")
 			{
@@ -456,12 +460,14 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 						else
 						{
 							mensagemErroLogin = "Login informado já existe";
+							addMessage("Login informado já existe", FacesMessage.SEVERITY_ERROR);
 						}
 					}
 				}
 				else
 				{
 					mensagemErroLogin = "Email informado já foi cadastrado";
+					addMessage("Email informado já foi cadastrado", FacesMessage.SEVERITY_ERROR);
 				}
 			}
 		}
@@ -477,6 +483,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		try
 		{
 			mensagemErroAtualizarCadastro = "Senha";
+			addMessage("Senha", FacesMessage.SEVERITY_ERROR);
 			atualizarCadastro = true;
 		}
 		catch(Exception e)
@@ -552,7 +559,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/redefinirSenha/index.xhtml?t=1");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/redefinirSenha/index.xhtml");
 		}
 		catch (IOException e)
 		{
@@ -579,7 +586,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/cadastro/index.xhtml?t=1");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/cadastro/index.xhtml");
 		}
 		catch(Exception e)
 		{

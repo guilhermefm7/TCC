@@ -47,30 +47,31 @@
 				<p:tab title="Nova Playlist">
 					<h:panelGrid columns="1" cellpadding="">
 						<h:form class="navbar-form navbar-left" style="padding: 0;">
-						
-						<div class="form-group" >
-							<h:outputText value="Playlist: "
-								style="#4F7799;font-family:sans-serif;font-weight: bold;" alt="" />
+								<div id="divMessages">
+									<p:messages showDetail="true" autoUpdate="true" closable="true" />
 								</div>
-									<div class="form-group">
-								<h:inputText styleClass="form-control form-cascade-control"
-								pt:placeHolder="Nome da Playlist"
-								style="width: 80%;vertical-align:baseline" id="name"
-								value="#{PlaylistBean.nomePlaylist}">
-								<f:passThroughAttribute name="placeholder" value="Digite o nome" />
-								<f:validateRequired />
-							</h:inputText>
-							</div>
-							
-							
-							
-							<!--             		<h:outputText id="mensagemErro" value="#{PlaylistBean.mensagemErroPlaylist}" style="color:#b94a48">
-            		</h:outputText> -->
+							<div class="form-group">
 
-										<h:commandLink type="submit" class="btn btn-primary"
-											style="color:#FFFFFF;align:center;background-color:#85b2cb" value="Salvar"
-											actionListener="#{PlaylistBean.salvar}" />
-			
+								<h:outputText value="Playlist: "
+									style="#4F7799;font-family:sans-serif;font-weight: bold;"
+									alt="" />
+							</div>
+							<div class="form-group">
+								<h:inputText styleClass="form-control form-cascade-control"
+									pt:placeHolder="Nome da Playlist"
+									style="width: 80%;vertical-align:baseline" id="name"
+									value="#{PlaylistBean.nomePlaylist}">
+
+								</h:inputText>
+							</div>
+
+
+
+
+							<h:commandLink type="submit" class="btn btn-primary"
+								style="color:#FFFFFF;align:center;background-color:#85b2cb"
+								value="Salvar" actionListener="#{PlaylistBean.salvar}" />
+
 
 						</h:form>
 					</h:panelGrid>

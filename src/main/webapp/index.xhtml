@@ -6,8 +6,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
-	
+
 <h:body>
 	<f:metadata>
 		<f:viewParam name="token" value="#{UsuarioBean.token}" />
@@ -18,23 +19,26 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 
 		<ui:define name="content">
-		
+
 			<h:panelGroup layout="block" class="container"
 				style="margin-left: 10px; width: 40%;margin-top:7%"
 				rendered="#{UsuarioBean.logado eq false}">
 
-				<h:panelGroup layout="block" class="painelCadastroPrincipal" >
+				<h:panelGroup layout="block" class="painelCadastroPrincipal">
 
-					<h2 class="form-signin-heading" style="text-align: center;color: #000;">Inscreva-se</h2>
-					
+					<h2 class="form-signin-heading"
+						style="text-align: center; color: #000;">Inscreva-se</h2>
+
 					<h:panelGroup layout="block" class="footer"
 						style="border-top-color: #FAFAFA"></h:panelGroup>
-					
+
 					<h:panelGroup layout="block" class="footer"
 						style="border-top-color: #eee"></h:panelGroup>
 
 					<h:form role="form-signin">
-
+						<div id="divMessages">
+							<p:messages style="font-size: small;" showDetail="true" autoUpdate="true" closable="true" />
+						</div>
 						<h:panelGroup layout="block" class="form-group" id="registroLogin">
 							<h:inputText value="#{UsuarioBean.login}" id="validaLogin"
 								pt:placeHolder="Login" type="login" class="form-control" />
@@ -76,30 +80,28 @@
 
 
 						<h:panelGroup layout="block" class="form-group" id="registroSexo">
-							<h:selectOneRadio class="radioButton" value="#{UsuarioBean.sexo}" id="validaSexo" style="color: #000;font-size:medium;">
+							<h:selectOneRadio class="radioButton" value="#{UsuarioBean.sexo}"
+								id="validaSexo" style="color: #000;font-size:medium;">
 								<f:selectItem itemValue="1" itemLabel=" Feminino "></f:selectItem>
-								<f:selectItem  itemValue="2" itemLabel=" Masculino "></f:selectItem>
+								<f:selectItem itemValue="2" itemLabel=" Masculino "></f:selectItem>
 							</h:selectOneRadio>
 						</h:panelGroup>
 
-						<h:panelGroup layout="block" class="form-group"
-							rendered="#{UsuarioBean.mensagemErroLogin !=null}">
-							<h:outputText id="mensagemErro"
-								value="#{UsuarioBean.mensagemErroLogin}" style="color:#b94a48" />
-						</h:panelGroup>
 						<h:panelGroup layout="block" class="form-group">
-							<h:commandLink actionListener="#{UsuarioBean.redirecionaEsqueceuSuaSenha}" style="color: #000;font-size:medium"> 
-	          						Esqueceu sua senha? <strong>Lembrar</strong> 
+							<h:commandLink
+								actionListener="#{UsuarioBean.redirecionaEsqueceuSuaSenha}"
+								style="color: #000;font-size:medium"> 
+	          						Esqueceu sua senha? <strong>Lembrar</strong>
 							</h:commandLink>
 						</h:panelGroup>
-						
-						<h:panelGroup layout="block" class="footer" ></h:panelGroup>
+
+						<h:panelGroup layout="block" class="footer"></h:panelGroup>
 
 
 						<h:panelGroup layout="block" class="form-group" id="botaoInscreve">
 							<h:commandLink type="submit" class="btn btn-primary"
-								style="padding:5px 35px;border-radius: 2px;font-size:large" value="Inscreva-se"
-								actionListener="#{UsuarioBean.salvar}" />
+								style="padding:5px 35px;border-radius: 2px;font-size:large"
+								value="Inscreva-se" actionListener="#{UsuarioBean.salvar}" />
 						</h:panelGroup>
 
 						<h:panelGroup layout="block" class="form-group" id="botaoFacebook">
@@ -107,21 +109,23 @@
 								scope="user_birthday,public_profile,email,user_likes,user_friends,user_actions.music,publish_actions,user_about_me"
 								onlogin="loginWithFacebook();" data-max-rows="1"
 								data-size="xlarge" data-show-faces="false"
-								data-auto-logout-link="false" >Facebook</fb:login-button>
+								data-auto-logout-link="false">Facebook</fb:login-button>
 						</h:panelGroup>
 
 					</h:form>
 
 				</h:panelGroup>
 			</h:panelGroup>
-			
-			<h:panelGroup layout="block" class="content" rendered="#{UsuarioBean.logado eq true}">
-				<h:panelGroup layout="block" class="painelPaginaPrincLogado" >
-					<h:outputLabel style="color: #571414" value="#{UsuarioBean.usuario.nome} #{UsuarioBean.usuario.sobrenome}"/>
-					<h:panelGroup layout="block" class="footerPaginaInicialNome" ></h:panelGroup>
+
+			<h:panelGroup layout="block" class="content"
+				rendered="#{UsuarioBean.logado eq true}">
+				<h:panelGroup layout="block" class="painelPaginaPrincLogado">
+					<h:outputLabel style="color: #571414"
+						value="#{UsuarioBean.usuario.nome} #{UsuarioBean.usuario.sobrenome}" />
+					<h:panelGroup layout="block" class="footerPaginaInicialNome"></h:panelGroup>
 				</h:panelGroup>
-				
-  							
+
+
 			</h:panelGroup>
 
 		</ui:define>

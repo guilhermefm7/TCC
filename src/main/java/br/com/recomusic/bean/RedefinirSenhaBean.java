@@ -3,8 +3,8 @@ package br.com.recomusic.bean;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.UsuarioDAO;
@@ -22,7 +22,6 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
 	private String email;
-	private String falhaFormulario = null;
 	private EnviarEmail ee = new EnviarEmail();
 	private String tokenRecebido = null;
 	public RedefinirSenhaBean() {	}
@@ -31,11 +30,7 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			if( !(tokenRecebido!=null && tokenRecebido.length()>0 && tokenRecebido.equals("2"))  )
-			{
-				email = null;
-				falhaFormulario = null;
-			}
+			email = null;
 		}
 		catch(Exception e)
 		{
@@ -48,7 +43,6 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 	{
 		try 
 		{
-			falhaFormulario = "";
 			if(email!=null && email.length()>0)
 			{
 				if(email.contains("@"))
@@ -68,22 +62,21 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 						String mensagem = "<a href=\"" + getMsg + "\">Clique aqui</a> para redefinir sua senha";
 						
 						ee.enviaEmail(email, assunto, mensagem, validaEmailUsuario.getLogin());
-						falhaFormulario = "Email de redefinição de senha foi enviado a sua caixa de email";
-						FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/redefinirSenha/index.xhtml?t=2");
+	    				addMessage("Email de redefinição de senha foi enviado a sua caixa de email", FacesMessage.SEVERITY_INFO);
 					}
 					else
 					{
-						falhaFormulario = "Email informado não está cadastrado em nosso banco de dados";
+	    				 addMessage("Email informado não está cadastrado em nosso banco de dados", FacesMessage.SEVERITY_ERROR);
 					}
 				}
 				else
 				{
-					falhaFormulario = "Informe um email correto";
+   				 	addMessage("Informe um email correto", FacesMessage.SEVERITY_ERROR);
 				}
 			}
 			else
 			{
-				falhaFormulario = "Informe um email para que seja enviado a redefinição de senha";
+				 addMessage("Informe um email para que seja enviado a redefinição de senha", FacesMessage.SEVERITY_ERROR);
 			}
 		}
 		catch(Exception e)
@@ -100,14 +93,6 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 	public void setEmail(String email)
 	{
 		this.email = email;
-	}
-	public String getFalhaFormulario()
-	{
-		return falhaFormulario;
-	}
-	public void setFalhaFormulario(String falhaFormulario)
-	{
-		this.falhaFormulario = falhaFormulario;
 	}
 
 	public String getTokenRecebido() {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -41,10 +42,9 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 			{
 				setUsuario(getUsuarioGlobal());
 			}
-			
-			if( tokenRecebido!=null && tokenRecebido.length()>0 && tokenRecebido.equals("1")  )
+			else
 			{
-				falhaAtualizarCadastro = null;
+				encerrarSessao();
 			}
 		}
 		catch (Exception e)
@@ -57,8 +57,9 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
+			falhaAtualizarCadastro = null;
 			falhaAtualizarCadastro = verificaConsistencia();
-			
+			addMessage(verificaConsistencia(), FacesMessage.SEVERITY_ERROR);
 			if(falhaAtualizarCadastro=="" || falhaAtualizarCadastro==null)
 			{
 				Usuario pegaUsuario = usuarioDAO.getUsuarioPk(getUsuarioGlobal().getPkUsuario());
@@ -74,13 +75,8 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 					
 					save(pegaUsuario);
 					setUsuarioGlobal(pegaUsuario);
-					falhaAtualizarCadastro = null;
 					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 				}
-			}
-			else
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/cadastro/index.xhtml?t=2");
 			}
 		}
 		catch(Exception e)
@@ -115,7 +111,6 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			falhaAtualizarCadastro = null;
 			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 		}
 		catch(Exception e)

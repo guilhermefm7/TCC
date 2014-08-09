@@ -6,9 +6,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:head>
-    <script type="text/javascript">
+	<script type="text/javascript">
         $(document).ready(function(){
             $('.click8').click(function (event){
                          var url = $(this).attr("href");
@@ -17,47 +18,74 @@
             });
         });
     </script>
-</h:head>	
+</h:head>
 <h:body>
 	<f:metadata>
-		<f:event type="preRenderView" listener="#{MusicasCurtidasBean.iniciar}" />
+		<f:event type="preRenderView"
+			listener="#{MusicasCurtidasBean.iniciar}" />
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
-			<ui:define name="content">
+		<ui:define name="content">
 
-				<div class="row">
-						<div class="col-md-4">
-							<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
-						</div>
+			<div class="row">
+				<div class="col-md-4">
+					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Curtidas</h1>
 				</div>
-				
-					<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%"><h:outputLabel value="Você ainda não curtiu nenhuma música"/></h:outputLabel>
-					<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%"><h:outputLabel value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} música"/></h:outputLabel>
-					<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas gt 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%"><h:outputLabel value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} músicas"/></h:outputLabel>
-					<h:form rendered="#{MusicasCurtidasBean.qtdFaixas ge 1}">  
-					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-bordered table-striped table-hover table-heading table-datatable dataTable" value="#{MusicasCurtidasBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
-			    			<h:column>
-			    				<f:facet name="header">#</f:facet>
+			</div>
+
+			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas == 0}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
+				<h:outputLabel value="Você ainda não curtiu nenhuma música" />
+			</h:outputLabel>
+			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas eq 1}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
+				<h:outputLabel
+					value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} música" />
+			</h:outputLabel>
+			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas gt 1}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
+				<h:outputLabel
+					value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} músicas" />
+			</h:outputLabel>
+
+			<h:form rendered="#{MusicasCurtidasBean.qtdFaixas ge 1}">
+				<p:accordionPanel>
+					<p:tab title="Curtidas">
+						<h:panelGroup layout="block" class="table-responsive">
+							<h:dataTable
+								class="table table-bordered table-striped table-hover table-heading table-datatable dataTable"
+								value="#{MusicasCurtidasBean.listaMusicas}" var="musicaAchada"
+								styleClass="order-table" headerClass="order-table-header"
+								rowClasses="order-table-odd-row,order-table-even-row"
+								style="color: #333;font-weight: bold;">
+								<h:column>
+									<f:facet name="header">#</f:facet>
 			    				#{musicaAchada.qtd}
 			    			</h:column>
-			    			<h:column >
-			    				<f:facet name="header" >Nome</f:facet>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{MusicasCurtidasBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.nomeMusica, musicaAchada.nomeArtista, musicaAchada.albumMusica, musicaAchada.idMusica)}" >#{musicaAchada.nomeMusica} </h:commandLink>
-			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Artista/Banda</f:facet>
+								<h:column>
+									<f:facet name="header">Nome</f:facet>
+									<h:commandLink
+										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										actionListener="#{MusicasCurtidasBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.nomeMusica, musicaAchada.nomeArtista, musicaAchada.albumMusica, musicaAchada.idMusica)}">#{musicaAchada.nomeMusica} </h:commandLink>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Artista/Banda</f:facet>
 			    				#{musicaAchada.nomeArtista}
 			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Álbum</f:facet>
+								<h:column>
+									<f:facet name="header">Álbum</f:facet>
 			    				#{musicaAchada.albumMusica}
 			    			</h:column>
-	   					</h:dataTable>
-	   					</h:panelGroup>
-            		</h:form>
-			</ui:define>
+							</h:dataTable>
+						</h:panelGroup>
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
+		</ui:define>
 	</ui:composition>
 </h:body>
 </html>

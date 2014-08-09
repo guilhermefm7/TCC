@@ -6,6 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:body>
 	<f:metadata>
@@ -29,8 +30,12 @@
 					<h:panelGroup layout="block" class="footer"
 						style="border-top-color: #eee"></h:panelGroup>
 
-					<h:form class="form-signin" rendered="#{AlterarSenhaBean.falhaSenha ne 'Página de redefinição de senha expirada. Favor pedir a redefinição de senha novamente'}">
-
+					<h:form class="form-signin"
+						rendered="#{(AlterarSenhaBean.redefinicao == true)}">
+						<div id="divMessages">
+							<p:messages style="font-size: small;" showDetail="true"
+								autoUpdate="true" closable="true" />
+						</div>
 						<h:panelGroup layout="block" class="form-group"
 							id="textoAlterarSenha">
 							<div class="row">
@@ -79,20 +84,13 @@
 					</h:form>
 
 					<h:panelGroup layout="block"
-						rendered="#{(AlterarSenhaBean.falhaSenha != null) and (AlterarSenhaBean.falhaSenha ne 'Senha alterada com sucesso')}">
-						<div class="alert alert-danger">
-							<h:outputText value="#{AlterarSenhaBean.falhaSenha}"
-								escape="false" />
+						rendered="#{(AlterarSenhaBean.redefinicao == false)}">
+						<div id="divMessages">
+							<p:messages style="font-size: small;" showDetail="true"
+								autoUpdate="true" closable="true" />
 						</div>
 					</h:panelGroup>
 
-					<h:panelGroup layout="block" id="mensagemAlterarSenha"
-						rendered="#{(AlterarSenhaBean.falhaSenha != null) and (AlterarSenhaBean.falhaSenha eq 'Senha alterada com sucesso')}">
-						<div class="alert alert-success" id="mensagemErroSenha">
-							<h:outputText value="#{AlterarSenhaBean.falhaSenha}"
-								escape="false" />
-						</div>
-					</h:panelGroup>
 
 				</h:panelGroup>
 

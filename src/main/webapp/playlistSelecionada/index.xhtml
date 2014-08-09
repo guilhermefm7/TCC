@@ -6,9 +6,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:head>
-    <script type="text/javascript">
+	<script type="text/javascript">
         $(document).ready(function(){
             $('.click8').click(function (event){
                          var url = $(this).attr("href");
@@ -17,15 +18,16 @@
             });
         });
     </script>
-</h:head>	
+</h:head>
 <h:body>
 	<f:metadata>
 		<f:viewParam name="t" value="#{PlaylistSelecionadaBean.pkPlaylist}" />
-		<f:event type="preRenderView" listener="#{PlaylistSelecionadaBean.iniciar}" />
+		<f:event type="preRenderView"
+			listener="#{PlaylistSelecionadaBean.iniciar}" />
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
-			<ui:define name="content">
+		<ui:define name="content">
 
 			<script type="text/javascript">
 			window.onload = function()
@@ -34,58 +36,92 @@
 			}
 			</script>
 
-				<div class="row">
-					<div class="col-md-4">
-						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Playlist</h1>
-					</div>
+			<div class="row">
+				<div class="col-md-4">
+					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Playlist</h1>
 				</div>
-				
-				<br/>
-				<div class="row">
-					<div class="col-md-4">
-						<h:outputLabel class="pageee" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;text-align:center" value="#{PlaylistSelecionadaBean.nomePlaylist}"></h:outputLabel>
-					</div>
+			</div>
+
+			<br />
+			<div class="row">
+				<div class="col-md-4">
+					<h:outputLabel class="pageee"
+						style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;text-align:center"
+						value="#{PlaylistSelecionadaBean.nomePlaylist}"></h:outputLabel>
 				</div>
-				
-				<br/>
-				<br/>
-         		<div id="dz-root" >
-         			<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
-         		</div>
-				<div id="player" style="width:100%" align="center"></div>
-				
-				<br/>
-				<br/>
-				<br/>
-				<h:outputLabel rendered="#{PlaylistSelecionadaBean.qtdPlaylists == 0}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;" ><h:outputLabel value="Você não adicionou nenhuma música nesta playlist"/></h:outputLabel>	
-				<h:outputLabel rendered="#{PlaylistSelecionadaBean.qtdPlaylists eq 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;" ><h:outputLabel value="Número de faixas: #{PlaylistSelecionadaBean.qtdPlaylists} faixa"/></h:outputLabel>	
-				<h:outputLabel rendered="#{PlaylistSelecionadaBean.qtdPlaylists gt 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;" ><h:outputLabel value="Número de faixas: #{PlaylistSelecionadaBean.qtdPlaylists} faixas"/></h:outputLabel>	
-				<h:form rendered="#{PlaylistSelecionadaBean.qtdPlaylists ge 1}">  
-					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-striped" value="#{PlaylistSelecionadaBean.listaMusicas}" var="musicaPlaylist" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
-			    			<h:column>
-			    				<f:facet name="header">#</f:facet>
+			</div>
+
+			<br />
+			<br />
+			<div id="dz-root">
+				<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
+			</div>
+			<div id="player" style="width: 100%" align="center"></div>
+
+			<br />
+			<br />
+			<br />
+			<h:outputLabel
+				rendered="#{PlaylistSelecionadaBean.qtdPlaylists == 0}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;">
+				<h:outputLabel
+					value="Você não adicionou nenhuma música nesta playlist" />
+			</h:outputLabel>
+			<h:outputLabel
+				rendered="#{PlaylistSelecionadaBean.qtdPlaylists eq 1}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;">
+				<h:outputLabel
+					value="Número de faixas: #{PlaylistSelecionadaBean.qtdPlaylists} faixa" />
+			</h:outputLabel>
+			<h:outputLabel
+				rendered="#{PlaylistSelecionadaBean.qtdPlaylists gt 1}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%;">
+				<h:outputLabel
+					value="Número de faixas: #{PlaylistSelecionadaBean.qtdPlaylists} faixas" />
+			</h:outputLabel>
+			<h:form rendered="#{PlaylistSelecionadaBean.qtdPlaylists ge 1}">
+				<p:accordionPanel>
+					<p:tab title="Músicas">
+						<h:panelGroup layout="block" class="table-responsive">
+							<h:dataTable class="table table-striped"
+								value="#{PlaylistSelecionadaBean.listaMusicas}"
+								var="musicaPlaylist" styleClass="order-table"
+								headerClass="order-table-header"
+								rowClasses="order-table-odd-row,order-table-even-row"
+								style="color: #333;font-weight: bold;">
+								<h:column>
+									<f:facet name="header">#</f:facet>
 			    				#{musicaPlaylist.qtd}
 			    			</h:column>
-			    			<h:column >
-			    				<f:facet name="header" >Nome</f:facet>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{PlaylistSelecionadaBean.redirecionaPaginaMusica(musicaPlaylist.idDeezer,musicaPlaylist.nomeMusica, musicaPlaylist.nomeArtista, musicaPlaylist.albumMusica, musicaPlaylist.idMusica)}" >#{musicaPlaylist.nomeMusica} </h:commandLink>
-			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Artista/Banda</f:facet>
+								<h:column>
+									<f:facet name="header">Nome</f:facet>
+									<h:commandLink
+										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										actionListener="#{PlaylistSelecionadaBean.redirecionaPaginaMusica(musicaPlaylist.idDeezer,musicaPlaylist.nomeMusica, musicaPlaylist.nomeArtista, musicaPlaylist.albumMusica, musicaPlaylist.idMusica)}">#{musicaPlaylist.nomeMusica} </h:commandLink>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Artista/Banda</f:facet>
 			    				#{musicaPlaylist.nomeArtista}
 			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Álbum</f:facet>
+								<h:column>
+									<f:facet name="header">Álbum</f:facet>
 			    				#{musicaPlaylist.albumMusica}
 			    			</h:column>
-			    			<h:column>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" value="Excluir" actionListener="#{PlaylistSelecionadaBean.excluir(musicaPlaylist.idDeezer)}"/>
-			    			</h:column>
-	   					</h:dataTable>
-	   					</h:panelGroup>
-           		</h:form>
-			</ui:define>
+								<h:column>
+									<h:commandLink
+										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										value="Excluir"
+										actionListener="#{PlaylistSelecionadaBean.excluir(musicaPlaylist.idDeezer)}" />
+								</h:column>
+							</h:dataTable>
+						</h:panelGroup>
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
+		</ui:define>
 	</ui:composition>
 </h:body>
 </html>

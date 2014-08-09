@@ -6,9 +6,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:head>
-    <script type="text/javascript">
+	<script type="text/javascript">
         $(document).ready(function(){
             $('.click8').click(function (event){
                          var url = $(this).attr("href");
@@ -17,7 +18,7 @@
             });
         });
     </script>
-</h:head>	
+</h:head>
 <h:body>
 	<f:metadata>
 		<f:viewParam name="t" value="#{ProcurarMusicaBean.tokenRecebido}" />
@@ -25,37 +26,52 @@
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
-			<ui:define name="content">
+		<ui:define name="content">
 
-				<div class="row">
-						<div class="col-md-4">
-						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Pesquisar Músicas</h1>
-					</div>
-					</div>
-					<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;"><h:outputLabel value="Resultados da pesquisa por: #{ProcurarMusicaBean.tokenRecebido}"/></h1>
-					<h:form>  
-					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-striped" value="#{ProcurarMusicaBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
-			    			<h:column>
-			    				<f:facet name="header">#</f:facet>
+			<div class="row">
+				<div class="col-md-4">
+					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Pesquisar
+						Músicas</h1>
+				</div>
+			</div>
+			<h1 class="page-header"
+				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px;">
+				<h:outputLabel
+					value="Resultados da pesquisa por: #{ProcurarMusicaBean.tokenRecebido}" />
+			</h1>
+			<h:form>
+				<p:accordionPanel>
+					<p:tab title="Músicas">
+						<h:panelGroup layout="block" class="table-responsive">
+							<h:dataTable class="table table-striped"
+								value="#{ProcurarMusicaBean.listaMusicas}" var="musicaAchada"
+								styleClass="order-table" headerClass="order-table-header"
+								rowClasses="order-table-odd-row,order-table-even-row"
+								style="color: #333;font-weight: bold;">
+								<h:column>
+									<f:facet name="header">#</f:facet>
 			    				#{musicaAchada.qtd}
 			    			</h:column>
-			    			<h:column >
-			    				<f:facet name="header" >Nome</f:facet>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{ProcurarMusicaBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.nomeMusica, musicaAchada.nomeArtista, musicaAchada.albumMusica, musicaAchada.idMusica)}" >#{musicaAchada.nomeMusica} </h:commandLink>
-			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Artista/Banda</f:facet>
+								<h:column>
+									<f:facet name="header">Nome</f:facet>
+									<h:commandLink
+										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										actionListener="#{ProcurarMusicaBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.nomeMusica, musicaAchada.nomeArtista, musicaAchada.albumMusica, musicaAchada.idMusica)}">#{musicaAchada.nomeMusica} </h:commandLink>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Artista/Banda</f:facet>
 			    				#{musicaAchada.nomeArtista}
 			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Álbum</f:facet>
+								<h:column>
+									<f:facet name="header">Álbum</f:facet>
 			    				#{musicaAchada.albumMusica}
 			    			</h:column>
-	   					</h:dataTable>
-	   					</h:panelGroup>
-            		</h:form>
-			</ui:define>
+							</h:dataTable>
+						</h:panelGroup>
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
+		</ui:define>
 	</ui:composition>
 </h:body>
 </html>

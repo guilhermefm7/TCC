@@ -2,6 +2,7 @@ package br.com.recomusic.bean;
 
 import java.io.Serializable;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 
@@ -23,15 +24,36 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 	private String senhaDigitadaNovamente;
 	private String falhaSenha = null;
 	private String tokenRecebido = null;
+	private Boolean redefinicao = null;
 	public AlterarSenhaBean() {	 }
 	
 	public void iniciar()
 	{
 		try
 		{
-			if(!procuraTokenRecebido())
+			if(tokenRecebido!=null && tokenRecebido.length()>0)
 			{
-				falhaSenha = "Página de redefinição de senha expirada. Favor pedir a redefinição de senha novamente";
+				if(getUsuarioGlobal()==null)
+				{
+					if(!procuraTokenRecebido())
+					{
+						redefinicao = false;
+						addMessage("Página de redefinição de senha expirada. Favor pedir a redefinição de senha novamente", FacesMessage.SEVERITY_ERROR);
+					}
+					else
+					{
+						redefinicao = true;
+					}
+				}
+				else if(getUsuarioGlobal()!=null && getUsuarioGlobal().getPkUsuario()>0)
+				{
+					//Redirecionar para alguma página (Criar Lógica)
+					redirecionarErro();
+				}
+			}
+			else
+			{
+				redirecionarErro();
 			}
 		}
 		catch(Exception e)
@@ -59,6 +81,7 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 						usuarioDAO.salvarUsuario(usuarioRecente);
 						ConectaBanco.getInstance().commit();
 						falhaSenha = "Senha alterada com sucesso";
+						addMessage("Senha alterada com sucesso", FacesMessage.SEVERITY_INFO);
 						GuardaAlteracoesSenhas.getTokensAlteracaoSenhaUsuario().remove(tokenRecebido);
 						UsuarioBean usuarioBean = ((UsuarioBean) getBean("UsuarioBean"));
 						usuarioBean.setUsuario(usuarioRecente);
@@ -67,11 +90,13 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 					else
 					{
 						falhaSenha = "As senhas informadas devem ser iguais";
+						addMessage("As senhas informadas devem ser iguais", FacesMessage.SEVERITY_ERROR);
 					}
 				}
 				else
 				{
 					falhaSenha = "Informe a sua nova senha. A senha deve possuir no minímo 6 caracteres";
+					addMessage("Informe a sua nova senha. A senha deve possuir no minímo 6 caracteres", FacesMessage.SEVERITY_ERROR);
 				}
 			}
 		}
@@ -99,6 +124,14 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 			ConectaBanco.getInstance().rollBack();
 			return false;
 		}
+	}
+	
+	public Boolean getRedefinicao() {
+		return redefinicao;
+	}
+
+	public void setRedefinicao(Boolean redefinicao) {
+		this.redefinicao = redefinicao;
 	}
 
 	public String getSenhaDigitada() {

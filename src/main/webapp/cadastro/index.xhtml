@@ -6,11 +6,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:body>
 	<f:metadata>
 		<f:event type="preRenderView" listener="#{CadastroBean.iniciar}" />
-		<f:viewParam name="t" value="#{CadastroBean.tokenRecebido}" />
 	</f:metadata>
 
 	<ui:composition template="/resources/template/template.xhtml">
@@ -30,7 +30,10 @@
 						style="border-top-color: #eee"></h:panelGroup>
 
 					<h:form class="form-signin">
-
+						<div id="divMessages">
+							<p:messages style="font-size: small;" showDetail="true"
+								autoUpdate="true" closable="true" />
+						</div>
 						<h:panelGroup layout="block" class="form-group" id="registroLogin">
 							<h:outputLabel value="Login:" />
 							<h:inputText value="#{CadastroBean.usuario.login}"
@@ -88,14 +91,6 @@
 						</h:panelGroup>
 
 					</h:form>
-
-					<h:panelGroup layout="block"
-						rendered="#{(CadastroBean.falhaAtualizarCadastro != null) and (CadastroBean.falhaAtualizarCadastro ne '')}">
-						<div class="alert alert-danger">
-							<h:outputText value="#{CadastroBean.falhaAtualizarCadastro}"
-								escape="false" />
-						</div>
-					</h:panelGroup>
 
 				</h:panelGroup>
 

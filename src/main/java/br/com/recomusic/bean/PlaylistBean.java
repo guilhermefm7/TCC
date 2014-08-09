@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -95,7 +96,7 @@ public class PlaylistBean extends UtilidadesTelas implements Serializable
 			}
 			else
 			{
-				mensagemErroPlaylist = "Digite o nome da Playlist";
+				addMessage("Digite um nome para a playlist", FacesMessage.SEVERITY_ERROR);
 			}
 			
 			nomePlaylist = null;

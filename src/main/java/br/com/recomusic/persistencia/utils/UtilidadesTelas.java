@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -27,6 +29,7 @@ public class UtilidadesTelas
 	private static Usuario usuarioGlobal;
 	private  boolean curtiuMusica = false;
 	private  boolean naoCurtiuMusica = false;
+    protected Boolean enableMessage = Boolean.TRUE;
 	EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
 	private InformacaoMusicalCadastroBandaDAO informacaoMusicalCadastroBandaDAO = new InformacaoMusicalCadastroBandaDAO( ConectaBanco.getInstance().getEntityManager());
     public UtilidadesTelas() {   }  
@@ -67,11 +70,7 @@ public class UtilidadesTelas
 	{
 		try
 		{
-			FacesContext fc = FacesContext.getCurrentInstance();  
-		    HttpSession session = (HttpSession)fc.getExternalContext().getSession(false);  
-		    session.invalidate();  
-
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/RecoMusic/index.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 		}
 		catch (Exception e)
 		{
@@ -178,6 +177,13 @@ public class UtilidadesTelas
 	{
 		FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 	}
+	
+    public void addMessage(String summary, Severity severityInfo) {
+        if (enableMessage) {
+            FacesMessage message = new FacesMessage(severityInfo, summary, "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
 
 	public static Usuario getUsuarioGlobal() {
 		return usuarioGlobal;
@@ -203,5 +209,12 @@ public class UtilidadesTelas
 		this.naoCurtiuMusica = naoCurtiuMusica;
 	}
 	
+    public Boolean getEnableMessage() {
+        return enableMessage;
+    }
+
+    public void setEnableMessage(Boolean enableMessage) {
+        this.enableMessage = enableMessage;
+    }
 	
 }
