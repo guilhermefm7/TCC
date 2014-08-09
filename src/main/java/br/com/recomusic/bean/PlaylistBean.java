@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -26,7 +27,9 @@ public class PlaylistBean extends UtilidadesTelas implements Serializable
 	private List<PlaylistIM> listaPIM  = null;
 	private PlaylistDAO playlistDAO = new PlaylistDAO( ConectaBanco.getInstance().getEntityManager());
 	private int qtdPlaylists = 0;
-
+	private String nomePlaylist = null;
+	private String mensagemErroPlaylist = null;
+	
 	public PlaylistBean() {	}
 
 	public void iniciar()
@@ -75,6 +78,35 @@ public class PlaylistBean extends UtilidadesTelas implements Serializable
 		}
 	}
 
+	public void salvar()
+	{
+		try
+		{
+			if(nomePlaylist!=null && nomePlaylist.length()>0)
+			{
+				Playlist playlist = new Playlist();
+				playlist.setNome(nomePlaylist);
+				playlist.setLancamento(new Date());
+				playlist.setNumeroMusicas(0);
+				playlist.setUsuario(getUsuarioGlobal());
+				ConectaBanco.getInstance().beginTransaction();
+				playlistDAO.save(playlist);
+				ConectaBanco.getInstance().commit();
+			}
+			else
+			{
+				mensagemErroPlaylist = "Digite o nome da Playlist";
+			}
+			
+			nomePlaylist = null;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
 	public void redirecionaPaginaMPlaylist(String pkPlaylist)
 	{
 		try
@@ -124,6 +156,22 @@ public class PlaylistBean extends UtilidadesTelas implements Serializable
 
 	public int getQtdPlaylists() {
 		return qtdPlaylists;
+	}
+
+	public String getNomePlaylist() {
+		return nomePlaylist;
+	}
+
+	public void setNomePlaylist(String nomePlaylist) {
+		this.nomePlaylist = nomePlaylist;
+	}
+	
+	public String getMensagemErroPlaylist() {
+		return mensagemErroPlaylist;
+	}
+
+	public void setMensagemErroPlaylist(String mensagemErroPlaylist) {
+		this.mensagemErroPlaylist = mensagemErroPlaylist;
 	}
 
 	public void setQtdPlaylists(int qtdPlaylists) {

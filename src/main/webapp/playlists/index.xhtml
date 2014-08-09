@@ -6,9 +6,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 <h:head>
-    <script type="text/javascript">
+	<script type="text/javascript">
         $(document).ready(function(){
             $('.click8').click(function (event){
                          var url = $(this).attr("href");
@@ -17,54 +18,119 @@
             });
         });
     </script>
-</h:head>	
+</h:head>
 <h:body>
 	<f:metadata>
-	<f:viewParam name="t" value="#{PlaylistSelecionadaBean.pkPlaylist}" />
+		<f:viewParam name="t" value="#{PlaylistSelecionadaBean.pkPlaylist}" />
 		<f:event type="preRenderView" listener="#{PlaylistBean.iniciar}" />
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
-			<ui:define name="content">
+		<ui:define name="content">
 
-				<div class="row">
-						<div class="col-md-4">
-						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Curtidas</h1>
-					</div>
-					</div>
-					
-					<h1 class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;">
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}" value="Você ainda não criou nenhuma playlists"/>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists eq 1}" value="Você possui #{PlaylistBean.qtdPlaylists} playlist"/>
-					<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists gt 1}" value="Você possui #{PlaylistBean.qtdPlaylists} playlists"/>
-					</h1>
-					
-					<h:form rendered="#{PlaylistBean.qtdPlaylists ge 1}">  
-					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-striped" value="#{PlaylistBean.listaPIM}" var="playlistUsuario" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
-			    			<h:column>
-			    				<f:facet name="header">#</f:facet>
+			<div class="row">
+				<div class="col-md-4">
+					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Playlists</h1>
+				</div>
+			</div>
+
+			<br />
+			<h1
+				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Playlists</h1>
+			<h1 class="page-header"
+				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px;">
+				<h:outputLabel value="Criar nova playlist" />
+			</h1>
+
+
+			<p:accordionPanel>
+				<p:tab title="Nova Playlist">
+					<h:panelGrid columns="1" cellpadding="">
+						<h:form class="navbar-form navbar-left" style="padding: 0;">
+						
+						<div class="form-group" >
+							<h:outputText value="Playlist: "
+								style="#4F7799;font-family:sans-serif;font-weight: bold;" alt="" />
+								</div>
+									<div class="form-group">
+								<h:inputText styleClass="form-control form-cascade-control"
+								pt:placeHolder="Nome da Playlist"
+								style="width: 80%;vertical-align:baseline" id="name"
+								value="#{PlaylistBean.nomePlaylist}">
+								<f:passThroughAttribute name="placeholder" value="Digite o nome" />
+								<f:validateRequired />
+							</h:inputText>
+							</div>
+							
+							
+							
+							<!--             		<h:outputText id="mensagemErro" value="#{PlaylistBean.mensagemErroPlaylist}" style="color:#b94a48">
+            		</h:outputText> -->
+
+										<h:commandLink type="submit" class="btn btn-primary"
+											style="color:#FFFFFF;align:center;background-color:#85b2cb" value="Salvar"
+											actionListener="#{PlaylistBean.salvar}" />
+			
+
+						</h:form>
+					</h:panelGrid>
+				</p:tab>
+			</p:accordionPanel>
+
+
+
+			<h1 class="page-header"
+				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px;">
+				<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}"
+					value="Você ainda não criou nenhuma playlists" />
+				<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists eq 1}"
+					value="Você possui #{PlaylistBean.qtdPlaylists} playlist" />
+				<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists gt 1}"
+					value="Você possui #{PlaylistBean.qtdPlaylists} playlists" />
+			</h1>
+
+			<h:form rendered="#{PlaylistBean.qtdPlaylists ge 1}">
+
+				<p:accordionPanel>
+					<p:tab title="Playlists">
+						<h:panelGroup layout="block" class="table-responsive">
+							<h:dataTable class="table table-striped"
+								value="#{PlaylistBean.listaPIM}" var="playlistUsuario"
+								styleClass="order-table" headerClass="order-table-header"
+								rowClasses="order-table-odd-row,order-table-even-row"
+								style="color: #333;font-weight: bold;">
+								<h:column>
+									<f:facet name="header">#</f:facet>
 			    				#{playlistUsuario.qtd}
 			    			</h:column>
-			    			<h:column >
-			    				<f:facet name="header" >Nome</f:facet>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" actionListener="#{PlaylistBean.redirecionaPaginaMPlaylist(playlistUsuario.pkPlaylist)}" >#{playlistUsuario.nomePlaylist} </h:commandLink>
-			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Data de Lançamento</f:facet>
+								<h:column>
+									<f:facet name="header">Nome</f:facet>
+									<h:commandLink
+										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										actionListener="#{PlaylistBean.redirecionaPaginaMPlaylist(playlistUsuario.pkPlaylist)}">#{playlistUsuario.nomePlaylist} </h:commandLink>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Data de Lançamento</f:facet>
 			    				#{playlistUsuario.dataLancamento}
 			    			</h:column>
-			    			<h:column>
-			    				<f:facet name="header">Nº de Faixas</f:facet>
+								<h:column>
+									<f:facet name="header">Nº de Faixas</f:facet>
 			    				#{playlistUsuario.qtdFaixas}
 			    			</h:column>
-			    			<h:column>
-			    				<h:commandLink style="color:#4F7799;font-family:sans-serif;font-weight: bold" value="Excluir" actionListener="#{PlaylistBean.removePlaylist(playlistUsuario.pkPlaylist)}"/>
-			    			</h:column>
-	   					</h:dataTable>
-	   					</h:panelGroup>
-            		</h:form>
-			</ui:define>
+								<h:column>
+									<h:commandLink
+										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										value="Excluir"
+										actionListener="#{PlaylistBean.removePlaylist(playlistUsuario.pkPlaylist)}" />
+								</h:column>
+							</h:dataTable>
+						</h:panelGroup>
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</ui:define>
 	</ui:composition>
 </h:body>
 </html>

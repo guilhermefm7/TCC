@@ -37,7 +37,7 @@
 					<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas gt 1}" class="page-header" style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%"><h:outputLabel value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} músicas"/></h:outputLabel>
 					<h:form rendered="#{MusicasCurtidasBean.qtdFaixas ge 1}">  
 					<h:panelGroup layout="block" class="table-responsive">
-		            	<h:dataTable class="table table-striped" value="#{MusicasCurtidasBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
+		            	<h:dataTable class="table table-bordered table-striped table-hover table-heading table-datatable dataTable" value="#{MusicasCurtidasBean.listaMusicas}" var="musicaAchada" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" style="color: #333;font-weight: bold;">
 			    			<h:column>
 			    				<f:facet name="header">#</f:facet>
 			    				#{musicaAchada.qtd}
