@@ -18,66 +18,59 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 
 		<ui:define name="content">
-			<h:panelGroup layout="block" class="container"
-				style="margin-left: 0 ;margin-bottom: 15%;margin-top:15%">
-
+			<div class="col-md-6 col-md-offset-3" align="center">
+				<br /> <br /> <br /> <br />
 				<h:panelGroup layout="block" class="jumbotron"
-					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 10%; padding-top: 5%; width: 55%; height:20%; margin-left: 15%">
+					style="min-width: 250px;background-color: #FAFAFA;color: #000;width: 50%;padding: 20px;">
 
-					<h2 class="form-signin-heading" style="text-align: center;">Alterar
+					<h2 class="form-signin-heading"
+						style="text-align: center; font-size: 27px; font-family: inherit; color: #4F7799; font-weight: bold">Alterar
 						Senha</h2>
 
 					<h:panelGroup layout="block" class="footer"
 						style="border-top-color: #eee"></h:panelGroup>
 
-					<h:form class="form-signin"
-						rendered="#{(AlterarSenhaBean.redefinicao == true)}">
-						<div id="divMessages">
-							<p:messages style="font-size: small;" showDetail="true"
-								autoUpdate="true" closable="true" />
-						</div>
-						<h:panelGroup layout="block" class="form-group"
-							id="textoAlterarSenha">
-							<div class="row">
-								<div class="col-xs-6">
-									<h:outputText value="Digite sua senha"
-										id="textoAlterarValidaCampoEmail" />
-								</div>
-							</div>
-						</h:panelGroup>
+					<h:form class="form-inline" role="form" rendered="#{(AlterarSenhaBean.redefinicao == true)}">
+						<p:messages style="font-size: small;" showDetail="true"
+							autoUpdate="true" closable="true" />
 
 						<h:panelGroup layout="block" class="form-group"
-							id="validaAlterarSenha">
+							id="textoAlterarSenha" style="margin-bottom: 30px;">
+
+							<h:outputText value="Digite sua senha: "
+								id="textoAlterarValidaCampoEmail"
+								style="font-size: 18px;font-family:inherit;color: #4F7799;vertical-align:baseline;text-align: left" />
+
 							<h:inputSecret value="#{AlterarSenhaBean.senhaDigitada}"
 								id="validaCampoAlterarSenha" pt:placeHolder="Senha"
-								class="form-control" />
+								style="width:40%;vertical-align:baseline" class="form-control" />
+
 						</h:panelGroup>
 
-
+		
+				
 						<h:panelGroup layout="block" class="form-group"
-							id="textoAlterarSenhaNovamente">
-							<div class="row">
-								<div class="col-xs-6">
-									<h:outputText value="Repita a senha"
-										id="textoAlterarValidaCampoEmailNovamente" />
-								</div>
-							</div>
-						</h:panelGroup>
+							id="textoRepitaAlterarSenha" style="margin-bottom: 30px;">
 
-						<h:panelGroup layout="block" class="form-group"
-							id="validaAlterarSenhaNovamente">
+							<h:outputText value="Repita sua senha:  "
+								id="textoAlterarValidaCampoEmailNovamente"
+								style="font-size: 18px;font-family:inherit;color: #4F7799;" />
+
 							<h:inputSecret value="#{AlterarSenhaBean.senhaDigitadaNovamente}"
 								id="validaCampoAlterarSenhaNovamente" pt:placeHolder="Senha"
-								class="form-control" />
-						</h:panelGroup>
+								class="form-control" style="width:40%;vertical-align:baseline" />
 
+						</h:panelGroup>
+						
+						<br/>
 						<h:panelGroup layout="block" class="footer"
 							style="border-top-color: #eee"></h:panelGroup>
 
 						<h:panelGroup layout="block" class="form-group"
 							id="botaRelembrarSenha">
 							<h:commandLink type="submit" class="btn-primary"
-								style="padding:5px 20px;" value="Alterar Senha"
+								style="padding:5px 15px;background-color: #4188C5;font-size: 18px;"
+								value="Alterar Senha"
 								actionListener="#{AlterarSenhaBean.alterarSenha}" />
 						</h:panelGroup>
 
@@ -93,8 +86,7 @@
 
 
 				</h:panelGroup>
-
-			</h:panelGroup>
+			</div>
 		</ui:define>
 	</ui:composition>
 </h:body>

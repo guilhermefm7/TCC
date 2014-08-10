@@ -44,11 +44,13 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 					{
 						redefinicao = true;
 					}
+					tokenRecebido = null;
 				}
 				else if(getUsuarioGlobal()!=null && getUsuarioGlobal().getPkUsuario()>0)
 				{
 					//Redirecionar para alguma página (Criar Lógica)
 					redirecionarErro();
+					tokenRecebido = null;
 				}
 			}
 			else
