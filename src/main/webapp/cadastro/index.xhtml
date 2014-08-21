@@ -17,13 +17,13 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 
 		<ui:define name="content">
-			<h:panelGroup layout="block" class="container"
-				style="margin-left: 35% ;margin-bottom: 15%;margin-top:10%">
 
+			<div class="col-md-6 col-md-offset-3" align="center">
+				<br /> <br /> <br /> <br />	<br />	<br />	<br />	<br />
 				<h:panelGroup layout="block" class="jumbotron"
-					style="background-color: #FAFAFA; min-width: 290px; border-radius: 0px; padding-bottom: 17%; padding-top: 2%; width: 55%; height:20%; margin-left: 15%">
+					style="min-width: 300px;background-color: #FAFAFA;color: #000;width: 50%;padding: 20px;border-radius: 0px;">
 
-					<h2 class="form-signin-heading" style="text-align: center;">Atualizar
+					<h2 class="form-signin-heading" style="text-align: center; font-size: 27px; font-family: inherit; color: #4F7799; font-weight: bold">Atualizar
 						Cadastro</h2>
 
 					<h:panelGroup layout="block" class="footer"
@@ -35,7 +35,7 @@
 								autoUpdate="true" closable="true" />
 						</div>
 						<h:panelGroup layout="block" class="form-group" id="registroLogin">
-							<h:outputLabel value="Login:" />
+							<h:outputLabel value="Login:" style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799"/>
 							<h:inputText value="#{CadastroBean.usuario.login}"
 								id="validaLogin" data-prompt-position="topLeft"
 								pt:placeHolder="Login" type="login" class="form-control" />
@@ -45,7 +45,7 @@
 
 							<h:panelGroup layout="block" class="col-xs-6">
 								<h:panelGroup class="form-group" id="registroNome">
-									<h:outputLabel value="Nome:" />
+									<h:outputLabel value="Nome:" style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799"/>
 									<h:inputText value="#{CadastroBean.usuario.nome}"
 										id="validaNome" pt:placeHolder="Nome" class="form-control" />
 								</h:panelGroup>
@@ -54,7 +54,7 @@
 							<h:panelGroup layout="block" class="col-xs-6">
 								<h:panelGroup layout="block" class="form-group"
 									id="registroSobrenome">
-									<h:outputLabel value="Sobrenome:" />
+									<h:outputLabel value="Sobrenome:" style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799"/>
 									<h:inputText value="#{CadastroBean.usuario.sobrenome}"
 										id="validaSobrenome" pt:placeHolder="Sobrenome"
 										class="form-control" />
@@ -65,7 +65,7 @@
 
 
 						<h:panelGroup layout="block" id="registroSenha" class="form-group">
-							<h:outputLabel value="Senha:" />
+							<h:outputLabel value="Senha:" style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799"/>
 							<h:inputSecret pt:placeHolder="Senha" id="validaSenha"
 								value="#{CadastroBean.senhaDigitada}" class="form-control" />
 
@@ -73,7 +73,7 @@
 
 						<h:panelGroup layout="block" id="registroSenhaNovamente"
 							class="form-group">
-							<h:outputLabel value="Repita a senha" />
+							<h:outputLabel value="Repita a senha" style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799"/>
 							<h:inputSecret pt:placeHolder="Senha Novamente"
 								id="validaSenhaNovamentes"
 								value="#{CadastroBean.senhaDigitadaNovamente}"
@@ -93,8 +93,7 @@
 					</h:form>
 
 				</h:panelGroup>
-
-			</h:panelGroup>
+</div>
 		</ui:define>
 	</ui:composition>
 </h:body>

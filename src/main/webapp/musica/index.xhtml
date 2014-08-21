@@ -20,114 +20,193 @@
 		<f:viewParam name="i" value="#{MusicaBean.valorIdMusicaEcho}" />
 		<f:event type="preRenderView" listener="#{MusicaBean.iniciar}" />
 	</f:metadata>
-	
+
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
-			<ui:define name="content">
+		<ui:define name="content">
 
-				<script type="text/javascript">
+			<script type="text/javascript">
 					window.onload = function()
 					{
 						DZ.player.playTracks([#{MusicaBean.valorIdMusica}]);
 					}
 				</script>
 
-				<div class="row">
-					<div class="col-md-4">
-						<h1 class="page-header" style="margin-top: 0;color: #4F7799">Músicas</h1>
-					</div>
+			<div class="row">
+				<div class="col-md-4">
+					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Músicas</h1>
 				</div>
-				
-				
-				<h1 style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;text-align: center"><h:outputLabel value="#{MusicaBean.nomeCompletoMusica}"/></h1> 
-         			<br/> <br/>
-         			
-				<div class="row">
-					<div class="col-md-12">
-            			<div id="dz-root" >
-            				<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
-            			</div>
-						<div id="player" style="width:100%" align="center"></div>
+			</div>
+
+
+			<h1
+				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px; text-align: center">
+				<h:outputLabel value="#{MusicaBean.nomeCompletoMusica}" />
+			</h1>
+			<br />
+			<br />
+
+			<div class="row">
+				<div class="col-md-12">
+					<div id="dz-root">
+						<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
 					</div>
+					<div id="player" style="width: 100%" align="center"></div>
 				</div>
-						<br/> <br/> 
-							<div class="row" align="center">
-					<div class="col-md-12">			
-				<h:form rendered="#{MusicaBean.curtiuMusica eq false}">
-				
-					<h:panelGroup layout="block" class="form-group">
-						<h:commandLink  style="background-color: #FFF;" actionListener="#{MusicaBean.avaliarMusica}">
- 							<img src="/RecoMusic/resources/imagens/icones/adicionar.png" alt="" style="vertical-align:baseline"/>
- 						</h:commandLink>
- 							
- 						<span></span>
- 							
-						<a id="sharebutton" href="#" onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
-							<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" style="vertical-align:baseline"/>
-						</a>
- 							
- 						</h:panelGroup>
- 						
-					  	<h:panelGroup layout="block" class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
- 								<img src="/RecoMusic/resources/imagens/icones/playlist.png" alt="" >
- 								</img>
- 							</a>
- 							 <ul class="dropdown-menu" role="menu">
-		                    <li>
-						<h:commandLink class="btn-primary">
+			</div>
+			<br />
+			<br />
 
-						</h:commandLink> </li>
-							<li><a href="#" onclick="$('#mySmallModalLabel').modal('show')">Criar Playlist</a></li>
-		                    <li class="divider"></li>
-		                    <li><a href="#">Underground</a></li>
-		                    <li><a href="#">Rock</a></li>
-					    </ul>
-						</h:panelGroup>
- 						
- 						<br/>
-				 
- 					</h:form>
-	  						
-					<h:form rendered="#{MusicaBean.curtiuMusica eq true}" >
-					
-						<h:panelGroup layout="block" class="form-group">
-						
-							<h:commandLink styleClass="" style="background-color: #FFF;" actionListener="#{MusicaBean.avaliarMusica}">
-  								<img src="/RecoMusic/resources/imagens/icones/adicionado.png" alt="" style="vertical-align:baseline"/>
-  							</h:commandLink>
-  							
-  							<span></span>
-  							
-							<a id="sharebutton" href="#" onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
-								<img src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png" alt="" style="vertical-align:baseline"/>
-							</a>
-  							
-  						</h:panelGroup>
-  						
-  							<h:panelGroup layout="block" class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	  								<img src="/RecoMusic/resources/imagens/icones/playlist.png" alt="">
-	  								</img>
-	  							</a>
-	  							 <ul class="dropdown-menu" role="menu">
-				                    <li>
-								<h:commandLink class="btn-primary">
+			<h:form rendered="#{MusicaBean.curtiuMusica eq false}">
+				<h:panelGroup layout="block" class="form-group">
+					<div class="row" align="center">
+						<div class="col-md-12">
 
+
+							<h:panelGroup layout="block" class="form-group">
+								<h:commandLink id="btEstrelaVazia1"
+									style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
 								</h:commandLink>
-								</li>
-									<li><a href="#" onclick="$('#mySmallModalLabel').modal('show')">Criar Playlist</a></li>
-				                    <li class="divider"></li>
-				                    <li><a href="#">Underground</a></li>
-				                    <li><a href="#">Rock</a></li>
-							    </ul>
+								<h:commandLink id="btEstrelaVazia2"
+									style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+								<h:commandLink id="btEstrelaVazia3"
+									style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+								<h:commandLink id="btEstrelaVazia4"
+									style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+								<h:commandLink id="btEstrelaVazia5"
+									style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
 							</h:panelGroup>
-  						
-  						<br/>
-  						
-  					</h:form>
+
+							<h:panelGroup layout="block" class="form-group">
+								<a id="sharebutton" href="#"
+									onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
+									<img
+									src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png"
+									alt="" style="vertical-align: baseline" />
+								</a>
+							</h:panelGroup>
+
+
+
+
+							<h:panelGroup layout="block" class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<img src="/RecoMusic/resources/imagens/icones/playlist.png"
+									alt=""> </img>
+								</a>
+								<ul class="dropdown-menu" role="menu">
+									<li><h:commandLink class="btn-primary">
+
+										</h:commandLink></li>
+									<li><a href="#"
+										onclick="$('#mySmallModalLabel').modal('show')">Criar
+											Playlist</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Underground</a></li>
+									<li><a href="#">Rock</a></li>
+								</ul>
+							</h:panelGroup>
+
+							<br />
+						</div>
 					</div>
-				</div>
+				</h:panelGroup>
+			</h:form>
+
+			<h:form rendered="#{MusicaBean.curtiuMusica eq true}">
+
+
+				<h:panelGroup layout="block" class="form-group">
+					<div class="row" align="center">
+						<div class="col-md-12">
+
+
+							<h:panelGroup layout="block" class="form-group">
+								<h:commandLink id="btestrela1" style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_preenchida.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+								<h:commandLink id="btestrela2" style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+								<h:commandLink id="btestrela3" style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+								<h:commandLink id="btestrela4" style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+								<h:commandLink id="btestrela5" style="background-color: #FFF;">
+									<img
+										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+										alt="" style="vertical-align: baseline" />
+								</h:commandLink>
+							</h:panelGroup>
+						</div>
+					</div>
+
+					<span></span>
+					<br></br>
+					<div class="row" align="center">
+						<div class="col-md-12">
+
+							<a id="sharebutton" href="#"
+								onclick="compartilharFacebook(#{MusicaBean.valorIdMusica});">
+								<img
+								src="/RecoMusic/resources/imagens/icones/compartilhar-facebook.png"
+								alt="" style="vertical-align: baseline" />
+							</a>
+						</div>
+					</div>
+
+
+				</h:panelGroup>
+
+				<h:panelGroup layout="block" class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img
+						src="/RecoMusic/resources/imagens/icones/playlist.png" alt="">
+					</img>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><h:commandLink class="btn-primary">
+
+							</h:commandLink></li>
+						<li><a href="#"
+							onclick="$('#mySmallModalLabel').modal('show')">Criar
+								Playlist</a></li>
+						<li class="divider"></li>
+						<li><a href="#">Underground</a></li>
+						<li><a href="#">Rock</a></li>
+					</ul>
+				</h:panelGroup>
+
+				<br />
+			</h:form>
 		</ui:define>
 	</ui:composition>
 </h:body>
