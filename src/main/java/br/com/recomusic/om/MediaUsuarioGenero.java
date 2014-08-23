@@ -22,6 +22,7 @@ public class MediaUsuarioGenero implements Serializable {
 	private long pkMediaUsuarioGenero;
 	private Double media;
 	private Double quantidadeMusicas;
+	private Double mediaAvaliacoes;
 
 	@ManyToOne
 	@JoinColumn(name = "fkUsuario")
@@ -74,5 +75,13 @@ public class MediaUsuarioGenero implements Serializable {
 
 	public void setGenero(Genero genero) {
 		this.genero = genero;
+	}
+
+	public Double getMediaAvaliacoes() {
+		return mediaAvaliacoes;
+	}
+
+	public void setMediaAvaliacoes(Double mediaAvaliacoes) {
+		this.mediaAvaliacoes = mediaAvaliacoes;
 	}
 }

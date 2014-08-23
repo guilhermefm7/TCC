@@ -255,11 +255,13 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 mUG.setUsuario(getUsuarioGlobal());
 								 mUG.setQuantidadeMusicas(1D);
 								 mUG.setMedia(m.getBPMMUsica());
+								 mUG.setMediaAvaliacoes(Double.valueOf(nota));
 							 }
 							 else
 							 {
 								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
 								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+								 mUG.setMediaAvaliacoes(((mUG.getMediaAvaliacoes() * (mUG.getQuantidadeMusicas()-1)) + Double.valueOf(nota))/mUG.getQuantidadeMusicas());
 							 }
 							 
 							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
@@ -333,11 +335,14 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 mUG.setUsuario(getUsuarioGlobal());
 								 mUG.setQuantidadeMusicas(1D);
 								 mUG.setMedia(m.getBPMMUsica());
+								 mUG.setMediaAvaliacoes(Double.valueOf(nota));
+
 							 }
 							 else
 							 {
 								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
 								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+								 mUG.setMediaAvaliacoes(((mUG.getMediaAvaliacoes() * (mUG.getQuantidadeMusicas()-1)) + Double.valueOf(nota))/mUG.getQuantidadeMusicas());
 							 }
 							 
 							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
@@ -495,11 +500,13 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 mUG.setUsuario(getUsuarioGlobal());
 								 mUG.setQuantidadeMusicas(1D);
 								 mUG.setMedia(m.getBPMMUsica());
+								 mUG.setMediaAvaliacoes(Double.valueOf(nota));
 							 }
 							 else
 							 {
 								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
 								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+								 mUG.setMediaAvaliacoes(((mUG.getMediaAvaliacoes() * (mUG.getQuantidadeMusicas()-1)) + Double.valueOf(nota))/mUG.getQuantidadeMusicas());
 							 }
 							 
 							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
@@ -548,7 +555,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 						 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
 						 
 						//Banda e Musica não existem, então elas terão de ser salvas e terá que salvar os generos e criar todas as informações de cadastro necessárias
-						 MediaUsuarioGenero mUG;
+						MediaUsuarioGenero mUG;
 						List<String> listasGenerosBanda = requisitarAPIGeneroBanda(banda.getIdBanda());
 						for (String nomeGenero : listasGenerosBanda)
 						{
@@ -573,11 +580,13 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 mUG.setUsuario(getUsuarioGlobal());
 								 mUG.setQuantidadeMusicas(1D);
 								 mUG.setMedia(m.getBPMMUsica());
+								 mUG.setMediaAvaliacoes(Double.valueOf(nota));
 							 }
 							 else
 							 {
 								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
 								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+								 mUG.setMediaAvaliacoes(((mUG.getMediaAvaliacoes() * (mUG.getQuantidadeMusicas()-1)) + Double.valueOf(nota))/mUG.getQuantidadeMusicas());
 							 }
 							 
 							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
@@ -647,14 +656,14 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 			}
 			else
 			{
-				//Caso a música tenha sido curtida e irá passar para não curtida
+				//Caso a música tenha sido curtida
 				m = musicaDAO.procuraMusicaByID(valorIdMusica);
 				
 				//Supõe-se que a música e a banda já existam
 				if(m!=null && m.getPkMusica()>0)
 				{
-/*					banda = bandaDAO.pesquisarBandaExiste(m.getBanda().getIdBanda());
-					
+
+		/*			
 					if(banda!=null && banda.getPkBanda()>0)
 					{
 						//atualiza as informações do cadastro de banda e gênero que já devem existir
@@ -730,12 +739,54 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 							informacaoMusicalCadastroMusicaDAO.salvarMusicaCadastro(imcm);
 						}
 					}*/
-					 
+					
 					am = null;
 					am = avaliarMusicaDAO.pesquisaUsuarioAvaliouMusicaPelaMusica(m, getUsuarioGlobal());
 					
 					if(am!=null && am.getPkAvaliarMusica()>0)
 					{
+						banda = bandaDAO.pesquisarBandaExiste(m.getBanda().getIdBanda());
+						
+						if(banda!=null && banda.getPkBanda()>0)
+						{
+							//Como a banda já existem, então a bandaGenêro e os gêneros já existem
+							//Então só precisará de atualizar as informações do cadastro de gênero
+							MediaUsuarioGenero mUG;
+							List<String> listasGenerosBanda = requisitarAPIGeneroBanda(banda.getIdBanda());
+							for (String nomeGenero : listasGenerosBanda)
+							{
+								genero = null;
+								genero = generoDAO.pesquisarGenero(nomeGenero);
+								 
+								 if(genero==null)
+								 {
+									 genero = new Genero();
+									 genero.setNomeGenero(nomeGenero);
+									 genero = generoDAO.salvaListaGeneros(nomeGenero);
+								 }
+								 
+								 //Cria/Atualiza o MediaUsuarioGenero
+								 mUG = null;
+								 mUG = mediaUsuarioGeneroDAO.pesquisarExiste(getUsuarioGlobal(), genero);
+								 
+								 if(mUG==null)
+								 {
+									 mUG = new MediaUsuarioGenero();
+									 mUG.setGenero(genero);
+									 mUG.setUsuario(getUsuarioGlobal());
+									 mUG.setQuantidadeMusicas(1D);
+									 mUG.setMedia(m.getBPMMUsica());
+									 mUG.setMediaAvaliacoes(Double.valueOf(nota));
+								 }
+								 else
+								 {
+									 mUG.setMediaAvaliacoes(((mUG.getMediaAvaliacoes() * (mUG.getQuantidadeMusicas())) - am.getNota() + Double.valueOf(nota) )/mUG.getQuantidadeMusicas());
+								 }
+								 
+								 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
+							}
+							
+						}
 /*						if(am.getResposta()!=false)
 						{
 							am.setResposta(false);
