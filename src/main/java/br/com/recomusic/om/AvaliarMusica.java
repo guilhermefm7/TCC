@@ -13,40 +13,77 @@ import javax.persistence.Transient;
 import br.com.recomusic.persistencia.utils.Constantes;
 
 @Entity
-public class AvaliarMusica implements Serializable
-{
+public class AvaliarMusica implements Serializable {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
 	@Transient
 	private static final long serialVersionUID = 1L;
 
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long pkAvaliarMusica;
 	private Boolean resposta;
-	private Integer status = Constantes.TIPO_STATUS_ATIVO;
-	
-	@ManyToOne @JoinColumn(name="fkUsuario")
+	private int nota;
+	private int status = Constantes.TIPO_STATUS_ATIVO;
+
+	@ManyToOne
+	@JoinColumn(name = "fkUsuario")
 	private Usuario usuario;
 
-	@ManyToOne @JoinColumn(name="fkMusica")
+	@ManyToOne
+	@JoinColumn(name = "fkMusica")
 	private Musica musica;
 
 	/*-*-*-* Construtores *-*-*-*/
-	public AvaliarMusica() { }
+	public AvaliarMusica() {
+	}
 
 	/*-*-*-* Metodos Gets e Sets *-*-*-*/
-	public long getPkAvaliarMusica() { return pkAvaliarMusica; }
-	public void setPkAvaliarMusica(long pkAvaliarMusica) { this.pkAvaliarMusica = pkAvaliarMusica; }
+	public long getPkAvaliarMusica() {
+		return pkAvaliarMusica;
+	}
 
-	public Usuario getUsuario() { return usuario; }
-	public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+	public void setPkAvaliarMusica(long pkAvaliarMusica) {
+		this.pkAvaliarMusica = pkAvaliarMusica;
+	}
 
-	public Musica getMusica() {return musica;}
-	public void setMusica(Musica musica) {this.musica = musica;}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Musica getMusica() {
+		return musica;
+	}
+
+	public void setMusica(Musica musica) {
+		this.musica = musica;
+	}
+
+	public int getNota() {
+		return nota;
+	}
+
+	public void setNota(int nota) {
+		this.nota = nota;
+	}
 	
-	public Boolean getResposta() { return resposta; }
-	public void setResposta(Boolean resposta) { this.resposta = resposta; }
-	
-	public int getStatus() { return status; }
-	public void setStatus(int status) { this.status = status; }
+	public int getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public Boolean getResposta() {
+		return resposta;
+	}
+
+	public void setResposta(Boolean resposta) {
+		this.resposta = resposta;
+	}
 }

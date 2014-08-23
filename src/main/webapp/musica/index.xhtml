@@ -65,30 +65,35 @@
 
 							<h:panelGroup layout="block" class="form-group">
 								<h:commandLink id="btEstrelaVazia1"
-									style="background-color: #FFF;">
+									actionListener="#{MusicaBean.avaliarMusica(1)}"
+									update="formCheia" style="background-color: #FFF;">
 									<img
 										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
 										alt="" style="vertical-align: baseline" />
 								</h:commandLink>
 								<h:commandLink id="btEstrelaVazia2"
+									actionListener="#{MusicaBean.avaliarMusica(2)}"
 									style="background-color: #FFF;">
 									<img
 										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
 										alt="" style="vertical-align: baseline" />
 								</h:commandLink>
 								<h:commandLink id="btEstrelaVazia3"
+									actionListener="#{MusicaBean.avaliarMusica(3)}"
 									style="background-color: #FFF;">
 									<img
 										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
 										alt="" style="vertical-align: baseline" />
 								</h:commandLink>
 								<h:commandLink id="btEstrelaVazia4"
+									actionListener="#{MusicaBean.avaliarMusica(4)}"
 									style="background-color: #FFF;">
 									<img
 										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
 										alt="" style="vertical-align: baseline" />
 								</h:commandLink>
 								<h:commandLink id="btEstrelaVazia5"
+									actionListener="#{MusicaBean.avaliarMusica(5)}"
 									style="background-color: #FFF;">
 									<img
 										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
@@ -104,8 +109,6 @@
 									alt="" style="vertical-align: baseline" />
 								</a>
 							</h:panelGroup>
-
-
 
 
 							<h:panelGroup layout="block" class="dropdown">
@@ -141,33 +144,92 @@
 
 
 							<h:panelGroup layout="block" class="form-group">
-								<h:commandLink id="btestrela1" style="background-color: #FFF;">
+							
+								<h:commandLink id="btestrela1" style="background-color: #FFF;"
+									actionListener="#{MusicaBean.avaliarMusica(1)}">
 									<img
 										src="/RecoMusic/resources/imagens/icones/estrela_preenchida.png"
 										alt="" style="vertical-align: baseline" />
 								</h:commandLink>
-								<h:commandLink id="btestrela2" style="background-color: #FFF;">
-									<img
-										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
-										alt="" style="vertical-align: baseline" />
-								</h:commandLink>
-								<h:commandLink id="btestrela3" style="background-color: #FFF;">
-									<img
-										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
-										alt="" style="vertical-align: baseline" />
-								</h:commandLink>
-								<h:commandLink id="btestrela4" style="background-color: #FFF;">
-									<img
-										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
-										alt="" style="vertical-align: baseline" />
-								</h:commandLink>
-								<h:commandLink id="btestrela5" style="background-color: #FFF;">
-									<img
-										src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
-										alt="" style="vertical-align: baseline" />
-								</h:commandLink>
+								
+								<h:panelGroup layout="block"
+									rendered="#{MusicaBean.notaMusica lt 2 }">
+									<h:commandLink id="btestrela2Normal" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(2)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block"
+									rendered="#{MusicaBean.notaMusica ge 2 }">
+									<h:commandLink id="btestrela2" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(2)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_preenchida.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" rendered="#{MusicaBean.notaMusica lt 3 }">
+									<h:commandLink id="btestrela3Normal" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(3)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" rendered="#{MusicaBean.notaMusica ge 3 }">
+									<h:commandLink id="btestrela3" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(3)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_preenchida.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" rendered="#{MusicaBean.notaMusica lt 4 }">
+									<h:commandLink id="btestrela4Normal" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(4)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" rendered="#{MusicaBean.notaMusica ge 4 }">
+									<h:commandLink id="btestrela4" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(4)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_preenchida.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" rendered="#{MusicaBean.notaMusica lt 5 }">
+									<h:commandLink id="btestrela5Normal" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(5)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_normal.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" rendered="#{MusicaBean.notaMusica ge 5 }">
+									<h:commandLink id="btestrela5" style="background-color: #FFF;"
+										actionListener="#{MusicaBean.avaliarMusica(5)}">
+										<img
+											src="/RecoMusic/resources/imagens/icones/estrela_preenchida.png"
+											alt="" style="vertical-align: baseline" />
+									</h:commandLink>
+								</h:panelGroup>
+								
 							</h:panelGroup>
+							
 						</div>
+						
 					</div>
 
 					<span></span>

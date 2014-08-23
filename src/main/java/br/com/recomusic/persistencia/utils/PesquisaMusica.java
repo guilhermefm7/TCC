@@ -194,6 +194,8 @@ public class PesquisaMusica
 		    	musica.setIdMUsica(song.getID());
 		    	musica.setBPMMUsica(song.getTempo());
 		    	musica.setEnergMusica(song.getEnergy());
+		    	musica.setQuantidadeAvaliacoes(0);
+		    	musica.setMediaAvaliacoes(0D);
 		    	
 		    	///pesquisa idDeezer
 		    	///pesquisa Album

@@ -14,14 +14,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
-public class Musica implements Serializable
-{
+public class Musica implements Serializable {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
 	@Transient
 	private static final long serialVersionUID = 1L;
 
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long pkMusica;
 	private String titulo;
 	private String ano;
@@ -30,68 +30,169 @@ public class Musica implements Serializable
 	private String idDeezer;
 	private Double BPMMUsica;
 	private Double EnergMusica;
+	private Integer quantidadeAvaliacoes;
+	private Double mediaAvaliacoes;
 
-	@ManyToOne @JoinColumn(name="fkPais")
+	@ManyToOne
+	@JoinColumn(name = "fkPais")
 	private Pais pais;
 
-	@ManyToOne @JoinColumn(name="fkBanda")
+	@ManyToOne
+	@JoinColumn(name = "fkBanda")
 	private Banda banda;
 
-	@OneToMany(mappedBy="musica")
+	@OneToMany(mappedBy = "musica")
 	private List<MusicaGenero> musicaGeneros;
 
-	@OneToMany(mappedBy="musica")
+	@OneToMany(mappedBy = "musica")
 	private List<InformacaoMusicalCadastroMusica> informacaoMusicalCadastroMusicas;
 
-	@OneToMany(mappedBy="musica")
+	@OneToMany(mappedBy = "musica")
 	private List<PlaylistMusica> playlistMusicas;
-	
-	@OneToMany(mappedBy="musica")
+
+	@OneToMany(mappedBy = "musica")
 	private List<AvaliarMusica> avaliarMusica;
 
 	/*-*-*-* Construtores *-*-*-*/
-	public Musica() { }
+	public Musica() {
+	}
 
 	/*-*-*-* Metodos Gets e Sets *-*-*-*/
-	public long getPkMusica() { return pkMusica; }
-	public void setPkMusica(long pkMusica) { this.pkMusica = pkMusica; }
+	public long getPkMusica() {
+		return pkMusica;
+	}
 
-	public String getTitulo() { return titulo; }
-	public void setTitulo(String titulo) { this.titulo = titulo; }
+	public void setPkMusica(long pkMusica) {
+		this.pkMusica = pkMusica;
+	}
 
-	public String getAno() { return ano; }
-	public void setAno(String ano) { this.ano = ano; }
+	public String getTitulo() {
+		return titulo;
+	}
 
-	public String getAlbum() { return album; }
-	public void setAlbum(String album) { this.album = album; }
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 
-	public String getIdMUsica() { return idMusica; }
-	public void setIdMUsica(String idMUsica) { this.idMusica = idMUsica; }
-	
-	public String getIdDeezer() { return idDeezer; }
-	public void setIdDeezer(String idDeezer) { this.idDeezer = idDeezer; }
+	public String getAno() {
+		return ano;
+	}
 
-	public Pais getPais() { return pais; }
-	public void setPais(Pais pais) { this.pais = pais; }
+	public void setAno(String ano) {
+		this.ano = ano;
+	}
 
-	public Banda getBanda() { return banda; }
-	public void setBanda(Banda banda) { this.banda = banda; }
+	public String getAlbum() {
+		return album;
+	}
 
-	public Double getBPMMUsica() { return BPMMUsica; }
-	public void setBPMMUsica(Double bPMMUsica) { BPMMUsica = bPMMUsica; }
+	public void setAlbum(String album) {
+		this.album = album;
+	}
 
-	public Double getEnergMusica() { return EnergMusica; }
-	public void setEnergMusica(Double energMusica) { EnergMusica = energMusica; }
+	public String getIdMUsica() {
+		return idMusica;
+	}
 
-	public List<MusicaGenero> getMusicaGeneros() { if(musicaGeneros==null) { musicaGeneros = new ArrayList<MusicaGenero>(); } return musicaGeneros; }
-	public void setMusicaGeneros(List<MusicaGenero> musicaGeneros) { this.musicaGeneros = musicaGeneros; }
+	public void setIdMUsica(String idMUsica) {
+		this.idMusica = idMUsica;
+	}
 
-	public List<InformacaoMusicalCadastroMusica> getInformacaoMusicalCadastroMusicas() { if(informacaoMusicalCadastroMusicas==null) { informacaoMusicalCadastroMusicas = new ArrayList<InformacaoMusicalCadastroMusica>(); } return informacaoMusicalCadastroMusicas; }
-	public void setInformacaoMusicalCadastroMusicas(List<InformacaoMusicalCadastroMusica> informacaoMusicalCadastroMusicas) { this.informacaoMusicalCadastroMusicas = informacaoMusicalCadastroMusicas; }
+	public String getIdDeezer() {
+		return idDeezer;
+	}
 
-	public List<PlaylistMusica> getPlaylistMusicas() { if(playlistMusicas==null) { playlistMusicas = new ArrayList<PlaylistMusica>(); } return playlistMusicas; }
-	public void setPlaylistMusicas(List<PlaylistMusica> playlistMusicas) { this.playlistMusicas = playlistMusicas; }
+	public void setIdDeezer(String idDeezer) {
+		this.idDeezer = idDeezer;
+	}
 
-	public List<AvaliarMusica> getAvaliarMusica() { return avaliarMusica; }
-	public void setAvaliarMusica(List<AvaliarMusica> avaliarMusica) { this.avaliarMusica = avaliarMusica; }
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
+	}
+
+	public Banda getBanda() {
+		return banda;
+	}
+
+	public void setBanda(Banda banda) {
+		this.banda = banda;
+	}
+
+	public Double getBPMMUsica() {
+		return BPMMUsica;
+	}
+
+	public void setBPMMUsica(Double bPMMUsica) {
+		BPMMUsica = bPMMUsica;
+	}
+
+	public Double getEnergMusica() {
+		return EnergMusica;
+	}
+
+	public void setEnergMusica(Double energMusica) {
+		EnergMusica = energMusica;
+	}
+
+	public List<MusicaGenero> getMusicaGeneros() {
+		if (musicaGeneros == null) {
+			musicaGeneros = new ArrayList<MusicaGenero>();
+		}
+		return musicaGeneros;
+	}
+
+	public void setMusicaGeneros(List<MusicaGenero> musicaGeneros) {
+		this.musicaGeneros = musicaGeneros;
+	}
+
+	public List<InformacaoMusicalCadastroMusica> getInformacaoMusicalCadastroMusicas() {
+		if (informacaoMusicalCadastroMusicas == null) {
+			informacaoMusicalCadastroMusicas = new ArrayList<InformacaoMusicalCadastroMusica>();
+		}
+		return informacaoMusicalCadastroMusicas;
+	}
+
+	public void setInformacaoMusicalCadastroMusicas(
+			List<InformacaoMusicalCadastroMusica> informacaoMusicalCadastroMusicas) {
+		this.informacaoMusicalCadastroMusicas = informacaoMusicalCadastroMusicas;
+	}
+
+	public List<PlaylistMusica> getPlaylistMusicas() {
+		if (playlistMusicas == null) {
+			playlistMusicas = new ArrayList<PlaylistMusica>();
+		}
+		return playlistMusicas;
+	}
+
+	public void setPlaylistMusicas(List<PlaylistMusica> playlistMusicas) {
+		this.playlistMusicas = playlistMusicas;
+	}
+
+	public List<AvaliarMusica> getAvaliarMusica() {
+		return avaliarMusica;
+	}
+
+	public void setAvaliarMusica(List<AvaliarMusica> avaliarMusica) {
+		this.avaliarMusica = avaliarMusica;
+	}
+
+	public Integer getQuantidadeAvaliacoes() {
+		return quantidadeAvaliacoes;
+	}
+
+	public void setQuantidadeAvaliacoes(Integer quantidadeAvaliacoes) {
+		this.quantidadeAvaliacoes = quantidadeAvaliacoes;
+	}
+
+	public Double getMediaAvaliacoes() {
+		return mediaAvaliacoes;
+	}
+
+	public void setMediaAvaliacoes(Double mediaAvaliacoes) {
+		this.mediaAvaliacoes = mediaAvaliacoes;
+	}
 }

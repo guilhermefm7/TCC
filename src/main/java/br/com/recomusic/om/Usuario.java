@@ -17,107 +17,237 @@ import org.hibernate.annotations.Type;
 import br.com.recomusic.persistencia.utils.Constantes;
 
 @Entity
-public class Usuario implements Serializable
-{
+public class Usuario implements Serializable {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
 	@Transient
 	private static final long serialVersionUID = 1L;
 
 	/*-*-*-* Variaveis e Objetos Privados *-*-*-*/
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long pkUsuario;
 	private String emailUsuario;
 	private String login;
 	private String senha;
 	private String nome;
 	private String sobrenome;
-	@Type(type="timestamp")
+	@Type(type = "timestamp")
 	private Date lancamento;
 	private int sexo;
 	private String idFacebook;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
-
-	@OneToMany(mappedBy="usuarioRequisitante")
+	@OneToMany(mappedBy = "usuarioRequisitante")
 	private List<RequisicaoAmizade> requisicaoAmizadesUsuarioRequisitante;
 
-	@OneToMany(mappedBy="usuarioRequisitado")
+	@OneToMany(mappedBy = "usuarioRequisitado")
 	private List<RequisicaoAmizade> requisicaoAmizadesUsuarioRequisitado;
 
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy = "usuario")
 	private List<AmigosUsuario> amigosUsuariosUsuario;
 
-	@OneToMany(mappedBy="amigo")
+	@OneToMany(mappedBy = "amigo")
 	private List<AmigosUsuario> amigosUsuariosAmigo;
 
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy = "usuario")
 	private List<Playlist> playlists;
 
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy = "usuario")
 	private List<AvaliarMusica> avaliarMusicas;
 
-	@OneToMany(mappedBy="usuarioEnviou")
+	@OneToMany(mappedBy = "usuario")
+	private List<MediaUsuarioGenero> mediaUsuarioGenero;
+
+	@OneToMany(mappedBy = "usuarioEnviou")
 	private List<EnviaMensagem> enviaMensagemsUsuarioEnviou;
 
-	@OneToMany(mappedBy="usuarioRecebeu")
+	@OneToMany(mappedBy = "usuarioRecebeu")
 	private List<EnviaMensagem> enviaMensagemsUsuarioRecebeu;
 
-
 	/*-*-*-* Construtores *-*-*-*/
-	public Usuario() { }
+	public Usuario() {
+	}
 
 	/*-*-*-* Metodos Gets e Sets *-*-*-*/
-	public long getPkUsuario() { return pkUsuario; }
-	public void setPkUsuario(long pkUsuario) { this.pkUsuario = pkUsuario; }
+	public long getPkUsuario() {
+		return pkUsuario;
+	}
 
-	public String getLogin() { return login; }
-	public void setLogin(String login) { this.login = login; }
+	public void setPkUsuario(long pkUsuario) {
+		this.pkUsuario = pkUsuario;
+	}
 
-	public String getSenha() { return senha; }
-	public void setSenha(String senha) { this.senha = senha; }
-	
-	public String getNome() { return nome; }
-	public void setNome(String nome) { this.nome = nome; }
+	public String getLogin() {
+		return login;
+	}
 
-	public int getSexo() { return sexo; }
-	public void setSexo(int sexo) { this.sexo = sexo; }
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
-	public String getSobrenome() { return sobrenome; }
-	public void setSobrenome(String sobrenome) { this.sobrenome = sobrenome; }
+	public String getSenha() {
+		return senha;
+	}
 
-	public Date getLancamento() { return lancamento; }
-	public void setLancamento(Date lancamento) { this.lancamento = lancamento; }
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 
-	public String getEmailUsuario() { return emailUsuario; }
-	public void setEmailUsuario(String emailUsuario) { this.emailUsuario = emailUsuario; }
+	public String getNome() {
+		return nome;
+	}
 
-	public Integer getStatus() { return status; }
-	public void setStatus(Integer status) { this.status = status; }
-	
-	public String getIdFacebook() { return idFacebook; }
-	public void setIdFacebook(String idFacebook) { this.idFacebook = idFacebook; }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-	public List<RequisicaoAmizade> getRequisicaoAmizadesUsuarioRequisitante() { if(requisicaoAmizadesUsuarioRequisitante==null) { requisicaoAmizadesUsuarioRequisitante = new ArrayList<RequisicaoAmizade>(); } return requisicaoAmizadesUsuarioRequisitante; }
-	public void setRequisicaoAmizadesUsuarioRequisitante(List<RequisicaoAmizade> requisicaoAmizadesUsuarioRequisitante) { this.requisicaoAmizadesUsuarioRequisitante = requisicaoAmizadesUsuarioRequisitante; }
+	public int getSexo() {
+		return sexo;
+	}
 
-	public List<RequisicaoAmizade> getRequisicaoAmizadesUsuarioRequisitado() { if(requisicaoAmizadesUsuarioRequisitado==null) { requisicaoAmizadesUsuarioRequisitado = new ArrayList<RequisicaoAmizade>(); } return requisicaoAmizadesUsuarioRequisitado; }
-	public void setRequisicaoAmizadesUsuarioRequisitado(List<RequisicaoAmizade> requisicaoAmizadesUsuarioRequisitado) { this.requisicaoAmizadesUsuarioRequisitado = requisicaoAmizadesUsuarioRequisitado; }
+	public void setSexo(int sexo) {
+		this.sexo = sexo;
+	}
 
-	public List<AmigosUsuario> getAmigosUsuariosUsuario() { if(amigosUsuariosUsuario==null) { amigosUsuariosUsuario = new ArrayList<AmigosUsuario>(); } return amigosUsuariosUsuario; }
-	public void setAmigosUsuariosUsuario(List<AmigosUsuario> amigosUsuariosUsuario) { this.amigosUsuariosUsuario = amigosUsuariosUsuario; }
+	public String getSobrenome() {
+		return sobrenome;
+	}
 
-	public List<AmigosUsuario> getAmigosUsuariosAmigo() { if(amigosUsuariosAmigo==null) { amigosUsuariosAmigo = new ArrayList<AmigosUsuario>(); } return amigosUsuariosAmigo; }
-	public void setAmigosUsuariosAmigo(List<AmigosUsuario> amigosUsuariosAmigo) { this.amigosUsuariosAmigo = amigosUsuariosAmigo; }
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
+	}
 
-	public List<Playlist> getPlaylists() { if(playlists==null) { playlists = new ArrayList<Playlist>(); } return playlists; }
-	public void setPlaylists(List<Playlist> playlists) { this.playlists = playlists; }
+	public Date getLancamento() {
+		return lancamento;
+	}
 
-	public List<AvaliarMusica> getAvaliarMusicas() { if(avaliarMusicas==null) { avaliarMusicas = new ArrayList<AvaliarMusica>(); } return avaliarMusicas; }
-	public void setAvaliarMusicas(List<AvaliarMusica> avaliarMusicas) { this.avaliarMusicas = avaliarMusicas; }
+	public void setLancamento(Date lancamento) {
+		this.lancamento = lancamento;
+	}
 
-	public List<EnviaMensagem> getEnviaMensagemsUsuarioEnviou() { if(enviaMensagemsUsuarioEnviou==null) { enviaMensagemsUsuarioEnviou = new ArrayList<EnviaMensagem>(); } return enviaMensagemsUsuarioEnviou; }
-	public void setEnviaMensagemsUsuarioEnviou(List<EnviaMensagem> enviaMensagemsUsuarioEnviou) { this.enviaMensagemsUsuarioEnviou = enviaMensagemsUsuarioEnviou; }
+	public String getEmailUsuario() {
+		return emailUsuario;
+	}
 
-	public List<EnviaMensagem> getEnviaMensagemsUsuarioRecebeu() { if(enviaMensagemsUsuarioRecebeu==null) { enviaMensagemsUsuarioRecebeu = new ArrayList<EnviaMensagem>(); } return enviaMensagemsUsuarioRecebeu; }
-	public void setEnviaMensagemsUsuarioRecebeu(List<EnviaMensagem> enviaMensagemsUsuarioRecebeu) { this.enviaMensagemsUsuarioRecebeu = enviaMensagemsUsuarioRecebeu; }
+	public void setEmailUsuario(String emailUsuario) {
+		this.emailUsuario = emailUsuario;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getIdFacebook() {
+		return idFacebook;
+	}
+
+	public void setIdFacebook(String idFacebook) {
+		this.idFacebook = idFacebook;
+	}
+
+	public List<RequisicaoAmizade> getRequisicaoAmizadesUsuarioRequisitante() {
+		if (requisicaoAmizadesUsuarioRequisitante == null) {
+			requisicaoAmizadesUsuarioRequisitante = new ArrayList<RequisicaoAmizade>();
+		}
+		return requisicaoAmizadesUsuarioRequisitante;
+	}
+
+	public void setRequisicaoAmizadesUsuarioRequisitante(
+			List<RequisicaoAmizade> requisicaoAmizadesUsuarioRequisitante) {
+		this.requisicaoAmizadesUsuarioRequisitante = requisicaoAmizadesUsuarioRequisitante;
+	}
+
+	public List<RequisicaoAmizade> getRequisicaoAmizadesUsuarioRequisitado() {
+		if (requisicaoAmizadesUsuarioRequisitado == null) {
+			requisicaoAmizadesUsuarioRequisitado = new ArrayList<RequisicaoAmizade>();
+		}
+		return requisicaoAmizadesUsuarioRequisitado;
+	}
+
+	public void setRequisicaoAmizadesUsuarioRequisitado(
+			List<RequisicaoAmizade> requisicaoAmizadesUsuarioRequisitado) {
+		this.requisicaoAmizadesUsuarioRequisitado = requisicaoAmizadesUsuarioRequisitado;
+	}
+
+	public List<AmigosUsuario> getAmigosUsuariosUsuario() {
+		if (amigosUsuariosUsuario == null) {
+			amigosUsuariosUsuario = new ArrayList<AmigosUsuario>();
+		}
+		return amigosUsuariosUsuario;
+	}
+
+	public void setAmigosUsuariosUsuario(
+			List<AmigosUsuario> amigosUsuariosUsuario) {
+		this.amigosUsuariosUsuario = amigosUsuariosUsuario;
+	}
+
+	public List<AmigosUsuario> getAmigosUsuariosAmigo() {
+		if (amigosUsuariosAmigo == null) {
+			amigosUsuariosAmigo = new ArrayList<AmigosUsuario>();
+		}
+		return amigosUsuariosAmigo;
+	}
+
+	public void setAmigosUsuariosAmigo(List<AmigosUsuario> amigosUsuariosAmigo) {
+		this.amigosUsuariosAmigo = amigosUsuariosAmigo;
+	}
+
+	public List<Playlist> getPlaylists() {
+		if (playlists == null) {
+			playlists = new ArrayList<Playlist>();
+		}
+		return playlists;
+	}
+
+	public void setPlaylists(List<Playlist> playlists) {
+		this.playlists = playlists;
+	}
+
+	public List<AvaliarMusica> getAvaliarMusicas() {
+		if (avaliarMusicas == null) {
+			avaliarMusicas = new ArrayList<AvaliarMusica>();
+		}
+		return avaliarMusicas;
+	}
+
+	public void setAvaliarMusicas(List<AvaliarMusica> avaliarMusicas) {
+		this.avaliarMusicas = avaliarMusicas;
+	}
+
+	public List<EnviaMensagem> getEnviaMensagemsUsuarioEnviou() {
+		if (enviaMensagemsUsuarioEnviou == null) {
+			enviaMensagemsUsuarioEnviou = new ArrayList<EnviaMensagem>();
+		}
+		return enviaMensagemsUsuarioEnviou;
+	}
+
+	public void setEnviaMensagemsUsuarioEnviou(
+			List<EnviaMensagem> enviaMensagemsUsuarioEnviou) {
+		this.enviaMensagemsUsuarioEnviou = enviaMensagemsUsuarioEnviou;
+	}
+
+	public List<EnviaMensagem> getEnviaMensagemsUsuarioRecebeu() {
+		if (enviaMensagemsUsuarioRecebeu == null) {
+			enviaMensagemsUsuarioRecebeu = new ArrayList<EnviaMensagem>();
+		}
+		return enviaMensagemsUsuarioRecebeu;
+	}
+
+	public void setEnviaMensagemsUsuarioRecebeu(
+			List<EnviaMensagem> enviaMensagemsUsuarioRecebeu) {
+		this.enviaMensagemsUsuarioRecebeu = enviaMensagemsUsuarioRecebeu;
+	}
+
+	public List<MediaUsuarioGenero> getMediaUsuarioGenero() {
+		return mediaUsuarioGenero;
+	}
+
+	public void setMediaUsuarioGenero(
+			List<MediaUsuarioGenero> mediaUsuarioGenero) {
+		this.mediaUsuarioGenero = mediaUsuarioGenero;
+	}
 }

@@ -13,6 +13,7 @@ import br.com.recomusic.dao.GeneroDAO;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
 import br.com.recomusic.dao.InformacaoMusicalCadastroGeneroDAO;
 import br.com.recomusic.dao.InformacaoMusicalCadastroMusicaDAO;
+import br.com.recomusic.dao.MediaUsuarioGeneroDAO;
 import br.com.recomusic.dao.MusicaDAO;
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.AvaliarMusica;
@@ -22,6 +23,7 @@ import br.com.recomusic.om.Genero;
 import br.com.recomusic.om.InformacaoMusicalCadastroBanda;
 import br.com.recomusic.om.InformacaoMusicalCadastroGenero;
 import br.com.recomusic.om.InformacaoMusicalCadastroMusica;
+import br.com.recomusic.om.MediaUsuarioGenero;
 import br.com.recomusic.om.Musica;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
@@ -38,6 +40,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	private MusicaDAO musicaDAO = new MusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private BandaDAO bandaDAO = new BandaDAO( ConectaBanco.getInstance().getEntityManager());
 	private GeneroDAO generoDAO = new GeneroDAO( ConectaBanco.getInstance().getEntityManager());
+	private MediaUsuarioGeneroDAO mediaUsuarioGeneroDAO = new MediaUsuarioGeneroDAO( ConectaBanco.getInstance().getEntityManager());
 	private BandaGeneroDAO bandaGeneroDAO = new BandaGeneroDAO( ConectaBanco.getInstance().getEntityManager());
 	private InformacaoMusicalCadastroMusicaDAO informacaoMusicalCadastroMusicaDAO = new InformacaoMusicalCadastroMusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private InformacaoMusicalCadastroBandaDAO informacaoMusicalCadastroBandaDAO = new InformacaoMusicalCadastroBandaDAO( ConectaBanco.getInstance().getEntityManager());
@@ -51,6 +54,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	private boolean curtiuMusica = false;
 	private String valorIdMusica = null;
 	private String valorIdMusicaEcho = null;
+	private int notaMusica = 0;
 	AvaliarMusica avaliarMusicaPrincipal = null;
 	private String tokenRecebido = null;
 	public MusicaBean() { }
@@ -65,6 +69,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 		{
 			if((valorIdMusica!=null && valorIdMusica.length()>0) && (nomeMusica!=null && nomeMusica.length()>0) && (valorIdMusicaEcho!=null && valorIdMusicaEcho.length()>0) )
 			{
+				this.notaMusica = 0;
 				if(UtilidadesTelas.verificarSessao())
 				{
 					setUsuario(getUsuarioGlobal());
@@ -85,6 +90,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 					{
 						if(am.getResposta()!=null && am.getResposta())
 						{
+							this.notaMusica = am.getNota();
 							this.curtiuMusica = true;
 						}
 						else
@@ -166,7 +172,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 	/**
 	 * Avalia uma música (Curti ou Descurti uma música)
 	 */
-	public void avaliarMusica()
+	public void avaliarMusica(String nota)
 	{
 		try
 		{
@@ -224,6 +230,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 						
 						//Como a banda já existem, então a bandaGenêro e os gêneros já existem
 						//Então só precisará de atualizar as informações do cadastro de gênero
+						MediaUsuarioGenero mUG;
 						List<String> listasGenerosBanda = requisitarAPIGeneroBanda(banda.getIdBanda());
 						for (String nomeGenero : listasGenerosBanda)
 						{
@@ -236,6 +243,26 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 genero.setNomeGenero(nomeGenero);
 								 genero = generoDAO.salvaListaGeneros(nomeGenero);
 							 }
+							 
+							 //Cria/Atualiza o MediaUsuarioGenero
+							 mUG = null;
+							 mUG = mediaUsuarioGeneroDAO.pesquisarExiste(getUsuarioGlobal(), genero);
+							 
+							 if(mUG==null)
+							 {
+								 mUG = new MediaUsuarioGenero();
+								 mUG.setGenero(genero);
+								 mUG.setUsuario(getUsuarioGlobal());
+								 mUG.setQuantidadeMusicas(1D);
+								 mUG.setMedia(m.getBPMMUsica());
+							 }
+							 else
+							 {
+								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
+								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+							 }
+							 
+							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
 							 
 							 imcg = null;
 							 imcg = informacaoMusicalCadastroGeneroDAO.pesquisarIMCG(getUsuarioGlobal(), genero);
@@ -280,7 +307,8 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 						 imcb.setStatus(Constantes.TIPO_STATUS_ATIVO);
 						 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
 						 
-						//Banda e Musica não existem, então elas terão de ser salvas e terá que salvar os generos e criar todas as informações de cadastro necessárias
+						//Banda e Musica não existem, então elas terão de ser salvas e terá que salvar os generos e criar todas as informações de cadastro necessária
+						 MediaUsuarioGenero mUG;
 						List<String> listasGenerosBanda = requisitarAPIGeneroBanda(banda.getIdBanda());
 						for (String nomeGenero : listasGenerosBanda)
 						{
@@ -293,6 +321,26 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 genero.setNomeGenero(nomeGenero);
 								 genero = generoDAO.salvaListaGeneros(nomeGenero);
 							 }
+							 
+							 //Cria/Atualiza o MediaUsuarioGenero
+							 mUG = null;
+							 mUG = mediaUsuarioGeneroDAO.pesquisarExiste(getUsuarioGlobal(), genero);
+							 
+							 if(mUG==null)
+							 {
+								 mUG = new MediaUsuarioGenero();
+								 mUG.setGenero(genero);
+								 mUG.setUsuario(getUsuarioGlobal());
+								 mUG.setQuantidadeMusicas(1D);
+								 mUG.setMedia(m.getBPMMUsica());
+							 }
+							 else
+							 {
+								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
+								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+							 }
+							 
+							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
 							 
 							 bg = null;
 							 bg = bandaGeneroDAO.pesquisarBandaGenero(banda, genero);
@@ -355,23 +403,32 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 					
 					if(am==null)
 					{
+						m.setQuantidadeAvaliacoes(m.getQuantidadeAvaliacoes()+1);
+						m.setMediaAvaliacoes(( (m.getMediaAvaliacoes() * (m.getQuantidadeAvaliacoes()-1))+(Integer.valueOf(nota)))/m.getQuantidadeAvaliacoes());
+						musicaDAO.salvarMusica(m);
+						
 						am = new AvaliarMusica();
 						am.setMusica(m);
 						am.setUsuario(getUsuarioGlobal());
 						am.setStatus(Constantes.TIPO_STATUS_ATIVO);
 						am.setResposta(true);
+						am.setNota(Integer.valueOf(nota));
 						avaliarMusicaDAO.salvarAvaliacao(am);
 					}
 					else
 					{
 						if(am.getResposta()!=true)
 						{
+							m.setMediaAvaliacoes((m.getMediaAvaliacoes() - am.getNota() + Integer.valueOf(nota))/ m.getQuantidadeAvaliacoes());
+							musicaDAO.salvarMusica(m);
+							
 							am.setResposta(true);
+							am.setNota(Integer.valueOf(nota));
 							avaliarMusicaDAO.salvarAvaliacao(am);
 						}
 					}
 					
-					// Fim do if quando vai curtir uma música e essa muúsica já exista no BD
+					// Fim do if quando vai curtir uma música e essa música já exista no BD
 				}
 				else
 				{
@@ -413,6 +470,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 						
 						//Como a banda já existem, então a bandaGenêro e os gêneros já existem
 						//Então só precisará de atualizar as informações do cadastro de gênero
+						MediaUsuarioGenero mUG;
 						List<String> listasGenerosBanda = requisitarAPIGeneroBanda(banda.getIdBanda());
 						for (String nomeGenero : listasGenerosBanda)
 						{
@@ -425,6 +483,26 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 genero.setNomeGenero(nomeGenero);
 								 genero = generoDAO.salvaListaGeneros(nomeGenero);
 							 }
+							 
+							 //Cria/Atualiza o MediaUsuarioGenero
+							 mUG = null;
+							 mUG = mediaUsuarioGeneroDAO.pesquisarExiste(getUsuarioGlobal(), genero);
+							 
+							 if(mUG==null)
+							 {
+								 mUG = new MediaUsuarioGenero();
+								 mUG.setGenero(genero);
+								 mUG.setUsuario(getUsuarioGlobal());
+								 mUG.setQuantidadeMusicas(1D);
+								 mUG.setMedia(m.getBPMMUsica());
+							 }
+							 else
+							 {
+								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
+								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+							 }
+							 
+							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
 							 
 							 imcg = null;
 							 imcg = informacaoMusicalCadastroGeneroDAO.pesquisarIMCG(getUsuarioGlobal(), genero);
@@ -470,6 +548,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 						 informacaoMusicalCadastroBandaDAO.salvarBandasCadastro(imcb);
 						 
 						//Banda e Musica não existem, então elas terão de ser salvas e terá que salvar os generos e criar todas as informações de cadastro necessárias
+						 MediaUsuarioGenero mUG;
 						List<String> listasGenerosBanda = requisitarAPIGeneroBanda(banda.getIdBanda());
 						for (String nomeGenero : listasGenerosBanda)
 						{
@@ -482,6 +561,26 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 								 genero.setNomeGenero(nomeGenero);
 								 genero = generoDAO.salvaListaGeneros(nomeGenero);
 							 }
+							 
+							 //Cria/Atualiza o MediaUsuarioGenero
+							 mUG = null;
+							 mUG = mediaUsuarioGeneroDAO.pesquisarExiste(getUsuarioGlobal(), genero);
+							 
+							 if(mUG==null)
+							 {
+								 mUG = new MediaUsuarioGenero();
+								 mUG.setGenero(genero);
+								 mUG.setUsuario(getUsuarioGlobal());
+								 mUG.setQuantidadeMusicas(1D);
+								 mUG.setMedia(m.getBPMMUsica());
+							 }
+							 else
+							 {
+								 mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas()+1); 
+								 mUG.setMedia(((mUG.getMedia() * (mUG.getQuantidadeMusicas()-1)) + m.getBPMMUsica())/mUG.getQuantidadeMusicas());
+							 }
+							 
+							 mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
 							 
 							 bg = null;
 							 bg = bandaGeneroDAO.pesquisarBandaGenero(banda, genero);
@@ -523,6 +622,8 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 					 m.setBanda(banda);
 					 m.setAlbum(this.nomeAlbum);
 					 m.setIdDeezer(this.valorIdMusica);
+					 m.setQuantidadeAvaliacoes(m.getQuantidadeAvaliacoes()+1);
+					 m.setMediaAvaliacoes( ( (m.getMediaAvaliacoes() * m.getQuantidadeAvaliacoes())  +Integer.valueOf(nota))/m.getQuantidadeAvaliacoes());
 					 musicaDAO.salvarMusica(m);
 					
 					 imcm = new InformacaoMusicalCadastroMusica();
@@ -536,6 +637,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 					 am.setUsuario(getUsuarioGlobal());
 					 am.setStatus(Constantes.TIPO_STATUS_ATIVO);
 					 am.setResposta(true);
+					 am.setNota(Integer.valueOf(nota));
 					 avaliarMusicaDAO.salvarAvaliacao(am);
 					 
 					 //Fim do if que a música não existia
@@ -551,7 +653,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 				//Supõe-se que a música e a banda já existam
 				if(m!=null && m.getPkMusica()>0)
 				{
-					banda = bandaDAO.pesquisarBandaExiste(m.getBanda().getIdBanda());
+/*					banda = bandaDAO.pesquisarBandaExiste(m.getBanda().getIdBanda());
 					
 					if(banda!=null && banda.getPkBanda()>0)
 					{
@@ -615,9 +717,9 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 						}
 						
 						//Fim quando procura pela banda que já existe
-					}
+					}*/
 					
-					imcm = null;
+/*					imcm = null;
 					imcm = informacaoMusicalCadastroMusicaDAO.pesquisarIMCM(getUsuarioGlobal(), m);
 					
 					if(imcm!=null && imcm.getPkInformacaoMusicalCadastroMusica()>0)
@@ -627,18 +729,24 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 							imcm.setStatus(Constantes.STATUS_MUSICA_FOI_CURTIDA);
 							informacaoMusicalCadastroMusicaDAO.salvarMusicaCadastro(imcm);
 						}
-					}
+					}*/
 					 
 					am = null;
 					am = avaliarMusicaDAO.pesquisaUsuarioAvaliouMusicaPelaMusica(m, getUsuarioGlobal());
 					
 					if(am!=null && am.getPkAvaliarMusica()>0)
 					{
-						if(am.getResposta()!=false)
+/*						if(am.getResposta()!=false)
 						{
 							am.setResposta(false);
 							avaliarMusicaDAO.salvarAvaliacao(am);
-						}
+						}*/
+						
+						m.setMediaAvaliacoes(( (m.getMediaAvaliacoes() * m.getQuantidadeAvaliacoes()) - am.getNota() + Integer.valueOf(nota))/ m.getQuantidadeAvaliacoes());
+						musicaDAO.salvarMusica(m);
+						
+						am.setNota(Integer.valueOf(nota));
+						avaliarMusicaDAO.salvarAvaliacao(am);
 					}
 					
 					//Fim quando procura pela música que já existe
@@ -648,7 +756,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 			}
 			
 			ConectaBanco.getInstance().commit();
-			this.curtiuMusica = !this.curtiuMusica;
+			this.curtiuMusica = Boolean.TRUE;
 		}
 		catch(Exception e)
 		{
@@ -657,7 +765,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 		}
 	}
 	
-	public void avaliarMusicaNegativamente()
+/*	public void avaliarMusicaNegativamente()
 	{
 		try
 		{
@@ -704,7 +812,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 			ConectaBanco.getInstance().rollBack();
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public void pesquisaCurtiu()
 	{
@@ -908,5 +1016,22 @@ public class MusicaBean extends UtilidadesTelas implements Serializable
 
 	public void setAvaliarMusicaDAO(AvaliarMusicaDAO avaliarMusicaDAO) {
 		this.avaliarMusicaDAO = avaliarMusicaDAO;
+	}
+
+	public InformacaoMusicalCadastroMusicaDAO getInformacaoMusicalCadastroMusicaDAO() {
+		return informacaoMusicalCadastroMusicaDAO;
+	}
+
+	public void setInformacaoMusicalCadastroMusicaDAO(
+			InformacaoMusicalCadastroMusicaDAO informacaoMusicalCadastroMusicaDAO) {
+		this.informacaoMusicalCadastroMusicaDAO = informacaoMusicalCadastroMusicaDAO;
+	}
+
+	public int getNotaMusica() {
+		return notaMusica;
+	}
+
+	public void setNotaMusica(int notaMusica) {
+		this.notaMusica = notaMusica;
 	}
 }
