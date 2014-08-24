@@ -76,7 +76,11 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 			
 			if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
 			{
+				usuario = new Usuario();
+				usuario = usuarioRecebido;
+				setUsuarioGlobal(usuario);
 				this.logado = true;
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 			}
 			
 			if(!this.logado)
@@ -89,13 +93,16 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 					
 					if(usuarioRecebido!=null && usuarioRecebido.getPkUsuario()>0)
 					{
+						usuario = new Usuario();
+						usuario = usuarioRecebido;
+						setUsuarioGlobal(usuario);
 						this.logado = true;
+						FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 					}
 				}
 			}
-			usuario = new Usuario();
-			usuario = usuarioRecebido;
-			setUsuarioGlobal(usuario);
+			
+			//FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 		}
 		catch(Exception e)
 		{
@@ -262,6 +269,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 							 }
 							 
 				    		 this.logado = true;
+				    		 FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 				    	 }
 				    	 else
 				    	 {
@@ -400,6 +408,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 									 }
 									 
 					    			 this.logado = true;
+					    			 FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 				    			 }
 				    		 }
 				    	 }
@@ -456,6 +465,8 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 							setUsuarioGlobal(usuario);
 							this.emailLogin = usuario.getLogin();
 							this.logado = true;
+							
+							FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 						}
 						else
 						{
@@ -500,7 +511,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 			setUsuarioGlobal(usuario);
 			this.emailLogin = usuario.getEmailUsuario();
 			this.logado = true;
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 		}
 		catch(Exception e)
 		{

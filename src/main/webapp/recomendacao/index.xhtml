@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+
+<h:body>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{RecomendacaoBean.iniciar}" />
+	</f:metadata>
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+
+		<ui:define name="content">
+			<div class="row" align="center">
+				<div class="col-mod-12" align="center">
+					<h2 class="form-signin-heading"
+						style="text-align: center; color: #000; font-size: 15px;">Inscreva-se</h2>
+					<h:panelGroup layout="block" class="footerPaginaInicialNome"></h:panelGroup>
+
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>
