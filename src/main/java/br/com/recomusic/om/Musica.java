@@ -28,6 +28,7 @@ public class Musica implements Serializable {
 	private String album;
 	private String idMusica;
 	private String idDeezer;
+	private String urlImagem;
 	private Double BPMMUsica;
 	private Double EnergMusica;
 	private Integer quantidadeAvaliacoes;
@@ -194,5 +195,13 @@ public class Musica implements Serializable {
 
 	public void setMediaAvaliacoes(Double mediaAvaliacoes) {
 		this.mediaAvaliacoes = mediaAvaliacoes;
+	}
+
+	public String getUrlImagem() {
+		return urlImagem;
+	}
+
+	public void setUrlImagem(String urlImagem) {
+		this.urlImagem = urlImagem;
 	}
 }

@@ -53,13 +53,21 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 		}
 	}
 
-	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho)
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho, String url)
 	{
 		try
 		{
-			if(album!=null && album.length()>0)
+			if(album!=null && album.length()>0 && url!=null && url.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album + "&u=" + url);
+			}
+			else if(album!=null && album.length()>0)
 			{
 				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
+			}
+			else if(url!=null && url.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&u=" + url);
 			}
 			else
 			{

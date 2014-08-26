@@ -18,6 +18,7 @@
 		<f:viewParam name="a" value="#{MusicaBean.nomeArtista}" />
 		<f:viewParam name="n" value="#{MusicaBean.nomeAlbum}" />
 		<f:viewParam name="i" value="#{MusicaBean.valorIdMusicaEcho}" />
+		<f:viewParam name="u" value="#{MusicaBean.valorUrlMusica}" />
 		<f:event type="preRenderView" listener="#{MusicaBean.iniciar}" />
 	</f:metadata>
 
@@ -219,7 +220,7 @@
 								
 								<h:panelGroup layout="block" rendered="#{MusicaBean.notaMusica ge 5 }">
 									<h:commandLink id="btestrela5" style="background-color: #FFF;"
-										actionListener="#{MusicaBean.avaliarMusica(5)}">
+										actionListener="#{MusicaBean.avaliarMusica(5)}" update="@form">
 										<img
 											src="/RecoMusic/resources/imagens/icones/estrela_preenchida.png"
 											alt="" style="vertical-align: baseline" />

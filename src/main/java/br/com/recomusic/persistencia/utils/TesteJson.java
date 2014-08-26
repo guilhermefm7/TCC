@@ -88,6 +88,7 @@ public class TesteJson
            System.out.println(json1);
            JSONObject my_obj1 = new JSONObject(json1);
            System.out.println("ALBUMMM "  + ((JSONObject)my_obj1.get("album")).get("title"));
+           System.out.println("ALBUMMM "  + ((JSONObject)my_obj1.get("album")).get("cover"));
 /*           JSONObject ob11 = (JSONObject)my_obj1.get("album");
            System.out.println("Album " + ob11.get("title"));*/
 

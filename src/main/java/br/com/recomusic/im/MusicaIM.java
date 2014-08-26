@@ -1,8 +1,6 @@
 package br.com.recomusic.im;
 
-
-public class MusicaIM
-{
+public class MusicaIM {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
 	private int qtd;
 	private String idMusica;
@@ -10,19 +8,21 @@ public class MusicaIM
 	private String nomeArtista;
 	private String albumMusica;
 	private String idDeezer;
+	private String urlMusica;
 
 	/*-*-*-* Construtores *-*-*-*/
-	public MusicaIM() { }
+	public MusicaIM() {
+	}
 
-	public MusicaIM(int qtd, String nomeMusica, String nomeArtista, String albumMusica, String idDeezer)
-	{
+	public MusicaIM(int qtd, String nomeMusica, String nomeArtista,
+			String albumMusica, String idDeezer) {
 		this.qtd = qtd;
 		this.nomeMusica = nomeMusica;
 		this.nomeArtista = nomeArtista;
 		this.albumMusica = albumMusica;
 		this.idDeezer = idDeezer;
 	}
-	
+
 	public int getQtd() {
 		return qtd;
 	}
@@ -69,5 +69,13 @@ public class MusicaIM
 
 	public void setIdDeezer(String idDeezer) {
 		this.idDeezer = idDeezer;
+	}
+
+	public String getUrlMusica() {
+		return urlMusica;
+	}
+
+	public void setUrlMusica(String urlMusica) {
+		this.urlMusica = urlMusica;
 	}
 }

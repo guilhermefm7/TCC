@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.recomusic.persistencia.utils.ThreadProcuraMusica;
 import br.com.recomusic.singleton.ConectaBanco;
 
 /**
@@ -23,9 +24,11 @@ public class MainRecMusic extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException 
 	{
-		
 		//Conecta no Banco de Dados
 		System.out.println("RecMusic Incializado com Sucesso!");
+		ThreadProcuraMusica tph = new ThreadProcuraMusica();
+		Thread t = new Thread(tph);
+        t.start();
 	}
 
 	/**

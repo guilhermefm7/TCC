@@ -82,9 +82,9 @@ public class TesteMusica
 	        List<Artist> artists = en.searchArtists(p);
 	        for (Artist artist : artists) {
 	        	 System.out.printf("%s\n", artist.getName());
+	        	 
 	        	 System.out.printf("%s\n", artist.getID());
 	        	 System.out.printf("%s\n", artist.getForeignID("deezer"));
-	        	
 	             dumpArtist(artist);
 	        }
 		 }

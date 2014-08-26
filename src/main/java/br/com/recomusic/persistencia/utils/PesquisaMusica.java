@@ -109,6 +109,7 @@ public class PesquisaMusica
 	         String json = IOUtils.toString(new URL(url));
 	         String jsonDeezer = "";
 	         String pegaAlbum = "";
+	         String pegaUrl = "";
 	         
 	         JSONObject obj = new JSONObject(json);
 	         JSONObject objDeezer = null;
@@ -149,10 +150,16 @@ public class PesquisaMusica
 		  	    			   if(objDeezerAux!=null && objDeezerAux.length()>0)
 		  	    			   {
 		  	    				   pegaAlbum = (String)objDeezerAux.get("title");
+		  	    				   pegaUrl = (String)objDeezerAux.get("cover");
 		  	    				   
 		  	    				   if(pegaAlbum.length()>0)
 		  	    				   {
 		  	    					   mIM.setAlbumMusica(pegaAlbum);
+		  	    				   }
+		  	    				   
+		  	    				   if(pegaUrl.length()>0)
+		  	    				   {
+		  	    					   mIM.setUrlMusica(pegaUrl);
 		  	    				   }
 		  	    			   }
 		  	    		   }
@@ -196,7 +203,6 @@ public class PesquisaMusica
 		    	musica.setEnergMusica(song.getEnergy());
 		    	musica.setQuantidadeAvaliacoes(0);
 		    	musica.setMediaAvaliacoes(0D);
-		    	
 		    	///pesquisa idDeezer
 		    	///pesquisa Album
 		    	
