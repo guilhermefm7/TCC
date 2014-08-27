@@ -8,7 +8,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.com.recomusic.om.AvaliarMusica;
+import br.com.recomusic.om.BandaGenero;
+import br.com.recomusic.om.Genero;
 import br.com.recomusic.om.Musica;
+import br.com.recomusic.om.MusicaGenero;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.singleton.ConectaBanco;
@@ -89,6 +92,43 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
     		return null;  
     	}  
     }
+    
+	/**
+	 * Autor: Guilherme
+	 * Pesquisa todas as músicas avalidas pelo um usuário passado como parâmetro, cuja nota seja maior que 3
+	 * Usuario usuario
+	 * List<AvaliarMusica> caso exista senão retorna null
+	 */
+	public List<AvaliarMusica> pesquisaAvaliacaoUsuarioMaior3(Usuario usuario, Genero genero) throws Exception
+	{
+		List<AvaliarMusica> listaAux;
+		try
+		{
+			Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario AND am.nota >= 3"));
+			query.setParameter("pk_usuario", usuario.getPkUsuario());
+			List<AvaliarMusica> am = (List<AvaliarMusica>) query.getResultList();
+			
+			listaAux = new ArrayList<AvaliarMusica>();
+			
+			for (AvaliarMusica avaliarMusica : am)
+			{
+				for (BandaGenero bg : avaliarMusica.getMusica().getBanda().getBandaGeneros())
+				{
+					if(genero.getPkGenero()==bg.getGenero().getPkGenero())
+					{
+						listaAux.add(avaliarMusica);
+						break;
+					}
+				}
+			}
+			
+			return listaAux;
+		}
+		catch ( NoResultException nre )
+		{  
+			return null;  
+		}  
+	}
     
     /**
      * Autor: Guilherme

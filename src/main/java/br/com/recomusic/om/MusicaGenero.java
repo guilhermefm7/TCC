@@ -21,10 +21,10 @@ public class MusicaGenero implements Serializable
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long pkMusicaGenero;
 
-	@ManyToOne @JoinColumn(name="fkMusica")
+	@ManyToOne @JoinColumn(name="fkMusica", referencedColumnName="pkMusica")
 	private Musica musica;
-
-	@ManyToOne @JoinColumn(name="fkGenero")
+	
+	@ManyToOne @JoinColumn(name="fkGenero", referencedColumnName="pkGenero")
 	private Genero genero;
 
 

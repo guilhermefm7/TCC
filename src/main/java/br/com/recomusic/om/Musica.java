@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Musica implements Serializable {
@@ -42,7 +49,12 @@ public class Musica implements Serializable {
 	@JoinColumn(name = "fkBanda")
 	private Banda banda;
 
-	@OneToMany(mappedBy = "musica")
+    @XmlElement(nillable = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "musica", orphanRemoval = true)
+    @Cascade(value = {
+                    CascadeType.PERSIST, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.REMOVE,
+                    CascadeType.DELETE_ORPHAN})
+    @Fetch(FetchMode.SELECT)
 	private List<MusicaGenero> musicaGeneros;
 
 	@OneToMany(mappedBy = "musica")

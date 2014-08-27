@@ -24,10 +24,10 @@ public class BandaGenero implements Serializable
 	private long pkBandaGenero;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 	
-	@ManyToOne @JoinColumn(name="fkGenero")
+	@ManyToOne @JoinColumn(name="fkGenero", referencedColumnName="pkGenero")
 	private Genero genero;
 
-	@ManyToOne @JoinColumn(name="fkBanda")
+	@ManyToOne @JoinColumn(name="fkBanda",  referencedColumnName="pkBanda")
 	private Banda banda;
 
 

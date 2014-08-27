@@ -81,7 +81,7 @@ public class MediaUsuarioGeneroDAO extends GenericDAO<Long, MediaUsuarioGenero>
     {
     	try
     	{
-    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.MediaUsuarioGenero as mug where mug.genero.pkGenero = :genero_pkGenero AND mug.usuario.pkUsuario <> :pk_usuario ORDER By mug.media ASC"));
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.MediaUsuarioGenero as mug where mug.genero.pkGenero = :genero_pkGenero AND mug.usuario.pkUsuario <> :pk_usuario AND mug.mediaAvaliacoes >= 3 ORDER By mug.media ASC"));
     		query.setParameter("genero_pkGenero", genero.getPkGenero());
     		query.setParameter("pk_usuario", usuario.getPkUsuario());
     		List<MediaUsuarioGenero> lista = (List<MediaUsuarioGenero>) query.getResultList();
