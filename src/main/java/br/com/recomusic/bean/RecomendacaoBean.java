@@ -10,10 +10,13 @@ import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
 import br.com.recomusic.dao.MediaUsuarioGeneroDAO;
+import br.com.recomusic.im.MusicaIM;
+import br.com.recomusic.im.MusicasRecomendadasIM;
 import br.com.recomusic.om.AvaliarMusica;
 import br.com.recomusic.om.MediaUsuarioGenero;
 import br.com.recomusic.persistencia.utils.UtilidadesTelas;
 import br.com.recomusic.singleton.ConectaBanco;
+import br.com.recomusic.singleton.GuardaMusicasRecomendadas;
 import br.com.recomusic.singleton.SemaforoMusicasRecomendadas;
 
 
@@ -38,6 +41,10 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 				if(UtilidadesTelas.verificarSessao())
 				{
 					List<MediaUsuarioGenero> listaMUG = mediaUsuarioGeneroDAO.pesquisaGenerosUsuario(getUsuarioGlobal());
+					
+					List<MusicasRecomendadasIM> listaIM1 = new ArrayList<MusicasRecomendadasIM>();;
+					List<MusicasRecomendadasIM> listaIM2 = new ArrayList<MusicasRecomendadasIM>();;
+					List<MusicasRecomendadasIM> listaIM3 = new ArrayList<MusicasRecomendadasIM>();;
 					
 					if(listaMUG!=null && listaMUG.size()>0)
 					{
@@ -82,7 +89,19 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 								{
 									listaAM = new ArrayList<AvaliarMusica>();
 									//Passa um usuário, escolhido pelo algoritmo, para pegar as músicas dele do gênero corrente
+									//Lista que contém as músicas que serão recomendadas do usuário em questão
 									listaAM = avaliarMusicaDAO.pesquisaAvaliacaoUsuarioMaior3(listaAllByGenero.get(j).getUsuario(), listaAux.get(i).getGenero());
+									
+									//Percorre a lista de Músicas encontrada do usuário corrente. 
+									for (AvaliarMusica avaliarMusica : listaAM)
+									{
+										if(GuardaMusicasRecomendadas.getTokensExisteMusica().isEmpty())
+										{
+											
+										}
+									}
+									
+									
 									
 								}
 							}

@@ -95,8 +95,9 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
     
 	/**
 	 * Autor: Guilherme
-	 * Pesquisa todas as músicas avalidas pelo um usuário passado como parâmetro, cuja nota seja maior que 3
+	 * Pesquisa todas as músicas avalidas pelo um usuário passado como parâmetro, cuja nota seja maior que 3 e o gênero seja igual ao gênero passado como parâmetro
 	 * Usuario usuario
+	 * Genero genero
 	 * List<AvaliarMusica> caso exista senão retorna null
 	 */
 	public List<AvaliarMusica> pesquisaAvaliacaoUsuarioMaior3(Usuario usuario, Genero genero) throws Exception
@@ -104,7 +105,7 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
 		List<AvaliarMusica> listaAux;
 		try
 		{
-			Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario AND am.nota >= 3"));
+			Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario AND am.nota >= 3 ORDER by am.nota DESC"));
 			query.setParameter("pk_usuario", usuario.getPkUsuario());
 			List<AvaliarMusica> am = (List<AvaliarMusica>) query.getResultList();
 			
