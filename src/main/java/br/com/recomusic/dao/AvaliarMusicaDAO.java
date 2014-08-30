@@ -130,6 +130,44 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
 			return null;  
 		}  
 	}
+	
+	/**
+	 * Autor: Guilherme
+	 * Pesquisa todas as músicas avalidas pelo um usuário passado como parâmetro, cujo o gênero seja igual ao gênero passado como parâmetro
+	 * Usuario usuario
+	 * Genero genero
+	 * List<Musica> caso exista senão retorna null
+	 */
+	public List<Musica> pesquisaAlMusicasUsuarioGenero(Usuario usuario, Genero genero) throws Exception
+	{
+		List<Musica> listaAux;
+		try
+		{
+			Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario"));
+			query.setParameter("pk_usuario", usuario.getPkUsuario());
+			List<AvaliarMusica> am = (List<AvaliarMusica>) query.getResultList();
+			
+			listaAux = new ArrayList<Musica>();
+			
+			for (AvaliarMusica avaliarMusica : am)
+			{
+				for (BandaGenero bg : avaliarMusica.getMusica().getBanda().getBandaGeneros())
+				{
+					if(genero.getPkGenero()==bg.getGenero().getPkGenero())
+					{
+						listaAux.add(avaliarMusica.getMusica());
+						break;
+					}
+				}
+			}
+			
+			return listaAux;
+		}
+		catch ( NoResultException nre )
+		{  
+			return null;  
+		}  
+	}
     
     /**
      * Autor: Guilherme
