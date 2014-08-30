@@ -1,11 +1,14 @@
 package br.com.recomusic.im;
 
+import java.util.List;
+
 import br.com.recomusic.om.Genero;
+import br.com.recomusic.om.Musica;
 
 public class MusicasRecomendadasIM {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
 	private Genero genero;
-	MusicaIM musicaIM;
+	List<Musica> listaMusica;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public MusicasRecomendadasIM() {
@@ -19,11 +22,11 @@ public class MusicasRecomendadasIM {
 		this.genero = genero;
 	}
 
-	public MusicaIM getMusicaIM() {
-		return musicaIM;
+	public List<Musica> getListaMusica() {
+		return listaMusica;
 	}
 
-	public void setMusicaIM(MusicaIM musicaIM) {
-		this.musicaIM = musicaIM;
+	public void setListaMusica(List<Musica> listaMusica) {
+		this.listaMusica = listaMusica;
 	}
 }

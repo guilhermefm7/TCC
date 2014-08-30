@@ -12,23 +12,22 @@ package br.com.recomusic.persistencia.utils;
  */
 public class TesteKMeans {
 public static final int CLUSTERS = 3;
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String[] args) {
-        double[] data = {100.8,154,199.2,74.89,124.32,32.9,32,54.9,89.9,75.045,178.9,167.43};
+    	
+    	int[] data = {201,321,123,143,32,21,198};
 
         int length = data.length;
 
-        double[][] sums = new double[CLUSTERS][length];
+        int[][] sums = new int[CLUSTERS][length];
 
-        double[][] centroids = {{0, 0, 0}, {100.8, 154,199.2}};
+        int[][] centroids = {{0, 0, 0}, {201, 321, 123}};
 
         int[] count = new int[CLUSTERS];
 
         int i, j, k;
 
-        double minimum, difference;
+        int minimum, difference;
 
         boolean converged = false;
 
