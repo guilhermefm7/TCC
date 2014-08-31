@@ -61,6 +61,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 					boolean existeHash;
 					boolean existeMusica;
 					boolean existeMusicaUsuario;
+					boolean existeListaAnterior;
 					
 					if(listaMUG!=null && listaMUG.size()>0)
 					{
@@ -159,7 +160,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																//Insere a música na lista.
 																GuardaMusicasRecomendadas.getTokensExisteMusica().put(listaUsuariosKMeans.get(j).getGenero().getPkGenero(), new ArrayList<Long>());
 																GuardaMusicasRecomendadas.getTokensExisteMusica().get(listaUsuariosKMeans.get(j).getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																listaIMAux.add(avaliarMusica.getMusica());
+																
+																existeListaAnterior = false;
+																if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM1.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM2.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior)
+																{
+																	listaIMAux.add(avaliarMusica.getMusica());
+																}
 															}
 														}
 														else
@@ -167,7 +197,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 															//Insere a música na lista.
 															GuardaMusicasRecomendadas.getTokensExisteMusica().put(listaUsuariosKMeans.get(j).getGenero().getPkGenero(), new ArrayList<Long>());
 															GuardaMusicasRecomendadas.getTokensExisteMusica().get(listaUsuariosKMeans.get(j).getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-															listaIMAux.add(avaliarMusica.getMusica());
+
+															existeListaAnterior = false;
+															if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+															{
+																for (Musica musica : listaIM1.getListaMusica())
+																{
+																	if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																	{
+																		existeListaAnterior = true;
+																		break;
+																	}
+																}
+															}
+															
+															if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+															{
+																for (Musica musica : listaIM2.getListaMusica())
+																{
+																	if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																	{
+																		existeListaAnterior = true;
+																		break;
+																	}
+																}
+															}
+															
+															if(!existeListaAnterior)
+															{
+																listaIMAux.add(avaliarMusica.getMusica());
+															}
 														}
 														
 														//Caso a lista esteja cheia, sai do for.
@@ -213,14 +272,72 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																	{
 																		//Insere a música na lista.
 																		GuardaMusicasRecomendadas.getTokensExisteMusica().get(listaUsuariosKMeans.get(j).getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																		listaIMAux.add(avaliarMusica.getMusica());
+
+																		existeListaAnterior = false;
+																		if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																		{
+																			for (Musica musica : listaIM1.getListaMusica())
+																			{
+																				if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																				{
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+																		
+																		if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																		{
+																			for (Musica musica : listaIM2.getListaMusica())
+																			{
+																				if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																				{
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+																		
+																		if(!existeListaAnterior)
+																		{
+																			listaIMAux.add(avaliarMusica.getMusica());
+																		}
 																	}
 																}
 																else
 																{
 																	//Insere a música na lista.
 																	GuardaMusicasRecomendadas.getTokensExisteMusica().get(listaUsuariosKMeans.get(j).getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																	listaIMAux.add(avaliarMusica.getMusica());
+
+																	existeListaAnterior = false;
+																	if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																	{
+																		for (Musica musica : listaIM1.getListaMusica())
+																		{
+																			if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																			{
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+																	
+																	if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																	{
+																		for (Musica musica : listaIM2.getListaMusica())
+																		{
+																			if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																			{
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+																	
+																	if(!existeListaAnterior)
+																	{
+																		listaIMAux.add(avaliarMusica.getMusica());
+																	}
 																}
 															}
 															
@@ -250,7 +367,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																	//Caso não exista o gênero no hash principal, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 																	GuardaMusicasRecomendadas.getTokensExisteMusica().put(listaUsuariosKMeans.get(j).getGenero().getPkGenero(), new ArrayList<Long>());
 																	GuardaMusicasRecomendadas.getTokensExisteMusica().get(listaUsuariosKMeans.get(j).getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																	listaIMAux.add(avaliarMusica.getMusica());
+
+																	existeListaAnterior = false;
+																	if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																	{
+																		for (Musica musica : listaIM1.getListaMusica())
+																		{
+																			if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																			{
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+																	
+																	if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																	{
+																		for (Musica musica : listaIM2.getListaMusica())
+																		{
+																			if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																			{
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+																	
+																	if(!existeListaAnterior)
+																	{
+																		listaIMAux.add(avaliarMusica.getMusica());
+																	}
 																}
 															}
 															else
@@ -258,7 +404,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																//Caso não exista o gênero no hash principal, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 																GuardaMusicasRecomendadas.getTokensExisteMusica().put(listaUsuariosKMeans.get(j).getGenero().getPkGenero(), new ArrayList<Long>());
 																GuardaMusicasRecomendadas.getTokensExisteMusica().get(listaUsuariosKMeans.get(j).getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																listaIMAux.add(avaliarMusica.getMusica());
+
+																existeListaAnterior = false;
+																if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM1.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM2.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior)
+																{
+																	listaIMAux.add(avaliarMusica.getMusica());
+																}
 															}
 															
 															//Caso a lista esteja cheia, sai do for.
@@ -351,7 +526,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 															//Caso não exista o gênero no hash principal, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 															GuardaMusicasRecomendadas.getTokensExisteMusica().put(mediaUsuarioGenero.getGenero().getPkGenero(), new ArrayList<Long>());
 															GuardaMusicasRecomendadas.getTokensExisteMusica().get(mediaUsuarioGenero.getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-															listaIMAux.add(avaliarMusica.getMusica());
+
+															existeListaAnterior = false;
+															if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+															{
+																for (Musica musica : listaIM1.getListaMusica())
+																{
+																	if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																	{
+																		existeListaAnterior = true;
+																		break;
+																	}
+																}
+															}
+															
+															if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+															{
+																for (Musica musica : listaIM2.getListaMusica())
+																{
+																	if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																	{
+																		existeListaAnterior = true;
+																		break;
+																	}
+																}
+															}
+															
+															if(!existeListaAnterior)
+															{
+																listaIMAux.add(avaliarMusica.getMusica());
+															}
 														}
 													}
 													else
@@ -359,7 +563,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 														//Caso não exista o gênero no hash principal, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 														GuardaMusicasRecomendadas.getTokensExisteMusica().put(mediaUsuarioGenero.getGenero().getPkGenero(), new ArrayList<Long>());
 														GuardaMusicasRecomendadas.getTokensExisteMusica().get(mediaUsuarioGenero.getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-														listaIMAux.add(avaliarMusica.getMusica());
+
+														existeListaAnterior = false;
+														if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+														{
+															for (Musica musica : listaIM1.getListaMusica())
+															{
+																if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																{
+																	existeListaAnterior = true;
+																	break;
+																}
+															}
+														}
+														
+														if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+														{
+															for (Musica musica : listaIM2.getListaMusica())
+															{
+																if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																{
+																	existeListaAnterior = true;
+																	break;
+																}
+															}
+														}
+														
+														if(!existeListaAnterior)
+														{
+															listaIMAux.add(avaliarMusica.getMusica());
+														}
 													}
 													
 													//Caso a lista esteja cheia, sai do for.
@@ -404,14 +637,72 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																{
 																	//Insere a música na lista
 																	GuardaMusicasRecomendadas.getTokensExisteMusica().get(mediaUsuarioGenero.getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																	listaIMAux.add(avaliarMusica.getMusica());
+																	
+																	existeListaAnterior = false;
+																	if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																	{
+																		for (Musica musica : listaIM1.getListaMusica())
+																		{
+																			if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																			{
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+																	
+																	if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																	{
+																		for (Musica musica : listaIM2.getListaMusica())
+																		{
+																			if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																			{
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+																	
+																	if(!existeListaAnterior)
+																	{
+																		listaIMAux.add(avaliarMusica.getMusica());
+																	}
 																}
 															}
 															else
 															{
 																//Insere a música na lista
 																GuardaMusicasRecomendadas.getTokensExisteMusica().get(mediaUsuarioGenero.getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																listaIMAux.add(avaliarMusica.getMusica());
+																
+																existeListaAnterior = false;
+																if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM1.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM2.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior)
+																{
+																	listaIMAux.add(avaliarMusica.getMusica());
+																}
 															}
 														}
 														
@@ -441,7 +732,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																//Caso não exista o gênero no hash principal, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 																GuardaMusicasRecomendadas.getTokensExisteMusica().put(mediaUsuarioGenero.getGenero().getPkGenero(), new ArrayList<Long>());
 																GuardaMusicasRecomendadas.getTokensExisteMusica().get(mediaUsuarioGenero.getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-																listaIMAux.add(avaliarMusica.getMusica());
+																
+																existeListaAnterior = false;
+																if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM1.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+																{
+																	for (Musica musica : listaIM2.getListaMusica())
+																	{
+																		if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																		{
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+																
+																if(!existeListaAnterior)
+																{
+																	listaIMAux.add(avaliarMusica.getMusica());
+																}
 															}
 														}
 														else
@@ -449,7 +769,36 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 															//Caso não exista o gênero no hash principal, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 															GuardaMusicasRecomendadas.getTokensExisteMusica().put(mediaUsuarioGenero.getGenero().getPkGenero(), new ArrayList<Long>());
 															GuardaMusicasRecomendadas.getTokensExisteMusica().get(mediaUsuarioGenero.getGenero().getPkGenero()).add(avaliarMusica.getMusica().getPkMusica());
-															listaIMAux.add(avaliarMusica.getMusica());
+
+															existeListaAnterior = false;
+															if(listaIM1!=null && listaIM1.getListaMusica()!=null && listaIM1.getListaMusica().size()>0)
+															{
+																for (Musica musica : listaIM1.getListaMusica())
+																{
+																	if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																	{
+																		existeListaAnterior = true;
+																		break;
+																	}
+																}
+															}
+															
+															if(!existeListaAnterior && listaIM2!=null && listaIM2.getListaMusica()!=null && listaIM2.getListaMusica().size()>0)
+															{
+																for (Musica musica : listaIM2.getListaMusica())
+																{
+																	if(avaliarMusica.getMusica().getPkMusica()==musica.getPkMusica())
+																	{
+																		existeListaAnterior = true;
+																		break;
+																	}
+																}
+															}
+															
+															if(!existeListaAnterior)
+															{
+																listaIMAux.add(avaliarMusica.getMusica());
+															}
 														}
 														
 														//Caso a lista esteja cheia, sai do for.
