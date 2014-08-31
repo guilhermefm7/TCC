@@ -1,5 +1,7 @@
 package br.com.recomusic.dao;
  
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -50,6 +52,26 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where m.idDeezer = :musica_id"));
     		query.setParameter("musica_id", idMusicaDeezer);
     		Musica musica =  (Musica) query.getSingleResult();
+    		return musica;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
+    /**
+     * Procura as musicas mais bem avaliadas do sistemas de acordo com a quantidade passada como pârametro
+     * @param int quantidade
+     * return List<Musica> listaMusicas
+     * @throws Exception
+     */
+    public List<Musica> pesquisaMelhoresAvaliadas() throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where 1 = 1 order by m.mediaAvaliacoes DESC, m.quantidadeAvaliacoes DESC"));
+    		List<Musica> musica = (List<Musica>) query.getResultList();
     		return musica;
     	}
     	catch ( NoResultException nre )

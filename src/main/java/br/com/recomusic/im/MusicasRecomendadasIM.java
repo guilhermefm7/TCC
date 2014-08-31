@@ -8,7 +8,9 @@ import br.com.recomusic.om.Musica;
 public class MusicasRecomendadasIM {
 	/*-*-*-* Constante de Serializacao *-*-*-*/
 	private Genero genero;
+	private String nomeGenero;
 	List<Musica> listaMusica;
+	int tamanhoLista;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public MusicasRecomendadasIM() {
@@ -28,5 +30,21 @@ public class MusicasRecomendadasIM {
 
 	public void setListaMusica(List<Musica> listaMusica) {
 		this.listaMusica = listaMusica;
+	}
+
+	public int getTamanhoLista() {
+		return tamanhoLista;
+	}
+
+	public void setTamanhoLista(int tamanhoLista) {
+		this.tamanhoLista = tamanhoLista;
+	}
+
+	public String getNomeGenero() {
+		return nomeGenero;
+	}
+
+	public void setNomeGenero(String nomeGenero) {
+		this.nomeGenero = nomeGenero;
 	}
 }

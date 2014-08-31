@@ -20,9 +20,96 @@
 			<div class="row" align="center">
 				<div class="col-mod-12" align="center">
 					<h2 class="form-signin-heading"
-						style="text-align: center; color: #000; font-size: 15px;">Inscreva-se</h2>
+						style="text-align: center; color: #000; font-size: 15px;">Recomendação</h2>
 					<h:panelGroup layout="block" class="footerPaginaInicialNome"></h:panelGroup>
+					<h:form>
+						<p:accordionPanel multiple="true" style="text-align: left;">
+							<p:tab title="#{RecomendacaoBean.listaIM1.nomeGenero}"
+								rendered="#{RecomendacaoBean.listaIM1 != null}">
+								<p:dataGrid var="musicaLista1" columns="#{RecomendacaoBean.listaIM1.tamanhoLista}" paginator="true"
+									value="#{RecomendacaoBean.listaIM1.listaMusica}">
 
+									<f:facet name="header">
+            							Músicas
+        							</f:facet>
+									<p:panel header="#{musicaLista1.titulo} - #{musicaLista1.banda.nome}"
+										style="text-align:center">
+										<h:panelGrid columns="1" style="width:100%">
+
+											<p:graphicImage url="#{musicaLista1.urlImagem}" />
+
+											<h:outputText value="Álbum - #{musicaLista1.album}"
+												style="font-family: fantasy;" />
+
+											<h:commandLink type="submit" class="btn btn-primary" actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista1.idDeezer,musicaLista1.titulo, musicaLista1.banda.nome, mmusicaLista1.album, musicaLista1.idMusica, musicaLista1.urlImagem)}"
+												style="color: #FFFFFF;font-size:medium">
+												<strong>Conferir</strong>
+											</h:commandLink>
+
+										</h:panelGrid>
+									</p:panel>
+								</p:dataGrid>
+							</p:tab>
+							<p:tab title="#{RecomendacaoBean.listaIM2.nomeGenero}"
+								rendered="#{RecomendacaoBean.listaIM2 != null}">
+								<p:dataGrid var="musicaLista2" columns="#{RecomendacaoBean.listaIM2.tamanhoLista}" paginator="true"
+									value="#{RecomendacaoBean.listaIM2.listaMusica}">
+
+									<f:facet name="header">
+            							Músicas
+        							</f:facet>
+									<p:panel header="#{musicaLista2.titulo} - #{musicaLista2.banda.nome}"
+										style="text-align:center">
+										<h:panelGrid columns="1" style="width:100%">
+
+											<p:graphicImage url="#{musicaLista2.urlImagem}" />
+
+											<h:outputText value="Álbum - #{musicaLista2.album}"
+												style="font-family: fantasy;" />
+
+											<h:commandLink type="submit" class="btn btn-primary" actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista2.idDeezer,musicaLista2.titulo, musicaLista2.banda.nome, mmusicaLista2.album, musicaLista2.idMusica, musicaLista2.urlImagem)}"
+												style="color: #FFFFFF;font-size:medium">
+												<strong>Conferir</strong>
+											</h:commandLink>
+
+										</h:panelGrid>
+									</p:panel>
+								</p:dataGrid>
+							</p:tab>
+							<p:tab title="#{RecomendacaoBean.listaIM3.nomeGenero}"
+								rendered="#{RecomendacaoBean.listaIM3 != null}">
+								<p:dataGrid var="musicaLista3" columns="#{RecomendacaoBean.listaIM3.tamanhoLista}" paginator="true"
+									value="#{RecomendacaoBean.listaIM3.listaMusica}">
+
+									<f:facet name="header">
+            							Músicas
+        							</f:facet>
+									<p:panel header="#{musicaLista3.titulo} - #{musicaLista3.banda.nome}"
+										style="text-align:center">
+										<h:panelGrid columns="1" style="width:100%">
+
+											<p:graphicImage url="#{musicaLista3.urlImagem}" />
+
+											<h:outputText value="Álbum - #{musicaLista3.album}"
+												style="font-family: fantasy;" />
+
+											<h:commandLink type="submit" class="btn btn-primary" actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista3.idDeezer,musicaLista3.titulo, musicaLista3.banda.nome, mmusicaLista3.album, musicaLista3.idMusica, musicaLista3.urlImagem)}"
+												style="color: #FFFFFF;font-size:medium">
+												<strong>Conferir</strong>
+											</h:commandLink>
+
+										</h:panelGrid>
+									</p:panel>
+								</p:dataGrid>
+							</p:tab>
+							<p:tab title="Top Músicas"
+								rendered="#{RecomendacaoBean.maisAvaliadas != null}">
+								<h:panelGrid columns="1" cellpadding="10">
+									<h:outputText value="After a break of more than 15 years..." />
+								</h:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+					</h:form>
 				</div>
 			</div>
 		</ui:define>

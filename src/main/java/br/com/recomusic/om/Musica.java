@@ -103,12 +103,12 @@ public class Musica implements Serializable {
 		this.album = album;
 	}
 
-	public String getIdMUsica() {
+	public String getIdMusica() {
 		return idMusica;
 	}
 
-	public void setIdMUsica(String idMUsica) {
-		this.idMusica = idMUsica;
+	public void setIdMusica(String idMusica) {
+		this.idMusica = idMusica;
 	}
 
 	public String getIdDeezer() {

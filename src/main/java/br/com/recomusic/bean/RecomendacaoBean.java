@@ -2,15 +2,16 @@ package br.com.recomusic.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
 import br.com.recomusic.dao.MediaUsuarioGeneroDAO;
+import br.com.recomusic.dao.MusicaDAO;
 import br.com.recomusic.im.MusicaIM;
 import br.com.recomusic.im.MusicasRecomendadasIM;
 import br.com.recomusic.im.RetornoKMeans;
@@ -31,7 +32,12 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 	private static final long serialVersionUID = 1L;
 	private MediaUsuarioGeneroDAO mediaUsuarioGeneroDAO = new MediaUsuarioGeneroDAO( ConectaBanco.getInstance().getEntityManager());
 	private AvaliarMusicaDAO avaliarMusicaDAO = new AvaliarMusicaDAO( ConectaBanco.getInstance().getEntityManager());
+	private MusicaDAO musicaDAO = new MusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private String mensagemIncentivamentoCurtidas;
+	MusicasRecomendadasIM listaIM1 = null;
+	MusicasRecomendadasIM listaIM2 = null;
+	MusicasRecomendadasIM listaIM3 = null;
+	MusicaIM maisAvaliadas = null;
 	public RecomendacaoBean() {	}
 
 	public void iniciar()
@@ -42,14 +48,14 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 			
 			try
 			{
+				listaIM1 = null;
+				listaIM2 = null;
+				listaIM3 = null;
+				maisAvaliadas = null;
 				if(UtilidadesTelas.verificarSessao())
 				{
 					List<MediaUsuarioGenero> listaMUG = null;
 					listaMUG = mediaUsuarioGeneroDAO.pesquisaGenerosUsuario(getUsuarioGlobal());
-					
-					MusicasRecomendadasIM listaIM1 = null;
-					MusicasRecomendadasIM listaIM2 = null;
-					MusicasRecomendadasIM listaIM3 = null;
 					List<Musica> listaIMAux;
 					MusicaIM mIM;
 					
@@ -148,7 +154,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 															existeMusicaUsuario = false;
 															for (Musica musica : listaMusicasUsuarioGenero)
 															{
-																if(musica.getIdMUsica()==avaliarMusica.getMusica().getIdMUsica())
+																if(musica.getIdMusica()==avaliarMusica.getMusica().getIdMusica())
 																{
 																	existeMusicaUsuario = true;
 																	break;
@@ -261,7 +267,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																	existeMusicaUsuario = false;
 																	for (Musica musica : listaMusicasUsuarioGenero)
 																	{
-																		if(musica.getIdMUsica()==avaliarMusica.getMusica().getIdMUsica())
+																		if(musica.getIdMusica()==avaliarMusica.getMusica().getIdMusica())
 																		{
 																			existeMusicaUsuario = true;
 																			break;
@@ -355,7 +361,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																existeMusicaUsuario = false;
 																for (Musica musica : listaMusicasUsuarioGenero)
 																{
-																	if(musica.getIdMUsica()==avaliarMusica.getMusica().getIdMUsica())
+																	if(musica.getIdMusica()==avaliarMusica.getMusica().getIdMusica())
 																	{
 																		existeMusicaUsuario = true;
 																		break;
@@ -471,6 +477,21 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM1.setGenero(listaMUG.get(i).getGenero());
 												listaIM1.setListaMusica(new ArrayList<Musica>());
 												listaIM1.getListaMusica().addAll(listaIMAux);
+												listaIM1.setNomeGenero(listaIM1.getGenero().getNomeGenero().toUpperCase());
+												
+												if(listaIM1.getListaMusica().size()==0)
+												{
+													listaIM1.setTamanhoLista(1);
+												}
+												
+												if(listaIM1.getListaMusica().size()>2)
+												{
+													listaIM1.setTamanhoLista(3);
+												}
+												else
+												{
+													listaIM1.setTamanhoLista(listaIM1.getListaMusica().size());
+												}
 											}
 											else if(listaIM2==null)
 											{
@@ -478,6 +499,21 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM2.setGenero(listaMUG.get(i).getGenero());
 												listaIM2.setListaMusica(new ArrayList<Musica>());
 												listaIM2.getListaMusica().addAll(listaIMAux);
+												listaIM2.setNomeGenero(listaIM2.getGenero().getNomeGenero().toUpperCase());
+												
+												if(listaIM2.getListaMusica().size()==0)
+												{
+													listaIM2.setTamanhoLista(1);
+												}
+												
+												if(listaIM2.getListaMusica().size()>2)
+												{
+													listaIM2.setTamanhoLista(3);
+												}
+												else
+												{
+													listaIM2.setTamanhoLista(listaIM2.getListaMusica().size());
+												}
 											}
 											else
 											{
@@ -485,6 +521,22 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM3.setGenero(listaMUG.get(i).getGenero());
 												listaIM3.setListaMusica(new ArrayList<Musica>());
 												listaIM3.getListaMusica().addAll(listaIMAux);
+												listaIM3.setNomeGenero(listaIM3.getGenero().getNomeGenero().toUpperCase());
+												
+												if(listaIM3.getListaMusica().size()==0)
+												{
+													listaIM3.setTamanhoLista(1);
+												}
+												
+												if(listaIM3.getListaMusica().size()>2)
+												{
+													listaIM3.setTamanhoLista(3);
+												}
+												else
+												{
+													listaIM3.setTamanhoLista(listaIM3.getListaMusica().size());
+												}
+												
 												//Caso todas os hash's tenham sido preenchidos, então sai do loop
 												break;
 											}
@@ -514,7 +566,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 														existeMusicaUsuario = false;
 														for (Musica musica : listaMusicasUsuarioGenero)
 														{
-															if(musica.getIdMUsica()==avaliarMusica.getMusica().getIdMUsica())
+															if(musica.getIdMusica()==avaliarMusica.getMusica().getIdMusica())
 															{
 																existeMusicaUsuario = true;
 																break;
@@ -626,7 +678,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 																existeMusicaUsuario = false;
 																for (Musica musica : listaMusicasUsuarioGenero)
 																{
-																	if(musica.getIdMUsica()==avaliarMusica.getMusica().getIdMUsica())
+																	if(musica.getIdMusica()==avaliarMusica.getMusica().getIdMusica())
 																	{
 																		existeMusicaUsuario = true;
 																		break;
@@ -720,7 +772,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 															existeMusicaUsuario = false;
 															for (Musica musica : listaMusicasUsuarioGenero)
 															{
-																if(musica.getIdMUsica()==avaliarMusica.getMusica().getIdMUsica())
+																if(musica.getIdMusica()==avaliarMusica.getMusica().getIdMusica())
 																{
 																	existeMusicaUsuario = true;
 																	break;
@@ -829,6 +881,21 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM1.setGenero(listaMUG.get(i).getGenero());
 												listaIM1.setListaMusica(new ArrayList<Musica>());
 												listaIM1.getListaMusica().addAll(listaIMAux);
+												listaIM1.setNomeGenero(listaIM1.getGenero().getNomeGenero().toUpperCase());
+												
+												if(listaIM1.getListaMusica().size()==0)
+												{
+													listaIM1.setTamanhoLista(1);
+												}
+												
+												if(listaIM1.getListaMusica().size()>2)
+												{
+													listaIM1.setTamanhoLista(3);
+												}
+												else
+												{
+													listaIM1.setTamanhoLista(listaIM1.getListaMusica().size());
+												}
 											}
 											else if(listaIM2==null)
 											{
@@ -836,6 +903,21 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM2.setGenero(listaMUG.get(i).getGenero());
 												listaIM2.setListaMusica(new ArrayList<Musica>());
 												listaIM2.getListaMusica().addAll(listaIMAux);
+												listaIM2.setNomeGenero(listaIM2.getGenero().getNomeGenero().toUpperCase());
+												
+												if(listaIM2.getListaMusica().size()==0)
+												{
+													listaIM2.setTamanhoLista(1);
+												}
+												
+												if(listaIM2.getListaMusica().size()>2)
+												{
+													listaIM2.setTamanhoLista(3);
+												}
+												else
+												{
+													listaIM2.setTamanhoLista(listaIM2.getListaMusica().size());
+												}
 											}
 											else
 											{
@@ -843,6 +925,22 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM3.setGenero(listaMUG.get(i).getGenero());
 												listaIM3.setListaMusica(new ArrayList<Musica>());
 												listaIM3.getListaMusica().addAll(listaIMAux);
+												listaIM3.setNomeGenero(listaIM3.getGenero().getNomeGenero().toUpperCase());
+												
+												if(listaIM3.getListaMusica().size()==0)
+												{
+													listaIM3.setTamanhoLista(1);
+												}
+												
+												if(listaIM3.getListaMusica().size()>2)
+												{
+													listaIM3.setTamanhoLista(3);
+												}
+												else
+												{
+													listaIM3.setTamanhoLista(listaIM3.getListaMusica().size());
+												}
+												
 												//Caso todas os hash's tenham sido preenchidos, então sai do loop
 												break;
 											}
@@ -855,7 +953,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 						{
 							//Não existe número suficientes de gêneros a serem recomendados, então serão recomendados as músicas mais avaliadas do site para
 							//completar a recomendação
-							
+							 List<Musica> listaMusicas = musicaDAO.pesquisaMelhoresAvaliadas();
 							
 							//Para completar manda uma mensagem incentivando o usuário a curtir mais músicas no sistemas
 							 this.mensagemIncentivamentoCurtidas = "Para melhorar as recomendações navegue pelo site avaliando músicas!";
@@ -866,6 +964,9 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 					{
 						//Caso não exista significa que o usuário não curtiu nenhuma música então recomenda as músicas mais avaliadas do site
 						//Para completar manda uma mensagem incentivando o usuário a curtir mais músicas no sistemas
+						List<Musica> listaMusicas = musicaDAO.pesquisaMelhoresAvaliadas();
+						
+						
 						this.mensagemIncentivamentoCurtidas = "Para melhorar as recomendações navegue pelo site avaliando músicas!";
 	   				 	addMessage("Este email já está cadastrado em outro usuário", FacesMessage.SEVERITY_INFO);
 					}
@@ -892,6 +993,34 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 			SemaforoMusicasRecomendadas.getSemaforo().release();
 		}
 	}
+	
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho, String url)
+	{
+		try
+		{
+			if(album!=null && album.length()>0 && url!=null && url.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album + "&u=" + url);
+			}
+			else if(album!=null && album.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
+			}
+			else if(url!=null && url.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&u=" + url);
+			}
+			else
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
 
 	public String getMensagemIncentivamentoCurtidas() {
 		return mensagemIncentivamentoCurtidas;
@@ -900,5 +1029,37 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 	public void setMensagemIncentivamentoCurtidas(
 			String mensagemIncentivamentoCurtidas) {
 		this.mensagemIncentivamentoCurtidas = mensagemIncentivamentoCurtidas;
+	}
+
+	public MusicasRecomendadasIM getListaIM1() {
+		return listaIM1;
+	}
+
+	public void setListaIM1(MusicasRecomendadasIM listaIM1) {
+		this.listaIM1 = listaIM1;
+	}
+
+	public MusicasRecomendadasIM getListaIM2() {
+		return listaIM2;
+	}
+
+	public void setListaIM2(MusicasRecomendadasIM listaIM2) {
+		this.listaIM2 = listaIM2;
+	}
+
+	public MusicasRecomendadasIM getListaIM3() {
+		return listaIM3;
+	}
+
+	public void setListaIM3(MusicasRecomendadasIM listaIM3) {
+		this.listaIM3 = listaIM3;
+	}
+
+	public MusicaIM getMaisAvaliadas() {
+		return maisAvaliadas;
+	}
+
+	public void setMaisAvaliadas(MusicaIM maisAvaliadas) {
+		this.maisAvaliadas = maisAvaliadas;
 	}
 }

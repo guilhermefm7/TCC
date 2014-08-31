@@ -50,7 +50,7 @@ public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
 						mIM.setNomeMusica(musica.getTitulo());
 						mIM.setNomeArtista(musica.getBanda().getNome());
 						mIM.setIdDeezer(musica.getIdDeezer());
-						mIM.setIdMusica(musica.getIdMUsica());
+						mIM.setIdMusica(musica.getIdMusica());
 						mIM.setQtd(contador+1);
 						mIM.setAlbumMusica(musica.getAlbum());
 						listaMusicas.add(mIM);

@@ -65,7 +65,7 @@ public class PlaylistSelecionadaBean extends UtilidadesTelas implements Serializ
 								mIM = new MusicaIM();
 								mIM.setAlbumMusica(listaM.get(i).getAlbum());
 								mIM.setIdDeezer(listaM.get(i).getIdDeezer());
-								mIM.setIdMusica(listaM.get(i).getIdMUsica());
+								mIM.setIdMusica(listaM.get(i).getIdMusica());
 								
 								if(i==(listaM.size()-1))
 								{

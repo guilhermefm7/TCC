@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
@@ -420,7 +421,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 					// exista no BD
 				} else {
 					// Caso a música não exista
-					m = pesquisaMusica(valorIdMusicaEcho);
+					m = pesquisaMusica(valorIdMusicaEchoAux);
 
 					// Pesquisa se a banda existe
 					banda = bandaDAO.pesquisarBandaExiste(m.getBanda()
@@ -799,9 +800,27 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 
 				// Fim do if quando vai descurtir uma música
 			}
-
+			
 			ConectaBanco.getInstance().commit();
 			this.curtiuMusica = Boolean.TRUE;
+			
+			if(nomeAlbum!=null && nomeAlbum.length()>0 && valorUrlMusica!=null && valorUrlMusica.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ valorIdMusica + "&m=" + nomeMusica + "&a=" + nomeArtista + "&i=" + valorIdMusicaEchoAux + "&n=" + nomeAlbum + "&u=" + valorUrlMusica);
+			}
+			else if(nomeAlbum!=null && nomeAlbum.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ valorIdMusica + "&m=" + nomeMusica + "&a=" + nomeArtista + "&i=" + valorIdMusicaEchoAux + "&n=" + nomeAlbum);
+			}
+			else if(valorUrlMusica!=null && valorUrlMusica.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ valorIdMusica + "&m=" + nomeMusica + "&a=" + nomeArtista + "&i=" + valorIdMusicaEchoAux + "&u=" + valorUrlMusica);
+			}
+			else
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ valorIdMusica + "&m=" + nomeMusica + "&a=" + nomeArtista + "&i=" + valorIdMusicaEchoAux);
+			}
+			
 		} catch (Exception e) {
 			ConectaBanco.getInstance().rollBack();
 			e.printStackTrace();
