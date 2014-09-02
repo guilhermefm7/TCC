@@ -104,9 +104,29 @@
 							</p:tab>
 							<p:tab title="Top Músicas"
 								rendered="#{RecomendacaoBean.maisAvaliadas != null}">
-								<h:panelGrid columns="1" cellpadding="10">
-									<h:outputText value="After a break of more than 15 years..." />
-								</h:panelGrid>
+								<p:dataGrid var="maisAvaliadas" columns="#{RecomendacaoBean.maisAvaliadas.tamanhoLista}"
+									value="#{RecomendacaoBean.maisAvaliadas.listaMusica}">
+
+									<f:facet name="header">
+            							Músicas
+        							</f:facet>
+									<p:panel header="#{maisAvaliadas.titulo} - #{maisAvaliadas.banda.nome}"
+										style="text-align:center">
+										<h:panelGrid columns="1" style="width:100%">
+
+											<p:graphicImage url="#{maisAvaliadas.urlImagem}" />
+
+											<h:outputText value="Álbum - #{maisAvaliadas.album}"
+												style="font-family: fantasy;" />
+
+											<h:commandLink type="submit" class="btn btn-primary" actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista3.idDeezer,musicaLista3.titulo, musicaLista3.banda.nome, mmusicaLista3.album, musicaLista3.idMusica, musicaLista3.urlImagem)}"
+												style="color: #FFFFFF;font-size:medium">
+												<strong>Conferir</strong>
+											</h:commandLink>
+
+										</h:panelGrid>
+									</p:panel>
+								</p:dataGrid>
 							</p:tab>
 						</p:accordionPanel>
 					</h:form>

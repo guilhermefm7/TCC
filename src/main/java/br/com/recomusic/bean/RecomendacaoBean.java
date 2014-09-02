@@ -37,7 +37,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 	MusicasRecomendadasIM listaIM1 = null;
 	MusicasRecomendadasIM listaIM2 = null;
 	MusicasRecomendadasIM listaIM3 = null;
-	MusicaIM maisAvaliadas = null;
+	MusicasRecomendadasIM maisAvaliadas = null;
 	public RecomendacaoBean() {	}
 
 	public void iniciar()
@@ -61,6 +61,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 					MusicaIM mIM;
 					
 					List<Musica> listaMusicasUsuarioGenero;
+					List<Musica> listaTodasMusicasUsuario;
 					RetornoKMeans retornoKMeans;
 					int posicaoKMeans;
 					List<MediaUsuarioGenero> listaUsuariosKMeans;
@@ -69,6 +70,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 					boolean existeMusica;
 					boolean existeMusicaUsuario;
 					boolean existeListaAnterior;
+					boolean existeMusicaListaMaisAvaliadas;
 					
 					if(listaMUG!=null && listaMUG.size()>0)
 					{
@@ -249,7 +251,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 														}
 														
 														//Caso a lista esteja cheia, sai do for.
-														if(listaIMAux.size()>6)
+														if(listaIMAux.size()>=6)
 														{
 															break;
 														}
@@ -361,7 +363,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 															}
 															
 															//Caso a lista esteja cheia, sai do for.
-															if(listaIMAux.size()>6)
+															if(listaIMAux.size()>=6)
 															{
 																break;
 															}
@@ -456,7 +458,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 															}
 															
 															//Caso a lista esteja cheia, sai do for.
-															if(listaIMAux.size()>6)
+															if(listaIMAux.size()>=6)
 															{
 																break;
 															}
@@ -466,7 +468,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 											}
 											
 											//Caso a lista esteja cheia, sai do for.
-											if(listaIMAux.size()>6)
+											if(listaIMAux.size()>=6)
 											{
 												break;
 											}
@@ -672,7 +674,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 													}
 													
 													//Caso a lista esteja cheia, sai do for.
-													if(listaIMAux.size()>6)
+													if(listaIMAux.size()>=6)
 													{
 														break;
 													}
@@ -783,7 +785,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 														}
 														
 														//Caso a lista esteja cheia, sai do for.
-														if(listaIMAux.size()>6)
+														if(listaIMAux.size()>=6)
 														{
 															break;
 														}
@@ -878,7 +880,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 														}
 														
 														//Caso a lista esteja cheia, sai do for.
-														if(listaIMAux.size()>6)
+														if(listaIMAux.size()>=6)
 														{
 															break;
 														}
@@ -977,7 +979,85 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 						{
 							//Não existe número suficientes de gêneros a serem recomendados, então serão recomendados as músicas mais avaliadas do site para
 							//completar a recomendação
+							
+							//Procura no Banco de Dados as músicas mais bem avaliadas e insere ela na lista que irá aparecer na tela do usuário
 							 List<Musica> listaMusicas = musicaDAO.pesquisaMelhoresAvaliadas();
+							 maisAvaliadas = new MusicasRecomendadasIM();
+							 maisAvaliadas.setListaMusica(new ArrayList<Musica>());
+							 listaTodasMusicasUsuario = new ArrayList<Musica>();
+							 listaTodasMusicasUsuario = avaliarMusicaDAO.getAllAvaliacoesUsuario( getUsuarioGlobal());
+							 
+							 if(listaTodasMusicasUsuario!=null && listaTodasMusicasUsuario.size()>0)
+							 {
+								 for (Musica m1 : listaMusicas)
+								 {
+									if(maisAvaliadas.getListaMusica().size()==15)
+									{
+										break;
+									}
+									
+									existeMusicaListaMaisAvaliadas = false;
+									for (Musica m2 : listaTodasMusicasUsuario)
+									{
+										if(m1.getPkMusica()==m2.getPkMusica())
+										{
+											existeMusicaListaMaisAvaliadas =  true;
+										}
+									}
+									
+									if(!existeMusicaListaMaisAvaliadas)
+									{
+										maisAvaliadas.getListaMusica().add(m1);
+									}
+								 }
+								 
+								 if (maisAvaliadas.getListaMusica()!=null && maisAvaliadas.getListaMusica().size()>2)
+								 {
+									 maisAvaliadas.setTamanhoLista(3);
+								 }
+								 else if(maisAvaliadas.getListaMusica()!=null && maisAvaliadas.getListaMusica().size()>0)
+								 {
+									 maisAvaliadas.setTamanhoLista(listaMusicas.size());
+								 }
+								 else
+								 {
+									 maisAvaliadas = null;
+								 }
+							 }
+							 else
+							 {
+								 if (listaMusicas!=null && listaMusicas.size()>2)
+								 {
+									 maisAvaliadas.setTamanhoLista(3);
+									 
+									 if(listaMusicas.size()>15)
+									 {
+										 for (Musica musica : listaMusicas)
+										 {
+											if(maisAvaliadas.getListaMusica().size()==15)
+											{
+												break;
+											}
+											
+											maisAvaliadas.getListaMusica().add(musica);
+										 }
+									 }
+									 else
+									 {
+										 maisAvaliadas.getListaMusica().addAll(listaMusicas);
+									 }
+									 
+								 }
+								 else if(listaMusicas!=null && listaMusicas.size()>0)
+								 {
+									 maisAvaliadas.setTamanhoLista(listaMusicas.size());
+									 maisAvaliadas.getListaMusica().addAll(listaMusicas);
+								 }
+								 else
+								 {
+									 maisAvaliadas = null;
+								 }
+							 }
 							
 							//Para completar manda uma mensagem incentivando o usuário a curtir mais músicas no sistemas
 							 this.mensagemIncentivamentoCurtidas = "Para melhorar as recomendações navegue pelo site avaliando músicas!";
@@ -988,8 +1068,85 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 					{
 						//Caso não exista significa que o usuário não curtiu nenhuma música então recomenda as músicas mais avaliadas do site
 						//Para completar manda uma mensagem incentivando o usuário a curtir mais músicas no sistemas
-						List<Musica> listaMusicas = musicaDAO.pesquisaMelhoresAvaliadas();
-						
+
+						//Procura no Banco de Dados as músicas mais bem avaliadas e insere ela na lista que irá aparecer na tela do usuário
+						 List<Musica> listaMusicas = musicaDAO.pesquisaMelhoresAvaliadas();
+						 maisAvaliadas = new MusicasRecomendadasIM();
+						 maisAvaliadas.setListaMusica(new ArrayList<Musica>());
+						 listaTodasMusicasUsuario = new ArrayList<Musica>();
+						 listaTodasMusicasUsuario = avaliarMusicaDAO.getAllAvaliacoesUsuario( getUsuarioGlobal());
+						 
+						 if(listaTodasMusicasUsuario!=null && listaTodasMusicasUsuario.size()>0)
+						 {
+							 for (Musica m1 : listaMusicas)
+							 {
+								if(maisAvaliadas.getListaMusica().size()==15)
+								{
+									break;
+								}
+								
+								existeMusicaListaMaisAvaliadas = false;
+								for (Musica m2 : listaTodasMusicasUsuario)
+								{
+									if(m1.getPkMusica()==m2.getPkMusica())
+									{
+										existeMusicaListaMaisAvaliadas =  true;
+									}
+								}
+								
+								if(!existeMusicaListaMaisAvaliadas)
+								{
+									maisAvaliadas.getListaMusica().add(m1);
+								}
+							 }
+							 
+							 if (maisAvaliadas.getListaMusica()!=null && maisAvaliadas.getListaMusica().size()>2)
+							 {
+								 maisAvaliadas.setTamanhoLista(3);
+							 }
+							 else if(maisAvaliadas.getListaMusica()!=null && maisAvaliadas.getListaMusica().size()>0)
+							 {
+								 maisAvaliadas.setTamanhoLista(listaMusicas.size());
+							 }
+							 else
+							 {
+								 maisAvaliadas = null;
+							 }
+						 }
+						 else
+						 {
+							 if (listaMusicas!=null && listaMusicas.size()>2)
+							 {
+								 maisAvaliadas.setTamanhoLista(3);
+								 
+								 if(listaMusicas.size()>15)
+								 {
+									 for (Musica musica : listaMusicas)
+									 {
+										if(maisAvaliadas.getListaMusica().size()==15)
+										{
+											break;
+										}
+										
+										maisAvaliadas.getListaMusica().add(musica);
+									 }
+								 }
+								 else
+								 {
+									 maisAvaliadas.getListaMusica().addAll(listaMusicas);
+								 }
+								 
+							 }
+							 else if(listaMusicas!=null && listaMusicas.size()>0)
+							 {
+								 maisAvaliadas.setTamanhoLista(listaMusicas.size());
+								 maisAvaliadas.getListaMusica().addAll(listaMusicas);
+							 }
+							 else
+							 {
+								 maisAvaliadas = null;
+							 }
+						 }
 						
 						this.mensagemIncentivamentoCurtidas = "Para melhorar as recomendações navegue pelo site avaliando músicas!";
 	   				 	addMessage("Este email já está cadastrado em outro usuário", FacesMessage.SEVERITY_INFO);
@@ -1079,11 +1236,11 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 		this.listaIM3 = listaIM3;
 	}
 
-	public MusicaIM getMaisAvaliadas() {
+	public MusicasRecomendadasIM getMaisAvaliadas() {
 		return maisAvaliadas;
 	}
 
-	public void setMaisAvaliadas(MusicaIM maisAvaliadas) {
+	public void setMaisAvaliadas(MusicasRecomendadasIM maisAvaliadas) {
 		this.maisAvaliadas = maisAvaliadas;
 	}
 }
