@@ -57,6 +57,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 					List<MediaUsuarioGenero> listaMUG = null;
 					listaMUG = mediaUsuarioGeneroDAO.pesquisaGenerosUsuario(getUsuarioGlobal());
 					List<Musica> listaIMAux;
+					List<Long> listaDeUsuariosAnteriores;
 					MusicaIM mIM;
 					
 					List<Musica> listaMusicasUsuarioGenero;
@@ -134,6 +135,8 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 									
 									if(listaUsuariosKMeans!=null && listaUsuariosKMeans.size()>0)
 									{
+										//Limpa a lista de usuários anteriores pois, o gênero foi trocado.
+										listaDeUsuariosAnteriores = new ArrayList<Long>();
 										for (int j = 0; j < listaUsuariosKMeans.size(); j++)
 										{
 											//Lista que contém as músicas que serão recomendadas do usuário em questão.
@@ -145,6 +148,16 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 											{
 												for (AvaliarMusica avaliarMusica : listaAMMusicasUsuarios)
 												{
+													//Verifica se ela já existia na lista de usuários anteriores a esse (MELHORIA DE PROCESSAMENTO)
+													if(listaDeUsuariosAnteriores.contains(avaliarMusica.getMusica().getPkMusica()))
+													{
+														continue;
+													}
+													else
+													{
+														listaDeUsuariosAnteriores.add(avaliarMusica.getMusica().getPkMusica());
+													}
+													
 													//Caso o HashMap esteja vazio, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 													if(GuardaMusicasRecomendadas.getTokensExisteMusica().isEmpty())
 													{
@@ -546,6 +559,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 								else if(listaAllByGenero.size()==1 || listaAllByGenero.size()==2)
 								{
 									existeHash = false;
+									listaDeUsuariosAnteriores = new ArrayList<Long>();
 									for (MediaUsuarioGenero mediaUsuarioGenero : listaAllByGenero)
 									{
 										//Lista que contém as músicas que serão recomendadas do usuário em questão.
@@ -557,6 +571,16 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 										{
 											for (AvaliarMusica avaliarMusica : listaAMMusicasUsuarios)
 											{
+												//Verifica se ela já existia na lista de usuários anteriores a esse (MELHORIA DE PROCESSAMENTO)
+												if(listaDeUsuariosAnteriores.contains(avaliarMusica.getMusica().getPkMusica()))
+												{
+													continue;
+												}
+												else
+												{
+													listaDeUsuariosAnteriores.add(avaliarMusica.getMusica().getPkMusica());
+												}
+												
 												//Caso o HashMap esteja vazio, insere o gênero nele, adiciona a música na lista de músicas daquele gênero e adiciona a música na lista auxiliar.
 												if(GuardaMusicasRecomendadas.getTokensExisteMusica().isEmpty())
 												{
