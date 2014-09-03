@@ -38,7 +38,8 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 	MusicasRecomendadasIM listaIM2 = null;
 	MusicasRecomendadasIM listaIM3 = null;
 	MusicasRecomendadasIM maisAvaliadas = null;
-	public RecomendacaoBean() {	}
+	
+	public RecomendacaoBean() {	iniciar(); }
 
 	public void iniciar()
 	{
@@ -493,6 +494,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM1.setListaMusica(new ArrayList<Musica>());
 												listaIM1.getListaMusica().addAll(listaIMAux);
 												listaIM1.setNomeGenero(listaIM1.getGenero().getNomeGenero().toUpperCase());
+												listaIM1.setNota(0);
 												
 												if(listaIM1.getListaMusica().size()==0)
 												{
@@ -515,6 +517,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM2.setListaMusica(new ArrayList<Musica>());
 												listaIM2.getListaMusica().addAll(listaIMAux);
 												listaIM2.setNomeGenero(listaIM2.getGenero().getNomeGenero().toUpperCase());
+												listaIM2.setNota(0);
 												
 												if(listaIM2.getListaMusica().size()==0)
 												{
@@ -537,6 +540,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM3.setListaMusica(new ArrayList<Musica>());
 												listaIM3.getListaMusica().addAll(listaIMAux);
 												listaIM3.setNomeGenero(listaIM3.getGenero().getNomeGenero().toUpperCase());
+												listaIM3.setNota(0);
 												
 												if(listaIM3.getListaMusica().size()==0)
 												{
@@ -908,6 +912,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM1.setListaMusica(new ArrayList<Musica>());
 												listaIM1.getListaMusica().addAll(listaIMAux);
 												listaIM1.setNomeGenero(listaIM1.getGenero().getNomeGenero().toUpperCase());
+												listaIM1.setNota(0);
 												
 												if(listaIM1.getListaMusica().size()==0)
 												{
@@ -930,6 +935,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM2.setListaMusica(new ArrayList<Musica>());
 												listaIM2.getListaMusica().addAll(listaIMAux);
 												listaIM2.setNomeGenero(listaIM2.getGenero().getNomeGenero().toUpperCase());
+												listaIM2.setNota(0);
 												
 												if(listaIM2.getListaMusica().size()==0)
 												{
@@ -952,6 +958,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 												listaIM3.setListaMusica(new ArrayList<Musica>());
 												listaIM3.getListaMusica().addAll(listaIMAux);
 												listaIM3.setNomeGenero(listaIM3.getGenero().getNomeGenero().toUpperCase());
+												listaIM3.setNota(0);
 												
 												if(listaIM3.getListaMusica().size()==0)
 												{
@@ -984,6 +991,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 							 List<Musica> listaMusicas = musicaDAO.pesquisaMelhoresAvaliadas();
 							 maisAvaliadas = new MusicasRecomendadasIM();
 							 maisAvaliadas.setListaMusica(new ArrayList<Musica>());
+							 maisAvaliadas.setNota(0);
 							 listaTodasMusicasUsuario = new ArrayList<Musica>();
 							 listaTodasMusicasUsuario = avaliarMusicaDAO.getAllAvaliacoesUsuario( getUsuarioGlobal());
 							 
@@ -1073,6 +1081,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 						 List<Musica> listaMusicas = musicaDAO.pesquisaMelhoresAvaliadas();
 						 maisAvaliadas = new MusicasRecomendadasIM();
 						 maisAvaliadas.setListaMusica(new ArrayList<Musica>());
+						 maisAvaliadas.setNota(0);
 						 listaTodasMusicasUsuario = new ArrayList<Musica>();
 						 listaTodasMusicasUsuario = avaliarMusicaDAO.getAllAvaliacoesUsuario( getUsuarioGlobal());
 						 
@@ -1195,6 +1204,19 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable
 			{
 				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
 			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
+	public void teste()
+	{
+		try
+		{
+			System.out.println("Teste");
 		}
 		catch(Exception e)
 		{

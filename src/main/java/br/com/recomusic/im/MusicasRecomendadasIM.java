@@ -11,6 +11,7 @@ public class MusicasRecomendadasIM {
 	private String nomeGenero;
 	List<Musica> listaMusica;
 	int tamanhoLista;
+	int nota;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public MusicasRecomendadasIM() {
@@ -46,5 +47,13 @@ public class MusicasRecomendadasIM {
 
 	public void setNomeGenero(String nomeGenero) {
 		this.nomeGenero = nomeGenero;
+	}
+
+	public int getNota() {
+		return nota;
+	}
+
+	public void setNota(int nota) {
+		this.nota = nota;
 	}
 }
