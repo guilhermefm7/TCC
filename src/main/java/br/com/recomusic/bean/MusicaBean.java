@@ -65,7 +65,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 	private String valorIdMusica;
 	private String valorIdMusicaEcho = null;
 	private int notaMusica = 0;
-	AvaliarMusica avaliarMusicaPrincipal = null;
+	private AvaliarMusica avaliarMusicaPrincipal = null;
 	private String tokenRecebido = null;
 	private String valorIdMusicaEchoAux = null;
 

@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
 import br.com.recomusic.dao.BandaGeneroDAO;
@@ -17,7 +17,6 @@ import br.com.recomusic.im.MusicaIM;
 import br.com.recomusic.im.MusicasRecomendadasIM;
 import br.com.recomusic.im.RetornoKMeans;
 import br.com.recomusic.om.AvaliarMusica;
-import br.com.recomusic.om.Banda;
 import br.com.recomusic.om.Genero;
 import br.com.recomusic.om.MediaUsuarioGenero;
 import br.com.recomusic.om.Musica;
@@ -29,7 +28,7 @@ import br.com.recomusic.singleton.GuardaMusicasRecomendadas;
 import br.com.recomusic.singleton.SemaforoMusicasRecomendadas;
 
 @ManagedBean(name = "RecomendacaoBean")
-@ViewScoped
+@RequestScoped
 public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private MediaUsuarioGeneroDAO mediaUsuarioGeneroDAO = new MediaUsuarioGeneroDAO(
@@ -41,14 +40,12 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 	private BandaGeneroDAO bandaGeneroDAO = new BandaGeneroDAO(ConectaBanco
 			.getInstance().getEntityManager());
 	private String mensagemIncentivamentoCurtidas;
-	MusicasRecomendadasIM listaIM1 = null;
-	MusicasRecomendadasIM listaIM2 = null;
-	MusicasRecomendadasIM listaIM3 = null;
-	MusicasRecomendadasIM maisAvaliadas = null;
+	private MusicasRecomendadasIM listaIM1 = null;
+	private MusicasRecomendadasIM listaIM2 = null;
+	private MusicasRecomendadasIM listaIM3 = null;
+	private MusicasRecomendadasIM maisAvaliadas = null;
 
-	public RecomendacaoBean() {
-		iniciar();
-	}
+	public RecomendacaoBean() {	iniciar(); }
 
 	public void iniciar() {
 		try {
@@ -60,530 +57,181 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 				listaIM3 = null;
 				maisAvaliadas = null;
 				if (UtilidadesTelas.verificarSessao()) {
-					List<MediaUsuarioGenero> listaMUG = null;
-					listaMUG = mediaUsuarioGeneroDAO
-							.pesquisaGenerosUsuario(getUsuarioGlobal());
-					List<Musica> listaIMAux;
-					List<Long> listaDeUsuariosAnteriores;
-					MusicaIM mIM;
+						List<MediaUsuarioGenero> listaMUG = null;
+						listaMUG = mediaUsuarioGeneroDAO
+								.pesquisaGenerosUsuario(getUsuarioGlobal());
+						List<Musica> listaIMAux;
+						List<Long> listaDeUsuariosAnteriores;
+						MusicaIM mIM;
 
-					List<Musica> listaMusicasUsuarioGenero;
-					List<Musica> listaTodasMusicasUsuario;
-					RetornoKMeans retornoKMeans;
-					int posicaoKMeans;
-					List<MediaUsuarioGenero> listaUsuariosKMeans;
-					List<AvaliarMusica> listaAMMusicasUsuarios;
-					boolean existeHash;
-					boolean existeMusica;
-					boolean existeMusicaUsuario;
-					boolean existeListaAnterior;
-					boolean existeMusicaListaMaisAvaliadas;
+						List<Musica> listaMusicasUsuarioGenero;
+						List<Musica> listaTodasMusicasUsuario;
+						RetornoKMeans retornoKMeans;
+						int posicaoKMeans;
+						List<MediaUsuarioGenero> listaUsuariosKMeans;
+						List<AvaliarMusica> listaAMMusicasUsuarios;
+						boolean existeHash;
+						boolean existeMusica;
+						boolean existeMusicaUsuario;
+						boolean existeListaAnterior;
+						boolean existeMusicaListaMaisAvaliadas;
 
-					if (listaMUG != null && listaMUG.size() > 0) {
-						if (listaMUG.size() > 3) {
-							// Como possui o número de gêneros para serem
-							// recomendados então não precisará de mandar
-							// mensagem incentivamento o usuário
-							// a curtir mais músicas
+						if (listaMUG != null && listaMUG.size() > 0) {
+							if (listaMUG.size() > 3) {
+								// Como possui o número de gêneros para serem
+								// recomendados então não precisará de mandar
+								// mensagem incentivamento o usuário
+								// a curtir mais músicas
 
-							// * GERAR RÂNDOMICAMENTE PARA PEGAR GÊNEROS
-							// DIFERENTES, o terceiro gênero fazer um número
-							// rândomico?
-							/*
-							 * Random random = new Random(); int x =
-							 * ran.nextInt(101);
-							 */
-
-							List<MediaUsuarioGenero> listaAllByGenero;
-							for (int i = 0; i < listaMUG.size(); i++) {
-								listaMusicasUsuarioGenero = new ArrayList<Musica>();
-								listaIMAux = new ArrayList<Musica>();
-
-								// Pesquisa todas as músicas do usuário para não
-								// recomendar músicas que ele já tenha curtido.
-								listaMusicasUsuarioGenero = avaliarMusicaDAO
-										.pesquisaAlMusicasUsuarioGenero(
-												getUsuarioGlobal(), listaMUG
-														.get(i).getGenero());
-
-								// Dado 3 gênero que estão entre os que possuem
-								// maior número de músicas curtidas, pesquisa
-								// outros usuários que também curtiram este
-								// gênero
-								listaAllByGenero = new ArrayList<MediaUsuarioGenero>();
-								listaAllByGenero = mediaUsuarioGeneroDAO
-										.pesquisaAllByGenero(listaMUG.get(i)
-												.getGenero(),
-												getUsuarioGlobal());
+								// * GERAR RÂNDOMICAMENTE PARA PEGAR GÊNEROS
+								// DIFERENTES, o terceiro gênero fazer um número
+								// rândomico?
 								/*
-								 * Roda o KNN/K-Means, procurando os usuários
-								 * mais próximos do gênero corrente
+								 * Random random = new Random(); int x =
+								 * ran.nextInt(101);
 								 */
-								if (listaAllByGenero.size() > 2) {
-									listaAllByGenero.add(listaMUG.get(i));
-									retornoKMeans = new RetornoKMeans();
-									retornoKMeans = KMeans
-											.rodaAlgoritmo(listaAllByGenero);
-									posicaoKMeans = 0;
 
-									for (int x = 0; x < KMeans.Blocos; x++) {
-										for (int y = 0; y < retornoKMeans
-												.getTamanho(); y++) {
-											if (retornoKMeans
-													.getDivisaoBlocos()[x][y] == listaMUG
-													.get(i).getMedia()) {
-												posicaoKMeans = x;
-												break;
+								List<MediaUsuarioGenero> listaAllByGenero;
+								for (int i = 0; i < listaMUG.size(); i++) {
+									listaMusicasUsuarioGenero = new ArrayList<Musica>();
+									listaIMAux = new ArrayList<Musica>();
+
+									// Pesquisa todas as músicas do usuário para
+									// não
+									// recomendar músicas que ele já tenha
+									// curtido.
+									listaMusicasUsuarioGenero = avaliarMusicaDAO
+											.pesquisaAlMusicasUsuarioGenero(
+													getUsuarioGlobal(),
+													listaMUG.get(i).getGenero());
+
+									// Dado 3 gênero que estão entre os que
+									// possuem
+									// maior número de músicas curtidas,
+									// pesquisa
+									// outros usuários que também curtiram este
+									// gênero
+									listaAllByGenero = new ArrayList<MediaUsuarioGenero>();
+									listaAllByGenero = mediaUsuarioGeneroDAO
+											.pesquisaAllByGenero(listaMUG
+													.get(i).getGenero(),
+													getUsuarioGlobal());
+									/*
+									 * Roda o KNN/K-Means, procurando os
+									 * usuários mais próximos do gênero corrente
+									 */
+									if (listaAllByGenero.size() > 2) {
+										listaAllByGenero.add(listaMUG.get(i));
+										retornoKMeans = new RetornoKMeans();
+										retornoKMeans = KMeans
+												.rodaAlgoritmo(listaAllByGenero);
+										posicaoKMeans = 0;
+
+										for (int x = 0; x < KMeans.Blocos; x++) {
+											for (int y = 0; y < retornoKMeans
+													.getTamanho(); y++) {
+												if (retornoKMeans
+														.getDivisaoBlocos()[x][y] == listaMUG
+														.get(i).getMedia()) {
+													posicaoKMeans = x;
+													break;
+												}
 											}
 										}
-									}
 
-									listaUsuariosKMeans = new ArrayList<MediaUsuarioGenero>();
-									listaAllByGenero.remove(listaAllByGenero
-											.size() - 1);
+										listaUsuariosKMeans = new ArrayList<MediaUsuarioGenero>();
+										listaAllByGenero
+												.remove(listaAllByGenero.size() - 1);
 
-									for (int x = 0; x < retornoKMeans
-											.getTamanho(); x++) {
-										for (MediaUsuarioGenero mediaUsuarioGenero : listaAllByGenero) {
-											if (retornoKMeans
-													.getDivisaoBlocos()[posicaoKMeans][x] == mediaUsuarioGenero
-													.getMedia()) {
-												listaUsuariosKMeans
-														.add(mediaUsuarioGenero);
-												retornoKMeans
-														.getDivisaoBlocos()[posicaoKMeans][x] = -9999;
+										for (int x = 0; x < retornoKMeans
+												.getTamanho(); x++) {
+											for (MediaUsuarioGenero mediaUsuarioGenero : listaAllByGenero) {
+												if (retornoKMeans
+														.getDivisaoBlocos()[posicaoKMeans][x] == mediaUsuarioGenero
+														.getMedia()) {
+													listaUsuariosKMeans
+															.add(mediaUsuarioGenero);
+													retornoKMeans
+															.getDivisaoBlocos()[posicaoKMeans][x] = -9999;
+												}
 											}
 										}
-									}
 
-									existeHash = false;
+										existeHash = false;
 
-									if (listaUsuariosKMeans != null
-											&& listaUsuariosKMeans.size() > 0) {
-										// Limpa a lista de usuários anteriores
-										// pois, o gênero foi trocado.
-										listaDeUsuariosAnteriores = new ArrayList<Long>();
-										for (int j = 0; j < listaUsuariosKMeans
-												.size(); j++) {
-											// Lista que contém as músicas que
-											// serão recomendadas do usuário em
-											// questão.
-											listaAMMusicasUsuarios = new ArrayList<AvaliarMusica>();
-											listaAMMusicasUsuarios = avaliarMusicaDAO
-													.pesquisaAvaliacaoUsuarioMaior3(
-															listaUsuariosKMeans
-																	.get(j)
-																	.getUsuario(),
-															listaUsuariosKMeans
-																	.get(j)
-																	.getGenero());
+										if (listaUsuariosKMeans != null
+												&& listaUsuariosKMeans.size() > 0) {
+											// Limpa a lista de usuários
+											// anteriores
+											// pois, o gênero foi trocado.
+											listaDeUsuariosAnteriores = new ArrayList<Long>();
+											for (int j = 0; j < listaUsuariosKMeans
+													.size(); j++) {
+												// Lista que contém as músicas
+												// que
+												// serão recomendadas do usuário
+												// em
+												// questão.
+												listaAMMusicasUsuarios = new ArrayList<AvaliarMusica>();
+												listaAMMusicasUsuarios = avaliarMusicaDAO
+														.pesquisaAvaliacaoUsuarioMaior3(
+																listaUsuariosKMeans
+																		.get(j)
+																		.getUsuario(),
+																listaUsuariosKMeans
+																		.get(j)
+																		.getGenero());
 
-											// Percorre a lista de Músicas
-											// encontrada do usuário em questão.
-											if (listaAMMusicasUsuarios != null
-													&& listaAMMusicasUsuarios
-															.size() > 0) {
-												for (AvaliarMusica avaliarMusica : listaAMMusicasUsuarios) {
-													// Verifica se ela já
-													// existia na lista de
-													// usuários anteriores a
-													// esse (MELHORIA DE
-													// PROCESSAMENTO)
-													if (listaDeUsuariosAnteriores
-															.contains(avaliarMusica
-																	.getMusica()
-																	.getPkMusica())) {
-														continue;
-													} else {
-														listaDeUsuariosAnteriores
-																.add(avaliarMusica
+												// Percorre a lista de Músicas
+												// encontrada do usuário em
+												// questão.
+												if (listaAMMusicasUsuarios != null
+														&& listaAMMusicasUsuarios
+																.size() > 0) {
+													for (AvaliarMusica avaliarMusica : listaAMMusicasUsuarios) {
+														// Verifica se ela já
+														// existia na lista de
+														// usuários anteriores a
+														// esse (MELHORIA DE
+														// PROCESSAMENTO)
+														if (listaDeUsuariosAnteriores
+																.contains(avaliarMusica
 																		.getMusica()
-																		.getPkMusica());
-													}
-
-													// Caso o HashMap esteja
-													// vazio, insere o gênero
-													// nele, adiciona a música
-													// na lista de músicas
-													// daquele gênero e adiciona
-													// a música na lista
-													// auxiliar.
-													if (GuardaMusicasRecomendadas
-															.getTokensExisteMusica()
-															.isEmpty()) {
-														// Verifica se a lista
-														// de músicas que o
-														// usuário curtiu esta
-														// cheia, para fazer as
-														// verificações e evitar
-														// recomendar músicas
-														// que o usuário já
-														// curtiu
-														if (listaMusicasUsuarioGenero != null
-																&& listaMusicasUsuarioGenero
-																		.size() > 0) {
-															existeMusicaUsuario = false;
-															for (Musica musica : listaMusicasUsuarioGenero) {
-																if (musica
-																		.getIdMusica() == avaliarMusica
-																		.getMusica()
-																		.getIdMusica()) {
-																	existeMusicaUsuario = true;
-																	break;
-																}
-															}
-
-															if (!existeMusicaUsuario) {
-																// Insere a
-																// música na
-																// lista.
-																GuardaMusicasRecomendadas
-																		.getTokensExisteMusica()
-																		.put(listaUsuariosKMeans
-																				.get(j)
-																				.getGenero()
-																				.getPkGenero(),
-																				new ArrayList<Long>());
-																GuardaMusicasRecomendadas
-																		.getTokensExisteMusica()
-																		.get(listaUsuariosKMeans
-																				.get(j)
-																				.getGenero()
-																				.getPkGenero())
-																		.add(avaliarMusica
-																				.getMusica()
-																				.getPkMusica());
-
-																existeListaAnterior = false;
-																if (listaIM1 != null
-																		&& listaIM1
-																				.getListaMusica() != null
-																		&& listaIM1
-																				.getListaMusica()
-																				.size() > 0) {
-																	for (Musica musica : listaIM1
-																			.getListaMusica()) {
-																		if (avaliarMusica
-																				.getMusica()
-																				.getPkMusica() == musica
-																				.getPkMusica()) {
-																			existeListaAnterior = true;
-																			break;
-																		}
-																	}
-																}
-
-																if (!existeListaAnterior
-																		&& listaIM2 != null
-																		&& listaIM2
-																				.getListaMusica() != null
-																		&& listaIM2
-																				.getListaMusica()
-																				.size() > 0) {
-																	for (Musica musica : listaIM2
-																			.getListaMusica()) {
-																		if (avaliarMusica
-																				.getMusica()
-																				.getPkMusica() == musica
-																				.getPkMusica()) {
-																			existeListaAnterior = true;
-																			break;
-																		}
-																	}
-																}
-
-																if (!existeListaAnterior) {
-																	listaIMAux
-																			.add(avaliarMusica
-																					.getMusica());
-																}
-															}
+																		.getPkMusica())) {
+															continue;
 														} else {
-															// Insere a música
-															// na lista.
-															GuardaMusicasRecomendadas
-																	.getTokensExisteMusica()
-																	.put(listaUsuariosKMeans
-																			.get(j)
-																			.getGenero()
-																			.getPkGenero(),
-																			new ArrayList<Long>());
-															GuardaMusicasRecomendadas
-																	.getTokensExisteMusica()
-																	.get(listaUsuariosKMeans
-																			.get(j)
-																			.getGenero()
-																			.getPkGenero())
+															listaDeUsuariosAnteriores
 																	.add(avaliarMusica
 																			.getMusica()
 																			.getPkMusica());
-
-															existeListaAnterior = false;
-															if (listaIM1 != null
-																	&& listaIM1
-																			.getListaMusica() != null
-																	&& listaIM1
-																			.getListaMusica()
-																			.size() > 0) {
-																for (Musica musica : listaIM1
-																		.getListaMusica()) {
-																	if (avaliarMusica
-																			.getMusica()
-																			.getPkMusica() == musica
-																			.getPkMusica()) {
-																		existeListaAnterior = true;
-																		break;
-																	}
-																}
-															}
-
-															if (!existeListaAnterior
-																	&& listaIM2 != null
-																	&& listaIM2
-																			.getListaMusica() != null
-																	&& listaIM2
-																			.getListaMusica()
-																			.size() > 0) {
-																for (Musica musica : listaIM2
-																		.getListaMusica()) {
-																	if (avaliarMusica
-																			.getMusica()
-																			.getPkMusica() == musica
-																			.getPkMusica()) {
-																		existeListaAnterior = true;
-																		break;
-																	}
-																}
-															}
-
-															if (!existeListaAnterior) {
-																listaIMAux
-																		.add(avaliarMusica
-																				.getMusica());
-															}
 														}
 
-														// Caso a lista esteja
-														// cheia, sai do for.
-														if (listaIMAux.size() >= 6) {
-															break;
-														}
-													} else {
+														// Caso o HashMap esteja
+														// vazio, insere o
+														// gênero
+														// nele, adiciona a
+														// música
+														// na lista de músicas
+														// daquele gênero e
+														// adiciona
+														// a música na lista
+														// auxiliar.
 														if (GuardaMusicasRecomendadas
 																.getTokensExisteMusica()
-																.containsKey(
-																		listaUsuariosKMeans
-																				.get(j)
-																				.getGenero()
-																				.getPkGenero())) {
-															// Caso o Hash
-															// principal possua
-															// o gênero em
-															// questão, então
-															// procura nas suas
-															// listas de
-															// músicas, se
-															// existe a música
-															// corrente, se
-															// existir seta
-															// existeHash como
-															// true (Flag para
-															// indicar que
-															// possuem músicas
-															// no hash que já
-															// foram recomendas
-															// e caso seja
-															// necessário,
-															// verificar se ele
-															// precisa ser
-															// limpado).
-															// Caso não exista,
-															// seta ela na lista
-															// auxliar.
-															existeMusica = false;
-															for (Long l : GuardaMusicasRecomendadas
-																	.getTokensExisteMusica()
-																	.get(listaUsuariosKMeans
-																			.get(j)
-																			.getGenero()
-																			.getPkGenero())) {
-																if (l == avaliarMusica
-																		.getMusica()
-																		.getPkMusica()) {
-																	existeHash = true;
-																	existeMusica = true;
-																	break;
-																}
-															}
-
-															// Caso a música não
-															// exista no Hash
-															// principal
-															if (!existeMusica) {
-																// Verifica se a
-																// lista de
-																// músicas que o
-																// usuário
-																// curtiu esta
-																// cheia, para
-																// fazer as
-																// verificações
-																// e evitar
-																// recomendar
-																// músicas que o
-																// usuário já
-																// curtiu
-																if (listaMusicasUsuarioGenero != null
-																		&& listaMusicasUsuarioGenero
-																				.size() > 0) {
-																	existeMusicaUsuario = false;
-																	for (Musica musica : listaMusicasUsuarioGenero) {
-																		if (musica
-																				.getIdMusica() == avaliarMusica
-																				.getMusica()
-																				.getIdMusica()) {
-																			existeMusicaUsuario = true;
-																			break;
-																		}
-																	}
-
-																	if (!existeMusicaUsuario) {
-																		// Insere
-																		// a
-																		// música
-																		// na
-																		// lista.
-																		GuardaMusicasRecomendadas
-																				.getTokensExisteMusica()
-																				.get(listaUsuariosKMeans
-																						.get(j)
-																						.getGenero()
-																						.getPkGenero())
-																				.add(avaliarMusica
-																						.getMusica()
-																						.getPkMusica());
-
-																		existeListaAnterior = false;
-																		if (listaIM1 != null
-																				&& listaIM1
-																						.getListaMusica() != null
-																				&& listaIM1
-																						.getListaMusica()
-																						.size() > 0) {
-																			for (Musica musica : listaIM1
-																					.getListaMusica()) {
-																				if (avaliarMusica
-																						.getMusica()
-																						.getPkMusica() == musica
-																						.getPkMusica()) {
-																					existeListaAnterior = true;
-																					break;
-																				}
-																			}
-																		}
-
-																		if (!existeListaAnterior
-																				&& listaIM2 != null
-																				&& listaIM2
-																						.getListaMusica() != null
-																				&& listaIM2
-																						.getListaMusica()
-																						.size() > 0) {
-																			for (Musica musica : listaIM2
-																					.getListaMusica()) {
-																				if (avaliarMusica
-																						.getMusica()
-																						.getPkMusica() == musica
-																						.getPkMusica()) {
-																					existeListaAnterior = true;
-																					break;
-																				}
-																			}
-																		}
-
-																		if (!existeListaAnterior) {
-																			listaIMAux
-																					.add(avaliarMusica
-																							.getMusica());
-																		}
-																	}
-																} else {
-																	// Insere a
-																	// música na
-																	// lista.
-																	GuardaMusicasRecomendadas
-																			.getTokensExisteMusica()
-																			.get(listaUsuariosKMeans
-																					.get(j)
-																					.getGenero()
-																					.getPkGenero())
-																			.add(avaliarMusica
-																					.getMusica()
-																					.getPkMusica());
-
-																	existeListaAnterior = false;
-																	if (listaIM1 != null
-																			&& listaIM1
-																					.getListaMusica() != null
-																			&& listaIM1
-																					.getListaMusica()
-																					.size() > 0) {
-																		for (Musica musica : listaIM1
-																				.getListaMusica()) {
-																			if (avaliarMusica
-																					.getMusica()
-																					.getPkMusica() == musica
-																					.getPkMusica()) {
-																				existeListaAnterior = true;
-																				break;
-																			}
-																		}
-																	}
-
-																	if (!existeListaAnterior
-																			&& listaIM2 != null
-																			&& listaIM2
-																					.getListaMusica() != null
-																			&& listaIM2
-																					.getListaMusica()
-																					.size() > 0) {
-																		for (Musica musica : listaIM2
-																				.getListaMusica()) {
-																			if (avaliarMusica
-																					.getMusica()
-																					.getPkMusica() == musica
-																					.getPkMusica()) {
-																				existeListaAnterior = true;
-																				break;
-																			}
-																		}
-																	}
-
-																	if (!existeListaAnterior) {
-																		listaIMAux
-																				.add(avaliarMusica
-																						.getMusica());
-																	}
-																}
-															}
-
-															// Caso a lista
-															// esteja cheia, sai
-															// do for.
-															if (listaIMAux
-																	.size() >= 6) {
-																break;
-															}
-														} else {
+																.isEmpty()) {
 															// Verifica se a
-															// lista de músicas
-															// que o usuário
-															// curtiu esta
+															// lista
+															// de músicas que o
+															// usuário curtiu
+															// esta
 															// cheia, para fazer
-															// as verificações e
-															// evitar recomendar
-															// músicas que o
-															// usuário já curtiu
+															// as
+															// verificações e
+															// evitar
+															// recomendar
+															// músicas
+															// que o usuário já
+															// curtiu
 															if (listaMusicasUsuarioGenero != null
 																	&& listaMusicasUsuarioGenero
 																			.size() > 0) {
@@ -599,25 +247,9 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 																}
 
 																if (!existeMusicaUsuario) {
-																	// Caso não
-																	// exista o
-																	// gênero no
-																	// hash
-																	// principal,
-																	// insere o
-																	// gênero
-																	// nele,
-																	// adiciona
-																	// a música
-																	// na lista
-																	// de
-																	// músicas
-																	// daquele
-																	// gênero e
-																	// adiciona
-																	// a música
-																	// na lista
-																	// auxiliar.
+																	// Insere a
+																	// música na
+																	// lista.
 																	GuardaMusicasRecomendadas
 																			.getTokensExisteMusica()
 																			.put(listaUsuariosKMeans
@@ -680,23 +312,9 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 																	}
 																}
 															} else {
-																// Caso não
-																// exista o
-																// gênero no
-																// hash
-																// principal,
-																// insere o
-																// gênero nele,
-																// adiciona a
-																// música na
-																// lista de
-																// músicas
-																// daquele
-																// gênero e
-																// adiciona a
-																// música na
-																// lista
-																// auxiliar.
+																// Insere a
+																// música
+																// na lista.
 																GuardaMusicasRecomendadas
 																		.getTokensExisteMusica()
 																		.put(listaUsuariosKMeans
@@ -760,408 +378,394 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 															}
 
 															// Caso a lista
-															// esteja cheia, sai
-															// do for.
+															// esteja
+															// cheia, sai do
+															// for.
 															if (listaIMAux
 																	.size() >= 6) {
 																break;
 															}
-														}
-													}
-												}
-											}
-
-											// Caso a lista esteja cheia, sai do
-											// for.
-											if (listaIMAux.size() >= 6) {
-												break;
-											}
-										}
-									}
-
-									// Caso o hash de músicas recomendadas
-									// esteja cheio, e por isso não tenha
-									// completado a lista de músicas, então
-									// limpa ele e volta para o mesmo gênero
-									if (existeHash && listaIMAux.size() < 6) {
-										GuardaMusicasRecomendadas
-												.getTokensExisteMusica()
-												.get(listaMUG.get(i)
-														.getGenero()
-														.getPkGenero()).clear();
-										i--;
-									} else {
-										// Caso a lista auxiliar contenha
-										// músicas, adiciona ela em algum hash
-										// de músicas para recomendação
-										if (listaIMAux.size() > 0) {
-											if (listaIM1 == null) {
-												listaIM1 = new MusicasRecomendadasIM();
-												listaIM1.setGenero(listaMUG
-														.get(i).getGenero());
-												listaIM1.setListaMusica(new ArrayList<Musica>());
-												listaIM1.getListaMusica()
-														.addAll(listaIMAux);
-												listaIM1.setNomeGenero(listaIM1
-														.getGenero()
-														.getNomeGenero()
-														.toUpperCase());
-												listaIM1.setNota(0);
-
-												if (listaIM1.getListaMusica()
-														.size() == 0) {
-													listaIM1.setTamanhoLista(1);
-												}
-
-												if (listaIM1.getListaMusica()
-														.size() > 2) {
-													listaIM1.setTamanhoLista(3);
-												} else {
-													listaIM1.setTamanhoLista(listaIM1
-															.getListaMusica()
-															.size());
-												}
-											} else if (listaIM2 == null) {
-												listaIM2 = new MusicasRecomendadasIM();
-												listaIM2.setGenero(listaMUG
-														.get(i).getGenero());
-												listaIM2.setListaMusica(new ArrayList<Musica>());
-												listaIM2.getListaMusica()
-														.addAll(listaIMAux);
-												listaIM2.setNomeGenero(listaIM2
-														.getGenero()
-														.getNomeGenero()
-														.toUpperCase());
-												listaIM2.setNota(0);
-
-												if (listaIM2.getListaMusica()
-														.size() == 0) {
-													listaIM2.setTamanhoLista(1);
-												}
-
-												if (listaIM2.getListaMusica()
-														.size() > 2) {
-													listaIM2.setTamanhoLista(3);
-												} else {
-													listaIM2.setTamanhoLista(listaIM2
-															.getListaMusica()
-															.size());
-												}
-											} else {
-												listaIM3 = new MusicasRecomendadasIM();
-												listaIM3.setGenero(listaMUG
-														.get(i).getGenero());
-												listaIM3.setListaMusica(new ArrayList<Musica>());
-												listaIM3.getListaMusica()
-														.addAll(listaIMAux);
-												listaIM3.setNomeGenero(listaIM3
-														.getGenero()
-														.getNomeGenero()
-														.toUpperCase());
-												listaIM3.setNota(0);
-
-												if (listaIM3.getListaMusica()
-														.size() == 0) {
-													listaIM3.setTamanhoLista(1);
-												}
-
-												if (listaIM3.getListaMusica()
-														.size() > 2) {
-													listaIM3.setTamanhoLista(3);
-												} else {
-													listaIM3.setTamanhoLista(listaIM3
-															.getListaMusica()
-															.size());
-												}
-
-												// Caso todas os hash's tenham
-												// sido preenchidos, então sai
-												// do loop
-												break;
-											}
-										}
-									}
-								} else if (listaAllByGenero.size() == 1
-										|| listaAllByGenero.size() == 2) {
-									existeHash = false;
-									listaDeUsuariosAnteriores = new ArrayList<Long>();
-									for (MediaUsuarioGenero mediaUsuarioGenero : listaAllByGenero) {
-										// Lista que contém as músicas que serão
-										// recomendadas do usuário em questão.
-										listaAMMusicasUsuarios = new ArrayList<AvaliarMusica>();
-										listaAMMusicasUsuarios = avaliarMusicaDAO
-												.pesquisaAvaliacaoUsuarioMaior3(
-														mediaUsuarioGenero
-																.getUsuario(),
-														mediaUsuarioGenero
-																.getGenero());
-
-										// Percorre a lista de Músicas
-										// encontrada do usuário em questão.
-										if (listaAMMusicasUsuarios != null
-												&& listaAMMusicasUsuarios
-														.size() > 0) {
-											for (AvaliarMusica avaliarMusica : listaAMMusicasUsuarios) {
-												// Verifica se ela já existia na
-												// lista de usuários anteriores
-												// a esse (MELHORIA DE
-												// PROCESSAMENTO)
-												if (listaDeUsuariosAnteriores
-														.contains(avaliarMusica
-																.getMusica()
-																.getPkMusica())) {
-													continue;
-												} else {
-													listaDeUsuariosAnteriores
-															.add(avaliarMusica
-																	.getMusica()
-																	.getPkMusica());
-												}
-
-												// Caso o HashMap esteja vazio,
-												// insere o gênero nele,
-												// adiciona a música na lista de
-												// músicas daquele gênero e
-												// adiciona a música na lista
-												// auxiliar.
-												if (GuardaMusicasRecomendadas
-														.getTokensExisteMusica()
-														.isEmpty()) {
-													// Verifica se a lista de
-													// músicas que o usuário
-													// curtiu esta cheia, para
-													// fazer as verificações e
-													// evitar recomendar músicas
-													// que o usuário já curtiu
-													if (listaMusicasUsuarioGenero != null
-															&& listaMusicasUsuarioGenero
-																	.size() > 0) {
-														existeMusicaUsuario = false;
-														for (Musica musica : listaMusicasUsuarioGenero) {
-															if (musica
-																	.getIdMusica() == avaliarMusica
-																	.getMusica()
-																	.getIdMusica()) {
-																existeMusicaUsuario = true;
-																break;
-															}
-														}
-
-														if (!existeMusicaUsuario) {
-															// Caso não exista o
-															// gênero no hash
-															// principal, insere
-															// o gênero nele,
-															// adiciona a música
-															// na lista de
-															// músicas daquele
-															// gênero e adiciona
-															// a música na lista
-															// auxiliar.
-															GuardaMusicasRecomendadas
+														} else {
+															if (GuardaMusicasRecomendadas
 																	.getTokensExisteMusica()
-																	.put(mediaUsuarioGenero
-																			.getGenero()
-																			.getPkGenero(),
-																			new ArrayList<Long>());
-															GuardaMusicasRecomendadas
-																	.getTokensExisteMusica()
-																	.get(mediaUsuarioGenero
-																			.getGenero()
-																			.getPkGenero())
-																	.add(avaliarMusica
+																	.containsKey(
+																			listaUsuariosKMeans
+																					.get(j)
+																					.getGenero()
+																					.getPkGenero())) {
+																// Caso o Hash
+																// principal
+																// possua
+																// o gênero em
+																// questão,
+																// então
+																// procura nas
+																// suas
+																// listas de
+																// músicas, se
+																// existe a
+																// música
+																// corrente, se
+																// existir seta
+																// existeHash
+																// como
+																// true (Flag
+																// para
+																// indicar que
+																// possuem
+																// músicas
+																// no hash que
+																// já
+																// foram
+																// recomendas
+																// e caso seja
+																// necessário,
+																// verificar se
+																// ele
+																// precisa ser
+																// limpado).
+																// Caso não
+																// exista,
+																// seta ela na
+																// lista
+																// auxliar.
+																existeMusica = false;
+																for (Long l : GuardaMusicasRecomendadas
+																		.getTokensExisteMusica()
+																		.get(listaUsuariosKMeans
+																				.get(j)
+																				.getGenero()
+																				.getPkGenero())) {
+																	if (l == avaliarMusica
 																			.getMusica()
-																			.getPkMusica());
-
-															existeListaAnterior = false;
-															if (listaIM1 != null
-																	&& listaIM1
-																			.getListaMusica() != null
-																	&& listaIM1
-																			.getListaMusica()
-																			.size() > 0) {
-																for (Musica musica : listaIM1
-																		.getListaMusica()) {
-																	if (avaliarMusica
-																			.getMusica()
-																			.getPkMusica() == musica
 																			.getPkMusica()) {
-																		existeListaAnterior = true;
+																		existeHash = true;
+																		existeMusica = true;
 																		break;
 																	}
 																}
-															}
 
-															if (!existeListaAnterior
-																	&& listaIM2 != null
-																	&& listaIM2
-																			.getListaMusica() != null
-																	&& listaIM2
-																			.getListaMusica()
-																			.size() > 0) {
-																for (Musica musica : listaIM2
-																		.getListaMusica()) {
-																	if (avaliarMusica
-																			.getMusica()
-																			.getPkMusica() == musica
-																			.getPkMusica()) {
-																		existeListaAnterior = true;
-																		break;
+																// Caso a música
+																// não
+																// exista no
+																// Hash
+																// principal
+																if (!existeMusica) {
+																	// Verifica
+																	// se a
+																	// lista de
+																	// músicas
+																	// que o
+																	// usuário
+																	// curtiu
+																	// esta
+																	// cheia,
+																	// para
+																	// fazer as
+																	// verificações
+																	// e evitar
+																	// recomendar
+																	// músicas
+																	// que o
+																	// usuário
+																	// já
+																	// curtiu
+																	if (listaMusicasUsuarioGenero != null
+																			&& listaMusicasUsuarioGenero
+																					.size() > 0) {
+																		existeMusicaUsuario = false;
+																		for (Musica musica : listaMusicasUsuarioGenero) {
+																			if (musica
+																					.getIdMusica() == avaliarMusica
+																					.getMusica()
+																					.getIdMusica()) {
+																				existeMusicaUsuario = true;
+																				break;
+																			}
+																		}
+
+																		if (!existeMusicaUsuario) {
+																			// Insere
+																			// a
+																			// música
+																			// na
+																			// lista.
+																			GuardaMusicasRecomendadas
+																					.getTokensExisteMusica()
+																					.get(listaUsuariosKMeans
+																							.get(j)
+																							.getGenero()
+																							.getPkGenero())
+																					.add(avaliarMusica
+																							.getMusica()
+																							.getPkMusica());
+
+																			existeListaAnterior = false;
+																			if (listaIM1 != null
+																					&& listaIM1
+																							.getListaMusica() != null
+																					&& listaIM1
+																							.getListaMusica()
+																							.size() > 0) {
+																				for (Musica musica : listaIM1
+																						.getListaMusica()) {
+																					if (avaliarMusica
+																							.getMusica()
+																							.getPkMusica() == musica
+																							.getPkMusica()) {
+																						existeListaAnterior = true;
+																						break;
+																					}
+																				}
+																			}
+
+																			if (!existeListaAnterior
+																					&& listaIM2 != null
+																					&& listaIM2
+																							.getListaMusica() != null
+																					&& listaIM2
+																							.getListaMusica()
+																							.size() > 0) {
+																				for (Musica musica : listaIM2
+																						.getListaMusica()) {
+																					if (avaliarMusica
+																							.getMusica()
+																							.getPkMusica() == musica
+																							.getPkMusica()) {
+																						existeListaAnterior = true;
+																						break;
+																					}
+																				}
+																			}
+
+																			if (!existeListaAnterior) {
+																				listaIMAux
+																						.add(avaliarMusica
+																								.getMusica());
+																			}
+																		}
+																	} else {
+																		// Insere
+																		// a
+																		// música
+																		// na
+																		// lista.
+																		GuardaMusicasRecomendadas
+																				.getTokensExisteMusica()
+																				.get(listaUsuariosKMeans
+																						.get(j)
+																						.getGenero()
+																						.getPkGenero())
+																				.add(avaliarMusica
+																						.getMusica()
+																						.getPkMusica());
+
+																		existeListaAnterior = false;
+																		if (listaIM1 != null
+																				&& listaIM1
+																						.getListaMusica() != null
+																				&& listaIM1
+																						.getListaMusica()
+																						.size() > 0) {
+																			for (Musica musica : listaIM1
+																					.getListaMusica()) {
+																				if (avaliarMusica
+																						.getMusica()
+																						.getPkMusica() == musica
+																						.getPkMusica()) {
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+
+																		if (!existeListaAnterior
+																				&& listaIM2 != null
+																				&& listaIM2
+																						.getListaMusica() != null
+																				&& listaIM2
+																						.getListaMusica()
+																						.size() > 0) {
+																			for (Musica musica : listaIM2
+																					.getListaMusica()) {
+																				if (avaliarMusica
+																						.getMusica()
+																						.getPkMusica() == musica
+																						.getPkMusica()) {
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+
+																		if (!existeListaAnterior) {
+																			listaIMAux
+																					.add(avaliarMusica
+																							.getMusica());
+																		}
 																	}
 																}
-															}
 
-															if (!existeListaAnterior) {
-																listaIMAux
-																		.add(avaliarMusica
-																				.getMusica());
-															}
-														}
-													} else {
-														// Caso não exista o
-														// gênero no hash
-														// principal, insere o
-														// gênero nele, adiciona
-														// a música na lista de
-														// músicas daquele
-														// gênero e adiciona a
-														// música na lista
-														// auxiliar.
-														GuardaMusicasRecomendadas
-																.getTokensExisteMusica()
-																.put(mediaUsuarioGenero
-																		.getGenero()
-																		.getPkGenero(),
-																		new ArrayList<Long>());
-														GuardaMusicasRecomendadas
-																.getTokensExisteMusica()
-																.get(mediaUsuarioGenero
-																		.getGenero()
-																		.getPkGenero())
-																.add(avaliarMusica
-																		.getMusica()
-																		.getPkMusica());
-
-														existeListaAnterior = false;
-														if (listaIM1 != null
-																&& listaIM1
-																		.getListaMusica() != null
-																&& listaIM1
-																		.getListaMusica()
-																		.size() > 0) {
-															for (Musica musica : listaIM1
-																	.getListaMusica()) {
-																if (avaliarMusica
-																		.getMusica()
-																		.getPkMusica() == musica
-																		.getPkMusica()) {
-																	existeListaAnterior = true;
+																// Caso a lista
+																// esteja cheia,
+																// sai
+																// do for.
+																if (listaIMAux
+																		.size() >= 6) {
 																	break;
 																}
-															}
-														}
-
-														if (!existeListaAnterior
-																&& listaIM2 != null
-																&& listaIM2
-																		.getListaMusica() != null
-																&& listaIM2
-																		.getListaMusica()
-																		.size() > 0) {
-															for (Musica musica : listaIM2
-																	.getListaMusica()) {
-																if (avaliarMusica
-																		.getMusica()
-																		.getPkMusica() == musica
-																		.getPkMusica()) {
-																	existeListaAnterior = true;
-																	break;
-																}
-															}
-														}
-
-														if (!existeListaAnterior) {
-															listaIMAux
-																	.add(avaliarMusica
-																			.getMusica());
-														}
-													}
-
-													// Caso a lista esteja
-													// cheia, sai do for.
-													if (listaIMAux.size() >= 6) {
-														break;
-													}
-												} else {
-													if (GuardaMusicasRecomendadas
-															.getTokensExisteMusica()
-															.containsKey(
-																	mediaUsuarioGenero
-																			.getGenero()
-																			.getPkGenero())) {
-														// Caso o Hash principal
-														// possua o gênero em
-														// questão, então
-														// procura nas suas
-														// listas de músicas, se
-														// existe a música
-														// corrente, se existir
-														// seta existeHash como
-														// true (Flag para
-														// indicar que possuem
-														// músicas no hash que
-														// já foram recomendas e
-														// caso seja necessário,
-														// verificar se ele
-														// precisa ser limpado).
-														// Caso não exista, seta
-														// ela na lista auxliar.
-														existeMusica = false;
-														for (Long l : GuardaMusicasRecomendadas
-																.getTokensExisteMusica()
-																.get(mediaUsuarioGenero
-																		.getGenero()
-																		.getPkGenero())) {
-															if (l == avaliarMusica
-																	.getMusica()
-																	.getPkMusica()) {
-																existeHash = true;
-																existeMusica = true;
-																break;
-															}
-														}
-
-														if (!existeMusica) {
-															// Verifica se a
-															// lista de músicas
-															// que o usuário
-															// curtiu esta
-															// cheia, para fazer
-															// as verificações e
-															// evitar recomendar
-															// músicas que o
-															// usuário já curtiu
-															if (listaMusicasUsuarioGenero != null
-																	&& listaMusicasUsuarioGenero
-																			.size() > 0) {
-																existeMusicaUsuario = false;
-																for (Musica musica : listaMusicasUsuarioGenero) {
-																	if (musica
-																			.getIdMusica() == avaliarMusica
-																			.getMusica()
-																			.getIdMusica()) {
-																		existeMusicaUsuario = true;
-																		break;
+															} else {
+																// Verifica se a
+																// lista de
+																// músicas
+																// que o usuário
+																// curtiu esta
+																// cheia, para
+																// fazer
+																// as
+																// verificações
+																// e
+																// evitar
+																// recomendar
+																// músicas que o
+																// usuário já
+																// curtiu
+																if (listaMusicasUsuarioGenero != null
+																		&& listaMusicasUsuarioGenero
+																				.size() > 0) {
+																	existeMusicaUsuario = false;
+																	for (Musica musica : listaMusicasUsuarioGenero) {
+																		if (musica
+																				.getIdMusica() == avaliarMusica
+																				.getMusica()
+																				.getIdMusica()) {
+																			existeMusicaUsuario = true;
+																			break;
+																		}
 																	}
-																}
 
-																if (!existeMusicaUsuario) {
-																	// Insere a
+																	if (!existeMusicaUsuario) {
+																		// Caso
+																		// não
+																		// exista
+																		// o
+																		// gênero
+																		// no
+																		// hash
+																		// principal,
+																		// insere
+																		// o
+																		// gênero
+																		// nele,
+																		// adiciona
+																		// a
+																		// música
+																		// na
+																		// lista
+																		// de
+																		// músicas
+																		// daquele
+																		// gênero
+																		// e
+																		// adiciona
+																		// a
+																		// música
+																		// na
+																		// lista
+																		// auxiliar.
+																		GuardaMusicasRecomendadas
+																				.getTokensExisteMusica()
+																				.put(listaUsuariosKMeans
+																						.get(j)
+																						.getGenero()
+																						.getPkGenero(),
+																						new ArrayList<Long>());
+																		GuardaMusicasRecomendadas
+																				.getTokensExisteMusica()
+																				.get(listaUsuariosKMeans
+																						.get(j)
+																						.getGenero()
+																						.getPkGenero())
+																				.add(avaliarMusica
+																						.getMusica()
+																						.getPkMusica());
+
+																		existeListaAnterior = false;
+																		if (listaIM1 != null
+																				&& listaIM1
+																						.getListaMusica() != null
+																				&& listaIM1
+																						.getListaMusica()
+																						.size() > 0) {
+																			for (Musica musica : listaIM1
+																					.getListaMusica()) {
+																				if (avaliarMusica
+																						.getMusica()
+																						.getPkMusica() == musica
+																						.getPkMusica()) {
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+
+																		if (!existeListaAnterior
+																				&& listaIM2 != null
+																				&& listaIM2
+																						.getListaMusica() != null
+																				&& listaIM2
+																						.getListaMusica()
+																						.size() > 0) {
+																			for (Musica musica : listaIM2
+																					.getListaMusica()) {
+																				if (avaliarMusica
+																						.getMusica()
+																						.getPkMusica() == musica
+																						.getPkMusica()) {
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+
+																		if (!existeListaAnterior) {
+																			listaIMAux
+																					.add(avaliarMusica
+																							.getMusica());
+																		}
+																	}
+																} else {
+																	// Caso não
+																	// exista o
+																	// gênero no
+																	// hash
+																	// principal,
+																	// insere o
+																	// gênero
+																	// nele,
+																	// adiciona
+																	// a
+																	// música na
+																	// lista de
+																	// músicas
+																	// daquele
+																	// gênero e
+																	// adiciona
+																	// a
 																	// música na
 																	// lista
+																	// auxiliar.
 																	GuardaMusicasRecomendadas
 																			.getTokensExisteMusica()
-																			.get(mediaUsuarioGenero
+																			.put(listaUsuariosKMeans
+																					.get(j)
+																					.getGenero()
+																					.getPkGenero(),
+																					new ArrayList<Long>());
+																	GuardaMusicasRecomendadas
+																			.getTokensExisteMusica()
+																			.get(listaUsuariosKMeans
+																					.get(j)
 																					.getGenero()
 																					.getPkGenero())
 																			.add(avaliarMusica
@@ -1212,77 +816,203 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 																						.getMusica());
 																	}
 																}
-															} else {
-																// Insere a
-																// música na
-																// lista
-																GuardaMusicasRecomendadas
-																		.getTokensExisteMusica()
-																		.get(mediaUsuarioGenero
-																				.getGenero()
-																				.getPkGenero())
-																		.add(avaliarMusica
-																				.getMusica()
-																				.getPkMusica());
 
-																existeListaAnterior = false;
-																if (listaIM1 != null
-																		&& listaIM1
-																				.getListaMusica() != null
-																		&& listaIM1
-																				.getListaMusica()
-																				.size() > 0) {
-																	for (Musica musica : listaIM1
-																			.getListaMusica()) {
-																		if (avaliarMusica
-																				.getMusica()
-																				.getPkMusica() == musica
-																				.getPkMusica()) {
-																			existeListaAnterior = true;
-																			break;
-																		}
-																	}
-																}
-
-																if (!existeListaAnterior
-																		&& listaIM2 != null
-																		&& listaIM2
-																				.getListaMusica() != null
-																		&& listaIM2
-																				.getListaMusica()
-																				.size() > 0) {
-																	for (Musica musica : listaIM2
-																			.getListaMusica()) {
-																		if (avaliarMusica
-																				.getMusica()
-																				.getPkMusica() == musica
-																				.getPkMusica()) {
-																			existeListaAnterior = true;
-																			break;
-																		}
-																	}
-																}
-
-																if (!existeListaAnterior) {
-																	listaIMAux
-																			.add(avaliarMusica
-																					.getMusica());
+																// Caso a lista
+																// esteja cheia,
+																// sai
+																// do for.
+																if (listaIMAux
+																		.size() >= 6) {
+																	break;
 																}
 															}
 														}
+													}
+												}
 
-														// Caso a lista esteja
-														// cheia, sai do for.
-														if (listaIMAux.size() >= 6) {
-															break;
-														}
+												// Caso a lista esteja cheia,
+												// sai do
+												// for.
+												if (listaIMAux.size() >= 6) {
+													break;
+												}
+											}
+										}
+
+										// Caso o hash de músicas recomendadas
+										// esteja cheio, e por isso não tenha
+										// completado a lista de músicas, então
+										// limpa ele e volta para o mesmo gênero
+										if (existeHash && listaIMAux.size() < 6) {
+											GuardaMusicasRecomendadas
+													.getTokensExisteMusica()
+													.get(listaMUG.get(i)
+															.getGenero()
+															.getPkGenero())
+													.clear();
+											i--;
+										} else {
+											// Caso a lista auxiliar contenha
+											// músicas, adiciona ela em algum
+											// hash
+											// de músicas para recomendação
+											if (listaIMAux.size() > 0) {
+												if (listaIM1 == null) {
+													listaIM1 = new MusicasRecomendadasIM();
+													listaIM1.setGenero(listaMUG
+															.get(i).getGenero());
+													listaIM1.setListaMusica(new ArrayList<Musica>());
+													listaIM1.getListaMusica()
+															.addAll(listaIMAux);
+													listaIM1.setNomeGenero(listaIM1
+															.getGenero()
+															.getNomeGenero()
+															.toUpperCase());
+													listaIM1.setNota(0);
+
+													if (listaIM1
+															.getListaMusica()
+															.size() == 0) {
+														listaIM1.setTamanhoLista(1);
+													}
+
+													if (listaIM1
+															.getListaMusica()
+															.size() > 2) {
+														listaIM1.setTamanhoLista(3);
 													} else {
+														listaIM1.setTamanhoLista(listaIM1
+																.getListaMusica()
+																.size());
+													}
+												} else if (listaIM2 == null) {
+													listaIM2 = new MusicasRecomendadasIM();
+													listaIM2.setGenero(listaMUG
+															.get(i).getGenero());
+													listaIM2.setListaMusica(new ArrayList<Musica>());
+													listaIM2.getListaMusica()
+															.addAll(listaIMAux);
+													listaIM2.setNomeGenero(listaIM2
+															.getGenero()
+															.getNomeGenero()
+															.toUpperCase());
+													listaIM2.setNota(0);
+
+													if (listaIM2
+															.getListaMusica()
+															.size() == 0) {
+														listaIM2.setTamanhoLista(1);
+													}
+
+													if (listaIM2
+															.getListaMusica()
+															.size() > 2) {
+														listaIM2.setTamanhoLista(3);
+													} else {
+														listaIM2.setTamanhoLista(listaIM2
+																.getListaMusica()
+																.size());
+													}
+												} else {
+													listaIM3 = new MusicasRecomendadasIM();
+													listaIM3.setGenero(listaMUG
+															.get(i).getGenero());
+													listaIM3.setListaMusica(new ArrayList<Musica>());
+													listaIM3.getListaMusica()
+															.addAll(listaIMAux);
+													listaIM3.setNomeGenero(listaIM3
+															.getGenero()
+															.getNomeGenero()
+															.toUpperCase());
+													listaIM3.setNota(0);
+
+													if (listaIM3
+															.getListaMusica()
+															.size() == 0) {
+														listaIM3.setTamanhoLista(1);
+													}
+
+													if (listaIM3
+															.getListaMusica()
+															.size() > 2) {
+														listaIM3.setTamanhoLista(3);
+													} else {
+														listaIM3.setTamanhoLista(listaIM3
+																.getListaMusica()
+																.size());
+													}
+
+													// Caso todas os hash's
+													// tenham
+													// sido preenchidos, então
+													// sai
+													// do loop
+													break;
+												}
+											}
+										}
+									} else if (listaAllByGenero.size() == 1
+											|| listaAllByGenero.size() == 2) {
+										existeHash = false;
+										listaDeUsuariosAnteriores = new ArrayList<Long>();
+										for (MediaUsuarioGenero mediaUsuarioGenero : listaAllByGenero) {
+											// Lista que contém as músicas que
+											// serão
+											// recomendadas do usuário em
+											// questão.
+											listaAMMusicasUsuarios = new ArrayList<AvaliarMusica>();
+											listaAMMusicasUsuarios = avaliarMusicaDAO
+													.pesquisaAvaliacaoUsuarioMaior3(
+															mediaUsuarioGenero
+																	.getUsuario(),
+															mediaUsuarioGenero
+																	.getGenero());
+
+											// Percorre a lista de Músicas
+											// encontrada do usuário em questão.
+											if (listaAMMusicasUsuarios != null
+													&& listaAMMusicasUsuarios
+															.size() > 0) {
+												for (AvaliarMusica avaliarMusica : listaAMMusicasUsuarios) {
+													// Verifica se ela já
+													// existia na
+													// lista de usuários
+													// anteriores
+													// a esse (MELHORIA DE
+													// PROCESSAMENTO)
+													if (listaDeUsuariosAnteriores
+															.contains(avaliarMusica
+																	.getMusica()
+																	.getPkMusica())) {
+														continue;
+													} else {
+														listaDeUsuariosAnteriores
+																.add(avaliarMusica
+																		.getMusica()
+																		.getPkMusica());
+													}
+
+													// Caso o HashMap esteja
+													// vazio,
+													// insere o gênero nele,
+													// adiciona a música na
+													// lista de
+													// músicas daquele gênero e
+													// adiciona a música na
+													// lista
+													// auxiliar.
+													if (GuardaMusicasRecomendadas
+															.getTokensExisteMusica()
+															.isEmpty()) {
 														// Verifica se a lista
-														// de músicas que o
-														// usuário curtiu esta
-														// cheia, para fazer as
-														// verificações e evitar
-														// recomendar músicas
+														// de
+														// músicas que o usuário
+														// curtiu esta cheia,
+														// para
+														// fazer as verificações
+														// e
+														// evitar recomendar
+														// músicas
 														// que o usuário já
 														// curtiu
 														if (listaMusicasUsuarioGenero != null
@@ -1305,16 +1035,17 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 																// gênero no
 																// hash
 																// principal,
-																// insere o
-																// gênero nele,
+																// insere
+																// o gênero
+																// nele,
 																// adiciona a
-																// música na
-																// lista de
+																// música
+																// na lista de
 																// músicas
 																// daquele
 																// gênero e
-																// adiciona a
-																// música na
+																// adiciona
+																// a música na
 																// lista
 																// auxiliar.
 																GuardaMusicasRecomendadas
@@ -1380,12 +1111,15 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 															// Caso não exista o
 															// gênero no hash
 															// principal, insere
-															// o gênero nele,
-															// adiciona a música
-															// na lista de
+															// o
+															// gênero nele,
+															// adiciona
+															// a música na lista
+															// de
 															// músicas daquele
 															// gênero e adiciona
-															// a música na lista
+															// a
+															// música na lista
 															// auxiliar.
 															GuardaMusicasRecomendadas
 																	.getTokensExisteMusica()
@@ -1452,125 +1186,638 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 														if (listaIMAux.size() >= 6) {
 															break;
 														}
+													} else {
+														if (GuardaMusicasRecomendadas
+																.getTokensExisteMusica()
+																.containsKey(
+																		mediaUsuarioGenero
+																				.getGenero()
+																				.getPkGenero())) {
+															// Caso o Hash
+															// principal
+															// possua o gênero
+															// em
+															// questão, então
+															// procura nas suas
+															// listas de
+															// músicas, se
+															// existe a música
+															// corrente, se
+															// existir
+															// seta existeHash
+															// como
+															// true (Flag para
+															// indicar que
+															// possuem
+															// músicas no hash
+															// que
+															// já foram
+															// recomendas e
+															// caso seja
+															// necessário,
+															// verificar se ele
+															// precisa ser
+															// limpado).
+															// Caso não exista,
+															// seta
+															// ela na lista
+															// auxliar.
+															existeMusica = false;
+															for (Long l : GuardaMusicasRecomendadas
+																	.getTokensExisteMusica()
+																	.get(mediaUsuarioGenero
+																			.getGenero()
+																			.getPkGenero())) {
+																if (l == avaliarMusica
+																		.getMusica()
+																		.getPkMusica()) {
+																	existeHash = true;
+																	existeMusica = true;
+																	break;
+																}
+															}
+
+															if (!existeMusica) {
+																// Verifica se a
+																// lista de
+																// músicas
+																// que o usuário
+																// curtiu esta
+																// cheia, para
+																// fazer
+																// as
+																// verificações
+																// e
+																// evitar
+																// recomendar
+																// músicas que o
+																// usuário já
+																// curtiu
+																if (listaMusicasUsuarioGenero != null
+																		&& listaMusicasUsuarioGenero
+																				.size() > 0) {
+																	existeMusicaUsuario = false;
+																	for (Musica musica : listaMusicasUsuarioGenero) {
+																		if (musica
+																				.getIdMusica() == avaliarMusica
+																				.getMusica()
+																				.getIdMusica()) {
+																			existeMusicaUsuario = true;
+																			break;
+																		}
+																	}
+
+																	if (!existeMusicaUsuario) {
+																		// Insere
+																		// a
+																		// música
+																		// na
+																		// lista
+																		GuardaMusicasRecomendadas
+																				.getTokensExisteMusica()
+																				.get(mediaUsuarioGenero
+																						.getGenero()
+																						.getPkGenero())
+																				.add(avaliarMusica
+																						.getMusica()
+																						.getPkMusica());
+
+																		existeListaAnterior = false;
+																		if (listaIM1 != null
+																				&& listaIM1
+																						.getListaMusica() != null
+																				&& listaIM1
+																						.getListaMusica()
+																						.size() > 0) {
+																			for (Musica musica : listaIM1
+																					.getListaMusica()) {
+																				if (avaliarMusica
+																						.getMusica()
+																						.getPkMusica() == musica
+																						.getPkMusica()) {
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+
+																		if (!existeListaAnterior
+																				&& listaIM2 != null
+																				&& listaIM2
+																						.getListaMusica() != null
+																				&& listaIM2
+																						.getListaMusica()
+																						.size() > 0) {
+																			for (Musica musica : listaIM2
+																					.getListaMusica()) {
+																				if (avaliarMusica
+																						.getMusica()
+																						.getPkMusica() == musica
+																						.getPkMusica()) {
+																					existeListaAnterior = true;
+																					break;
+																				}
+																			}
+																		}
+
+																		if (!existeListaAnterior) {
+																			listaIMAux
+																					.add(avaliarMusica
+																							.getMusica());
+																		}
+																	}
+																} else {
+																	// Insere a
+																	// música na
+																	// lista
+																	GuardaMusicasRecomendadas
+																			.getTokensExisteMusica()
+																			.get(mediaUsuarioGenero
+																					.getGenero()
+																					.getPkGenero())
+																			.add(avaliarMusica
+																					.getMusica()
+																					.getPkMusica());
+
+																	existeListaAnterior = false;
+																	if (listaIM1 != null
+																			&& listaIM1
+																					.getListaMusica() != null
+																			&& listaIM1
+																					.getListaMusica()
+																					.size() > 0) {
+																		for (Musica musica : listaIM1
+																				.getListaMusica()) {
+																			if (avaliarMusica
+																					.getMusica()
+																					.getPkMusica() == musica
+																					.getPkMusica()) {
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+
+																	if (!existeListaAnterior
+																			&& listaIM2 != null
+																			&& listaIM2
+																					.getListaMusica() != null
+																			&& listaIM2
+																					.getListaMusica()
+																					.size() > 0) {
+																		for (Musica musica : listaIM2
+																				.getListaMusica()) {
+																			if (avaliarMusica
+																					.getMusica()
+																					.getPkMusica() == musica
+																					.getPkMusica()) {
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+
+																	if (!existeListaAnterior) {
+																		listaIMAux
+																				.add(avaliarMusica
+																						.getMusica());
+																	}
+																}
+															}
+
+															// Caso a lista
+															// esteja
+															// cheia, sai do
+															// for.
+															if (listaIMAux
+																	.size() >= 6) {
+																break;
+															}
+														} else {
+															// Verifica se a
+															// lista
+															// de músicas que o
+															// usuário curtiu
+															// esta
+															// cheia, para fazer
+															// as
+															// verificações e
+															// evitar
+															// recomendar
+															// músicas
+															// que o usuário já
+															// curtiu
+															if (listaMusicasUsuarioGenero != null
+																	&& listaMusicasUsuarioGenero
+																			.size() > 0) {
+																existeMusicaUsuario = false;
+																for (Musica musica : listaMusicasUsuarioGenero) {
+																	if (musica
+																			.getIdMusica() == avaliarMusica
+																			.getMusica()
+																			.getIdMusica()) {
+																		existeMusicaUsuario = true;
+																		break;
+																	}
+																}
+
+																if (!existeMusicaUsuario) {
+																	// Caso não
+																	// exista o
+																	// gênero no
+																	// hash
+																	// principal,
+																	// insere o
+																	// gênero
+																	// nele,
+																	// adiciona
+																	// a
+																	// música na
+																	// lista de
+																	// músicas
+																	// daquele
+																	// gênero e
+																	// adiciona
+																	// a
+																	// música na
+																	// lista
+																	// auxiliar.
+																	GuardaMusicasRecomendadas
+																			.getTokensExisteMusica()
+																			.put(mediaUsuarioGenero
+																					.getGenero()
+																					.getPkGenero(),
+																					new ArrayList<Long>());
+																	GuardaMusicasRecomendadas
+																			.getTokensExisteMusica()
+																			.get(mediaUsuarioGenero
+																					.getGenero()
+																					.getPkGenero())
+																			.add(avaliarMusica
+																					.getMusica()
+																					.getPkMusica());
+
+																	existeListaAnterior = false;
+																	if (listaIM1 != null
+																			&& listaIM1
+																					.getListaMusica() != null
+																			&& listaIM1
+																					.getListaMusica()
+																					.size() > 0) {
+																		for (Musica musica : listaIM1
+																				.getListaMusica()) {
+																			if (avaliarMusica
+																					.getMusica()
+																					.getPkMusica() == musica
+																					.getPkMusica()) {
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+
+																	if (!existeListaAnterior
+																			&& listaIM2 != null
+																			&& listaIM2
+																					.getListaMusica() != null
+																			&& listaIM2
+																					.getListaMusica()
+																					.size() > 0) {
+																		for (Musica musica : listaIM2
+																				.getListaMusica()) {
+																			if (avaliarMusica
+																					.getMusica()
+																					.getPkMusica() == musica
+																					.getPkMusica()) {
+																				existeListaAnterior = true;
+																				break;
+																			}
+																		}
+																	}
+
+																	if (!existeListaAnterior) {
+																		listaIMAux
+																				.add(avaliarMusica
+																						.getMusica());
+																	}
+																}
+															} else {
+																// Caso não
+																// exista o
+																// gênero no
+																// hash
+																// principal,
+																// insere
+																// o gênero
+																// nele,
+																// adiciona a
+																// música
+																// na lista de
+																// músicas
+																// daquele
+																// gênero e
+																// adiciona
+																// a música na
+																// lista
+																// auxiliar.
+																GuardaMusicasRecomendadas
+																		.getTokensExisteMusica()
+																		.put(mediaUsuarioGenero
+																				.getGenero()
+																				.getPkGenero(),
+																				new ArrayList<Long>());
+																GuardaMusicasRecomendadas
+																		.getTokensExisteMusica()
+																		.get(mediaUsuarioGenero
+																				.getGenero()
+																				.getPkGenero())
+																		.add(avaliarMusica
+																				.getMusica()
+																				.getPkMusica());
+
+																existeListaAnterior = false;
+																if (listaIM1 != null
+																		&& listaIM1
+																				.getListaMusica() != null
+																		&& listaIM1
+																				.getListaMusica()
+																				.size() > 0) {
+																	for (Musica musica : listaIM1
+																			.getListaMusica()) {
+																		if (avaliarMusica
+																				.getMusica()
+																				.getPkMusica() == musica
+																				.getPkMusica()) {
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+
+																if (!existeListaAnterior
+																		&& listaIM2 != null
+																		&& listaIM2
+																				.getListaMusica() != null
+																		&& listaIM2
+																				.getListaMusica()
+																				.size() > 0) {
+																	for (Musica musica : listaIM2
+																			.getListaMusica()) {
+																		if (avaliarMusica
+																				.getMusica()
+																				.getPkMusica() == musica
+																				.getPkMusica()) {
+																			existeListaAnterior = true;
+																			break;
+																		}
+																	}
+																}
+
+																if (!existeListaAnterior) {
+																	listaIMAux
+																			.add(avaliarMusica
+																					.getMusica());
+																}
+															}
+
+															// Caso a lista
+															// esteja
+															// cheia, sai do
+															// for.
+															if (listaIMAux
+																	.size() >= 6) {
+																break;
+															}
+														}
 													}
 												}
 											}
 										}
-									}
 
-									// Caso o hash de músicas recomendadas
-									// esteja cheio, e por isso não tenha
-									// completado a lista de músicas, então
-									// limpa ele e volta para o mesmo gênero
-									if (existeHash && listaIMAux.size() < 6) {
-										GuardaMusicasRecomendadas
-												.getTokensExisteMusica()
-												.get(listaMUG.get(i)
-														.getGenero()
-														.getPkGenero()).clear();
-										i--;
-									} else {
-										// Caso a lista auxiliar contenha
-										// músicas, adiciona ela em algum hash
-										// de músicas para recomendação
-										if (listaIMAux.size() > 0) {
-											if (listaIM1 == null) {
-												listaIM1 = new MusicasRecomendadasIM();
-												listaIM1.setGenero(listaMUG
-														.get(i).getGenero());
-												listaIM1.setListaMusica(new ArrayList<Musica>());
-												listaIM1.getListaMusica()
-														.addAll(listaIMAux);
-												listaIM1.setNomeGenero(listaIM1
-														.getGenero()
-														.getNomeGenero()
-														.toUpperCase());
-												listaIM1.setNota(0);
+										// Caso o hash de músicas recomendadas
+										// esteja cheio, e por isso não tenha
+										// completado a lista de músicas, então
+										// limpa ele e volta para o mesmo gênero
+										if (existeHash && listaIMAux.size() < 6) {
+											GuardaMusicasRecomendadas
+													.getTokensExisteMusica()
+													.get(listaMUG.get(i)
+															.getGenero()
+															.getPkGenero())
+													.clear();
+											i--;
+										} else {
+											// Caso a lista auxiliar contenha
+											// músicas, adiciona ela em algum
+											// hash
+											// de músicas para recomendação
+											if (listaIMAux.size() > 0) {
+												if (listaIM1 == null) {
+													listaIM1 = new MusicasRecomendadasIM();
+													listaIM1.setGenero(listaMUG
+															.get(i).getGenero());
+													listaIM1.setListaMusica(new ArrayList<Musica>());
+													listaIM1.getListaMusica()
+															.addAll(listaIMAux);
+													listaIM1.setNomeGenero(listaIM1
+															.getGenero()
+															.getNomeGenero()
+															.toUpperCase());
+													listaIM1.setNota(0);
 
-												if (listaIM1.getListaMusica()
-														.size() == 0) {
-													listaIM1.setTamanhoLista(1);
-												}
-
-												if (listaIM1.getListaMusica()
-														.size() > 2) {
-													listaIM1.setTamanhoLista(3);
-												} else {
-													listaIM1.setTamanhoLista(listaIM1
+													if (listaIM1
 															.getListaMusica()
-															.size());
-												}
-											} else if (listaIM2 == null) {
-												listaIM2 = new MusicasRecomendadasIM();
-												listaIM2.setGenero(listaMUG
-														.get(i).getGenero());
-												listaIM2.setListaMusica(new ArrayList<Musica>());
-												listaIM2.getListaMusica()
-														.addAll(listaIMAux);
-												listaIM2.setNomeGenero(listaIM2
-														.getGenero()
-														.getNomeGenero()
-														.toUpperCase());
-												listaIM2.setNota(0);
+															.size() == 0) {
+														listaIM1.setTamanhoLista(1);
+													}
 
-												if (listaIM2.getListaMusica()
-														.size() == 0) {
-													listaIM2.setTamanhoLista(1);
-												}
-
-												if (listaIM2.getListaMusica()
-														.size() > 2) {
-													listaIM2.setTamanhoLista(3);
-												} else {
-													listaIM2.setTamanhoLista(listaIM2
+													if (listaIM1
 															.getListaMusica()
-															.size());
-												}
-											} else {
-												listaIM3 = new MusicasRecomendadasIM();
-												listaIM3.setGenero(listaMUG
-														.get(i).getGenero());
-												listaIM3.setListaMusica(new ArrayList<Musica>());
-												listaIM3.getListaMusica()
-														.addAll(listaIMAux);
-												listaIM3.setNomeGenero(listaIM3
-														.getGenero()
-														.getNomeGenero()
-														.toUpperCase());
-												listaIM3.setNota(0);
+															.size() > 2) {
+														listaIM1.setTamanhoLista(3);
+													} else {
+														listaIM1.setTamanhoLista(listaIM1
+																.getListaMusica()
+																.size());
+													}
+												} else if (listaIM2 == null) {
+													listaIM2 = new MusicasRecomendadasIM();
+													listaIM2.setGenero(listaMUG
+															.get(i).getGenero());
+													listaIM2.setListaMusica(new ArrayList<Musica>());
+													listaIM2.getListaMusica()
+															.addAll(listaIMAux);
+													listaIM2.setNomeGenero(listaIM2
+															.getGenero()
+															.getNomeGenero()
+															.toUpperCase());
+													listaIM2.setNota(0);
 
-												if (listaIM3.getListaMusica()
-														.size() == 0) {
-													listaIM3.setTamanhoLista(1);
-												}
-
-												if (listaIM3.getListaMusica()
-														.size() > 2) {
-													listaIM3.setTamanhoLista(3);
-												} else {
-													listaIM3.setTamanhoLista(listaIM3
+													if (listaIM2
 															.getListaMusica()
-															.size());
-												}
+															.size() == 0) {
+														listaIM2.setTamanhoLista(1);
+													}
 
-												// Caso todas os hash's tenham
-												// sido preenchidos, então sai
-												// do loop
-												break;
+													if (listaIM2
+															.getListaMusica()
+															.size() > 2) {
+														listaIM2.setTamanhoLista(3);
+													} else {
+														listaIM2.setTamanhoLista(listaIM2
+																.getListaMusica()
+																.size());
+													}
+												} else {
+													listaIM3 = new MusicasRecomendadasIM();
+													listaIM3.setGenero(listaMUG
+															.get(i).getGenero());
+													listaIM3.setListaMusica(new ArrayList<Musica>());
+													listaIM3.getListaMusica()
+															.addAll(listaIMAux);
+													listaIM3.setNomeGenero(listaIM3
+															.getGenero()
+															.getNomeGenero()
+															.toUpperCase());
+													listaIM3.setNota(0);
+
+													if (listaIM3
+															.getListaMusica()
+															.size() == 0) {
+														listaIM3.setTamanhoLista(1);
+													}
+
+													if (listaIM3
+															.getListaMusica()
+															.size() > 2) {
+														listaIM3.setTamanhoLista(3);
+													} else {
+														listaIM3.setTamanhoLista(listaIM3
+																.getListaMusica()
+																.size());
+													}
+
+													// Caso todas os hash's
+													// tenham
+													// sido preenchidos, então
+													// sai
+													// do loop
+													break;
+												}
 											}
 										}
 									}
 								}
+							} else {
+								// Não existe número suficientes de gêneros a
+								// serem
+								// recomendados, então serão recomendados as
+								// músicas
+								// mais avaliadas do site para
+								// completar a recomendação
+
+								// Procura no Banco de Dados as músicas mais bem
+								// avaliadas e insere ela na lista que irá
+								// aparecer
+								// na tela do usuário
+								List<Musica> listaMusicas = musicaDAO
+										.pesquisaMelhoresAvaliadas();
+								maisAvaliadas = new MusicasRecomendadasIM();
+								maisAvaliadas
+										.setListaMusica(new ArrayList<Musica>());
+								maisAvaliadas.setNota(0);
+								listaTodasMusicasUsuario = new ArrayList<Musica>();
+								listaTodasMusicasUsuario = avaliarMusicaDAO
+										.getAllAvaliacoesUsuario(getUsuarioGlobal());
+
+								if (listaTodasMusicasUsuario != null
+										&& listaTodasMusicasUsuario.size() > 0) {
+									for (Musica m1 : listaMusicas) {
+										if (maisAvaliadas.getListaMusica()
+												.size() == 15) {
+											break;
+										}
+
+										existeMusicaListaMaisAvaliadas = false;
+										for (Musica m2 : listaTodasMusicasUsuario) {
+											if (m1.getPkMusica() == m2
+													.getPkMusica()) {
+												existeMusicaListaMaisAvaliadas = true;
+											}
+										}
+
+										if (!existeMusicaListaMaisAvaliadas) {
+											maisAvaliadas.getListaMusica().add(
+													m1);
+										}
+									}
+
+									if (maisAvaliadas.getListaMusica() != null
+											&& maisAvaliadas.getListaMusica()
+													.size() > 2) {
+										maisAvaliadas.setTamanhoLista(3);
+									} else if (maisAvaliadas.getListaMusica() != null
+											&& maisAvaliadas.getListaMusica()
+													.size() > 0) {
+										maisAvaliadas
+												.setTamanhoLista(listaMusicas
+														.size());
+									} else {
+										maisAvaliadas = null;
+									}
+								} else {
+									if (listaMusicas != null
+											&& listaMusicas.size() > 2) {
+										maisAvaliadas.setTamanhoLista(3);
+
+										if (listaMusicas.size() > 15) {
+											for (Musica musica : listaMusicas) {
+												if (maisAvaliadas
+														.getListaMusica()
+														.size() == 15) {
+													break;
+												}
+
+												maisAvaliadas.getListaMusica()
+														.add(musica);
+											}
+										} else {
+											maisAvaliadas.getListaMusica()
+													.addAll(listaMusicas);
+										}
+
+									} else if (listaMusicas != null
+											&& listaMusicas.size() > 0) {
+										maisAvaliadas
+												.setTamanhoLista(listaMusicas
+														.size());
+										maisAvaliadas.getListaMusica().addAll(
+												listaMusicas);
+									} else {
+										maisAvaliadas = null;
+									}
+								}
+
+								// Para completar manda uma mensagem
+								// incentivando o
+								// usuário a curtir mais músicas no sistemas
+								this.mensagemIncentivamentoCurtidas = "Para melhorar as recomendações navegue pelo site avaliando músicas!";
+								addMessage(
+										"Este email já está cadastrado em outro usuário",
+										FacesMessage.SEVERITY_INFO);
 							}
-						} else {
-							// Não existe número suficientes de gêneros a serem
-							// recomendados, então serão recomendados as músicas
-							// mais avaliadas do site para
-							// completar a recomendação
+						} else if (listaMUG == null || listaMUG.size() == 0) {
+							// Caso não exista significa que o usuário não
+							// curtiu
+							// nenhuma música então recomenda as músicas mais
+							// avaliadas do site
+							// Para completar manda uma mensagem incentivando o
+							// usuário a curtir mais músicas no sistemas
 
 							// Procura no Banco de Dados as músicas mais bem
 							// avaliadas e insere ela na lista que irá aparecer
-							// na tela do usuário
+							// na
+							// tela do usuário
 							List<Musica> listaMusicas = musicaDAO
 									.pesquisaMelhoresAvaliadas();
 							maisAvaliadas = new MusicasRecomendadasIM();
@@ -1644,96 +1891,11 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 								}
 							}
 
-							// Para completar manda uma mensagem incentivando o
-							// usuário a curtir mais músicas no sistemas
 							this.mensagemIncentivamentoCurtidas = "Para melhorar as recomendações navegue pelo site avaliando músicas!";
 							addMessage(
 									"Este email já está cadastrado em outro usuário",
 									FacesMessage.SEVERITY_INFO);
 						}
-					} else if (listaMUG == null || listaMUG.size() == 0) {
-						// Caso não exista significa que o usuário não curtiu
-						// nenhuma música então recomenda as músicas mais
-						// avaliadas do site
-						// Para completar manda uma mensagem incentivando o
-						// usuário a curtir mais músicas no sistemas
-
-						// Procura no Banco de Dados as músicas mais bem
-						// avaliadas e insere ela na lista que irá aparecer na
-						// tela do usuário
-						List<Musica> listaMusicas = musicaDAO
-								.pesquisaMelhoresAvaliadas();
-						maisAvaliadas = new MusicasRecomendadasIM();
-						maisAvaliadas.setListaMusica(new ArrayList<Musica>());
-						maisAvaliadas.setNota(0);
-						listaTodasMusicasUsuario = new ArrayList<Musica>();
-						listaTodasMusicasUsuario = avaliarMusicaDAO
-								.getAllAvaliacoesUsuario(getUsuarioGlobal());
-
-						if (listaTodasMusicasUsuario != null
-								&& listaTodasMusicasUsuario.size() > 0) {
-							for (Musica m1 : listaMusicas) {
-								if (maisAvaliadas.getListaMusica().size() == 15) {
-									break;
-								}
-
-								existeMusicaListaMaisAvaliadas = false;
-								for (Musica m2 : listaTodasMusicasUsuario) {
-									if (m1.getPkMusica() == m2.getPkMusica()) {
-										existeMusicaListaMaisAvaliadas = true;
-									}
-								}
-
-								if (!existeMusicaListaMaisAvaliadas) {
-									maisAvaliadas.getListaMusica().add(m1);
-								}
-							}
-
-							if (maisAvaliadas.getListaMusica() != null
-									&& maisAvaliadas.getListaMusica().size() > 2) {
-								maisAvaliadas.setTamanhoLista(3);
-							} else if (maisAvaliadas.getListaMusica() != null
-									&& maisAvaliadas.getListaMusica().size() > 0) {
-								maisAvaliadas.setTamanhoLista(listaMusicas
-										.size());
-							} else {
-								maisAvaliadas = null;
-							}
-						} else {
-							if (listaMusicas != null && listaMusicas.size() > 2) {
-								maisAvaliadas.setTamanhoLista(3);
-
-								if (listaMusicas.size() > 15) {
-									for (Musica musica : listaMusicas) {
-										if (maisAvaliadas.getListaMusica()
-												.size() == 15) {
-											break;
-										}
-
-										maisAvaliadas.getListaMusica().add(
-												musica);
-									}
-								} else {
-									maisAvaliadas.getListaMusica().addAll(
-											listaMusicas);
-								}
-
-							} else if (listaMusicas != null
-									&& listaMusicas.size() > 0) {
-								maisAvaliadas.setTamanhoLista(listaMusicas
-										.size());
-								maisAvaliadas.getListaMusica().addAll(
-										listaMusicas);
-							} else {
-								maisAvaliadas = null;
-							}
-						}
-
-						this.mensagemIncentivamentoCurtidas = "Para melhorar as recomendações navegue pelo site avaliando músicas!";
-						addMessage(
-								"Este email já está cadastrado em outro usuário",
-								FacesMessage.SEVERITY_INFO);
-					}
 				} else {
 					encerrarSessao();
 				}
@@ -1839,8 +2001,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 							mUG.setMediaAvaliacoes(Double.valueOf(nota));
 
 						} else {
-							mUG.setQuantidadeMusicas(mUG
-									.getQuantidadeMusicas() + 1);
+							mUG.setQuantidadeMusicas(mUG.getQuantidadeMusicas() + 1);
 							mUG.setMedia(((mUG.getMedia() * (mUG
 									.getQuantidadeMusicas() - 1)) + m
 									.getBPMMUsica())
@@ -1872,7 +2033,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 				}
 			} else {
 				for (Musica m : listaMusicas.getListaMusica()) {
-					
+
 					am = null;
 					am = avaliarMusicaDAO
 							.pesquisaUsuarioAvaliouMusicaPelaMusica(m,
@@ -1882,7 +2043,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 						listaGenero = new ArrayList<Genero>();
 						listaGenero = bandaGeneroDAO.pesquisarGenerosBanda(m
 								.getBanda());
-						
+
 						// Percorre a lista de gênero para criar/atualizar o
 						// MediaUsuarioGenero
 						for (Genero genero : listaGenero) {
@@ -1903,19 +2064,17 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 								mUG.setMediaAvaliacoes(((mUG
 										.getMediaAvaliacoes() * (mUG
 										.getQuantidadeMusicas()))
-										- am.getNota() + Double
-											.valueOf(nota))
+										- am.getNota() + Double.valueOf(nota))
 										/ mUG.getQuantidadeMusicas());
 							}
 
 							mediaUsuarioGeneroDAO.salvaMediaUsuarioGenero(mUG);
 						}
 					}
-					
+
 					m.setMediaAvaliacoes(((m.getMediaAvaliacoes() * m
 							.getQuantidadeAvaliacoes()) - am.getNota() + Integer
-								.valueOf(nota))
-							/ m.getQuantidadeAvaliacoes());
+								.valueOf(nota)) / m.getQuantidadeAvaliacoes());
 					musicaDAO.salvarMusica(m);
 
 					am.setNota(Integer.valueOf(nota));
@@ -1926,6 +2085,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 			ConectaBanco.getInstance().commit();
 			// Atribui a nota a lista das notas passada como parâmetro
 			listaMusicas.setNota(Integer.valueOf(nota));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();

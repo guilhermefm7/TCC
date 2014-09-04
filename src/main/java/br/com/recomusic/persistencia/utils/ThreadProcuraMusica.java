@@ -21,8 +21,8 @@ public class ThreadProcuraMusica implements Runnable {
 		{
 			try
 			{
-				Thread.sleep(20000);
-				//Thread.sleep(1200000);
+				//Thread.sleep(20000);
+				Thread.sleep(1200000);
 			}
 			catch (InterruptedException iex)
 			{
