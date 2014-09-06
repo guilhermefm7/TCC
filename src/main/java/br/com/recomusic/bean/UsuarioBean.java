@@ -61,6 +61,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	private String mensagemErroAtualizarCadastro = null;
 	private boolean atualizarCadastro = false;
 	private String nomeMusica = null;
+	private String guardaToken = null;
 	public UsuarioBean() { }
 
 	public void logar()
@@ -141,6 +142,8 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		{
 			if(token!=null && token.length()>0)
 			{
+				setTokenFacebook(token);
+				guardaToken = token;
 				FacesContext facesContext = FacesContext.getCurrentInstance();
 				if (!facesContext.isPostback() && !facesContext.isValidationFailed())
 				{
@@ -753,5 +756,13 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 
 	public void setNomeMusica(String nomeMusica) {
 		this.nomeMusica = nomeMusica;
+	}
+
+	public String getGuardaToken() {
+		return guardaToken;
+	}
+
+	public void setGuardaToken(String guardaToken) {
+		this.guardaToken = guardaToken;
 	}
 }

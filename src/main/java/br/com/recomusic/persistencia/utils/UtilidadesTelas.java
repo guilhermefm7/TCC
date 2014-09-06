@@ -30,6 +30,7 @@ public class UtilidadesTelas
 	private  boolean curtiuMusica = false;
 	private  boolean naoCurtiuMusica = false;
     protected Boolean enableMessage = Boolean.TRUE;
+    protected String tokenFacebook;
 	EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
 	private InformacaoMusicalCadastroBandaDAO informacaoMusicalCadastroBandaDAO = new InformacaoMusicalCadastroBandaDAO( ConectaBanco.getInstance().getEntityManager());
     public UtilidadesTelas() {   }  
@@ -49,6 +50,24 @@ public class UtilidadesTelas
 		{
 			e.printStackTrace();
 			return false;
+		}	
+	}
+	
+	/**
+	 * Verifica se foi uma conexão Facebook
+	 */
+	public static String verificarSessaoFacebook()
+	{
+		try
+		{
+			if(((UsuarioBean) getBean("UsuarioBean")).getGuardaToken()!=null && ((UsuarioBean) getBean("UsuarioBean")).getGuardaToken().length()>0)
+			{ return ((UsuarioBean) getBean("UsuarioBean")).getGuardaToken(); }
+			else { return null; }
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
 		}	
 	}
     
@@ -216,5 +235,12 @@ public class UtilidadesTelas
     public void setEnableMessage(Boolean enableMessage) {
         this.enableMessage = enableMessage;
     }
-	
+
+	public String getTokenFacebook() {
+		return tokenFacebook;
+	}
+
+	public void setTokenFacebook(String tokenFacebook) {
+		this.tokenFacebook = tokenFacebook;
+	}
 }

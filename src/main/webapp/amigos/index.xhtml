@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:head>
+	<script type="text/javascript">
+        $(document).ready(function(){
+            $('.click8').click(function (event){
+                         var url = $(this).attr("href");
+                         window.open(url, "_blank");
+                         event.preventDefault();
+            });
+        });
+    </script>
+</h:head>
+<h:body>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{AmigosBean.iniciar}" />
+	</f:metadata>
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+		<ui:define name="content">
+
+			<div class="row">
+				<div class="col-md-4">
+					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Amigos</h1>
+				</div>
+			</div>
+
+			<br />
+			<h1
+				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Amigos</h1>
+			<br /> <br /> <br /> <br />
+			<p:accordionPanel>
+				<p:tab title="Amigos do Facebook"
+					rendered="#{AmigosBean.listaAmigosFacebook != null}">
+					<h:panelGrid columns="1" cellpadding="">
+						<h:form class="navbar-form navbar-left" style="padding: 0;">
+							<div id="divMessages">
+								<p:messages showDetail="true" autoUpdate="true" closable="true" />
+							</div>
+
+
+						</h:form>
+					</h:panelGrid>
+				</p:tab>
+			</p:accordionPanel>
+
+			<p:accordionPanel>
+				<p:tab title="Procurar Novos Amigos"
+					activeIndex="#{AmigosBean.tabActiveIndex}">
+					<h:panelGrid columns="1" cellpadding="">
+						<h:form class="navbar-form navbar-left" style="padding: 0;">
+							<div id="divMessages">
+								<p:messages showDetail="true" autoUpdate="true" closable="true" />
+							</div>
+
+							<div class="form-group">
+								<h:inputText styleClass="form-control form-cascade-control"
+									pt:placeHolder="Login/Email"
+									style="width: 80%;vertical-align:baseline" id="name"
+									value="#{AmigosBean.nomeAmigo}">
+
+								</h:inputText>
+							</div>
+
+							<h:commandLink type="submit" class="btn btn-primary"
+								style="color:#FFFFFF;align:center;background-color:#85b2cb"
+								value="Procurar"
+								actionListener="#{AmigosBean.procurarAmigosSistema()}" />
+
+						</h:form>
+					</h:panelGrid>
+				</p:tab>
+			</p:accordionPanel>
+
+			<br />
+			<p:accordionPanel>
+				<p:tab title="Amizades">
+					<p:tabView id="tabs" activeIndex="#{AmigosBean.tabActiveIndex}"
+						dynamic="true" cache="false">
+						<p:ajax event="tabChange" listener="#{AmigosBean.onTabChange}"
+							update="tabs" />
+						<p:tab title="Amigos">
+							<h:panelGrid columns="2" cellpadding="10">
+								<h:outputLabel value="Você ainda não possui nenhuma amizade" rendered="#{AmigosBean.possuiAmizades eq false}"/>
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="Solicitações de Amizade" disabled="#{AmigosBean.solicitacoesAmizade}"> 
+							<h:panelGrid columns="2" cellpadding="10">
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="Amigos Encontrados"
+							disabled="#{AmigosBean.procurarAmigos}">
+							<h:panelGrid columns="2" cellpadding="10">
+							</h:panelGrid>
+						</p:tab>
+					</p:tabView>
+
+				</p:tab>
+			</p:accordionPanel>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

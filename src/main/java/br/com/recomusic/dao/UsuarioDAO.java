@@ -1,5 +1,7 @@
 package br.com.recomusic.dao;
  
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -35,6 +37,28 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
         }  
     }
     
+    /**
+     * Procura um usuário no sistema através de uma string passada como parâmetro, que pode ser nome, email ou login
+     * @param email
+     * @return List<Usuario>
+     * @throws Exception
+     */
+    public List<Usuario> procurarUsuarios(String emailLogin) throws Exception
+    {
+    	try
+    	{
+    		String EL = emailLogin.trim();
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Usuario as u where UPPER(u.emailUsuario) LIKE :login_email OR UPPER(u.login) LIKE :login_email ORDER by u.login ASC"));
+    		query.setParameter("login_email", "%"+EL.toUpperCase()+"%");
+    		List<Usuario> listaUsuarios =  (List<Usuario>) query.getResultList();
+    		return listaUsuarios;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
     public Usuario validarUsuarioLogin(String login, String senha) throws Exception
     {
     	try
@@ -66,6 +90,12 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     	}  
     }
     
+    /**
+     * Procurar um usuário pelo ID
+     * @param idFacebook
+     * @return
+     * @throws Exception
+     */
     public Usuario validarID(String idFacebook) throws Exception
     {
     	try
