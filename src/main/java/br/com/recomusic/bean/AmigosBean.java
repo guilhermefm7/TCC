@@ -14,6 +14,7 @@ import br.com.recomusic.dao.AmigosUsuarioDAO;
 import br.com.recomusic.dao.RequisicaoAmizadeDAO;
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.AmigosUsuario;
+import br.com.recomusic.om.RequisicaoAmizade;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.UtilidadesTelas;
 import br.com.recomusic.singleton.ConectaBanco;
@@ -166,10 +167,22 @@ public class AmigosBean extends UtilidadesTelas implements Serializable
 				adicionou = false;
 			}
 			
+			//Salva a respostas da requisição
 			requisicaoAmizadeDAO.salvaRespostaRequisicao(getUsuarioGlobal(), usuario, adicionou);
 			
 			if(adicionou)
 			{
+				//Caso a requisição seja aceita, os usuários se tornam amigos e procura para ver se existe alguma requisição que esse usuário tenha feito para o outro para setar ela como verdadeiro
+				RequisicaoAmizade req = null;
+				req = requisicaoAmizadeDAO.procuraRequisicao(usuario, getUsuarioGlobal());
+				
+				//Caso este usuário também tenha feito requisição, então seta ela como true
+				if(req!=null && req.getPkRequisicaoAmizade()>0)
+				{
+					req.setResposta(true);
+					requisicaoAmizadeDAO.salvaRequisicaoBD(req);
+				}
+				
 				AmigosUsuario am1;
 				AmigosUsuario am2;
 				

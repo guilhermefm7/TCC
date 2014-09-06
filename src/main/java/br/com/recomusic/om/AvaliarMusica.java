@@ -1,6 +1,7 @@
 package br.com.recomusic.om;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
 
 import br.com.recomusic.persistencia.utils.Constantes;
 
@@ -25,6 +28,8 @@ public class AvaliarMusica implements Serializable {
 	private Boolean resposta;
 	private int nota;
 	private int status = Constantes.TIPO_STATUS_ATIVO;
+	@Type(type="timestamp")
+	private Date lancamento;
 
 	@ManyToOne
 	@JoinColumn(name = "fkUsuario")
@@ -85,5 +90,13 @@ public class AvaliarMusica implements Serializable {
 
 	public void setResposta(Boolean resposta) {
 		this.resposta = resposta;
+	}
+
+	public Date getLancamento() {
+		return lancamento;
+	}
+
+	public void setLancamento(Date lancamento) {
+		this.lancamento = lancamento;
 	}
 }

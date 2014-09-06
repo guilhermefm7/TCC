@@ -210,6 +210,45 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
     
     /**
      * Autor: Guilherme
+     * Procura todas as música que o usuário passado como parâmetro curtiu ordenado pela data de avaliacao
+     * Usuario usuario
+     * lista com as Musicas
+     */
+    public List<Musica> getAvaliacoesUsuarioPorData(Usuario usuario) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AvaliarMusica as am where am.usuario.pkUsuario = :pk_usuario AND am.resposta = true ORDER BY am.lancamento DESC"));
+    		query.setParameter("pk_usuario", usuario.getPkUsuario());
+    		List<AvaliarMusica> listaAM = (List<AvaliarMusica>) query.getResultList();
+    		
+    		if(listaAM!=null && listaAM.size()>0)
+    		{
+    			List<Musica> listaM = new ArrayList<Musica>();
+    			
+    			for (AvaliarMusica am : listaAM)
+    			{
+    				if(am.getResposta() && am.getMusica()!=null && am.getMusica().getPkMusica()>0)
+    				{
+    					listaM.add(am.getMusica());
+    				}
+    			}
+    			
+    			return listaM;
+    		}
+    		else
+    		{
+    			return null;
+    		}
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
+    /**
+     * Autor: Guilherme
      * Procura todas as música que o usuário avaliou
      * Usuario usuario
      * lista com as Musicas

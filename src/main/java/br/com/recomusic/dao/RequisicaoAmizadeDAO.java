@@ -57,7 +57,9 @@ public class RequisicaoAmizadeDAO extends GenericDAO<Long, RequisicaoAmizade>
     
     /**
      * Salva a resposta da requisicao de amizade
-     * @param pkUsuario
+     * @param Usuario usuarioRequisitado
+     * @param Usuario usuarioRequisitou
+     * @param boolean adicionou
      * @return Caso tenha sido salvo com sucesso returna true senão retorna null
      * @throws Exception
      */
@@ -78,6 +80,30 @@ public class RequisicaoAmizadeDAO extends GenericDAO<Long, RequisicaoAmizade>
     		this.salvaRequisicaoBD(ra);
     		
     		return true;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
+    /**
+     * Procura se existe uma requisição de amizade entre os usuários passado como parâmetro
+     * @param usuarioRequisitado
+     * @param usuarioRequisitou
+     * @return RequisicaoAmizade caso exista ou null caso não exista
+     * @throws Exception
+     */
+    public RequisicaoAmizade procuraRequisicao(Usuario usuarioRequisitado, Usuario usuarioRequisitou) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.RequisicaoAmizade as ra where ra.usuarioRequisitado.pkUsuario = :usuario_requisitado AND ra.usuarioRequisitante.pkUsuario = :usuario_requisitante AND ra.resposta IS NULL"));
+    		query.setParameter("usuario_requisitado", usuarioRequisitado.getPkUsuario());
+    		query.setParameter("usuario_requisitante", usuarioRequisitou.getPkUsuario());
+    		RequisicaoAmizade ra =  (RequisicaoAmizade) query.getSingleResult();
+    		
+    		return ra;
     	}
     	catch ( NoResultException nre )
     	{  

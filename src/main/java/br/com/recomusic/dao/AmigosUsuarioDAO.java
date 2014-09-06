@@ -87,6 +87,48 @@ public class AmigosUsuarioDAO extends GenericDAO<Long, AmigosUsuario>
     }
     
     /**
+     * Procura se o usuário passado como parâmetro é amigo do outro usuário passado como parâmetro retornando o objeto 
+     * @param pkUsuarioPrincipal
+     * @param pkUsuarioSecundario
+     * @return AmigosUsuario caso exista e null caso não exista
+     * @throws Exception
+     */
+    public AmigosUsuario getOneAmigosUsuario(long pkUsuarioPrincipal, long pkUsuarioSecundario) throws Exception
+    {
+    	try
+    	{
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.AmigosUsuario as au where au.usuario.pkUsuario = :pkUsuarioPrincipal AND au.amigo.pkUsuario = :pkUsuarioSecundario"));
+    		query.setParameter("pkUsuarioPrincipal", pkUsuarioPrincipal);
+    		query.setParameter("pkUsuarioSecundario", pkUsuarioSecundario);
+    		AmigosUsuario au =  (AmigosUsuario) query.getSingleResult();
+    		
+    		return au;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
+    /**
+     * Remover um objeto AmigosUsuario passado como parâmetro
+     * @param am
+     * @throws Exception
+     */
+    public void removerAmigosUsuario(AmigosUsuario am) throws Exception
+    {
+    	try
+    	{
+    		this.delete(am);
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		nre.printStackTrace();
+    		ConectaBanco.getInstance().rollBack(); 
+    	}  
+    }
+    
+    /**
      * Salva no banco de dados os dois AmigosUsuario passados como parâmetro
      * @param AmigosUsuario am1
      * @param AmigosUsuario am2
