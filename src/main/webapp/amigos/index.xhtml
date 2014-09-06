@@ -36,7 +36,10 @@
 			<br />
 			<h1
 				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Amigos</h1>
-			<br /> <br /> <br /> <br />
+			<br />
+			<br />
+			<br />
+			<br />
 			<p:accordionPanel>
 				<p:tab title="Amigos do Facebook"
 					rendered="#{AmigosBean.listaAmigosFacebook != null}">
@@ -88,17 +91,28 @@
 						<p:ajax event="tabChange" listener="#{AmigosBean.onTabChange}"
 							update="tabs" />
 						<p:tab title="Amigos">
-							<h:panelGrid columns="2" cellpadding="10">
-								<h:outputLabel value="Você ainda não possui nenhuma amizade" rendered="#{AmigosBean.possuiAmizades eq false}"/>
-							</h:panelGrid>
+							<h:form class="navbar-form navbar-left" style="padding: 0;">
+								<h:panelGrid columns="2" cellpadding="10">
+									<h:outputLabel value="Você ainda não possui nenhuma amizade"
+										rendered="#{AmigosBean.possuiAmizades eq false}" />
+								</h:panelGrid>
+							</h:form>
 						</p:tab>
-						<p:tab title="Solicitações de Amizade" disabled="#{AmigosBean.solicitacoesAmizade}"> 
+						<p:tab title="Solicitações de Amizade"
+							disabled="#{AmigosBean.solicitacoesAmizade}">
 							<h:panelGrid columns="2" cellpadding="10">
+								<h:form class="navbar-form navbar-left" style="padding: 0;">
+								</h:form>
 							</h:panelGrid>
 						</p:tab>
 						<p:tab title="Amigos Encontrados"
 							disabled="#{AmigosBean.procurarAmigos}">
 							<h:panelGrid columns="2" cellpadding="10">
+								<h:form class="navbar-form navbar-left" style="padding: 0;">
+									<h:commandLink type="submit" class="btn btn-primary"
+										style="color:#FFFFFF;align:center;background-color:#85b2cb"
+										value="Procurar" />
+								</h:form>
 							</h:panelGrid>
 						</p:tab>
 					</p:tabView>

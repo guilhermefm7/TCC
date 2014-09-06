@@ -150,13 +150,22 @@ public class AmigosBean extends UtilidadesTelas implements Serializable
 		}
 	}
 	
-	public void responderRequisicaoAmizade(Usuario usuario, boolean adicionou)
+	public void responderRequisicaoAmizade(Usuario usuario, String respBoolean)
 	{
 		try
 		{
-			/*			Usuario usuario;
-			usuario = new Usuario();
-			usuario.setPkUsuario(11);*/
+			ConectaBanco.getInstance().beginTransaction();
+			Boolean adicionou = null;
+			
+			if(respBoolean.equals("true"))
+			{
+				adicionou = true;
+			}
+			else if(respBoolean.equals("false"))
+			{
+				adicionou = false;
+			}
+			
 			requisicaoAmizadeDAO.salvaRespostaRequisicao(getUsuarioGlobal(), usuario, adicionou);
 			
 			if(adicionou)
@@ -194,6 +203,8 @@ public class AmigosBean extends UtilidadesTelas implements Serializable
 				listaRequisicoes = null;
 				solicitacoesAmizade = true;
 			}
+			
+			ConectaBanco.getInstance().commit();
 		}
 		catch(Exception e)
 		{
