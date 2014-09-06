@@ -63,7 +63,6 @@ public class PerfilBean extends UtilidadesTelas implements Serializable
 						if(usuario.getPkUsuario()==getUsuarioGlobal().getPkUsuario())
 						{
 							amigo = null;
-							FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/perfil/index.xhtml");
 							
 							//Procura as Playlists
 							listaPlaylistsUsuario = playlistDAO.getPlaylistsUsuario(getUsuarioGlobal());
@@ -139,7 +138,7 @@ public class PerfilBean extends UtilidadesTelas implements Serializable
 				
 				//Procura as Musicas Avaliadas
 				listaAmigosUsuario = amigosUsuarioDAO.getAmigosUsuario(getUsuarioGlobal().getPkUsuario());
-				if(listaPlaylistsUsuario!=null && listaPlaylistsUsuario.size()==0){listaPlaylistsUsuario=null;}
+				if(listaAmigosUsuario!=null && listaAmigosUsuario.size()==0){listaAmigosUsuario=null;}
 			}
 		}
 		catch(Exception e)
