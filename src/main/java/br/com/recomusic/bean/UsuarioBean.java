@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+
 import br.com.recomusic.dao.BandaDAO;
 import br.com.recomusic.dao.BandaGeneroDAO;
 import br.com.recomusic.dao.GeneroDAO;
