@@ -614,6 +614,8 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		try
 		{
 			//encerrarSessao();
+			setUsuario(null);
+			setUsuarioGlobal(null);
 			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 			this.logado = false;
 		}

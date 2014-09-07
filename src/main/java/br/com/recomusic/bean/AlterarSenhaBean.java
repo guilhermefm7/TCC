@@ -44,7 +44,6 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 					{
 						redefinicao = true;
 					}
-					tokenRecebido = null;
 				}
 				else if(getUsuarioGlobal()!=null && getUsuarioGlobal().getPkUsuario()>0)
 				{
@@ -53,10 +52,7 @@ public class AlterarSenhaBean extends UtilidadesTelas implements Serializable
 					tokenRecebido = null;
 				}
 			}
-			else
-			{
-				redirecionarErro();
-			}
+
 		}
 		catch(Exception e)
 		{

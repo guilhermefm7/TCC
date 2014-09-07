@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.RequestScoped;
 
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.Usuario;
@@ -16,7 +16,7 @@ import br.com.recomusic.singleton.GuardaAlteracoesSenhas;
 
 
 @ManagedBean(name="RedefinirSenhaBean")
-@ViewScoped
+@RequestScoped
 public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -30,7 +30,14 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			email = null;
+			if(!UtilidadesTelas.verificarSessao())
+			{
+				email = null;
+			}
+			else
+			{
+				encerrarSessao();
+			}
 		}
 		catch(Exception e)
 		{
