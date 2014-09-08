@@ -22,11 +22,11 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
-	private Usuario usuario = null;
 	private String falhaAtualizarCadastro = null;
 	private String senhaDigitada = null;
 	private String senhaDigitadaNovamente = null;
 	private String tokenRecebido = null;
+	private Usuario usuarioAux = null;
 
 	public CadastroBean() { }
 	
@@ -40,7 +40,7 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 		{
 			if(UtilidadesTelas.verificarSessao())
 			{
-				setUsuario(getUsuarioGlobal());
+				setUsuarioAux(getUsuarioGlobal());
 			}
 			else
 			{
@@ -65,18 +65,24 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 				Usuario pegaUsuario = usuarioDAO.getUsuarioPk(getUsuarioGlobal().getPkUsuario());
 				if(pegaUsuario!=null && pegaUsuario.getPkUsuario()>0)
 				{
-					pegaUsuario.setLogin(usuario.getLogin());
-					pegaUsuario.setNome(usuario.getNome());
-					pegaUsuario.setSobrenome(usuario.getSobrenome());
+					pegaUsuario.setLogin(usuarioAux.getLogin());
+					pegaUsuario.setNome(usuarioAux.getNome());
+					pegaUsuario.setSobrenome(usuarioAux.getSobrenome());
 					
 					String cript = Criptografia.md5(senhaDigitada);
 					
 					pegaUsuario.setSenha(cript);
 					
 					save(pegaUsuario);
+					((UsuarioBean) getBean("UsuarioBean")).setUsuario(pegaUsuario);
 					setUsuarioGlobal(pegaUsuario);
 					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 				}
+			}
+			else
+			{
+				setUsuarioAux(null);
+				setUsuarioAux(getUsuarioGlobal());
 			}
 		}
 		catch(Exception e)
@@ -89,20 +95,16 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 	{
 		List<String> erros = new ArrayList<String>();
 		
-		if(usuario.getLogin()==null || usuario.getLogin().length()==0) { erros.add("Login");  }
-		if(usuario.getNome()==null || usuario.getNome().length()==0) { erros.add("Nome");  }
-		if(usuario.getSobrenome()==null || usuario.getSobrenome().length()==0) { erros.add("Sobrenome");  }
+		if(usuarioAux.getNome()==null || usuarioAux.getNome().length()==0) { erros.add("Nome");  }
+		if(usuarioAux.getSobrenome()==null || usuarioAux.getSobrenome().length()==0) { erros.add("Sobrenome");  }
 		if((senhaDigitada==null || senhaDigitada.length()==0) || 
 				(senhaDigitadaNovamente==null || senhaDigitadaNovamente.length()==0)) { erros.add("Senha");  }
 		
 		if(erros.size()>1) 																{ return "Os campos " + erros.toString() + " são requeridos." ;	}
 		else if(erros.size()==1) 														{ return "O campo " + erros.toString() + " é requerido."; 		}
 		
-		if(usuario.getLogin().length()<4)												{ return "Login deve possuir no mínimo 4 caracteres" ; 			}	
 		if(!(senhaDigitada.equals(senhaDigitadaNovamente)))								{ return "Senhas diferentes" ; 									}	
 		if(senhaDigitada.length()<6 && senhaDigitadaNovamente.length()<6)				{ return "Senha deve possuir no mínimo 6 caracteres" ; 			}
-		
-		//if(usuarioDAO.existeLogin(usuario.getLogin()))									{ return "Login já existente" ; 								}	
 		
 		return "";
 	}
@@ -142,14 +144,6 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 
 	// 		Getters and Setters			//
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	public String getFalhaAtualizarCadastro() {
 		return falhaAtualizarCadastro;
 	}
@@ -180,5 +174,13 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 
 	public void setTokenRecebido(String tokenRecebido) {
 		this.tokenRecebido = tokenRecebido;
+	}
+
+	public Usuario getUsuarioAux() {
+		return usuarioAux;
+	}
+
+	public void setUsuarioAux(Usuario usuarioAux) {
+		this.usuarioAux = usuarioAux;
 	}
 }

@@ -163,19 +163,20 @@
 
 								<div class="form-group">
 
-									<h:commandLink type="submit" class="btn btn-success"
+<!-- 									<h:commandLink type="submit" class="btn btn-success"
 										actionListener="#{UsuarioBean.redirecionarAlterarCadastro}"
 										value="Configurações"
 										style="background-color:#222; border-color: #222; color:#428bca; font-family:fantasy" />
-									<!-- data-toggle="modal" onclick="$('#myModal').modal('show')" data-target="#myModal" -->
-									<!-- <f:ajax execute="@this" /> -->
+									data-toggle="modal" onclick="$('#myModal').modal('show')" data-target="#myModal"
+									<f:ajax execute="@this" /> -->
 
 
 									<p:commandLink styleClass="btn btn-info pull-right" id="btbt"
 										style="background-color:#222; border-color: #222; color:#428bca; font-family:fantasy"
-										title="Inserir Etapa" onclick="PF('addEtapa').show()"
-										immediate="true" ajax="true">
-										<span class="fa fa-plus-square"></span> Nova Etapa </p:commandLink>
+										title="Inserir Etapa" oncomplete="PF('dialogCadastro').show()"
+										update=":pnlDialogCadastro" immediate="true" ajax="true"
+										actionListener="#{CadastroBean.iniciar}">
+										<span class="fa fa-plus-square"></span> Configurações </p:commandLink>
 
 								</div>
 								<div class="form-group">
@@ -231,119 +232,86 @@
 		</h:panelGroup> </section>
 	</h:panelGroup>
 
+	<p:outputPanel id="pnlDialogCadastro" styleClass="col-lg-12">
+		<h:form id="formDialog">
+			<p:confirmDialog id="dialogCadastro" message="Dados do Usuário"
+				modal="true" width="450px" header="Alteração de Cadastro"
+				widgetVar="dialogCadastro" style="margin: 5% 45%" closable="false"
+				closeOnEscape="false">
 
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="0" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+				<p:messages style="font-size: small;" showDetail="true"
+					autoUpdate="true" closable="true" />
+				<div class="form-group">
+					<div class="side-by-side clearfix row">
+						<div class="col-lg-6">
+							<label class="control-label">Nome</label> <br></br>
+							<h:inputText styleClass="form-control form-cascade-control"
+								required="false" id="nomeUsuario"
+								value="#{CadastroBean.usuarioAux.nome}">
+								<f:passThroughAttribute name="placeholder"
+									value="Digite seu nome" />
+								<f:validateRequired />
+							</h:inputText>
+						</div>
+						<div class="col-lg-6">
+							<label class="control-label">Sobrenome</label> <br />
+							<h:inputText styleClass="form-control form-cascade-control"
+								id="SobrenomeUsuario"
+								value="#{CadastroBean.usuarioAux.sobrenome}">
+								<f:passThroughAttribute name="placeholder"
+									value="Digite seu sobrenome" />
+							</h:inputText>
+						</div>
+					</div>
+					<br />
+					<div class="side-by-side clearfix row">
+						<div class="col-lg-6">
+							<label class="control-label">Senha</label> <br></br>
+							<h:inputSecret styleClass="form-control form-cascade-control"
+								required="false" id="descricaoEtapa"
+								value="#{CadastroBean.senhaDigitada}">
+								<f:passThroughAttribute name="placeholder"
+									value="Digite sua senha" />
+							</h:inputSecret>
+						</div>
+						<div class="col-lg-6">
+							<label class="control-label">Confirme a Senha</label> <br />
+							<h:inputSecret styleClass="form-control form-cascade-control"
+								id="qtd_tarefas" value="#{CadastroBean.senhaDigitadaNovamente}">
+								<f:passThroughAttribute name="placeholder"
+									value="Confirme sua Senha" />
+							</h:inputSecret>
+						</div>
+					</div>
 				</div>
-				<div class="modal-body">...</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+				<br></br>
+				<div class="form-group pull-right">
+					<br></br>
+
+					<div class="side-by-side clearfix row">
+						<div class="col-lg-6">
+
+							<p:commandLink styleClass="btn btn-default" title="Cancelar"
+								oncomplete="PF('dialogCadastro').hide()" ajax="true" async="true"
+								immediate="true">
+								<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>
+
+						</div>
+						<div class="col-lg-6">
+
+							<p:commandLink styleClass="btn btn-info pull-right"
+								actionListener="#{CadastroBean.atualizarCadastro}"
+								title="Nova Etapa" ajax="true"
+								async="false">
+								<span class="fa fa-save"></span> Confirmar </p:commandLink>
+
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
 
-	<p:confirmDialog id="addEtapa" message="Dados do Usuário" modal="true"
-		width="450" header="Alteração de Cadastro" widgetVar="addEtapa"
-		onShow="adjustPositionning($('#btbt'), $('#addEtapa'))"
-		style="margin: 5% 45%" closable="false" closeOnEscape="false">
-
-		<div class="form-group">
-				<div class="col-lg-12">
-					<label class="control-label">Login</label> <br></br>
-					<h:inputText styleClass="form-control form-cascade-control"
-						required="false" id="loginUsuario">
-						<f:passThroughAttribute name="placeholder"
-							value="Digite a descrição da Etapa" />
-						<f:validateRequired />
-					</h:inputText>
-				</div>
-			<br/>
-			<div class="col-lg-6">
-				<label class="control-label">Nome</label> <br></br>
-				<h:inputText styleClass="form-control form-cascade-control"
-					required="false" id="nomeUsuario">
-					<f:passThroughAttribute name="placeholder"
-						value="Digite a descrição da Etapa" />
-					<f:validateRequired />
-				</h:inputText>
-			</div>
-			<div class="col-lg-6">
-				<label class="control-label">Sobrenome</label> <br />
-				<h:inputText styleClass="form-control form-cascade-control"
-					id="SobrenomeUsuario">
-					<f:passThroughAttribute name="placeholder"
-						value="Digite a quantidade de tarefas" />
-				</h:inputText>
-			</div>
-			<br />
-			<br />
-			<br />
-			<br />
-			<div class="col-lg-6">
-				<label class="control-label">Senha</label> <br></br>
-				<h:inputText styleClass="form-control form-cascade-control"
-					required="false" id="descricaoEtapa">
-					<f:passThroughAttribute name="placeholder"
-						value="Digite a descrição da Etapa" />
-					<f:validateRequired />
-				</h:inputText>
-			</div>
-			<div class="col-lg-6">
-				<label class="control-label">Confirme a Senha</label> <br />
-				<h:inputText styleClass="form-control form-cascade-control"
-					id="qtd_tarefas">
-					<f:passThroughAttribute name="placeholder"
-						value="Digite a quantidade de tarefas" />
-				</h:inputText>
-			</div>
-
-		</div>
-		<br></br>
-		<div class="form-group pull-right">
-			<br></br>
-
-			<div class="side-by-side clearfix row">
-				<div class="col-lg-6">
-
-					<p:commandLink styleClass="btn btn-default" title="Cancelar"
-						oncomplete="PF('addEtapa').hide()" ajax="true" async="true"
-						immediate="true">
-						<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>
-
-				</div>
-				<div class="col-lg-6">
-
-					<p:commandLink styleClass="btn btn-info pull-right"
-						title="Nova Etapa" oncomplete="PF('addEtapa').hide()" ax="true"
-						async="false">
-						<span class="fa fa-save"></span> Confirmar </p:commandLink>
-
-				</div>
-			</div>
-		</div>
-
-	</p:confirmDialog>
-
-	<script type="text/javascript">
-function adjustPositionning(sourceElement, dialog) {
-    var x = sourceElement.offset().left;
-    var y = sourceElement.offset().top;
-    var width = sourceElement.width();
-    var padding = 80;
-  dialog.parent().offset({ top: y, left: x + width + padding });
-}
-</script>
-
+			</p:confirmDialog>
+		</h:form>
+	</p:outputPanel>
 
 	<h:form id="hiddenFormPesquisa" style="display: none;">
 		<h:inputHidden id="idMusicaProcurada"

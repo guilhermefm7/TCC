@@ -38,7 +38,7 @@
 						<h:panelGroup layout="block" class="form-group" id="registroLogin">
 							<h:outputLabel value="Login:"
 								style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799" />
-							<h:inputText value="#{CadastroBean.usuario.login}"
+							<h:inputText value="#{CadastroBean.usuarioAux.login}"
 								id="validaLogin" data-prompt-position="topLeft"
 								pt:placeHolder="Login" type="login" class="form-control" />
 						</h:panelGroup>
@@ -49,7 +49,7 @@
 								<h:panelGroup class="form-group" id="registroNome">
 									<h:outputLabel value="Nome:"
 										style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799" />
-									<h:inputText value="#{CadastroBean.usuario.nome}"
+									<h:inputText value="#{CadastroBean.usuarioAux.nome}"
 										id="validaNome" pt:placeHolder="Nome" class="form-control" />
 								</h:panelGroup>
 							</h:panelGroup>
@@ -59,7 +59,7 @@
 									id="registroSobrenome">
 									<h:outputLabel value="Sobrenome:"
 										style="text-align: center; font-size: 18px; font-family: inherit; color: #4F7799" />
-									<h:inputText value="#{CadastroBean.usuario.sobrenome}"
+									<h:inputText value="#{CadastroBean.usuarioAux.sobrenome}"
 										id="validaSobrenome" pt:placeHolder="Sobrenome"
 										class="form-control" />
 								</h:panelGroup>
