@@ -163,13 +163,6 @@
 
 								<div class="form-group">
 
-<!-- 									<h:commandLink type="submit" class="btn btn-success"
-										actionListener="#{UsuarioBean.redirecionarAlterarCadastro}"
-										value="Configurações"
-										style="background-color:#222; border-color: #222; color:#428bca; font-family:fantasy" />
-									data-toggle="modal" onclick="$('#myModal').modal('show')" data-target="#myModal"
-									<f:ajax execute="@this" /> -->
-
 
 									<p:commandLink styleClass="btn btn-info pull-right" id="btbt"
 										style="background-color:#222; border-color: #222; color:#428bca; font-family:fantasy"
@@ -235,8 +228,8 @@
 	<p:outputPanel id="pnlDialogCadastro" styleClass="col-lg-12">
 		<h:form id="formDialog">
 			<p:confirmDialog id="dialogCadastro" message="Dados do Usuário"
-				modal="true" width="450px" header="Alteração de Cadastro"
-				widgetVar="dialogCadastro" style="margin: 5% 45%" closable="false"
+				modal="true" header="Alteração de Cadastro" width="450"
+				widgetVar="dialogCadastro" style="margin: 5% 15%" closable="false"
 				closeOnEscape="false">
 
 				<p:messages style="font-size: small;" showDetail="true"

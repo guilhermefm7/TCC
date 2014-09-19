@@ -63,14 +63,13 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 	private String nomeAlbum = null;
 	private boolean curtiuMusica = false;
 	private String valorIdMusica;
-	private String valorIdMusicaEcho = null;
+	private String valorIdMusicaEcho;
 	private int notaMusica = 0;
 	private AvaliarMusica avaliarMusicaPrincipal = null;
 	private String tokenRecebido = null;
 	private String valorIdMusicaEchoAux = null;
 
-	public MusicaBean() {
-	}
+	public MusicaBean() {	}
 
 	/**
 	 * Responsavel por iniciar a pagina desktop.xhtml, carregando tdo oq ela
