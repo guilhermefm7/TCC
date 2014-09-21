@@ -100,74 +100,202 @@ public class PesquisaMusica
 			 if(manipulaMusica.length>1)
 			 {
 				 url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + manipulaMusica[0].replace(" ", "%") + "&bucket=id:deezer&bucket=tracks&limit=true&results=100&artist=" + manipulaMusica[1].replace(" ", "%");
+				 
+		         String json = IOUtils.toString(new URL(url));
+		         String jsonDeezer = "";
+		         String pegaAlbum = "";
+		         String pegaUrl = "";
+		         
+		         JSONObject obj = new JSONObject(json);
+		         JSONObject objDeezer = null;
+		         JSONObject objDeezerAux = null;
+		       
+		         JSONArray jsonMusicas = (JSONArray) ((JSONObject)obj.get("response")).get("songs");
+		         
+		         int contador = 1;
+		         
+		         for (int i = 0; i < jsonMusicas.length(); i++)
+		         {
+		    	     mIM = new MusicaIM();
+	                 JSONObject dado = jsonMusicas.getJSONObject(i);
+	                 mIM.setQtd(contador);
+	                 contador++;
+	                 mIM.setIdMusica((String)dado.get("id"));
+	                 mIM.setNomeMusica((String)dado.get("title"));
+	                 mIM.setNomeArtista((String)dado.get("artist_name"));
+	                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
+	                 
+	                 for (int x = 0; x < pegaIdDeezer.length(); x++)
+	      	       	 {
+			  	    	   JSONObject deezer = pegaIdDeezer.getJSONObject(x);
+			  	    	   String pegaIDTrack = (String)deezer.get("foreign_id");
+			  	    	   String array[] = new String[3];
+				    	   array = pegaIDTrack.split(":"); 
+			  	    	   mIM.setIdDeezer(array[2].toString());
+			  	    	   mIM.setAlbumMusica("");
+			  	    	   urlDeezer = "http://api.deezer.com/2.0/track/" + mIM.getIdDeezer() + "?callback=?";
+			  	    	   jsonDeezer = IOUtils.toString(new URL(urlDeezer));
+			  	    	   objDeezer = new JSONObject(jsonDeezer);
+			  	    	   if(objDeezer!=null && objDeezer.length()>0)
+			  	    	   {
+			  	    		   if(objDeezer.toString().contains("album"))
+			  	    		   {
+			  	    			   objDeezerAux = (JSONObject)objDeezer.get("album");
+			  	    			   
+			  	    			   if(objDeezerAux!=null && objDeezerAux.length()>0)
+			  	    			   {
+			  	    				   pegaAlbum = (String)objDeezerAux.get("title");
+			  	    				   pegaUrl = (String)objDeezerAux.get("cover");
+			  	    				   
+			  	    				   if(pegaAlbum.length()>0)
+			  	    				   {
+			  	    					   mIM.setAlbumMusica(pegaAlbum);
+			  	    				   }
+			  	    				   
+			  	    				   if(pegaUrl.length()>0)
+			  	    				   {
+			  	    					   mIM.setUrlMusica(pegaUrl);
+			  	    				   }
+			  	    			   }
+			  	    		   }
+			  	    	   }
+	      	         }
+	                 
+	                 listaMusicas.add(mIM);
+		         }
 			 }
 			 else
 			 {
-				 url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + manipulaMusica[0].replace(" ", "%") + "&bucket=id:deezer&bucket=tracks&limit=true&results=100";
+				 url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + manipulaMusica[0].replace(" ", "%") + "&bucket=id:deezer&bucket=tracks&limit=true&results=50";
+				 
+		         String json = IOUtils.toString(new URL(url));
+		         String jsonDeezer = "";
+		         String pegaAlbum = "";
+		         String pegaUrl = "";
+		         
+		         JSONObject obj = new JSONObject(json);
+		         JSONObject objDeezer = null;
+		         JSONObject objDeezerAux = null;
+		       
+		         JSONArray jsonMusicas = (JSONArray) ((JSONObject)obj.get("response")).get("songs");
+		         
+		         int contador = 1;
+		         
+		         for (int i = 0; i < jsonMusicas.length(); i++)
+		         {
+		    	     mIM = new MusicaIM();
+	                 JSONObject dado = jsonMusicas.getJSONObject(i);
+	                 mIM.setQtd(contador);
+	                 contador++;
+	                 mIM.setIdMusica((String)dado.get("id"));
+	                 mIM.setNomeMusica((String)dado.get("title"));
+	                 mIM.setNomeArtista((String)dado.get("artist_name"));
+	                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
+	                 
+	                 for (int x = 0; x < pegaIdDeezer.length(); x++)
+	      	       	 {
+			  	    	   JSONObject deezer = pegaIdDeezer.getJSONObject(x);
+			  	    	   String pegaIDTrack = (String)deezer.get("foreign_id");
+			  	    	   String array[] = new String[3];
+				    	   array = pegaIDTrack.split(":"); 
+			  	    	   mIM.setIdDeezer(array[2].toString());
+			  	    	   mIM.setAlbumMusica("");
+			  	    	   urlDeezer = "http://api.deezer.com/2.0/track/" + mIM.getIdDeezer() + "?callback=?";
+			  	    	   jsonDeezer = IOUtils.toString(new URL(urlDeezer));
+			  	    	   objDeezer = new JSONObject(jsonDeezer);
+			  	    	   if(objDeezer!=null && objDeezer.length()>0)
+			  	    	   {
+			  	    		   if(objDeezer.toString().contains("album"))
+			  	    		   {
+			  	    			   objDeezerAux = (JSONObject)objDeezer.get("album");
+			  	    			   
+			  	    			   if(objDeezerAux!=null && objDeezerAux.length()>0)
+			  	    			   {
+			  	    				   pegaAlbum = (String)objDeezerAux.get("title");
+			  	    				   pegaUrl = (String)objDeezerAux.get("cover");
+			  	    				   
+			  	    				   if(pegaAlbum.length()>0)
+			  	    				   {
+			  	    					   mIM.setAlbumMusica(pegaAlbum);
+			  	    				   }
+			  	    				   
+			  	    				   if(pegaUrl.length()>0)
+			  	    				   {
+			  	    					   mIM.setUrlMusica(pegaUrl);
+			  	    				   }
+			  	    			   }
+			  	    		   }
+			  	    	   }
+	      	         }
+	                 
+	                 listaMusicas.add(mIM);
+		         }
+		         
+		         url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&artist=" + manipulaMusica[0].replace(" ", "%") + "&bucket=id:deezer&bucket=tracks&limit=true&results=50";
+		         
+		         json = IOUtils.toString(new URL(url));
+		         jsonDeezer = "";
+		         pegaAlbum = "";
+		         pegaUrl = "";
+		         
+		         obj = new JSONObject(json);
+		         objDeezer = null;
+		         objDeezerAux = null;
+		       
+		         jsonMusicas = (JSONArray) ((JSONObject)obj.get("response")).get("songs");
+		         
+		         contador = 1;
+		         
+		         for (int i = 0; i < jsonMusicas.length(); i++)
+		         {
+		    	     mIM = new MusicaIM();
+	                 JSONObject dado = jsonMusicas.getJSONObject(i);
+	                 mIM.setQtd(contador);
+	                 contador++;
+	                 mIM.setIdMusica((String)dado.get("id"));
+	                 mIM.setNomeMusica((String)dado.get("title"));
+	                 mIM.setNomeArtista((String)dado.get("artist_name"));
+	                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
+	                 
+	                 for (int x = 0; x < pegaIdDeezer.length(); x++)
+	      	       	 {
+			  	    	   JSONObject deezer = pegaIdDeezer.getJSONObject(x);
+			  	    	   String pegaIDTrack = (String)deezer.get("foreign_id");
+			  	    	   String array[] = new String[3];
+				    	   array = pegaIDTrack.split(":"); 
+			  	    	   mIM.setIdDeezer(array[2].toString());
+			  	    	   mIM.setAlbumMusica("");
+			  	    	   urlDeezer = "http://api.deezer.com/2.0/track/" + mIM.getIdDeezer() + "?callback=?";
+			  	    	   jsonDeezer = IOUtils.toString(new URL(urlDeezer));
+			  	    	   objDeezer = new JSONObject(jsonDeezer);
+			  	    	   if(objDeezer!=null && objDeezer.length()>0)
+			  	    	   {
+			  	    		   if(objDeezer.toString().contains("album"))
+			  	    		   {
+			  	    			   objDeezerAux = (JSONObject)objDeezer.get("album");
+			  	    			   
+			  	    			   if(objDeezerAux!=null && objDeezerAux.length()>0)
+			  	    			   {
+			  	    				   pegaAlbum = (String)objDeezerAux.get("title");
+			  	    				   pegaUrl = (String)objDeezerAux.get("cover");
+			  	    				   
+			  	    				   if(pegaAlbum.length()>0)
+			  	    				   {
+			  	    					   mIM.setAlbumMusica(pegaAlbum);
+			  	    				   }
+			  	    				   
+			  	    				   if(pegaUrl.length()>0)
+			  	    				   {
+			  	    					   mIM.setUrlMusica(pegaUrl);
+			  	    				   }
+			  	    			   }
+			  	    		   }
+			  	    	   }
+	      	         }
+	                 
+	                 listaMusicas.add(mIM);
+		         }
 			 }
-			 
-	         String json = IOUtils.toString(new URL(url));
-	         String jsonDeezer = "";
-	         String pegaAlbum = "";
-	         String pegaUrl = "";
-	         
-	         JSONObject obj = new JSONObject(json);
-	         JSONObject objDeezer = null;
-	         JSONObject objDeezerAux = null;
-	       
-	         JSONArray jsonMusicas = (JSONArray) ((JSONObject)obj.get("response")).get("songs");
-	         
-	         int contador = 1;
-	         
-	         for (int i = 0; i < jsonMusicas.length(); i++)
-	         {
-	    	     mIM = new MusicaIM();
-                 JSONObject dado = jsonMusicas.getJSONObject(i);
-                 mIM.setQtd(contador);
-                 contador++;
-                 mIM.setIdMusica((String)dado.get("id"));
-                 mIM.setNomeMusica((String)dado.get("title"));
-                 mIM.setNomeArtista((String)dado.get("artist_name"));
-                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
-                 
-                 for (int x = 0; x < pegaIdDeezer.length(); x++)
-      	       	 {
-		  	    	   JSONObject deezer = pegaIdDeezer.getJSONObject(x);
-		  	    	   String pegaIDTrack = (String)deezer.get("foreign_id");
-		  	    	   String array[] = new String[3];
-			    	   array = pegaIDTrack.split(":"); 
-		  	    	   mIM.setIdDeezer(array[2].toString());
-		  	    	   mIM.setAlbumMusica("");
-		  	    	   urlDeezer = "http://api.deezer.com/2.0/track/" + mIM.getIdDeezer() + "?callback=?";
-		  	    	   jsonDeezer = IOUtils.toString(new URL(urlDeezer));
-		  	    	   objDeezer = new JSONObject(jsonDeezer);
-		  	    	   if(objDeezer!=null && objDeezer.length()>0)
-		  	    	   {
-		  	    		   if(objDeezer.toString().contains("album"))
-		  	    		   {
-		  	    			   objDeezerAux = (JSONObject)objDeezer.get("album");
-		  	    			   
-		  	    			   if(objDeezerAux!=null && objDeezerAux.length()>0)
-		  	    			   {
-		  	    				   pegaAlbum = (String)objDeezerAux.get("title");
-		  	    				   pegaUrl = (String)objDeezerAux.get("cover");
-		  	    				   
-		  	    				   if(pegaAlbum.length()>0)
-		  	    				   {
-		  	    					   mIM.setAlbumMusica(pegaAlbum);
-		  	    				   }
-		  	    				   
-		  	    				   if(pegaUrl.length()>0)
-		  	    				   {
-		  	    					   mIM.setUrlMusica(pegaUrl);
-		  	    				   }
-		  	    			   }
-		  	    		   }
-		  	    	   }
-      	         }
-                 
-                 listaMusicas.add(mIM);
-	         }
 			 
 			 return listaMusicas;
 		 }

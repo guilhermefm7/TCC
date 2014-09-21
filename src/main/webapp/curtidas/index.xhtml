@@ -28,11 +28,15 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 		<ui:define name="content">
 
-			<div class="row">
-				<div class="col-md-4">
-					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Curtidas</h1>
-				</div>
-			</div>
+<div class="row">
+	<div id="breadcrumb" class="col-xs-12">
+		<ol class="breadcrumb">
+			<li><a>Músicas</a></li>
+			<li><a href="http://localhost:8080/RecoMusic/curtidas/index.xhtml">Avaliações</a></li>
+		</ol>
+	</div>
+</div>
+
 
 			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas == 0}"
 				class="page-header"
@@ -55,12 +59,10 @@
 			<h:form rendered="#{MusicasCurtidasBean.qtdFaixas ge 1}">
 				<p:accordionPanel>
 					<p:tab title="Curtidas">
-						<h:panelGroup layout="block" class="table-responsive">
+						<h:panelGroup layout="block" class="box-content no-padding">
 							<h:dataTable
-								class="table table-bordered table-striped table-hover table-heading table-datatable dataTable"
+								class="table table-bordered table-striped table-hover table-heading table-datatable"
 								value="#{MusicasCurtidasBean.listaMusicas}" var="musicaAchada"
-								styleClass="order-table" headerClass="order-table-header"
-								rowClasses="order-table-odd-row,order-table-even-row"
 								style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>

@@ -1,5 +1,6 @@
 package br.com.recomusic.dao;
  
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -70,9 +71,30 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     {
     	try
     	{
+    		List<Musica> musicaAux = new ArrayList<Musica>();
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where 1 = 1 order by m.mediaAvaliacoes DESC, m.quantidadeAvaliacoes DESC"));
     		List<Musica> musica = (List<Musica>) query.getResultList();
-    		return musica;
+    		
+    		for (Musica musica2 : musica) {
+    			
+    			if(musicaAux.size()==15)
+    			{
+    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
+						if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
+						{
+							musicaAux.set(i, musica2);
+							break;
+						}
+					}
+    			}
+    			else
+    			{
+    				musicaAux.add(musica2);
+    			}
+				
+			}
+    		
+    		return musicaAux;
     	}
     	catch ( NoResultException nre )
     	{  

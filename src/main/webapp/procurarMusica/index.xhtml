@@ -29,9 +29,13 @@
 		<ui:define name="content">
 
 			<div class="row">
-				<div class="col-md-4">
-					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Pesquisar
-						Músicas</h1>
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a
+							href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Músicas</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/playlists/index.xhtml">Pesquisar Músicas</a></li>
+					</ol>
 				</div>
 			</div>
 			<h1 class="page-header"
@@ -42,11 +46,11 @@
 			<h:form>
 				<p:accordionPanel>
 					<p:tab title="Músicas">
-						<h:panelGroup layout="block" class="table-responsive">
-							<h:dataTable class="table table-striped"
-								value="#{ProcurarMusicaBean.listaMusicas}" var="musicaAchada"
-								styleClass="order-table" headerClass="order-table-header"
-								rowClasses="order-table-odd-row,order-table-even-row"
+						<h:panelGroup layout="block" class="box-content no-padding">
+							<h:dataTable
+								class="table table-bordered table-striped table-hover table-heading table-datatable"
+								id="datatable-1" value="#{ProcurarMusicaBean.listaMusicas}"
+								var="musicaAchada" 
 								style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>
@@ -68,6 +72,7 @@
 			    			</h:column>
 							</h:dataTable>
 						</h:panelGroup>
+
 					</p:tab>
 				</p:accordionPanel>
 			</h:form>

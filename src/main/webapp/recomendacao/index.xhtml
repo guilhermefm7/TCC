@@ -16,41 +16,56 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 
 		<ui:define name="content">
+			<div class="row">
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a>Músicas</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/recomendacao/index.xhtml">Recomendações</a></li>
+					</ol>
+				</div>
+			</div>
 			<div class="row" align="center">
 				<div class="col-mod-12" align="center">
-					<h2 class="form-signin-heading"
-						style="text-align: center; color: #000; font-size: 15px;">Recomendação</h2>
 					<h:panelGroup layout="block" class="footerPaginaInicialNome"></h:panelGroup>
 					<h:form>
 						<p:accordionPanel multiple="true" style="text-align: left;">
 							<p:tab title="#{RecomendacaoBean.listaIM1.nomeGenero}"
 								rendered="#{RecomendacaoBean.listaIM1 != null}">
-								<p:dataGrid var="musicaLista1"
-									columns="#{RecomendacaoBean.listaIM1.tamanhoLista}"
-									value="#{RecomendacaoBean.listaIM1.listaMusica}">
+								<h:panelGroup layout="block" class="box-content no-padding">
+									<p:dataTable
+										class="table table-bordered table-striped table-hover table-heading table-datatable"
+										value="#{RecomendacaoBean.listaIM1.listaMusica}"
+										var="musicaLista1" style="color: #333;font-weight: bold;">
 
-									<f:facet name="header">
-            							Músicas
-        							</f:facet>
-									<p:panel
-										header="#{musicaLista1.titulo} - #{musicaLista1.banda.nome}"
-										style="text-align:center">
-										<h:panelGrid columns="1" style="width:100%">
+										<p:column style="width:18%;text-align:center">
+											<p:graphicImage url="#{musicaLista1.urlImagem}"
+												style="text-align:center" />
+										</p:column>
 
-											<p:graphicImage url="#{musicaLista1.urlImagem}" />
+										<p:column>
+											<f:facet name="header">Nome</f:facet>
+			    					#{musicaLista1.titulo}
+			    						</p:column>
 
-											<h:outputText value="Álbum - #{musicaLista1.album}"
-												style="font-family: fantasy;" />
+										<p:column>
+											<f:facet name="header">Banda</f:facet>
+			    					#{musicaLista1.banda.nome}
+			    						</p:column>
 
-											<h:commandLink type="submit" class="btn btn-primary"
-												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista1.idDeezer,musicaLista1.titulo, musicaLista1.banda.nome, mmusicaLista1.album, musicaLista1.idMusica, musicaLista1.urlImagem)}"
-												style="color: #FFFFFF;font-size:medium">
-												<strong>Conferir</strong>
-											</h:commandLink>
+										<p:column>
+											<f:facet name="header">Àlbum</f:facet>
+			    					#{musicaLista1.album}
+			    			</p:column>
+										<p:column style="width:23%;text-align:center">
+											<h:commandLink type="submit" class="btn btn-success"
+												style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+												value="Conferir"
+												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista1.idDeezer,musicaLista1.titulo, musicaLista1.banda.nome, musicaLista1.album, musicaLista1.idMusica, musicaLista1.urlImagem)}" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
 
-										</h:panelGrid>
-									</p:panel>
-								</p:dataGrid>
 
 								<div class="row" align="center">
 									<div class="col-md-12">
@@ -154,32 +169,39 @@
 							</p:tab>
 							<p:tab title="#{RecomendacaoBean.listaIM2.nomeGenero}"
 								rendered="#{RecomendacaoBean.listaIM2 != null}">
-								<p:dataGrid var="musicaLista2"
-									columns="#{RecomendacaoBean.listaIM2.tamanhoLista}"
-									value="#{RecomendacaoBean.listaIM2.listaMusica}">
+								<h:panelGroup layout="block" class="box-content no-padding">
+									<p:dataTable
+										class="table table-bordered table-striped table-hover table-heading table-datatable"
+										value="#{RecomendacaoBean.listaIM2.listaMusica}"
+										var="musicaLista2" style="color: #333;font-weight: bold;">
 
-									<f:facet name="header">
-            							Músicas
-        							</f:facet>
-									<p:panel
-										header="#{musicaLista2.titulo} - #{musicaLista2.banda.nome}"
-										style="text-align:center">
-										<h:panelGrid columns="1" style="width:100%">
+										<p:column style="width:18%;text-align:center">
+											<p:graphicImage url="#{musicaLista2.urlImagem}"
+												style="text-align:center" />
+										</p:column>
 
-											<p:graphicImage url="#{musicaLista2.urlImagem}" />
+										<p:column>
+											<f:facet name="header">Nome</f:facet>
+			    					#{musicaLista2.titulo}
+			    						</p:column>
 
-											<h:outputText value="Álbum - #{musicaLista2.album}"
-												style="font-family: fantasy;" />
+										<p:column>
+											<f:facet name="header">Banda</f:facet>
+			    					#{musicaLista2.banda.nome}
+			    						</p:column>
 
-											<h:commandLink type="submit" class="btn btn-primary"
-												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista2.idDeezer,musicaLista2.titulo, musicaLista2.banda.nome, mmusicaLista2.album, musicaLista2.idMusica, musicaLista2.urlImagem)}"
-												style="color: #FFFFFF;font-size:medium">
-												<strong>Conferir</strong>
-											</h:commandLink>
-
-										</h:panelGrid>
-									</p:panel>
-								</p:dataGrid>
+										<p:column>
+											<f:facet name="header">Àlbum</f:facet>
+			    					#{musicaLista2.album}
+			    			</p:column>
+										<p:column style="width:23%;text-align:center">
+											<h:commandLink type="submit" class="btn btn-success"
+												style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+												value="Conferir"
+												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista2.idDeezer,musicaLista2.titulo, musicaLista2.banda.nome, musicaLista2.album, musicaLista2.idMusica, musicaLista2.urlImagem)}" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
 
 								<div class="row" align="center">
 									<div class="col-md-12">
@@ -283,32 +305,39 @@
 							</p:tab>
 							<p:tab title="#{RecomendacaoBean.listaIM3.nomeGenero}"
 								rendered="#{RecomendacaoBean.listaIM3 != null}">
-								<p:dataGrid var="musicaLista3"
-									columns="#{RecomendacaoBean.listaIM3.tamanhoLista}"
-									value="#{RecomendacaoBean.listaIM3.listaMusica}">
+								<h:panelGroup layout="block" class="box-content no-padding">
+									<p:dataTable
+										class="table table-bordered table-striped table-hover table-heading table-datatable"
+										value="#{RecomendacaoBean.listaIM3.listaMusica}"
+										var="musicaLista3" style="color: #333;font-weight: bold;">
 
-									<f:facet name="header">
-            							Músicas
-        							</f:facet>
-									<p:panel
-										header="#{musicaLista3.titulo} - #{musicaLista3.banda.nome}"
-										style="text-align:center">
-										<h:panelGrid columns="1" style="width:100%">
+										<p:column style="width:18%;text-align:center">
+											<p:graphicImage url="#{musicaLista3.urlImagem}"
+												style="text-align:center" />
+										</p:column>
 
-											<p:graphicImage url="#{musicaLista3.urlImagem}" />
+										<p:column>
+											<f:facet name="header">Nome</f:facet>
+			    					#{musicaLista3.titulo}
+			    						</p:column>
 
-											<h:outputText value="Álbum - #{musicaLista3.album}"
-												style="font-family: fantasy;" />
+										<p:column>
+											<f:facet name="header">Banda</f:facet>
+			    					#{musicaLista3.banda.nome}
+			    						</p:column>
 
-											<h:commandLink type="submit" class="btn btn-primary"
-												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista3.idDeezer,musicaLista3.titulo, musicaLista3.banda.nome, mmusicaLista3.album, musicaLista3.idMusica, musicaLista3.urlImagem)}"
-												style="color: #FFFFFF;font-size:medium">
-												<strong>Conferir</strong>
-											</h:commandLink>
-
-										</h:panelGrid>
-									</p:panel>
-								</p:dataGrid>
+										<p:column>
+											<f:facet name="header">Àlbum</f:facet>
+			    					#{musicaLista3.album}
+			    			</p:column>
+										<p:column style="width:23%;text-align:center">
+											<h:commandLink type="submit" class="btn btn-success"
+												style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+												value="Conferir"
+												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista3.idDeezer,musicaLista3.titulo, musicaLista3.banda.nome, musicaLista3.album, musicaLista3.idMusica, musicaLista3.urlImagem)}" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
 
 								<div class="row" align="center">
 									<div class="col-md-12">
@@ -413,32 +442,46 @@
 							</p:tab>
 							<p:tab title="Top Músicas"
 								rendered="#{RecomendacaoBean.maisAvaliadas != null}">
-								<p:dataGrid var="maisAvaliadas"
-									columns="#{RecomendacaoBean.maisAvaliadas.tamanhoLista}"
-									value="#{RecomendacaoBean.maisAvaliadas.listaMusica}">
 
-									<f:facet name="header">
-            							Músicas
-        							</f:facet>
-									<p:panel
-										header="#{maisAvaliadas.titulo} - #{maisAvaliadas.banda.nome}"
-										style="text-align:center">
-										<h:panelGrid columns="1" style="width:100%">
 
-											<p:graphicImage url="#{maisAvaliadas.urlImagem}" />
 
-											<h:outputText value="Álbum - #{maisAvaliadas.album}"
-												style="font-family: fantasy;" />
+								<h:panelGroup layout="block" class="box-content no-padding">
+									<div id="divMessages">
+										<p:messages style="font-size: small;" showDetail="true"
+											autoUpdate="true" closable="true" />
+									</div>
+									<p:dataTable
+										class="table table-bordered table-striped table-hover table-heading table-datatable"
+										value="#{RecomendacaoBean.maisAvaliadas.listaMusica}"
+										var="maisAvaliadas" style="color: #333;font-weight: bold;">
 
-											<h:commandLink type="submit" class="btn btn-primary"
-												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(musicaLista3.idDeezer,musicaLista3.titulo, musicaLista3.banda.nome, mmusicaLista3.album, musicaLista3.idMusica, musicaLista3.urlImagem)}"
-												style="color: #FFFFFF;font-size:medium">
-												<strong>Conferir</strong>
-											</h:commandLink>
+										<p:column style="width:18%;text-align:center">
+											<p:graphicImage url="#{maisAvaliadas.urlImagem}"
+												style="text-align:center" />
+										</p:column>
 
-										</h:panelGrid>
-									</p:panel>
-								</p:dataGrid>
+										<p:column>
+											<f:facet name="header">Nome</f:facet>
+			    					#{maisAvaliadas.titulo}
+			    						</p:column>
+
+										<p:column>
+											<f:facet name="header">Banda</f:facet>
+			    					#{maisAvaliadas.banda.nome}
+			    						</p:column>
+
+										<p:column>
+											<f:facet name="header">Àlbum</f:facet>
+			    					#{maisAvaliadas.album}
+			    			</p:column>
+										<p:column style="width:23%;text-align:center">
+											<h:commandLink type="submit" class="btn btn-success"
+												style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+												value="Conferir"
+												actionListener="#{RecomendacaoBean.redirecionaPaginaMusica(maisAvaliadas.idDeezer,maisAvaliadas.titulo, maisAvaliadas.banda.nome, maisAvaliadas.album, maisAvaliadas.idMusica, maisAvaliadas.urlImagem)}" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
 
 								<div class="row" align="center">
 									<div class="col-md-12">

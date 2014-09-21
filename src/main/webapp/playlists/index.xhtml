@@ -25,31 +25,40 @@
 		<f:event type="preRenderView" listener="#{PlaylistBean.iniciar}" />
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
+
 		<ui:define name="titulo">RecMusic</ui:define>
 		<ui:define name="content">
 
 			<div class="row">
-				<div class="col-md-4">
-					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Playlists</h1>
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a
+							href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Perfil</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/playlists/index.xhtml">Playlists</a></li>
+					</ol>
 				</div>
 			</div>
 
+
+
 			<br />
 			<h1
-				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Playlists</h1>
-			<h1 class="page-header"
-				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px;">
-				<h:outputLabel value="Criar nova playlist" />
-			</h1>
+				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Lista
+				de Playlists</h1>
+			<br />
+			<br />
+			<br />
+			<br />
+			
 
-
-			<p:accordionPanel>
+			<p:accordionPanel >
 				<p:tab title="Nova Playlist">
 					<h:panelGrid columns="1" cellpadding="">
 						<h:form class="navbar-form navbar-left" style="padding: 0;">
-								<div id="divMessages">
-									<p:messages showDetail="true" autoUpdate="true" closable="true" />
-								</div>
+							<div id="divMessages">
+								<p:messages showDetail="true" autoUpdate="true" closable="true" />
+							</div>
 							<div class="form-group">
 
 								<h:outputText value="Playlist: "
@@ -73,7 +82,7 @@
 					</h:panelGrid>
 				</p:tab>
 			</p:accordionPanel>
-
+			<br />
 			<h1 class="page-header"
 				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px;">
 				<h:outputLabel rendered="#{PlaylistBean.qtdPlaylists == 0}"
@@ -88,11 +97,9 @@
 
 				<p:accordionPanel>
 					<p:tab title="Playlists">
-						<h:panelGroup layout="block" class="table-responsive">
-							<h:dataTable class="table table-striped"
+						<h:panelGroup layout="block" class="box-content no-padding">
+							<h:dataTable class="table table-bordered table-striped table-hover table-heading table-datatable"
 								value="#{PlaylistBean.listaPIM}" var="playlistUsuario"
-								styleClass="order-table" headerClass="order-table-header"
-								rowClasses="order-table-odd-row,order-table-even-row"
 								style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>
@@ -114,7 +121,7 @@
 			    			</h:column>
 								<h:column>
 									<h:commandLink
-										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										type="submit" class="btn btn-success" style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
 										value="Excluir"
 										actionListener="#{PlaylistBean.removePlaylist(playlistUsuario.pkPlaylist)}" />
 								</h:column>

@@ -11,8 +11,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
-
 import br.com.recomusic.dao.BandaDAO;
 import br.com.recomusic.dao.BandaGeneroDAO;
 import br.com.recomusic.dao.GeneroDAO;
@@ -435,7 +433,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 		{
 			mensagemErroLogin = verificaConsistencia();
 
-			addMessage(verificaConsistencia(), FacesMessage.SEVERITY_ERROR);
+			addMessage(mensagemErroLogin, FacesMessage.SEVERITY_ERROR);
 			
 			if(mensagemErroLogin=="")
 			{

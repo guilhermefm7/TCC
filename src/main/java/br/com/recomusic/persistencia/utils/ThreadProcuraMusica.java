@@ -33,7 +33,6 @@ public class ThreadProcuraMusica implements Runnable {
 			{
 				SemaforoMusicasRecomendadas.getSemaforo().acquire();
 				
-				System.out.println("Acordei: ");
 				GuardaMusicasRecomendadas.getTokensExisteMusica().clear();
 			}
 			catch (InterruptedException e)

@@ -36,9 +36,15 @@
 			}
 			</script>
 
+
 			<div class="row">
-				<div class="col-md-4">
-					<h1 class="page-header" style="margin-top: 0; color: #4F7799">Playlist</h1>
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a
+							href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Playlist</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/playlists/index.xhtml">Playlist Selecionada</a></li>
+					</ol>
 				</div>
 			</div>
 
@@ -85,12 +91,10 @@
 			<h:form rendered="#{PlaylistSelecionadaBean.qtdPlaylists ge 1}">
 				<p:accordionPanel>
 					<p:tab title="Músicas">
-						<h:panelGroup layout="block" class="table-responsive">
-							<h:dataTable class="table table-striped"
+						<h:panelGroup layout="block" class="box-content no-padding">
+							<h:dataTable class="table table-bordered table-striped table-hover table-heading table-datatable"
 								value="#{PlaylistSelecionadaBean.listaMusicas}"
-								var="musicaPlaylist" styleClass="order-table"
-								headerClass="order-table-header"
-								rowClasses="order-table-odd-row,order-table-even-row"
+								var="musicaPlaylist" 
 								style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>
