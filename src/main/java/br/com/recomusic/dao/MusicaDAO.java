@@ -101,4 +101,45 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     		return null;  
     	}  
     }
+    
+    /**
+     * Procura as musicas mais bem avaliadas do sistemas de acordo com a quantidade passada como pârametro
+     * @param int quantidade
+     * return List<Musica> listaMusicas
+     * @throws Exception
+     */
+    public List<Musica> pesquisaMelhoresAvaliadas25() throws Exception
+    {
+    	try
+    	{
+    		List<Musica> musicaAux = new ArrayList<Musica>();
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where 1 = 1 order by m.mediaAvaliacoes DESC, m.quantidadeAvaliacoes DESC"));
+    		List<Musica> musica = (List<Musica>) query.getResultList();
+    		
+    		for (Musica musica2 : musica) {
+    			
+    			if(musicaAux.size()==25)
+    			{
+    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
+    					if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
+    					{
+    						musicaAux.set(i, musica2);
+    						break;
+    					}
+    				}
+    			}
+    			else
+    			{
+    				musicaAux.add(musica2);
+    			}
+    			
+    		}
+    		
+    		return musicaAux;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
 }

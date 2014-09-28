@@ -1,6 +1,7 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -10,13 +11,14 @@ import javax.faces.view.ViewScoped;
 import br.com.recomusic.dao.AvaliarMusicaDAO;
 import br.com.recomusic.dao.MusicaDAO;
 import br.com.recomusic.im.MusicaAvaliadaIM;
+import br.com.recomusic.om.Musica;
 import br.com.recomusic.persistencia.utils.UtilidadesTelas;
 import br.com.recomusic.singleton.ConectaBanco;
 
 
-@ManagedBean(name="MusicasCurtidasBean")
+@ManagedBean(name="TopAvaliacoesBean")
 @ViewScoped
-public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
+public class TopAvaliacoesBean extends UtilidadesTelas implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private List<String> listaNomesMusica = null;
@@ -25,7 +27,7 @@ public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
 	private AvaliarMusicaDAO avaliarMusicaDAO = new AvaliarMusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private int qtdFaixas = 0;
 
-	public MusicasCurtidasBean() {	}
+	public TopAvaliacoesBean() {	}
 
 	public void iniciar()
 	{
@@ -34,8 +36,23 @@ public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
 			if(UtilidadesTelas.verificarSessao())
 			{
 				setUsuarioGlobal(getUsuarioGlobal());
-				listaMusicas = avaliarMusicaDAO.getAvaliacoesUsuario(getUsuarioGlobal());
-				this.qtdFaixas = listaMusicas.get(listaMusicas.size()-1).getQtd();
+				
+				List<Musica> listaM = musicaDAO.pesquisaMelhoresAvaliadas25();
+				listaMusicas = new ArrayList<MusicaAvaliadaIM>();
+				MusicaAvaliadaIM m;
+				int contador = 0;
+				for (Musica musica : listaM)
+				{
+					contador++;
+					m = new MusicaAvaliadaIM(contador, musica, 0);
+					listaMusicas.add(m);
+					if(contador==25)
+					{
+						break;
+					}
+				}
+				
+				this.qtdFaixas = contador;
 			}
 			else
 			{

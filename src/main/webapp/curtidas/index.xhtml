@@ -28,14 +28,15 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 		<ui:define name="content">
 
-<div class="row">
-	<div id="breadcrumb" class="col-xs-12">
-		<ol class="breadcrumb">
-			<li><a>Músicas</a></li>
-			<li><a href="http://localhost:8080/RecoMusic/curtidas/index.xhtml">Avaliações</a></li>
-		</ol>
-	</div>
-</div>
+			<div class="row">
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a>Músicas</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/curtidas/index.xhtml">Avaliações</a></li>
+					</ol>
+				</div>
+			</div>
 
 
 			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas == 0}"
@@ -70,18 +71,26 @@
 			    			</h:column>
 								<h:column>
 									<f:facet name="header">Nome</f:facet>
-									<h:commandLink
-										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
-										actionListener="#{MusicasCurtidasBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.nomeMusica, musicaAchada.nomeArtista, musicaAchada.albumMusica, musicaAchada.idMusica)}">#{musicaAchada.nomeMusica} </h:commandLink>
+										#{musicaAchada.musica.titulo}
 								</h:column>
 								<h:column>
 									<f:facet name="header">Artista/Banda</f:facet>
-			    				#{musicaAchada.nomeArtista}
+			    				#{musicaAchada.musica.banda.nome}
 			    			</h:column>
 								<h:column>
 									<f:facet name="header">Álbum</f:facet>
-			    				#{musicaAchada.albumMusica}
+			    				#{musicaAchada.musica.album}
 			    			</h:column>
+								<h:column>
+									<f:facet name="header">Nota</f:facet>
+			    				#{musicaAchada.nota}
+			    			</h:column>
+								<h:column>
+									<h:commandLink type="submit" class="btn btn-success"
+										style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+										value="Conferir"
+										actionListener="#{MusicasCurtidasBean.redirecionaPaginaMusica(musicaAchada.musica.idDeezer,musicaAchada.musica.titulo, musicaAchada.musica.banda.nome, musicaAchada.musica.album, musicaAchada.musica.idMusica)}" />
+								</h:column>
 							</h:dataTable>
 						</h:panelGroup>
 					</p:tab>

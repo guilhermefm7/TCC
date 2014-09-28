@@ -2,6 +2,7 @@ package br.com.recomusic.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -3636,6 +3637,7 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 					musicaDAO.salvarMusica(m);
 
 					am = new AvaliarMusica();
+					am.setLancamento(new Date());
 					am.setMusica(m);
 					am.setUsuario(getUsuarioGlobal());
 					am.setStatus(Constantes.TIPO_STATUS_ATIVO);

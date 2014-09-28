@@ -1,6 +1,7 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -401,6 +402,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 						am.setUsuario(getUsuarioGlobal());
 						am.setStatus(Constantes.TIPO_STATUS_ATIVO);
 						am.setResposta(true);
+						am.setLancamento(new Date());
 						am.setNota(Integer.valueOf(nota));
 						avaliarMusicaDAO.salvarAvaliacao(am);
 					} else {
@@ -645,6 +647,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 
 					am = new AvaliarMusica();
 					am.setMusica(m);
+					am.setLancamento(new Date());
 					am.setUsuario(getUsuarioGlobal());
 					am.setStatus(Constantes.TIPO_STATUS_ATIVO);
 					am.setResposta(true);

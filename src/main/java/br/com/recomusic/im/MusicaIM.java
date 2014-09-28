@@ -9,6 +9,7 @@ public class MusicaIM {
 	private String albumMusica;
 	private String idDeezer;
 	private String urlMusica;
+	private String nota;
 
 	/*-*-*-* Construtores *-*-*-*/
 	public MusicaIM() {
@@ -77,5 +78,13 @@ public class MusicaIM {
 
 	public void setUrlMusica(String urlMusica) {
 		this.urlMusica = urlMusica;
+	}
+
+	public String getNota() {
+		return nota;
+	}
+
+	public void setNota(String nota) {
+		this.nota = nota;
 	}
 }
