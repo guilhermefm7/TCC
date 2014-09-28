@@ -34,7 +34,7 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 				if(UtilidadesTelas.verificarSessao())
 				{
 					setUsuarioGlobal(getUsuarioGlobal());
-					listaMusicas = PesquisaMusica.requisitarMusicaJson(tokenRecebido);
+					listaMusicas = PesquisaMusica.requisitarMusicaJson(tokenRecebido,isCkMusica() ,isCkBanda());
 				}
 				else
 				{

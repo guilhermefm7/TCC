@@ -62,6 +62,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	private boolean atualizarCadastro = false;
 	private String nomeMusica = null;
 	private String guardaToken = null;
+
 	public UsuarioBean() { }
 
 	public void logar()

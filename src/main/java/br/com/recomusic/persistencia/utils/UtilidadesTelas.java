@@ -10,7 +10,6 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 import br.com.recomusic.bean.UsuarioBean;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
@@ -27,8 +26,13 @@ import com.echonest.api.v4.EchoNestAPI;
 public class UtilidadesTelas
 {
 	private static Usuario usuarioGlobal;
-	private  boolean curtiuMusica = false;
-	private  boolean naoCurtiuMusica = false;
+	private boolean curtiuMusica = false;
+	private boolean naoCurtiuMusica = false;
+	private static boolean ckMusica; 
+	private static boolean ckBanda; 
+	private boolean ckMusicaAux; 
+	private boolean ckBandaAux; 
+	
     protected Boolean enableMessage = Boolean.TRUE;
     protected String tokenFacebook;
 	EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
@@ -242,5 +246,45 @@ public class UtilidadesTelas
 
 	public void setTokenFacebook(String tokenFacebook) {
 		this.tokenFacebook = tokenFacebook;
+	}
+	
+	public void changeCheckBoxMusica() {
+		this.ckMusica = this.ckMusicaAux;
+	}
+	
+	public void changeCheckBoxBanda() {
+		this.ckBanda = this.ckBandaAux;
+	}
+
+	public static boolean isCkMusica() {
+		return ckMusica;
+	}
+
+	public static void setCkMusica(boolean ckMusica) {
+		ckMusica = ckMusica;
+	}
+
+	public static boolean isCkBanda() {
+		return ckBanda;
+	}
+
+	public static void setCkBanda(boolean ckBanda) {
+		ckBanda = ckBanda;
+	}
+
+	public boolean isCkMusicaAux() {
+		return ckMusicaAux;
+	}
+
+	public void setCkMusicaAux(boolean ckMusicaAux) {
+		this.ckMusicaAux = ckMusicaAux;
+	}
+
+	public boolean isCkBandaAux() {
+		return ckBandaAux;
+	}
+
+	public void setCkBandaAux(boolean ckBandaAux) {
+		this.ckBandaAux = ckBandaAux;
 	}
 }
