@@ -7,8 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:fb="http://www.facebook.com/2008/fbml"
-	xmlns:p="http://primefaces.org/ui" 
-	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
 
 <h:head>
@@ -57,9 +56,8 @@
 </h:head>
 
 <h:body>
-	<header class="navbar">
-	
-	<h:panelGroup id="header" rendered="#{UsuarioBean.logado eq false}">
+	<header class="navbar"> <h:panelGroup id="header"
+		rendered="#{UsuarioBean.logado eq false}">
 		<ui:insert name="header">
 			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 				<div class="container-fluid">
@@ -68,9 +66,9 @@
 							data-target=".navbar-collapse">
 							<span class="sr-only">RecMusic</span> <span class="icon-bar"></span>
 						</button>
-				<div id="logo" class="col-xs-12 col-sm-2">
-					<a href="http://localhost:8080/RecoMusic/index.xhtml">RecMusic</a>
-				</div>
+						<div id="logo" class="col-xs-12 col-sm-2">
+							<a href="http://localhost:8080/RecoMusic/index.xhtml">RecMusic</a>
+						</div>
 					</div>
 					<div class="navbar-collapse collapse">
 
@@ -92,104 +90,109 @@
 								</div>
 							</h:form>
 						</h:panelGroup>
-						</div>
-						</div>
-						</div>
-						</ui:insert>
-						</h:panelGroup>
-						
-	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
-			<h:form role="form">
-		<div class="container-fluid expanded-panel">
-			<div class="row">
-				<div id="logo" class="col-xs-12 col-sm-2">
-					<a href="http://localhost:8080/RecoMusic/perfil/index.xhtml">RecMusic</a>
+					</div>
 				</div>
-				<div id="top-panel" class="col-xs-12 col-sm-10">
-					<div class="row">
-						<div class="col-xs-8 col-sm-4">
-							<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
-							</a>
-							<div id="search">
-								<input type="text" placeholder="search" onkeydown="procurarMusicas(value, event);"/> <i
-									class="fa fa-search"></i>
-							</div>
-						</div>
-						<div class="col-xs-4 col-sm-8 top-panel-right">
-							<ul class="nav navbar-nav pull-right panel-menu">
-
-								<li class="dropdown"><a href="#"
-									class="dropdown-toggle account" data-toggle="dropdown">
-										<div class="avatar">
-							
-										</div> <i class="fa fa-angle-down pull-right"></i>
-										<div class="user-mini pull-right">
-											<span class="welcome">Welcome,</span> <h:outputLabel style="color:#0000" value="#{UsuarioBean.usuario.nome}"/>
-										</div>
+			</div>
+		</ui:insert>
+	</h:panelGroup> <h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
+		<h:form role="form">
+			<div class="container-fluid expanded-panel">
+				<div class="row">
+					<div id="logo" class="col-xs-12 col-sm-2">
+						<a href="http://localhost:8080/RecoMusic/perfil/index.xhtml">RecMusic</a>
+					</div>
+					<div id="top-panel" class="col-xs-12 col-sm-10">
+						<div class="row">
+							<div class="col-xs-8 col-sm-4">
+								<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
 								</a>
-									<ul class="dropdown-menu">
-										<li><a href="#"> <i class="fa fa-user"></i> <span>Perfil</span>
-										</a></li>
+								<div id="search">
+									<input type="text" placeholder="search"
+										onkeydown="procurarMusicas(value, event);" /> <i
+										class="fa fa-search"></i>
+								</div>
+							</div>
+							<div class="col-xs-4 col-sm-8 top-panel-right">
+								<ul class="nav navbar-nav pull-right panel-menu">
 
-										<li><a href="#"> <i class="fa fa-cog"></i> <span>Configurações</span>
-										</a></li>
-										<li> <h:commandLink actionListener="#{UsuarioBean.deslogar}"><a href="#">  <i class="fa fa-power-off"></i> <span>Logout</span></a></h:commandLink> </li>
-									</ul></li>
-							</ul>
+									<li class="dropdown"><a href="#"
+										class="dropdown-toggle account" data-toggle="dropdown">
+											<div class="avatar"></div> <i
+											class="fa fa-angle-down pull-right"></i>
+											<div class="user-mini pull-right">
+												<span class="welcome">Welcome,</span>
+												<h:outputLabel style="color:#0000"
+													value="#{UsuarioBean.usuario.nome}" />
+											</div>
+									</a>
+										<ul class="dropdown-menu">
+											<li><h:commandLink class="fa fa-user" value="	Perfil"
+													actionListener="#{UsuarioBean.redirecionaPerfil}">
+												</h:commandLink></li>
+
+											<li><p:commandLink id="btbt"
+													oncomplete="PF('dialogCadastro1').show()"
+													update=":formDialog1" immediate="true" ajax="true"
+													actionListener="#{CadastroBean.iniciar}"><span class="fa fa-cog"> Configurações</span>
+												</p:commandLink></li>
+											<li><h:commandLink class="fa fa-power-off" value="	Sair"
+													actionListener="#{UsuarioBean.deslogar}">
+												</h:commandLink></li>
+										</ul></li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</h:form>
 	</h:panelGroup> </header>
 
 	<!-- /Corpo da página -->
-		<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
-<div id="main" class="container-fluid">
-	<div class="row">
-		<div id="sidebar-left" class="col-xs-2 col-sm-2">
-			<ul class="nav main-menu">
-				<li>
-					<a href="http://localhost:8080/RecoMusic/perfil/index.xhtml">
-						<i class="fa fa-dashboard"></i>
-						<span class="hidden-xs">Meu Perfil</span>
-					</a>
-				</li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle">
-						<i class="fa fa-bar-chart-o"></i>
-						<span class="hidden-xs">Músicas</span>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a class="/RecoMusic/resources/ajax-link" href="http://localhost:8080/RecoMusic/topAvaliacoes/index.xhtml">Top Músicas</a></li>
-						<li><a class="/RecoMusic/resources/ajax-link" href="http://localhost:8080/RecoMusic/curtidas/index.xhtml">Minhas Avaliações</a></li>
-						<li><a class="/RecoMusic/resources/ajax-link" href="http://localhost:8080/RecoMusic/recomendacao/index.xhtml">Recomendações</a></li>
+	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
+		<div id="main" class="container-fluid">
+			<div class="row">
+				<div id="sidebar-left" class="col-xs-2 col-sm-2">
+					<ul class="nav main-menu">
+						<li><a
+							href="http://localhost:8080/RecoMusic/perfil/index.xhtml"> <i
+								class="fa fa-dashboard"></i> <span class="hidden-xs">Meu
+									Perfil</span>
+						</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle">
+								<i class="fa fa-bar-chart-o"></i> <span class="hidden-xs">Músicas</span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a class="/RecoMusic/resources/ajax-link"
+									href="http://localhost:8080/RecoMusic/topAvaliacoes/index.xhtml">Top
+										Músicas</a></li>
+								<li><a class="/RecoMusic/resources/ajax-link"
+									href="http://localhost:8080/RecoMusic/curtidas/index.xhtml">Minhas
+										Avaliações</a></li>
+								<li><a class="/RecoMusic/resources/ajax-link"
+									href="http://localhost:8080/RecoMusic/recomendacao/index.xhtml">Recomendações</a></li>
+							</ul></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/playlists/index.xhtml">
+								<i class="fa fa-list"></i> <span class="hidden-xs">Minhas
+									Playlists</span>
+						</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/amigos/index.xhtml"> <i
+								class="fa fa-table"></i> <span class="hidden-xs">Meus
+									Amigos</span>
+						</a></li>
 					</ul>
-				</li>
-				<li>
-					<a href="http://localhost:8080/RecoMusic/playlists/index.xhtml">
-						<i class="fa fa-list"></i>
-						<span class="hidden-xs">Minhas Playlists</span>
-					</a>
-				</li>
-				<li>
-					<a href="http://localhost:8080/RecoMusic/amigos/index.xhtml">
-						<i class="fa fa-table"></i>
-						<span class="hidden-xs">Meus Amigos</span>
-					</a>
-				</li>
-			</ul>
+				</div>
+				<!--Start Content-->
+				<div id="content" class="col-xs-12 col-sm-10">
+					<ui:insert name="content">
+					</ui:insert>
+				</div>
+				<!--End Content-->
+			</div>
 		</div>
-		<!--Start Content-->
-		<div id="content" class="col-xs-12 col-sm-10">
-<ui:insert name="content">
-</ui:insert>
-		</div>
-		<!--End Content-->
-	</div>
-</div>
-</h:panelGroup>
+	</h:panelGroup>
 
 	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
 		<section class="intro"> <h:panelGroup layout="block"
@@ -200,6 +203,83 @@
 		</h:panelGroup> </section>
 	</h:panelGroup>
 
+		<p:confirmDialog id="dialogCadastro1" message="Dados do Usuário"
+			modal="true" header="Alteração de Cadastro" width="450" resizable="false" dynamic="true"
+			widgetVar="dialogCadastro1" style="margin: 5% 15%" closable="false"
+			closeOnEscape="false">
+			<h:form id="formDialog1">
+			<p:messages style="font-size: small;" showDetail="true"
+				autoUpdate="true" closable="true" />
+			<div class="form-group">
+				<div class="side-by-side clearfix row">
+					<div class="col-lg-6">
+						<label class="control-label">Nome</label> <br></br>
+						<h:inputText styleClass="form-control form-cascade-control"
+							required="false" id="nomeUsuario"
+							value="#{CadastroBean.usuarioAux.nome}">
+							<f:passThroughAttribute name="placeholder"
+								value="Digite seu nome" />
+							<f:validateRequired />
+						</h:inputText>
+					</div>
+					<div class="col-lg-6">
+						<label class="control-label">Sobrenome</label> <br />
+						<h:inputText styleClass="form-control form-cascade-control"
+							id="SobrenomeUsuario"
+							value="#{CadastroBean.usuarioAux.sobrenome}">
+							<f:passThroughAttribute name="placeholder"
+								value="Digite seu sobrenome" />
+						</h:inputText>
+					</div>
+				</div>
+				<br />
+				<div class="side-by-side clearfix row">
+					<div class="col-lg-6">
+						<label class="control-label">Senha</label> <br></br>
+						<h:inputSecret styleClass="form-control form-cascade-control"
+							required="false" id="descricaoEtapa"
+							value="#{CadastroBean.senhaDigitada}">
+							<f:passThroughAttribute name="placeholder"
+								value="Digite sua senha" />
+						</h:inputSecret>
+					</div>
+					<div class="col-lg-6">
+						<label class="control-label">Confirme a Senha</label> <br />
+						<h:inputSecret styleClass="form-control form-cascade-control"
+							id="qtd_tarefas" value="#{CadastroBean.senhaDigitadaNovamente}">
+							<f:passThroughAttribute name="placeholder"
+								value="Confirme sua Senha" />
+						</h:inputSecret>
+					</div>
+				</div>
+			</div>
+			<br></br>
+			<div class="form-group pull-right">
+				<br></br>
+
+				<div class="side-by-side clearfix row">
+					<div class="col-lg-6">
+
+						<p:commandLink styleClass="btn btn-default" title="Cancelar"
+							oncomplete="PF('dialogCadastro1').hide()" ajax="true"
+							async="true" immediate="true">
+							<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>
+
+					</div>
+					<div class="col-lg-6">
+
+						<p:commandLink styleClass="btn btn-info pull-right"
+							actionListener="#{CadastroBean.atualizarCadastro}" ajax="true"
+							async="false">
+							<span class="fa fa-save"></span> Confirmar </p:commandLink>
+
+					</div>
+				</div>
+			</div>
+			</h:form>
+	</p:confirmDialog>
+	
+	
 	<p:outputPanel id="pnlDialogCadastro" styleClass="col-lg-12">
 		<h:form id="formDialog">
 			<p:confirmDialog id="dialogCadastro" message="Dados do Usuário"

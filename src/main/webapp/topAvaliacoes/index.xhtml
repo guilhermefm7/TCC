@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:head>
+	<script type="text/javascript">
+        $(document).ready(function(){
+            $('.click8').click(function (event){
+                         var url = $(this).attr("href");
+                         window.open(url, "_blank");
+                         event.preventDefault();
+            });
+        });
+    </script>
+</h:head>
+<h:body>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{TopAvaliacoesBean.iniciar}" />
+	</f:metadata>
+	<ui:composition template="/resources/template/template.xhtml">
+		<ui:define name="titulo">RecMusic</ui:define>
+		<ui:define name="content">
+
+			<div class="row">
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a>Músicas</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/curtidas/index.xhtml">Top
+								Músicas</a></li>
+					</ol>
+				</div>
+			</div>
+
+
+			<h:outputLabel rendered="#{TopAvaliacoesBean.qtdFaixas == 0}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
+				<h:outputLabel value="Nenhuma música foi avaliada no sistema" />
+			</h:outputLabel>
+			<h:outputLabel rendered="#{TopAvaliacoesBean.qtdFaixas ge 1}"
+				class="page-header"
+				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
+				<h:outputLabel value="Top Músicas do RecMusic" />
+			</h:outputLabel>
+
+			<div class="row" align="center">
+				<div class="col-mod-12" align="center">
+					<h:panelGroup layout="block" class="footerPaginaInicialNome"></h:panelGroup>
+					<h:form rendered="#{TopAvaliacoesBean.qtdFaixas ge 1}">
+						<p:accordionPanel multiple="true" style="text-align: left;">
+							<p:tab title="Top Músicas">
+								<h:panelGroup layout="block" class="box-content no-padding">
+									<p:dataTable
+										class="table table-bordered table-striped table-hover table-heading table-datatable"
+										value="#{TopAvaliacoesBean.listaMusicas}" var="musicaAchada"
+										style="color: #333;font-weight: bold;">
+										<p:column style="width:10%;text-align:center">
+											<f:facet name="header">#</f:facet>
+			    				#{musicaAchada.qtd}
+			    			</p:column>
+										<p:column>
+											<f:facet name="header">Nome</f:facet>
+										#{musicaAchada.musica.titulo}
+								</p:column>
+										<p:column>
+											<f:facet name="header">Artista/Banda</f:facet>
+			    				#{musicaAchada.musica.banda.nome}
+			    			</p:column>
+										<p:column>
+											<f:facet name="header">Álbum</f:facet>
+			    				#{musicaAchada.musica.album}
+			    			</p:column>
+										<p:column style="width:23%;text-align:center">
+											<h:commandLink type="submit" class="btn btn-success"
+												style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+												value="Conferir"
+												actionListener="#{TopAvaliacoesBean.redirecionaPaginaMusica(musicaAchada.musica.idDeezer,musicaAchada.musica.titulo, musicaAchada.musica.banda.nome, musicaAchada.musica.album, musicaAchada.musica.idMusica)}" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
+							</p:tab>
+						</p:accordionPanel>
+					</h:form>
+				</div>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

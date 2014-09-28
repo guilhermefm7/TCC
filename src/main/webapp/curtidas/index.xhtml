@@ -42,56 +42,56 @@
 			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas == 0}"
 				class="page-header"
 				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
-				<h:outputLabel value="Você ainda não curtiu nenhuma música" />
+				<h:outputLabel value="Você ainda não avaliou nenhuma música" />
 			</h:outputLabel>
 			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas eq 1}"
 				class="page-header"
 				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
 				<h:outputLabel
-					value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} música" />
+					value="Músicas avaliadas: #{MusicasCurtidasBean.qtdFaixas} música" />
 			</h:outputLabel>
 			<h:outputLabel rendered="#{MusicasCurtidasBean.qtdFaixas gt 1}"
 				class="page-header"
 				style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;width: 100%">
 				<h:outputLabel
-					value="Músicas curtidas: #{MusicasCurtidasBean.qtdFaixas} músicas" />
+					value="Músicas avaliadas: #{MusicasCurtidasBean.qtdFaixas} músicas" />
 			</h:outputLabel>
 
 			<h:form rendered="#{MusicasCurtidasBean.qtdFaixas ge 1}">
 				<p:accordionPanel>
-					<p:tab title="Curtidas">
+					<p:tab title="Avaliações">
 						<h:panelGroup layout="block" class="box-content no-padding">
-							<h:dataTable
+							<p:dataTable
 								class="table table-bordered table-striped table-hover table-heading table-datatable"
 								value="#{MusicasCurtidasBean.listaMusicas}" var="musicaAchada"
 								style="color: #333;font-weight: bold;">
-								<h:column>
+								<p:column style="width:10%;text-align:center">
 									<f:facet name="header">#</f:facet>
 			    				#{musicaAchada.qtd}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column>
 									<f:facet name="header">Nome</f:facet>
 										#{musicaAchada.musica.titulo}
-								</h:column>
-								<h:column>
+								</p:column>
+								<p:column>
 									<f:facet name="header">Artista/Banda</f:facet>
 			    				#{musicaAchada.musica.banda.nome}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column>
 									<f:facet name="header">Álbum</f:facet>
 			    				#{musicaAchada.musica.album}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column style="width:8%;text-align:center">
 									<f:facet name="header">Nota</f:facet>
 			    				#{musicaAchada.nota}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column style="width:25%;text-align:center">
 									<h:commandLink type="submit" class="btn btn-success"
 										style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
 										value="Conferir"
 										actionListener="#{MusicasCurtidasBean.redirecionaPaginaMusica(musicaAchada.musica.idDeezer,musicaAchada.musica.titulo, musicaAchada.musica.banda.nome, musicaAchada.musica.album, musicaAchada.musica.idMusica)}" />
-								</h:column>
-							</h:dataTable>
+								</p:column>
+							</p:dataTable>
 						</h:panelGroup>
 					</p:tab>
 				</p:accordionPanel>
