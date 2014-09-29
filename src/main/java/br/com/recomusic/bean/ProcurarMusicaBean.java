@@ -1,6 +1,7 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -31,6 +32,10 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 		{
 			if((tokenRecebido!=null && tokenRecebido.length()>0))
 			{
+                String nomeMusicaAux = new String(tokenRecebido.getBytes(), Charset.forName("UTF-8"));
+                tokenRecebido = new String();
+                tokenRecebido = nomeMusicaAux;
+                
 				if(UtilidadesTelas.verificarSessao())
 				{
 					setUsuarioGlobal(getUsuarioGlobal());

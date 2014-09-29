@@ -2,6 +2,7 @@ package br.com.recomusic.persistencia.utils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,10 @@ public class PesquisaMusica
 			 List<MusicaIM> listaMusicas = new ArrayList<MusicaIM>();
 			 MusicaIM mIM;
 			 
+			 String nomeMusicaAux;
+			 String nomeBandaAux;
+			 String nomeAlbumAux;
+			 
 			 String manipulaMusica[] = new String[10];
 			 manipulaMusica = nomeMusica.split("-"); 
 				
@@ -123,6 +128,13 @@ public class PesquisaMusica
 	                 mIM.setIdMusica((String)dado.get("id"));
 	                 mIM.setNomeMusica((String)dado.get("title"));
 	                 mIM.setNomeArtista((String)dado.get("artist_name"));
+	                 
+	                 nomeMusicaAux = new String(mIM.getNomeMusica().getBytes(), Charset.forName("UTF-8"));
+	                 mIM.setNomeMusica(nomeMusicaAux);
+
+	                 nomeBandaAux = new String(mIM.getNomeArtista().getBytes(), Charset.forName("UTF-8"));
+	                 mIM.setNomeArtista(nomeBandaAux);
+	                 
 	                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
 	                 
 	                 for (int x = 0; x < pegaIdDeezer.length(); x++)
@@ -150,6 +162,9 @@ public class PesquisaMusica
 			  	    				   if(pegaAlbum.length()>0)
 			  	    				   {
 			  	    					   mIM.setAlbumMusica(pegaAlbum);
+			  	    					   
+			  	    					   nomeAlbumAux = new String(mIM.getAlbumMusica().getBytes(), Charset.forName("UTF-8"));
+			  	    					   mIM.setAlbumMusica(nomeAlbumAux);
 			  	    				   }
 			  	    				   
 			  	    				   if(pegaUrl.length()>0)
@@ -193,6 +208,13 @@ public class PesquisaMusica
 		                 mIM.setIdMusica((String)dado.get("id"));
 		                 mIM.setNomeMusica((String)dado.get("title"));
 		                 mIM.setNomeArtista((String)dado.get("artist_name"));
+		                 
+		                 nomeMusicaAux = new String(mIM.getNomeMusica().getBytes(), Charset.forName("UTF-8"));
+		                 mIM.setNomeMusica(nomeMusicaAux);
+
+		                 nomeBandaAux = new String(mIM.getNomeArtista().getBytes(), Charset.forName("UTF-8"));
+		                 mIM.setNomeArtista(nomeBandaAux);
+		                 
 		                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
 		                 
 		                 for (int x = 0; x < pegaIdDeezer.length(); x++)
@@ -220,6 +242,8 @@ public class PesquisaMusica
 				  	    				   if(pegaAlbum.length()>0)
 				  	    				   {
 				  	    					   mIM.setAlbumMusica(pegaAlbum);
+				  	    					   nomeAlbumAux = new String(mIM.getAlbumMusica().getBytes(), Charset.forName("UTF-8"));
+				  	    					   mIM.setAlbumMusica(nomeAlbumAux);
 				  	    				   }
 				  	    				   
 				  	    				   if(pegaUrl.length()>0)
@@ -258,6 +282,13 @@ public class PesquisaMusica
 		                 mIM.setIdMusica((String)dado.get("id"));
 		                 mIM.setNomeMusica((String)dado.get("title"));
 		                 mIM.setNomeArtista((String)dado.get("artist_name"));
+		                 
+		                 nomeMusicaAux = new String(mIM.getNomeMusica().getBytes(), Charset.forName("UTF-8"));
+		                 mIM.setNomeMusica(nomeMusicaAux);
+
+		                 nomeBandaAux = new String(mIM.getNomeArtista().getBytes(), Charset.forName("UTF-8"));
+		                 mIM.setNomeArtista(nomeBandaAux);
+		                 
 		                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
 		                 
 		                 for (int x = 0; x < pegaIdDeezer.length(); x++)
@@ -285,6 +316,8 @@ public class PesquisaMusica
 				  	    				   if(pegaAlbum.length()>0)
 				  	    				   {
 				  	    					   mIM.setAlbumMusica(pegaAlbum);
+				  	    					   nomeAlbumAux = new String(mIM.getAlbumMusica().getBytes(), Charset.forName("UTF-8"));
+				  	    					   mIM.setAlbumMusica(nomeAlbumAux);
 				  	    				   }
 				  	    				   
 				  	    				   if(pegaUrl.length()>0)
@@ -327,6 +360,13 @@ public class PesquisaMusica
 			                 mIM.setIdMusica((String)dado.get("id"));
 			                 mIM.setNomeMusica((String)dado.get("title"));
 			                 mIM.setNomeArtista((String)dado.get("artist_name"));
+			                 
+			                 nomeMusicaAux = new String(mIM.getNomeMusica().getBytes(), Charset.forName("UTF-8"));
+			                 mIM.setNomeMusica(nomeMusicaAux);
+
+			                 nomeBandaAux = new String(mIM.getNomeArtista().getBytes(), Charset.forName("UTF-8"));
+			                 mIM.setNomeArtista(nomeBandaAux);
+			                 
 			                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
 			                 
 			                 for (int x = 0; x < pegaIdDeezer.length(); x++)
@@ -354,6 +394,8 @@ public class PesquisaMusica
 					  	    				   if(pegaAlbum.length()>0)
 					  	    				   {
 					  	    					   mIM.setAlbumMusica(pegaAlbum);
+					  	    					   nomeAlbumAux = new String(mIM.getAlbumMusica().getBytes(), Charset.forName("UTF-8"));
+					  	    					   mIM.setAlbumMusica(nomeAlbumAux);
 					  	    				   }
 					  	    				   
 					  	    				   if(pegaUrl.length()>0)
@@ -391,10 +433,19 @@ public class PesquisaMusica
 			                 JSONObject dado = jsonMusicas.getJSONObject(i);
 			                 mIM.setQtd(contador);
 			                 contador++;
+			                 
 			                 mIM.setIdMusica((String)dado.get("id"));
 			                 mIM.setNomeMusica((String)dado.get("title"));
 			                 mIM.setNomeArtista((String)dado.get("artist_name"));
+			                 
+			                 nomeMusicaAux = new String(mIM.getNomeMusica().getBytes(), Charset.forName("UTF-8"));
+			                 mIM.setNomeMusica(nomeMusicaAux);
+
+			                 nomeBandaAux = new String(mIM.getNomeArtista().getBytes(), Charset.forName("UTF-8"));
+			                 mIM.setNomeArtista(nomeBandaAux);
+			                 
 			                 JSONArray pegaIdDeezer =(JSONArray) dado.get("tracks");
+			                 
 			                 
 			                 for (int x = 0; x < pegaIdDeezer.length(); x++)
 			      	       	 {
@@ -421,6 +472,8 @@ public class PesquisaMusica
 					  	    				   if(pegaAlbum.length()>0)
 					  	    				   {
 					  	    					   mIM.setAlbumMusica(pegaAlbum);
+					  	    					   nomeAlbumAux = new String(mIM.getAlbumMusica().getBytes(), Charset.forName("UTF-8"));
+					  	    					   mIM.setAlbumMusica(nomeAlbumAux);
 					  	    				   }
 					  	    				   
 					  	    				   if(pegaUrl.length()>0)
