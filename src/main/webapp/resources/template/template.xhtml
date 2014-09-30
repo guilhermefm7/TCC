@@ -29,8 +29,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link href="/RecoMusic/resources/plugins/bootstrap/bootstrap.css"
 		rel="stylesheet" />
-	<link href="/RecoMusic/resources/plugins/jquery-ui/jquery-ui.min.css"
-		rel="stylesheet" />
+
 	<link
 		href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
 		rel="stylesheet" />
@@ -159,7 +158,6 @@
 			</div>
 		</h:form>
 	</h:panelGroup> </header>
-
 	<!-- /Corpo da página -->
 	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq true}">
 		<div id="main" class="container-fluid">
@@ -207,12 +205,12 @@
 	</h:panelGroup>
 
 	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
-		<section class="intro"> <h:panelGroup layout="block"
+		<h:panelGroup layout="block"
 			class="content" rendered="#{UsuarioBean.logado eq false}">
 			<ui:insert name="content">
 
 			</ui:insert>
-		</h:panelGroup> </section>
+		</h:panelGroup> 
 	</h:panelGroup>
 
 	<p:confirmDialog id="dialogCadastro1" message="Dados do Usuário"

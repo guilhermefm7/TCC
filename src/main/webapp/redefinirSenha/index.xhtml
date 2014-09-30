@@ -28,7 +28,8 @@
 			<br />
 
 			<div class="col-md-6 col-md-offset-3" align="center">
-				<h:panelGroup layout="block" class="jumbotron" style="min-width: 250px;background-color: #FAFAFA;color: #000;width: 40%;padding: 30px;">
+				<h:panelGroup layout="block" class="jumbotron"
+					style="min-width: 250px;background-color: #FAFAFA;color: #000;width: 40%;padding: 30px;">
 					<h2 class="form-signin-heading"
 						style="text-align: center; font-size: 22px; font-family: inherit; color: #4F7799; font-weight: bold">Esqueceu
 						sua senha?</h2>
@@ -42,14 +43,15 @@
 						</div>
 						<h:panelGroup layout="block" class="form-group"
 							id="textoEmailEnviar">
-							<div class="row">
-								<div class="col-md-12">
 									<h:outputText
 										style="font-size: 18px;font-family:inherit;color: #4F7799;"
 										value="Preencha seu email" id="textovalidaCampoEmail" />
-									<h:inputText value="#{RedefinirSenhaBean.email}"
-										id="validaCampoEmail" pt:placeHolder="Endereço de Email"
-										type="email" class="form-control" />
+							<div class="row">
+								<div class="col-md-12">
+									<br />
+										<h:inputText value="#{RedefinirSenhaBean.email}"
+											id="validaCampoEmail" pt:placeHolder="Endereço de Email"
+											type="email" class="form-control" />
 								</div>
 							</div>
 						</h:panelGroup>
