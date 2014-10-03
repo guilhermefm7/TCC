@@ -1,6 +1,7 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import br.com.recomusic.dao.InformacaoMusicalCadastroGeneroDAO;
 import br.com.recomusic.dao.InformacaoMusicalCadastroMusicaDAO;
 import br.com.recomusic.dao.MediaUsuarioGeneroDAO;
 import br.com.recomusic.dao.MusicaDAO;
+import br.com.recomusic.dao.PlaylistDAO;
+import br.com.recomusic.dao.PlaylistMusicaDAO;
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.AvaliarMusica;
 import br.com.recomusic.om.Banda;
@@ -27,6 +30,8 @@ import br.com.recomusic.om.InformacaoMusicalCadastroGenero;
 import br.com.recomusic.om.InformacaoMusicalCadastroMusica;
 import br.com.recomusic.om.MediaUsuarioGenero;
 import br.com.recomusic.om.Musica;
+import br.com.recomusic.om.Playlist;
+import br.com.recomusic.om.PlaylistMusica;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.persistencia.utils.UtilidadesTelas;
@@ -40,6 +45,10 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 			.getEntityManager());
 	private MusicaDAO musicaDAO = new MusicaDAO(ConectaBanco.getInstance()
 			.getEntityManager());
+	private PlaylistDAO playlistDAO = new PlaylistDAO(ConectaBanco
+			.getInstance().getEntityManager());
+	private PlaylistMusicaDAO playlistMusicaDAO = new PlaylistMusicaDAO(
+			ConectaBanco.getInstance().getEntityManager());
 	private BandaDAO bandaDAO = new BandaDAO(ConectaBanco.getInstance()
 			.getEntityManager());
 	private GeneroDAO generoDAO = new GeneroDAO(ConectaBanco.getInstance()
@@ -69,8 +78,10 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 	private AvaliarMusica avaliarMusicaPrincipal = null;
 	private String tokenRecebido = null;
 	private String valorIdMusicaEchoAux = null;
+	private List<Playlist> listaPlaylists = null;
 
-	public MusicaBean() {	}
+	public MusicaBean() {
+	}
 
 	/**
 	 * Responsavel por iniciar a pagina desktop.xhtml, carregando tdo oq ela
@@ -93,7 +104,13 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 					} else {
 						nomeCompletoMusica = nomeMusica;
 					}
+					listaPlaylists = playlistDAO
+							.getPlaylistsUsuario(getUsuarioGlobal());
 
+					// Seta a Playlist como Null para não dar erro no JSF
+					if (listaPlaylists == null || listaPlaylists.size() == 0) {
+						listaPlaylists = null;
+					}
 					AvaliarMusica am = null;
 					am = avaliarMusicaDAO.pesquisaUsuarioAvaliouMusica(
 							valorIdMusica, getUsuarioGlobal());
@@ -911,6 +928,43 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 		}
 	}
 
+	public void adicionarEmPlaylist(Playlist playlist) {
+		try {
+			Musica m = null;
+			m = musicaDAO.procuraMusicaByID(valorIdMusica);
+
+			if (m != null && m.getPkMusica() > 0) {
+				ConectaBanco.getInstance().beginTransaction();
+				
+				PlaylistMusica pm = new PlaylistMusica();
+				pm.setLancamento(new Date());
+				pm.setPlaylist(playlist);
+				pm.setMusica(m);
+
+				playlistMusicaDAO.save(pm);
+				playlist.setNumeroMusicas(playlist.getNumeroMusicas() + 1);
+				playlistDAO.save(playlist);
+
+				ConectaBanco.getInstance().commit();
+			}
+
+			FacesContext
+					.getCurrentInstance()
+					.getExternalContext()
+					.redirect(
+							"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+									+ valorIdMusica + "&m=" + nomeMusica
+									+ "&a=" + nomeArtista + "&i="
+									+ valorIdMusicaEchoAux + "&u="
+									+ valorUrlMusica);
+		}
+
+		catch (Exception e) {
+			ConectaBanco.getInstance().rollBack();
+			e.printStackTrace();
+		}
+	}
+
 	public List<Usuario> findAll() {
 		return usuarioDAO.findAll();
 	}
@@ -1086,5 +1140,13 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 
 	public void setValorUrlMusica(String valorUrlMusica) {
 		this.valorUrlMusica = valorUrlMusica;
+	}
+
+	public List<Playlist> getListaPlaylists() {
+		return listaPlaylists;
+	}
+
+	public void setListaPlaylists(List<Playlist> listaPlaylists) {
+		this.listaPlaylists = listaPlaylists;
 	}
 }

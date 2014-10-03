@@ -43,20 +43,17 @@
 						<li><a
 							href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Playlist</a></li>
 						<li><a
-							href="http://localhost:8080/RecoMusic/playlists/index.xhtml">Playlist Selecionada</a></li>
+							href="http://localhost:8080/RecoMusic/playlists/index.xhtml">Playlist
+								Selecionada</a></li>
 					</ol>
 				</div>
 			</div>
 
 			<br />
-			<div class="row">
-				<div class="col-md-4">
-					<h:outputLabel class="pageee"
-						style="color: #4F7799;font-family:Open Sans,Arial,sans-serif;font-size: 26px;text-align:center"
-						value="#{PlaylistSelecionadaBean.nomePlaylist}"></h:outputLabel>
-				</div>
-			</div>
-
+			<h1
+				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px; text-align: center">
+				<h:outputLabel value="#{PlaylistSelecionadaBean.nomePlaylist}" />
+			</h1>
 			<br />
 			<br />
 			<div id="dz-root">
@@ -92,10 +89,10 @@
 				<p:accordionPanel>
 					<p:tab title="Músicas">
 						<h:panelGroup layout="block" class="box-content no-padding">
-							<h:dataTable class="table table-bordered table-striped table-hover table-heading table-datatable"
+							<h:dataTable
+								class="table table-bordered table-striped table-hover table-heading table-datatable"
 								value="#{PlaylistSelecionadaBean.listaMusicas}"
-								var="musicaPlaylist" 
-								style="color: #333;font-weight: bold;">
+								var="musicaPlaylist" style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>
 			    				#{musicaPlaylist.qtd}
@@ -115,8 +112,8 @@
 			    				#{musicaPlaylist.albumMusica}
 			    			</h:column>
 								<h:column>
-									<h:commandLink
-										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+									<h:commandLink type="submit" class="btn btn-success"
+										style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
 										value="Excluir"
 										actionListener="#{PlaylistSelecionadaBean.excluir(musicaPlaylist.idDeezer)}" />
 								</h:column>

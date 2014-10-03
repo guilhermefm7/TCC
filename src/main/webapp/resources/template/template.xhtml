@@ -106,7 +106,8 @@
 								<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
 								</a>
 								<div id="search">
-									<input style="width: 40%" stype="text" placeholder="Pesquisar Músicas"
+									<input style="width: 40%" stype="text"
+										placeholder="Pesquisar Músicas"
 										onkeydown="procurarMusicas(value, event);" /> <label>
 										<h:selectBooleanCheckbox value="#{GlobalBean.ckMusicaAux}"
 											id="ckMusica">
@@ -205,12 +206,12 @@
 	</h:panelGroup>
 
 	<h:panelGroup layout="block" rendered="#{UsuarioBean.logado eq false}">
-		<h:panelGroup layout="block"
-			class="content" rendered="#{UsuarioBean.logado eq false}">
+		<h:panelGroup layout="block" class="content"
+			rendered="#{UsuarioBean.logado eq false}">
 			<ui:insert name="content">
 
 			</ui:insert>
-		</h:panelGroup> 
+		</h:panelGroup>
 	</h:panelGroup>
 
 	<p:confirmDialog id="dialogCadastro1" message="Dados do Usuário"
@@ -290,85 +291,7 @@
 	</p:confirmDialog>
 
 
-	<p:outputPanel id="pnlDialogCadastro" styleClass="col-lg-12">
-		<h:form id="formDialog">
-			<p:confirmDialog id="dialogCadastro" message="Dados do Usuário"
-				modal="true" header="Alteração de Cadastro" width="450"
-				widgetVar="dialogCadastro" style="margin: 5% 15%" closable="false"
-				closeOnEscape="false">
 
-				<p:messages style="font-size: small;" showDetail="true"
-					autoUpdate="true" closable="true" />
-				<div class="form-group">
-					<div class="side-by-side clearfix row">
-						<div class="col-lg-6">
-							<label class="control-label">Nome</label> <br></br>
-							<h:inputText styleClass="form-control form-cascade-control"
-								required="false" id="nomeUsuario"
-								value="#{CadastroBean.usuarioAux.nome}">
-								<f:passThroughAttribute name="placeholder"
-									value="Digite seu nome" />
-								<f:validateRequired />
-							</h:inputText>
-						</div>
-						<div class="col-lg-6">
-							<label class="control-label">Sobrenome</label> <br />
-							<h:inputText styleClass="form-control form-cascade-control"
-								id="SobrenomeUsuario"
-								value="#{CadastroBean.usuarioAux.sobrenome}">
-								<f:passThroughAttribute name="placeholder"
-									value="Digite seu sobrenome" />
-							</h:inputText>
-						</div>
-					</div>
-					<br />
-					<div class="side-by-side clearfix row">
-						<div class="col-lg-6">
-							<label class="control-label">Senha</label> <br></br>
-							<h:inputSecret styleClass="form-control form-cascade-control"
-								required="false" id="descricaoEtapa"
-								value="#{CadastroBean.senhaDigitada}">
-								<f:passThroughAttribute name="placeholder"
-									value="Digite sua senha" />
-							</h:inputSecret>
-						</div>
-						<div class="col-lg-6">
-							<label class="control-label">Confirme a Senha</label> <br />
-							<h:inputSecret styleClass="form-control form-cascade-control"
-								id="qtd_tarefas" value="#{CadastroBean.senhaDigitadaNovamente}">
-								<f:passThroughAttribute name="placeholder"
-									value="Confirme sua Senha" />
-							</h:inputSecret>
-						</div>
-					</div>
-				</div>
-				<br></br>
-				<div class="form-group pull-right">
-					<br></br>
-
-					<div class="side-by-side clearfix row">
-						<div class="col-lg-6">
-
-							<p:commandLink styleClass="btn btn-default" title="Cancelar"
-								oncomplete="PF('dialogCadastro').hide()" ajax="true"
-								async="true" immediate="true">
-								<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>
-
-						</div>
-						<div class="col-lg-6">
-
-							<p:commandLink styleClass="btn btn-info pull-right"
-								actionListener="#{CadastroBean.atualizarCadastro}"
-								title="Nova Etapa" ajax="true" async="false">
-								<span class="fa fa-save"></span> Confirmar </p:commandLink>
-
-						</div>
-					</div>
-				</div>
-
-			</p:confirmDialog>
-		</h:form>
-	</p:outputPanel>
 
 	<h:form id="hiddenFormPesquisa" style="display: none;">
 		<h:inputHidden id="idMusicaProcurada"
