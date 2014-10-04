@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
@@ -30,7 +31,7 @@ import br.com.recomusic.singleton.GuardaMusicasRecomendadas;
 import br.com.recomusic.singleton.SemaforoMusicasRecomendadas;
 
 @ManagedBean(name = "RecomendacaoBean")
-@RequestScoped
+@ViewScoped
 public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private MediaUsuarioGeneroDAO mediaUsuarioGeneroDAO = new MediaUsuarioGeneroDAO(
@@ -3699,6 +3700,8 @@ public class RecomendacaoBean extends UtilidadesTelas implements Serializable {
 			ConectaBanco.getInstance().commit();
 			// Atribui a nota a lista das notas passada como parâmetro
 			listaMusicas.setNota(Integer.valueOf(nota));
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/recomendacao/index.xhtml");
 
 		} catch (Exception e) {
 			e.printStackTrace();
