@@ -57,6 +57,9 @@ public class Usuario implements Serializable {
 
 	@OneToMany(mappedBy = "usuario")
 	private List<MediaUsuarioGenero> mediaUsuarioGenero;
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<PossivelAvaliacaoMusica> possivelAvaliacaoMusica;
 
 	@OneToMany(mappedBy = "usuarioEnviou")
 	private List<EnviaMensagem> enviaMensagemsUsuarioEnviou;
@@ -249,5 +252,14 @@ public class Usuario implements Serializable {
 	public void setMediaUsuarioGenero(
 			List<MediaUsuarioGenero> mediaUsuarioGenero) {
 		this.mediaUsuarioGenero = mediaUsuarioGenero;
+	}
+
+	public List<PossivelAvaliacaoMusica> getPossivelAvaliacaoMusica() {
+		return possivelAvaliacaoMusica;
+	}
+
+	public void setPossivelAvaliacaoMusica(
+			List<PossivelAvaliacaoMusica> possivelAvaliacaoMusica) {
+		this.possivelAvaliacaoMusica = possivelAvaliacaoMusica;
 	}
 }

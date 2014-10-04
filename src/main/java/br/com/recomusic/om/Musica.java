@@ -62,6 +62,9 @@ public class Musica implements Serializable {
 
 	@OneToMany(mappedBy = "musica")
 	private List<PlaylistMusica> playlistMusicas;
+	
+	@OneToMany(mappedBy = "musica")
+	private List<PossivelAvaliacaoMusica> possivelAvaliacaoMusica;
 
 	@OneToMany(mappedBy = "musica")
 	private List<AvaliarMusica> avaliarMusica;
@@ -215,5 +218,14 @@ public class Musica implements Serializable {
 
 	public void setUrlImagem(String urlImagem) {
 		this.urlImagem = urlImagem;
+	}
+
+	public List<PossivelAvaliacaoMusica> getPossivelAvaliacaoMusica() {
+		return possivelAvaliacaoMusica;
+	}
+
+	public void setPossivelAvaliacaoMusica(
+			List<PossivelAvaliacaoMusica> possivelAvaliacaoMusica) {
+		this.possivelAvaliacaoMusica = possivelAvaliacaoMusica;
 	}
 }

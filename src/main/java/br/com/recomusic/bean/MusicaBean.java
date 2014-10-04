@@ -1,7 +1,6 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +19,7 @@ import br.com.recomusic.dao.MediaUsuarioGeneroDAO;
 import br.com.recomusic.dao.MusicaDAO;
 import br.com.recomusic.dao.PlaylistDAO;
 import br.com.recomusic.dao.PlaylistMusicaDAO;
+import br.com.recomusic.dao.PossivelAvaliacaoMusicaDAO;
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.om.AvaliarMusica;
 import br.com.recomusic.om.Banda;
@@ -32,6 +32,7 @@ import br.com.recomusic.om.MediaUsuarioGenero;
 import br.com.recomusic.om.Musica;
 import br.com.recomusic.om.Playlist;
 import br.com.recomusic.om.PlaylistMusica;
+import br.com.recomusic.om.PossivelAvaliacaoMusica;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.persistencia.utils.UtilidadesTelas;
@@ -53,6 +54,8 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 			.getEntityManager());
 	private GeneroDAO generoDAO = new GeneroDAO(ConectaBanco.getInstance()
 			.getEntityManager());
+	private PossivelAvaliacaoMusicaDAO possivelAvaliacaoMusicaDAO = new PossivelAvaliacaoMusicaDAO(
+			ConectaBanco.getInstance().getEntityManager());
 	private MediaUsuarioGeneroDAO mediaUsuarioGeneroDAO = new MediaUsuarioGeneroDAO(
 			ConectaBanco.getInstance().getEntityManager());
 	private BandaGeneroDAO bandaGeneroDAO = new BandaGeneroDAO(ConectaBanco
@@ -104,6 +107,12 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 					} else {
 						nomeCompletoMusica = nomeMusica;
 					}
+
+					//Chama a função para atualizar a quantidade de vezes que o usuário procurou esta música, caso seja maior ou igual a 5...Será atribuido uma nota 3 por parte do usuário a esta música
+					atualizarQuantidadeVezesProcurada();
+					
+					// Procura as Playlists para que o usuário, caso queira,
+					// possa adicionar a música
 					listaPlaylists = playlistDAO
 							.getPlaylistsUsuario(getUsuarioGlobal());
 
@@ -935,7 +944,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 
 			if (m != null && m.getPkMusica() > 0) {
 				ConectaBanco.getInstance().beginTransaction();
-				
+
 				PlaylistMusica pm = new PlaylistMusica();
 				pm.setLancamento(new Date());
 				pm.setPlaylist(playlist);
@@ -960,6 +969,55 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 		}
 
 		catch (Exception e) {
+			ConectaBanco.getInstance().rollBack();
+			e.printStackTrace();
+		}
+	}
+
+	public void atualizarQuantidadeVezesProcurada() {
+		try {
+			PossivelAvaliacaoMusica pam = null;
+			Musica m = null;
+			m = musicaDAO.procuraMusicaByID(valorIdMusica);
+			if (m != null && m.getPkMusica() > 0) {
+				AvaliarMusica am = null;
+				am = avaliarMusicaDAO.pesquisaUsuarioAvaliouMusicaPelaMusica(m,
+						getUsuarioGlobal());
+
+				if (am == null) {
+					pam = possivelAvaliacaoMusicaDAO.getMusicasPlaylist(
+							getUsuarioGlobal(), m);
+
+					if (pam != null && pam.getPkPossivelAvaliacaoMusica() > 0) {
+						pam.setQuantidadeOuvida(pam.getQuantidadeOuvida() + 1);
+					} else {
+						pam = new PossivelAvaliacaoMusica();
+						pam.setMusica(m);
+						pam.setUsuario(getUsuarioGlobal());
+						pam.setQuantidadeOuvida(1);
+					}
+					
+					ConectaBanco.getInstance().beginTransaction();
+					possivelAvaliacaoMusicaDAO.save(pam);
+					
+					if(pam.getQuantidadeOuvida()>=5)
+					{
+						am = new AvaliarMusica();
+						am.setLancamento(new Date());
+						am.setMusica(m);
+						am.setUsuario(getUsuarioGlobal());
+						am.setResposta(true);
+						am.setNota(3);
+						
+						avaliarMusicaDAO.save(am);
+					}
+					
+					ConectaBanco.getInstance().commit();
+					
+				}
+
+			}
+		} catch (Exception e) {
 			ConectaBanco.getInstance().rollBack();
 			e.printStackTrace();
 		}
