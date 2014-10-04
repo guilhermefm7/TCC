@@ -67,7 +67,7 @@ public class RequisicaoAmizadeDAO extends GenericDAO<Long, RequisicaoAmizade>
     {
     	try
     	{
-    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.RequisicaoAmizade as ra where ra.usuarioRequisitado.pkUsuario = :usuario_requisitado AND ra.usuarioRequisitante.pkUsuario = :usuario_requisitante"));
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.RequisicaoAmizade as ra where ra.usuarioRequisitado.pkUsuario = :usuario_requisitado AND ra.usuarioRequisitante.pkUsuario = :usuario_requisitante AND ra.resposta IS NULL"));
     		query.setParameter("usuario_requisitado", usuarioRequisitado.getPkUsuario());
     		query.setParameter("usuario_requisitante", usuarioRequisitou.getPkUsuario());
     		RequisicaoAmizade ra =  (RequisicaoAmizade) query.getSingleResult();

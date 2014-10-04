@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import org.primefaces.component.tabview.TabView;
@@ -24,11 +25,9 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.User;
 
-
-@ManagedBean(name="AmigosBean")
+@ManagedBean(name = "AmigosBean")
 @ViewScoped
-public class AmigosBean extends UtilidadesTelas implements Serializable
-{
+public class AmigosBean extends UtilidadesTelas implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<String> listaNomesMusica = null;
 	private List<Usuario> listaAmigosFacebook = null;
@@ -38,217 +37,253 @@ public class AmigosBean extends UtilidadesTelas implements Serializable
 	private String identificacaoUsuario;
 	private String nomeAmigo;
 	private Integer tabActiveIndex;
-	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
-	private AmigosUsuarioDAO amigosUsuarioDAO = new AmigosUsuarioDAO( ConectaBanco.getInstance().getEntityManager());
-	private RequisicaoAmizadeDAO requisicaoAmizadeDAO = new RequisicaoAmizadeDAO( ConectaBanco.getInstance().getEntityManager());
+	private UsuarioDAO usuarioDAO = new UsuarioDAO(ConectaBanco.getInstance()
+			.getEntityManager());
+	private AmigosUsuarioDAO amigosUsuarioDAO = new AmigosUsuarioDAO(
+			ConectaBanco.getInstance().getEntityManager());
+	private RequisicaoAmizadeDAO requisicaoAmizadeDAO = new RequisicaoAmizadeDAO(
+			ConectaBanco.getInstance().getEntityManager());
 	private boolean procurarAmigos = true;
 	private boolean solicitacoesAmizade = true;
 	private boolean possuiAmizades = false;
-	
-	public AmigosBean() {	}
+	private Usuario usuarioAux;
 
-	public void iniciar()
-	{
-		try
-		{
-			if(UtilidadesTelas.verificarSessao())
-			{
-				setUsuarioGlobal(getUsuarioGlobal());
+	public AmigosBean() {
+	}
+
+	public void iniciar() {
+		try {
+			if (UtilidadesTelas.verificarSessao()) {
+				
 				List<String> listaIdsFacebook = new ArrayList<String>();
-				if(UtilidadesTelas.verificarSessaoFacebook()!=null && UtilidadesTelas.verificarSessaoFacebook().length()>0)
-				{
-					 FacebookClient facebookClient = new DefaultFacebookClient(UtilidadesTelas.verificarSessaoFacebook());
-		    		 Connection<User> myFriends = facebookClient.fetchConnection("me/friends", User.class);
-					 if(myFriends.getData()!=null && myFriends.getData().size()>0)
-					 {
-						 for (int i = 0; i < myFriends.getData().size(); i++)
-						 {
-							 listaIdsFacebook.add(myFriends.getData().get(i).getId());
-						 }
-					 }
-				 
-					 listaAmigosFacebook = new ArrayList<Usuario>();
-					 List<Usuario> listaAmigosFacebookAux = new ArrayList<Usuario>();
-					 
-					 if(listaIdsFacebook!=null && listaIdsFacebook.size()>0)
-					 {
-						 for (String id : listaIdsFacebook)
-						 {
-							 Usuario u = null;
-							 u = usuarioDAO.validarID(id);
-							 
-							 if(u!=null && u.getPkUsuario()>0)
-							 {
-								 listaAmigosFacebookAux.add(u);
-							 }
-						 }
-					 }
-					 
-					 if(listaAmigosFacebookAux!=null && listaAmigosFacebookAux.size()>0)
-					 {
-						 Boolean existe;
-						 for (Usuario uAux : listaAmigosFacebookAux)
-						 {
-							existe = amigosUsuarioDAO.getAmigosUsuario(getUsuarioGlobal().getPkUsuario() , uAux.getPkUsuario());
-							if(existe==null || !existe)
-							{
+				if (UtilidadesTelas.verificarSessaoFacebook() != null
+						&& UtilidadesTelas.verificarSessaoFacebook().length() > 0) {
+					FacebookClient facebookClient = new DefaultFacebookClient(
+							UtilidadesTelas.verificarSessaoFacebook());
+					Connection<User> myFriends = facebookClient
+							.fetchConnection("me/friends", User.class);
+					if (myFriends.getData() != null
+							&& myFriends.getData().size() > 0) {
+						for (int i = 0; i < myFriends.getData().size(); i++) {
+							listaIdsFacebook.add(myFriends.getData().get(i)
+									.getId());
+						}
+					}
+
+					listaAmigosFacebook = new ArrayList<Usuario>();
+					List<Usuario> listaAmigosFacebookAux = new ArrayList<Usuario>();
+
+					if (listaIdsFacebook != null && listaIdsFacebook.size() > 0) {
+						for (String id : listaIdsFacebook) {
+							Usuario u = null;
+							u = usuarioDAO.validarID(id);
+
+							if (u != null && u.getPkUsuario() > 0) {
+								listaAmigosFacebookAux.add(u);
+							}
+						}
+					}
+
+					if (listaAmigosFacebookAux != null
+							&& listaAmigosFacebookAux.size() > 0) {
+						Boolean existe;
+						for (Usuario uAux : listaAmigosFacebookAux) {
+							existe = amigosUsuarioDAO.getAmigosUsuario(
+									getUsuarioGlobal().getPkUsuario(),
+									uAux.getPkUsuario());
+							if (existe == null || !existe) {
 								listaAmigosFacebook.add(uAux);
 							}
-						 }
-					 }
+						}
+					}
 
-					 if(listaAmigosFacebook==null || listaAmigosFacebook.size()==0)		{   listaAmigosFacebook = null; 	}
+					if (listaAmigosFacebook == null
+							|| listaAmigosFacebook.size() == 0) {
+						listaAmigosFacebook = null;
+					}
+				}
+
+				if(usuarioAux!=null && (usuarioAux.getPkUsuario()!=getUsuarioGlobal().getPkUsuario()))
+				{
+					
+					listaUsuarioProcurados = null;
+					this.procurarAmigos = true;
+					tabActiveIndex = 0;
 				}
 				
-				listaAmigos = amigosUsuarioDAO.getAmigosUsuario(getUsuarioGlobal().getPkUsuario());
-				if(listaAmigos!=null && listaAmigos.size()>0)
-				{
+				setUsuarioAux(getUsuarioGlobal());
+				
+				listaAmigos = amigosUsuarioDAO
+						.getAmigosUsuario(getUsuarioGlobal().getPkUsuario());
+				if (listaAmigos != null && listaAmigos.size() > 0) {
 					possuiAmizades = true;
-				}
-				else
-				{
+				} else {
 					listaAmigos = null;
 					possuiAmizades = false;
 				}
-				
-				
-				listaRequisicoes = requisicaoAmizadeDAO.getRequisicoesAmizadeUsuario(getUsuarioGlobal().getPkUsuario());
-				if(listaRequisicoes!=null && listaRequisicoes.size()>0)
-				{
+
+				listaRequisicoes = requisicaoAmizadeDAO
+						.getRequisicoesAmizadeUsuario(getUsuarioGlobal()
+								.getPkUsuario());
+				if (listaRequisicoes != null && listaRequisicoes.size() > 0) {
 					solicitacoesAmizade = false;
-				}
-				else
-				{
+				} else {
 					listaRequisicoes = null;
 					solicitacoesAmizade = true;
 				}
-			}
-			else
-			{
+			} else {
 				encerrarSessao();
 			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
-	
-	public void redirecionaPaginaUsuario(String pkUsuario)
-	{
-		try
-		{
-			if(pkUsuario!=null && pkUsuario.length()>0)
-			{
-				//FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/playlistSelecionada/index.xhtml?t="+ pkPlaylist);
+
+	public void redirecionaPaginaUsuario(String pkUsuario) {
+		try {
+			if (pkUsuario != null && pkUsuario.length() > 0) {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/perfil/index.xhtml?t="
+										+ pkUsuario);
 			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
-	
-	public void responderRequisicaoAmizade(Usuario usuario, String respBoolean)
-	{
-		try
-		{
+
+	public void responderRequisicaoAmizade(Usuario usuario, String respBoolean) {
+		try {
 			ConectaBanco.getInstance().beginTransaction();
 			Boolean adicionou = null;
-			
-			if(respBoolean.equals("true"))
-			{
+
+			if (respBoolean.equals("true")) {
 				adicionou = true;
-			}
-			else if(respBoolean.equals("false"))
-			{
+			} else if (respBoolean.equals("false")) {
 				adicionou = false;
 			}
-			
-			//Salva a respostas da requisição
-			requisicaoAmizadeDAO.salvaRespostaRequisicao(getUsuarioGlobal(), usuario, adicionou);
-			
-			if(adicionou)
-			{
-				//Caso a requisição seja aceita, os usuários se tornam amigos e procura para ver se existe alguma requisição que esse usuário tenha feito para o outro para setar ela como verdadeiro
+
+			// Salva a respostas da requisição
+			requisicaoAmizadeDAO.salvaRespostaRequisicao(getUsuarioGlobal(),
+					usuario, adicionou);
+
+			if (adicionou) {
+				// Caso a requisição seja aceita, os usuários se tornam amigos e
+				// procura para ver se existe alguma requisição que esse usuário
+				// tenha feito para o outro para setar ela como verdadeiro
 				RequisicaoAmizade req = null;
-				req = requisicaoAmizadeDAO.procuraRequisicao(usuario, getUsuarioGlobal());
-				
-				//Caso este usuário também tenha feito requisição, então seta ela como true
-				if(req!=null && req.getPkRequisicaoAmizade()>0)
-				{
+				req = requisicaoAmizadeDAO.procuraRequisicao(usuario,
+						getUsuarioGlobal());
+
+				// Caso este usuário também tenha feito requisição, então seta
+				// ela como true
+				if (req != null && req.getPkRequisicaoAmizade() > 0) {
 					req.setResposta(true);
 					requisicaoAmizadeDAO.salvaRequisicaoBD(req);
 				}
-				
+
 				AmigosUsuario am1;
 				AmigosUsuario am2;
-				
+
 				am1 = new AmigosUsuario();
 				am1.setUsuario(getUsuarioGlobal());
 				am1.setAmigo(usuario);
-				
+
 				am2 = new AmigosUsuario();
 				am2.setUsuario(usuario);
 				am2.setAmigo(getUsuarioGlobal());
-				
+
 				amigosUsuarioDAO.salvarAmigos(am1, am2);
-				
-				if(listaAmigos==null)
-				{
+
+				if (listaAmigos == null) {
 					listaAmigos = new ArrayList<Usuario>();
 					possuiAmizades = true;
-				}
-				else if(listaAmigos!=null && listaAmigos.size()==0)
-				{
+				} else if (listaAmigos != null && listaAmigos.size() == 0) {
 					possuiAmizades = true;
 				}
-				
+
 				listaAmigos.add(usuario);
 			}
 
 			listaRequisicoes.remove(usuario);
-			
-			if((listaRequisicoes==null) || (listaRequisicoes!=null && listaRequisicoes.size()==0))
-			{
+
+			if ((listaRequisicoes == null)
+					|| (listaRequisicoes != null && listaRequisicoes.size() == 0)) {
 				listaRequisicoes = null;
 				solicitacoesAmizade = true;
 			}
-			
+
 			ConectaBanco.getInstance().commit();
-		}
-		catch(Exception e)
-		{
+			tabActiveIndex = 0;
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
-	
-	public void procurarAmigosSistema()
-	{
-		try
-		{
+
+	public void procurarAmigosSistema() {
+		try {
+			List<Usuario> listaUsuarioProcuradosAux = new ArrayList<Usuario>();
 			listaUsuarioProcurados = new ArrayList<Usuario>();
-			listaUsuarioProcurados = usuarioDAO.procurarUsuarios(nomeAmigo);
-			if(listaUsuarioProcurados!=null && listaUsuarioProcurados.size()==0)	{    listaUsuarioProcurados = null;	}
-			
+			listaUsuarioProcuradosAux = usuarioDAO.procurarUsuarios(nomeAmigo);
+
+			if (listaAmigos != null && listaAmigos.size() > 0) {
+				boolean flag = false;
+				for (Usuario amigosProcurados : listaUsuarioProcuradosAux) {
+					flag = false;
+					if (amigosProcurados.getPkUsuario() == getUsuarioGlobal()
+							.getPkUsuario()) {
+						flag = true;
+					}
+					if (flag == false) {
+						listaUsuarioProcurados.add(amigosProcurados);
+					}
+				}
+			} else {
+
+				boolean flag = false;
+				for (Usuario amigosProcurados : listaUsuarioProcuradosAux) {
+					flag = false;
+					if (amigosProcurados.getPkUsuario() == getUsuarioGlobal()
+							.getPkUsuario()) {
+						flag = true;
+					}
+
+					if (flag == false) {
+						listaUsuarioProcurados.add(amigosProcurados);
+					}
+				}
+			}
+
+			if (listaUsuarioProcurados == null
+					|| listaUsuarioProcurados.size() == 0) {
+				listaUsuarioProcurados = null;
+			}
+
+			if (listaUsuarioProcurados != null
+					&& listaUsuarioProcurados.size() == 0) {
+				listaUsuarioProcurados = null;
+			}
+
 			this.procurarAmigos = false;
-		}
-		catch(Exception e)
-		{
+
+			tabActiveIndex = 2;
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
-	
+
 	public void onTabChange(TabChangeEvent event) {
 		TabView tabView = (TabView) event.getComponent();
 		tabActiveIndex = tabView.getChildren().indexOf(event.getTab());
-		
+
 	}
-	
+
 	public Integer getTabActiveIndex() {
 		return tabActiveIndex;
 	}
@@ -335,5 +370,13 @@ public class AmigosBean extends UtilidadesTelas implements Serializable
 
 	public void setPossuiAmizades(boolean possuiAmizades) {
 		this.possuiAmizades = possuiAmizades;
+	}
+
+	public Usuario getUsuarioAux() {
+		return usuarioAux;
+	}
+
+	public void setUsuarioAux(Usuario usuarioAux) {
+		this.usuarioAux = usuarioAux;
 	}
 }

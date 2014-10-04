@@ -48,7 +48,7 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     	try
     	{
     		String EL = emailLogin.trim();
-    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Usuario as u where UPPER(u.emailUsuario) LIKE :login_email OR UPPER(u.login) LIKE :login_email ORDER by u.login ASC"));
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Usuario as u where UPPER(u.emailUsuario) LIKE :login_email OR UPPER(u.login) LIKE :login_email OR UPPER(u.nome) LIKE :login_email ORDER by u.login ASC"));
     		query.setParameter("login_email", "%"+EL.toUpperCase()+"%");
     		List<Usuario> listaUsuarios =  (List<Usuario>) query.getResultList();
     		return listaUsuarios;

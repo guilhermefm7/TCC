@@ -26,19 +26,22 @@
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
 		<ui:define name="content">
-		<div class="row">
-	<div id="breadcrumb" class="col-xs-12">
-		<ol class="breadcrumb">
-			<li><a href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Perfil</a></li>
-			<li><a href="http://localhost:8080/RecoMusic/amigos/index.xhtml">Amigos</a></li>
-		</ol>
-	</div>
-</div>
+			<div class="row">
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a
+							href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Perfil</a></li>
+						<li><a
+							href="http://localhost:8080/RecoMusic/amigos/index.xhtml">Amigos</a></li>
+					</ol>
+				</div>
+			</div>
 
 
 			<br />
 			<h1
-				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Lista de Amigos</h1>
+				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Lista
+				de Amigos</h1>
 			<br />
 			<br />
 			<br />
@@ -87,41 +90,152 @@
 			</p:accordionPanel>
 
 			<br />
-			<p:accordionPanel>
-				<p:tab title="Amizades">
-					<p:tabView id="tabs" activeIndex="#{AmigosBean.tabActiveIndex}"
-						dynamic="true" cache="false">
-						<p:ajax event="tabChange" listener="#{AmigosBean.onTabChange}"
-							update="tabs" />
-						<p:tab title="Amigos">
-							<h:form class="navbar-form navbar-left" style="padding: 0;">
-								<h:panelGrid columns="2" cellpadding="10">
-									<h:outputLabel value="Você ainda não possui nenhuma amizade"
-										rendered="#{AmigosBean.possuiAmizades eq false}" />
-								</h:panelGrid>
-							</h:form>
-						</p:tab>
-						<p:tab title="Solicitações de Amizade"
-							disabled="#{AmigosBean.solicitacoesAmizade}">
-							<h:panelGrid columns="2" cellpadding="10">
-								<h:form class="navbar-form navbar-left" style="padding: 0;">
-								</h:form>
-							</h:panelGrid>
-						</p:tab>
-						<p:tab title="Amigos Encontrados"
-							disabled="#{AmigosBean.procurarAmigos}">
-							<h:panelGrid columns="2" cellpadding="10">
-								<h:form class="navbar-form navbar-left" style="padding: 0;">
-									<h:commandLink type="submit" class="btn btn-primary"
-										style="color:#FFFFFF;align:center;background-color:#85b2cb"
-										value="Procurar" />
-								</h:form>
-							</h:panelGrid>
-						</p:tab>
-					</p:tabView>
+			<div class="row" align="center">
+				<div class="col-mod-12" align="center">
+					<p:accordionPanel multiple="true">
+						<p:tab title="Amizades">
+							<p:tabView id="tabs" activeIndex="#{AmigosBean.tabActiveIndex}"
+								dynamic="true" cache="false">
+								<p:ajax event="tabChange" listener="#{AmigosBean.onTabChange}"
+									update="tabs" />
+								<p:tab title="Amigos">
+									<h:panelGrid columns="1" cellpadding="1">
+										<h:form class="navbar-form navbar-left">
+											<div class="col-mod-12" align="center">
+												<p:dataTable rendered="#{AmigosBean.listaAmigos ne null}"
+													class="table table-bordered table-striped table-hover table-heading table-datatable"
+													value="#{AmigosBean.listaAmigos}" var="amigo"
+													style="color: #333;font-weight: bold;">
+													<p:column>
+														<f:facet name="header">Nome</f:facet>
+											#{amigo.nome}
+										</p:column>
+													<p:column>
+														<f:facet name="header">Sobrenome</f:facet>
+			    							#{amigo.sobrenome}
+			    						</p:column>
+													<p:column>
+														<f:facet name="header">Login</f:facet>
+			    							#{amigo.login}
+			    						</p:column>
+													<p:column>
+														<f:facet name="header">Email</f:facet>
+			    							#{amigo.emailUsuario}
+			    						</p:column>
+													<p:column style="text-align:center">
+														<h:commandLink type="submit" class="btn btn-success"
+															style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+															value="Perfil"
+															actionListener="#{AmigosBean.redirecionaPaginaUsuario(amigo.pkUsuario)}" />
+													</p:column>
+												</p:dataTable>
 
-				</p:tab>
-			</p:accordionPanel>
+												<h:panelGroup layout="block" align="center">
+													<h:outputLabel
+														value="Você ainda não possui nenhuma amizade."
+														rendered="#{AmigosBean.possuiAmizades eq false}" />
+
+												</h:panelGroup>
+											</div>
+										</h:form>
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="Solicitações de Amizade"
+									disabled="#{AmigosBean.solicitacoesAmizade}">
+									<h:panelGrid columns="1" cellpadding="1">
+										<h:form class="navbar-form navbar-left">
+											<p:dataTable
+												rendered="#{AmigosBean.listaRequisicoes ne null}"
+												class="table table-bordered table-striped table-hover table-heading table-datatable"
+												value="#{AmigosBean.listaRequisicoes}" var="amigo"
+												style="color: #333;font-weight: bold;">
+
+												<p:column>
+													<f:facet name="header">Nome</f:facet>
+														#{amigo.nome}
+			    									</p:column>
+
+												<p:column>
+													<f:facet name="header">Sobrenome</f:facet>
+			    										#{amigo.sobrenome}
+			    									</p:column>
+												<p:column style="text-align:center">
+													<p:commandLink type="submit" class="btn btn-success"
+														style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+														value="Perfil"
+														actionListener="#{AmigosBean.redirecionaPaginaUsuario(amigo.pkUsuario)}" />
+												</p:column>
+												<p:column style="text-align:center">
+													<p:commandLink type="submit" class="btn btn-success"
+														style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+														value="Confirmar" update="@form"
+														actionListener="#{AmigosBean.responderRequisicaoAmizade(amigo, true)}" />
+												</p:column>
+												<p:column style="text-align:center">
+													<p:commandLink type="submit" class="btn btn-success"
+														style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+														value="Recusar" update="@form"
+														actionListener="#{AmigosBean.responderRequisicaoAmizade(amigo, false)}" />
+												</p:column>
+
+											</p:dataTable>
+											<h:panelGroup layout="block" align="center">
+												<h:outputLabel
+													value="Você não possui nenhuma solicitação de amizade."
+													rendered="#{AmigosBean.listaRequisicoes eq null}" />
+											</h:panelGroup>
+										</h:form>
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="Amigos Encontrados"
+									disabled="#{AmigosBean.procurarAmigos}">
+									<h:panelGrid columns="1" cellpadding="1">
+										<h:form class="navbar-form navbar-left">
+											<p:dataTable
+												rendered="#{AmigosBean.listaUsuarioProcurados ne null}"
+												class="table table-bordered table-striped table-hover table-heading table-datatable"
+												value="#{AmigosBean.listaUsuarioProcurados}" var="amigo"
+												style="color: #333;font-weight: bold;">
+
+												<p:column>
+													<f:facet name="header">Nome</f:facet>
+														#{amigo.nome}
+			    									</p:column>
+
+												<p:column>
+													<f:facet name="header">Sobrenome</f:facet>
+			    										#{amigo.sobrenome}
+			    									</p:column>
+
+												<p:column>
+													<f:facet name="header">Login</f:facet>
+			    										#{amigo.login}
+			    									</p:column>
+												<p:column>
+													<f:facet name="header">Email</f:facet>
+			    										#{amigo.emailUsuario}
+			    									</p:column>
+												<p:column style="text-align:center">
+													<h:commandLink type="submit" class="btn btn-success"
+														style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+														value="Perfil"
+														actionListener="#{AmigosBean.redirecionaPaginaUsuario(amigo.pkUsuario)}" />
+												</p:column>
+											</p:dataTable>
+
+											<h:panelGroup layout="block" align="center">
+												<h:outputLabel value="Nenhum usuário foi encontrado."
+													rendered="#{AmigosBean.listaUsuarioProcurados eq null}" />
+											</h:panelGroup>
+										</h:form>
+									</h:panelGrid>
+								</p:tab>
+							</p:tabView>
+
+						</p:tab>
+					</p:accordionPanel>
+				</div>
+			</div>
 
 		</ui:define>
 	</ui:composition>
