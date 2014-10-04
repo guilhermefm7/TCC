@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 
 import br.com.recomusic.dao.AvaliarMusicaDAO;
 import br.com.recomusic.dao.BandaDAO;
@@ -97,7 +97,6 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 					&& (valorIdMusicaEcho != null && valorIdMusicaEcho.length() > 0)) {
 
 				this.valorIdMusicaEchoAux = valorIdMusicaEcho;
-				this.valorIdMusicaEcho = null;
 				this.notaMusica = 0;
 				if (UtilidadesTelas.verificarSessao()) {
 					setUsuario(getUsuarioGlobal());
