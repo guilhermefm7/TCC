@@ -75,11 +75,11 @@ public class PlaylistMusicaDAO extends GenericDAO<Long, PlaylistMusica>
     		query.setParameter("pk_playlist", Long.valueOf(pkPlaylist));
     		query.setParameter("status_ativo", Constantes.TIPO_STATUS_ATIVO);
     		query.setParameter("id_musica", idDeezer);
-    		PlaylistMusica pm = (PlaylistMusica)query.getSingleResult();
+    		List<PlaylistMusica> pm = (List<PlaylistMusica>)query.getResultList();
     		
-    		if(pm!=null && pm.getPkPlaylistMusica()>0)
+    		if(pm!=null && pm.size()>0)
     		{
-    			delete(pm);
+    			delete(pm.get(0));
     			return true;
     		}
     		else

@@ -148,6 +148,11 @@ public class PlaylistSelecionadaBean extends UtilidadesTelas implements Serializ
 			{
 				ConectaBanco.getInstance().beginTransaction();
 				playlistMusicaDAO.removeMusicaPlaylist(pkPlaylist, idDeezer);
+				
+				Playlist p = playlistDAO.getPlaylist(pkPlaylist);
+				p.setNumeroMusicas(p.getNumeroMusicas()-1);
+				playlistDAO.save(p);
+				
 				ConectaBanco.getInstance().commit();
 			}
 			else
