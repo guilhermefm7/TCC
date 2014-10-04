@@ -198,7 +198,7 @@ public class UtilidadesTelas
 	
 	public void redirecionarErro() throws Exception
 	{
-		FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+		FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/resources/ajax/page_500.html");
 	}
 	
     public void addMessage(String summary, Severity severityInfo) {

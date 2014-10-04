@@ -76,7 +76,7 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 					save(pegaUsuario);
 					((UsuarioBean) getBean("UsuarioBean")).setUsuario(pegaUsuario);
 					setUsuarioGlobal(pegaUsuario);
-					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/perfil/index.xhtml");
 				}
 			}
 			else
@@ -113,7 +113,7 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/perfil/index.xhtml");
 		}
 		catch(Exception e)
 		{
