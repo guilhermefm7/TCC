@@ -91,7 +91,7 @@
 						<h:panelGroup layout="block" class="box-content no-padding">
 							<h:dataTable
 								class="table table-bordered table-striped table-hover table-heading table-datatable"
-								value="#{PlaylistSelecionadaBean.listaMusicas}"
+								value="#{PlaylistSelecionadaBean.listaMusicas}" rendered="#{PlaylistSelecionadaBean.playlistUsuarioGlobal eq true}"
 								var="musicaPlaylist" style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>
@@ -117,6 +117,30 @@
 										value="Excluir"
 										actionListener="#{PlaylistSelecionadaBean.excluir(musicaPlaylist.idDeezer)}" />
 								</h:column>
+							</h:dataTable>
+							
+							<h:dataTable
+								class="table table-bordered table-striped table-hover table-heading table-datatable"
+								value="#{PlaylistSelecionadaBean.listaMusicas}" rendered="#{PlaylistSelecionadaBean.playlistUsuarioGlobal eq false}"
+								var="musicaPlaylist" style="color: #333;font-weight: bold;">
+								<h:column>
+									<f:facet name="header">#</f:facet>
+			    				#{musicaPlaylist.qtd}
+			    			</h:column>
+								<h:column>
+									<f:facet name="header">Nome</f:facet>
+									<h:commandLink
+										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
+										actionListener="#{PlaylistSelecionadaBean.redirecionaPaginaMusica(musicaPlaylist.idDeezer,musicaPlaylist.nomeMusica, musicaPlaylist.nomeArtista, musicaPlaylist.albumMusica, musicaPlaylist.idMusica)}">#{musicaPlaylist.nomeMusica} </h:commandLink>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Artista/Banda</f:facet>
+			    				#{musicaPlaylist.nomeArtista}
+			    			</h:column>
+								<h:column>
+									<f:facet name="header">Álbum</f:facet>
+			    				#{musicaPlaylist.albumMusica}
+			    			</h:column>
 							</h:dataTable>
 						</h:panelGroup>
 					</p:tab>

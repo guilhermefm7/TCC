@@ -32,6 +32,7 @@ public class PlaylistSelecionadaBean extends UtilidadesTelas implements Serializ
 	private PlaylistMusicaDAO playlistMusicaDAO = new PlaylistMusicaDAO( ConectaBanco.getInstance().getEntityManager());
 	private int qtdPlaylists = 0;
 	private List<MusicaIM> listaMusicas  = null;
+	private boolean playlistUsuarioGlobal = false;
 
 	public PlaylistSelecionadaBean() {	}
 
@@ -49,6 +50,15 @@ public class PlaylistSelecionadaBean extends UtilidadesTelas implements Serializ
 					
 					if(playlist!=null && playlist.getPkPlaylist()>0)
 					{
+						if(playlist.getUsuario().getPkUsuario()==getUsuarioGlobal().getPkUsuario())
+						{
+							playlistUsuarioGlobal = true;
+						}
+						else
+						{
+							playlistUsuarioGlobal = false;
+						}
+						
 						nomePlaylist = playlist.getNome();
 						List<Musica> listaM = playlistMusicaDAO.getMusicasPlaylist(pkPlaylist);
 						listaMusicas = new ArrayList<MusicaIM>();
@@ -238,5 +248,13 @@ public class PlaylistSelecionadaBean extends UtilidadesTelas implements Serializ
 
 	public void setNomePlaylist(String nomePlaylist) {
 		this.nomePlaylist = nomePlaylist;
+	}
+
+	public boolean isPlaylistUsuarioGlobal() {
+		return playlistUsuarioGlobal;
+	}
+
+	public void setPlaylistUsuarioGlobal(boolean playlistUsuarioGlobal) {
+		this.playlistUsuarioGlobal = playlistUsuarioGlobal;
 	}
 }

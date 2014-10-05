@@ -28,35 +28,211 @@
 		<ui:define name="titulo">RecMusic</ui:define>
 		<ui:define name="content">
 
-<div class="row">
-	<div id="breadcrumb" class="col-xs-12">
-		<ol class="breadcrumb">
-			<li><a href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Perfil</a></li>
-		</ol>
-	</div>
-</div>
+			<div class="row">
+				<div id="breadcrumb" class="col-xs-12">
+					<ol class="breadcrumb">
+						<li><a
+							href="http://localhost:8080/RecoMusic/perfil/index.xhtml">Perfil</a></li>
+					</ol>
+				</div>
+			</div>
 
 			<br />
-			<h1
-				style="margin-top: 0; color: #4F7799; text-align: center; font-weight: bold;">Perfil</h1>
-			<br />
-			<br />
+			<div class="row">
+				<div class="col-xs-12" align="center">
+					<div class="col-xs-6" align="right">
+						<img src="../resources/imagens/img/eleven.png"
+							style="width: 150px; height: 150px" />
+					</div>
+					<div class="col-xs-3" align="left">
+						<br /> <br />
+						<h1
+							style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
+							<h:outputLabel
+								value="#{PerfilBean.usuario.nome} #{PerfilBean.usuario.sobrenome}" />
+						</h1>
+						<br />
+						<h:form class="navbar-form navbar-left" style="padding: 0;">
+							<h:commandLink type="submit" class="btn btn-primary"
+								style="color:#FFFFFF;align:center;background-color:#85b2cb"
+								value="Adicionar Amigo"
+								rendered="#{PerfilBean.amigo == false and PerfilBean.requisitouAmizade eq false}"
+								actionListener="#{PerfilBean.adiconarAmigo}" />
+							<h:commandLink type="submit" class="btn btn-primary"
+								disabled="true"
+								style="color:#FFFFFF;align:center;background-color:#85b2cb"
+								value="Solicitação de Amizade Enviada"
+								rendered="#{PerfilBean.requisitouAmizade eq true}" />
+							<h:commandLink type="submit" class="btn btn-primary"
+								style="color:#FFFFFF;align:center;background-color:#85b2cb"
+								value="Desfazer Amizade"
+								actionListener="#{PerfilBean.desfazerAmizade}"
+								rendered="#{PerfilBean.amigo == true}" />
+						</h:form>
+					</div>
+				</div>
+			</div>
+
+
 			<br />
 			<br />
 
-			<h:form class="navbar-form navbar-left" style="padding: 0;">
-				<h:commandLink type="submit" class="btn btn-primary"
-					style="color:#FFFFFF;align:center;background-color:#85b2cb"
-					value="Adicionar Amigo" rendered="#{PerfilBean.amigo == false and PerfilBean.requisitouAmizade eq false}"
-					actionListener="#{PerfilBean.adiconarAmigo}" />
-				<h:commandLink type="submit" class="btn btn-primary" disabled="true"
-					style="color:#FFFFFF;align:center;background-color:#85b2cb"
-					value="Solicitação de Amizade Enviada" rendered="#{PerfilBean.requisitouAmizade eq true}"/>
-				<h:commandLink type="submit" class="btn btn-primary"
-					style="color:#FFFFFF;align:center;background-color:#85b2cb"
-					value="Desfazer Amizade"
-					actionListener="#{PerfilBean.desfazerAmizade}" rendered="#{PerfilBean.amigo == true}"/>
-			</h:form>
+			<br />
+			<br />
+			<div class="row" align="center">
+				<div class="col-mod-12" align="center">
+					<p:accordionPanel multiple="true">
+						<p:tab title="Visão Geral">
+							<p:tabView id="tabs" dynamic="true" cache="false"
+								activeIndex="#{PerfilBean.tabActiveIndex}">
+								<p:ajax event="tabChange" listener="#{PerfilBean.onTabChange}"
+									update="tabs" />
+								<p:tab title="Informações Pessoais">
+									<h:panelGrid columns="1" cellpadding="1">
+										<div class="row">
+											<div class="col-sm-12">
+												<label class="col-sm-2 control-label">Nome</label>
+												<div class="col-sm-4">
+													<label class="col-sm-2 control-label">#{PerfilBean.usuario.nome}</label>
+												</div>
+												<label class="col-sm-2 control-label">Sobrenome</label>
+												<div class="col-sm-4">
+													<label class="col-sm-2 control-label">#{PerfilBean.usuario.sobrenome}</label>
+												</div>
+											</div>
+										</div>
+
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="Amigos">
+									<h:panelGrid columns="1" cellpadding="1">
+										<h:form class="navbar-form navbar-left">
+											<p:dataTable
+												rendered="#{PerfilBean.listaAmigosUsuario ne null}"
+												class="table table-bordered table-striped table-hover table-heading table-datatable"
+												value="#{PerfilBean.listaAmigosUsuario}" var="amigo"
+												style="color: #333;font-weight: bold;">
+
+												<p:column>
+													<f:facet name="header">Nome</f:facet>
+														#{amigo.nome}
+			    									</p:column>
+
+												<p:column>
+													<f:facet name="header">Sobrenome</f:facet>
+			    										#{amigo.sobrenome}
+			    									</p:column>
+
+												<p:column>
+													<f:facet name="header">Login</f:facet>
+			    										#{amigo.login}
+			    									</p:column>
+												<p:column>
+													<f:facet name="header">Email</f:facet>
+			    										#{amigo.emailUsuario}
+			    									</p:column>
+												<p:column style="text-align:center">
+													<h:commandLink type="submit" class="btn btn-success"
+														style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+														value="Perfil"
+														actionListener="#{PerfilBean.redirecionaPaginaUsuario(amigo.pkUsuario)}" />
+												</p:column>
+											</p:dataTable>
+
+											<h:panelGroup layout="block" align="center">
+												<h:outputLabel value="Não Possui Nenhuma Amizade."
+													rendered="#{PerfilBean.listaAmigosUsuario eq null}" />
+											</h:panelGroup>
+										</h:form>
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="Playlists" disabled="#{PerfilBean.disabled}">
+									<h:panelGrid columns="1" cellpadding="1">
+										<h:form class="navbar-form navbar-left">
+											<p:dataTable
+												rendered="#{PerfilBean.listaPlaylistsUsuario ne null}"
+												class="table table-bordered table-striped table-hover table-heading table-datatable"
+												value="#{PerfilBean.listaPIM}" var="playlist"
+												style="color: #333;font-weight: bold;">
+
+												<p:column>
+													<f:facet name="header">Nome</f:facet>
+														#{playlist.nomePlaylist}
+			    									</p:column>
+
+												<p:column>
+													<f:facet name="header">Data de Lançamento</f:facet>
+			    										#{playlist.dataLancamento}
+			    									</p:column>
+
+												<p:column>
+													<f:facet name="header">Nº de Faixas</f:facet>
+			    										#{playlist.qtdFaixas}
+			    									</p:column>
+												<p:column style="text-align:center">
+													<h:commandLink type="submit" class="btn btn-success"
+														style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+														value="Conferir"
+														actionListener="#{PerfilBean.redirecionaPlaylist(playlist.pkPlaylist)}" />
+												</p:column>
+											</p:dataTable>
+
+											<h:panelGroup layout="block" align="center">
+												<h:outputLabel value="Não Possui Nenhuma Playlist."
+													rendered="#{PerfilBean.listaPlaylistsUsuario eq null}" />
+											</h:panelGroup>
+										</h:form>
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="Músicas Avaliadas"
+									disabled="#{PerfilBean.disabled}">
+									<h:panelGrid columns="1" cellpadding="1">
+										<h:form class="navbar-form navbar-left">
+											<p:dataTable
+												rendered="#{PerfilBean.listaMusicaUsuario ne null}"
+												class="table table-bordered table-striped table-hover table-heading table-datatable"
+												value="#{PerfilBean.listaMusicaUsuario}" var="musicaAchada"
+												style="color: #333;font-weight: bold;">
+												<p:column style="width:10%;text-align:center">
+													<f:facet name="header">#</f:facet>
+			    				#{musicaAchada.qtd}
+			    			</p:column>
+												<p:column>
+													<f:facet name="header">Nome</f:facet>
+										#{musicaAchada.musica.titulo}
+								</p:column>
+												<p:column>
+													<f:facet name="header">Artista/Banda</f:facet>
+			    				#{musicaAchada.musica.banda.nome}
+			    			</p:column>
+												<p:column>
+													<f:facet name="header">Álbum</f:facet>
+			    				#{musicaAchada.musica.album}
+			    			</p:column>
+												<p:column style="width:8%;text-align:center">
+													<f:facet name="header">Nota</f:facet>
+			    				#{musicaAchada.nota}
+			    			</p:column>
+												<p:column style="width:25%;text-align:center">
+													<h:commandLink type="submit" class="btn btn-success"
+														style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+														value="Conferir"
+														actionListener="#{PerfilBean.redirecionaPaginaMusica(musicaAchada.musica.idDeezer,musicaAchada.musica.titulo, musicaAchada.musica.banda.nome, musicaAchada.musica.album, musicaAchada.musica.idMusica)}" />
+												</p:column>
+											</p:dataTable>
+
+											<h:panelGroup layout="block" align="center">
+												<h:outputLabel value="Não Avaliou Nenhuma Música."
+													rendered="#{PerfilBean.listaMusicaUsuario eq null}" />
+											</h:panelGroup>
+										</h:form>
+									</h:panelGrid>
+								</p:tab>
+							</p:tabView>
+						</p:tab>
+					</p:accordionPanel>
+				</div>
+			</div>
 
 		</ui:define>
 	</ui:composition>
