@@ -90,16 +90,45 @@
 								<p:tab title="Informações Pessoais">
 									<h:panelGrid columns="1" cellpadding="1">
 										<div class="row">
-											<div class="col-sm-12">
-												<label class="col-sm-2 control-label">Nome</label>
-												<div class="col-sm-4">
-													<label class="col-sm-2 control-label">#{PerfilBean.usuario.nome}</label>
-												</div>
-												<label class="col-sm-2 control-label">Sobrenome</label>
-												<div class="col-sm-4">
-													<label class="col-sm-2 control-label">#{PerfilBean.usuario.sobrenome}</label>
+											<div class="col-xs-12" align="center">
+												<div class="col-xs-2" align="left">
+													<h1
+														style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
+														<h:outputLabel
+															value="Nome: #{PerfilBean.usuario.nome} #{PerfilBean.usuario.sobrenome}" />
+													</h1>
 												</div>
 											</div>
+											<div class="col-xs-12" align="center">
+												<div class="col-xs-2" align="left">
+													<h1
+														style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
+														<h:outputLabel
+															value="Login: #{PerfilBean.usuario.login}" />
+													</h1>
+												</div>
+											</div>
+											<div class="col-xs-12" align="center">
+												<div class="col-xs-2" align="left">
+													<h1
+														style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
+														<h:outputLabel
+															value="Email: #{PerfilBean.usuario.emailUsuario}" />
+													</h1>
+												</div>
+											</div>
+											<div class="col-xs-12" align="center">
+												<div class="col-xs-2" align="left">
+													<h1
+														style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
+														<h:outputLabel
+															value="Sexo: Masculino" rendered="#{PerfilBean.usuario.sexo eq 2}"/>
+														<h:outputLabel
+															value="Sexo: Feminino" rendered="#{PerfilBean.usuario.sexo eq 1}"/>
+													</h1>
+												</div>
+											</div>
+
 										</div>
 
 									</h:panelGrid>
