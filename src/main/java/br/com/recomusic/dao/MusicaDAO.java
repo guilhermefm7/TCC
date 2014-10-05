@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import br.com.recomusic.om.Banda;
 import br.com.recomusic.om.Musica;
 import br.com.recomusic.singleton.ConectaBanco;
  
@@ -62,6 +63,29 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     }
     
     /**
+     * Procura todas as musicas da banda passada como parâmetro
+     * @param Banda banda
+     * return a lista de músicas do sistema da banda passada como parâmetro
+     * @throws Exception
+     */
+    public List<Musica> getMusicasByBanda(Banda banda) throws Exception
+    {
+    	try
+    	{
+    		List<Musica> listaMusicas = null;
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where m.banda.pkBanda = :banda_pkBanda"));
+    		query.setParameter("banda_pkBanda", banda.getPkBanda());
+    		listaMusicas =  (List<Musica>) query.getResultList();
+    		
+    		return listaMusicas;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	}  
+    }
+    
+    /**
      * Procura as musicas mais bem avaliadas do sistemas de acordo com a quantidade passada como pârametro
      * @param int quantidade
      * return List<Musica> listaMusicas
@@ -91,7 +115,6 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     			{
     				musicaAux.add(musica2);
     			}
-				
 			}
     		
     		return musicaAux;
@@ -132,7 +155,6 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     			{
     				musicaAux.add(musica2);
     			}
-    			
     		}
     		
     		return musicaAux;

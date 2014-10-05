@@ -129,6 +129,38 @@
 								</div>
 							</h:panelGroup>
 
+							<p:accordionPanel multiple="true" style="text-align: left;"
+								rendered="#{MusicaBean.musicasRecomendadas ne null}">
+								<p:tab title="Confira Também">
+									<h:panelGroup layout="block" class="box-content no-padding">
+										<p:dataTable
+											class="table table-bordered table-striped table-hover table-heading table-datatable"
+											value="#{MusicaBean.musicasRecomendadas}" var="musicaAchada"
+											style="color: #333;font-weight: bold;">
+
+											<p:column>
+												<f:facet name="header">Nome</f:facet>
+										#{musicaAchada.titulo}
+								</p:column>
+											<p:column>
+												<f:facet name="header">Artista/Banda</f:facet>
+			    				#{musicaAchada.banda.nome}
+			    			</p:column>
+											<p:column>
+												<f:facet name="header">Álbum</f:facet>
+			    				#{musicaAchada.album}
+			    			</p:column>
+											<p:column style="width:23%;text-align:center">
+												<h:commandLink type="submit" class="btn btn-success"
+													style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+													value="Conferir"
+													actionListener="#{MusicaBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.titulo, musicaAchada.banda.nome, musicaAchada.album, musicaAchada.idMusica, musicaAchada.urlImagem)}" />
+											</p:column>
+										</p:dataTable>
+									</h:panelGroup>
+								</p:tab>
+							</p:accordionPanel>
+
 							<br />
 						</div>
 					</div>
@@ -259,6 +291,38 @@
 									</ul>
 								</div>
 							</h:panelGroup>
+
+							<p:accordionPanel multiple="true" style="text-align: left;"
+								rendered="#{MusicaBean.musicasRecomendadas ne null}">
+								<p:tab title="Confira Também">
+									<h:panelGroup layout="block" class="box-content no-padding">
+										<p:dataTable
+											class="table table-bordered table-striped table-hover table-heading table-datatable"
+											value="#{MusicaBean.musicasRecomendadas}" var="musicaAchada"
+											style="color: #333;font-weight: bold;">
+
+											<p:column>
+												<f:facet name="header">Nome</f:facet>
+										#{musicaAchada.titulo}
+								</p:column>
+											<p:column>
+												<f:facet name="header">Artista/Banda</f:facet>
+			    				#{musicaAchada.banda.nome}
+			    			</p:column>
+											<p:column>
+												<f:facet name="header">Álbum</f:facet>
+			    				#{musicaAchada.album}
+			    			</p:column>
+											<p:column style="width:23%;text-align:center">
+												<h:commandLink type="submit" class="btn btn-success"
+													style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+													value="Conferir"
+													actionListener="#{MusicaBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.titulo, musicaAchada.banda.nome, musicaAchada.album, musicaAchada.idMusica, musicaAchada.urlImagem)}" />
+											</p:column>
+										</p:dataTable>
+									</h:panelGroup>
+								</p:tab>
+							</p:accordionPanel>
 						</div>
 					</div>
 				</h:panelGroup>

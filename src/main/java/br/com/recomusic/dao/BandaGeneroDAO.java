@@ -79,6 +79,35 @@ public class BandaGeneroDAO extends GenericDAO<Long, BandaGenero>
     	} 
     }
     
+    /**
+     * @author Guilherme
+     * Pesquisa as Bandas do Gênero passado como parâmetro
+     * @param Genero genero
+     * @return  List<Banda>  caso exista ou null caso não exista
+     * @throws Exception
+     */
+    public List<Banda> pesquisarBandas(Genero genero) throws Exception
+    {
+    	try
+    	{
+    		List<Banda> listaBandas = new ArrayList<Banda>();
+    		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.BandaGenero as bg where bg.genero.pkGenero = :pk_genero"));
+    		query.setParameter("pk_genero", genero.getPkGenero());
+    		List<BandaGenero> bandaGenero = (List<BandaGenero>) query.getResultList();
+    		
+    		for (BandaGenero bg : bandaGenero)
+    		{
+    			listaBandas.add(bg.getBanda());
+    		}
+    		
+    		return listaBandas;
+    	}
+    	catch ( NoResultException nre )
+    	{  
+    		return null;  
+    	} 
+    }
+    
     
     /**
      * @author Guilherme

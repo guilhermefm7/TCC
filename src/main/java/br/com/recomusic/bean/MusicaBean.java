@@ -1,8 +1,10 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -82,6 +84,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 	private String tokenRecebido = null;
 	private String valorIdMusicaEchoAux = null;
 	private List<Playlist> listaPlaylists = null;
+	private List<Musica> musicasRecomendadas = null;
 
 	public MusicaBean() {
 	}
@@ -96,7 +99,14 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 					&& (nomeMusica != null && nomeMusica.length() > 0)
 					&& (valorIdMusicaEcho != null && valorIdMusicaEcho.length() > 0)) {
 
+				boolean flag = false;
+				if (valorIdMusicaEchoAux != null
+						&& (valorIdMusicaEchoAux == valorIdMusicaEcho)) {
+					flag = true;
+				}
+
 				this.valorIdMusicaEchoAux = valorIdMusicaEcho;
+
 				this.notaMusica = 0;
 				if (UtilidadesTelas.verificarSessao()) {
 					setUsuario(getUsuarioGlobal());
@@ -107,9 +117,14 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 						nomeCompletoMusica = nomeMusica;
 					}
 
-					//Chama a função para atualizar a quantidade de vezes que o usuário procurou esta música, caso seja maior ou igual a 5...Será atribuido uma nota 3 por parte do usuário a esta música
+					// Chama a função para atualizar a quantidade de vezes que o
+					// usuário procurou esta música, caso seja maior ou igual a
+					// 5...Será atribuido uma nota 3 por parte do usuário a esta
+					// música
 					atualizarQuantidadeVezesProcurada();
-					
+					if (!flag) {
+						carregarListaMusicasRecomendadas();
+					}
 					// Procura as Playlists para que o usuário, caso queira,
 					// possa adicionar a música
 					listaPlaylists = playlistDAO
@@ -995,24 +1010,23 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 						pam.setUsuario(getUsuarioGlobal());
 						pam.setQuantidadeOuvida(1);
 					}
-					
+
 					ConectaBanco.getInstance().beginTransaction();
 					possivelAvaliacaoMusicaDAO.save(pam);
-					
-					if(pam.getQuantidadeOuvida()>=5)
-					{
+
+					if (pam.getQuantidadeOuvida() >= 5) {
 						am = new AvaliarMusica();
 						am.setLancamento(new Date());
 						am.setMusica(m);
 						am.setUsuario(getUsuarioGlobal());
 						am.setResposta(true);
 						am.setNota(3);
-						
+
 						avaliarMusicaDAO.save(am);
 					}
-					
+
 					ConectaBanco.getInstance().commit();
-					
+
 				}
 
 			}
@@ -1020,6 +1034,214 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 			ConectaBanco.getInstance().rollBack();
 			e.printStackTrace();
 		}
+	}
+
+	public void carregarListaMusicasRecomendadas() {
+		try {
+			Musica m = null;
+			m = musicaDAO.procuraMusicaByID(valorIdMusica);
+
+			if (m != null && m.getPkMusica() > 0) {
+				List<Musica> listaMusicasRecomendacao = null;
+				listaMusicasRecomendacao = musicaDAO.getMusicasByBanda(m
+						.getBanda());
+
+				if (listaMusicasRecomendacao.size() >= 7) {
+					if (listaMusicasRecomendacao.size() == 7) {
+						musicasRecomendadas = new ArrayList<Musica>();
+						musicasRecomendadas.addAll(listaMusicasRecomendacao);
+					} else {
+						if (listaMusicasRecomendacao != null
+								&& listaMusicasRecomendacao.size() > 1) {
+							listaMusicasRecomendacao = mudarValoresLista(listaMusicasRecomendacao);
+						}
+
+						for (Musica musica : listaMusicasRecomendacao) {
+
+							musicasRecomendadas.add(musica);
+							if (musicasRecomendadas.size() >= 7) {
+								break;
+							}
+						}
+					}
+				} else {
+					musicasRecomendadas = new ArrayList<Musica>();
+					musicasRecomendadas.addAll(listaMusicasRecomendacao);
+
+					List<Genero> listaBandasGeneroMusica = null;
+					listaBandasGeneroMusica = bandaGeneroDAO
+							.pesquisarGenerosBanda(m.getBanda());
+
+					if (listaBandasGeneroMusica != null
+							&& listaBandasGeneroMusica.size() > 0) {
+						List<Banda> listaBandaAux = new ArrayList<Banda>();
+						List<Banda> listaBanda = new ArrayList<Banda>();
+						for (Genero genero : listaBandasGeneroMusica) {
+							listaBandaAux.addAll(bandaGeneroDAO
+									.pesquisarBandas(genero));
+						}
+
+						boolean flagBandas;
+
+						for (Banda bandaAux : listaBandaAux) {
+							flagBandas = false;
+							for (Banda banda : listaBanda) {
+								if (bandaAux.getPkBanda() == banda.getPkBanda()) {
+									flagBandas = true;
+									break;
+								}
+							}
+
+							if (!flagBandas) {
+								listaBanda.add(bandaAux);
+							}
+						}
+
+						if (listaBanda != null && listaBanda.size() > 1) {
+							listaBanda = mudarValoresListaBanda(listaBanda);
+						}
+						List<Musica> listaMusicas = null;
+						for (Banda banda : listaBanda) {
+							listaMusicas = musicaDAO.getMusicasByBanda(banda);
+
+							if (listaMusicas != null && listaMusicas.size() > 0) {
+								if (listaMusicas != null
+										&& listaMusicas.size() > 1) {
+									listaMusicas = mudarValoresLista(listaMusicas);
+								}
+								for (Musica musica : listaMusicas) {
+									musicasRecomendadas.add(musica);
+
+									if (musicasRecomendadas.size() >= 7) {
+										break;
+									}
+								}
+
+							}
+
+							if (musicasRecomendadas.size() >= 7) {
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if (musicasRecomendadas == null || musicasRecomendadas.size() == 0) {
+				musicasRecomendadas = null;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho, String url)
+	{
+		try
+		{
+			if(album!=null && album.length()>0 && url!=null && url.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album + "&u=" + url);
+			}
+			else if(album!=null && album.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
+			}
+			else if(url!=null && url.length()>0)
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&u=" + url);
+			}
+			else
+			{
+				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+
+	public List<Banda> mudarValoresListaBanda(List<Banda> listaBanda) {
+		Random gerador = new Random();
+		List<Integer> listaNumerosGenrados = new ArrayList<Integer>();
+		List<Banda> listaGerada = new ArrayList<Banda>();
+		Integer numeroGerado = 0;
+		int count;
+		for (int i = 0; i < listaBanda.size(); i++) {
+			count = 0;
+			numeroGerado = gerador.nextInt(listaBanda.size() - 1);
+
+			if (listaNumerosGenrados != null && listaNumerosGenrados.size() > 0) {
+				if (listaNumerosGenrados.contains(numeroGerado)) {
+					while (listaNumerosGenrados.contains(numeroGerado)
+							&& count != 10) {
+						count++;
+						numeroGerado = gerador.nextInt(listaBanda.size() - 1);
+					}
+
+					if (count >= 10
+							&& listaNumerosGenrados.contains(numeroGerado)) {
+						for (int x = 0; x < listaBanda.size(); x++) {
+							numeroGerado = x;
+							if (!listaNumerosGenrados.contains(numeroGerado)) {
+								break;
+							}
+						}
+					}
+				}
+
+				listaGerada.add(listaBanda.get(numeroGerado));
+				listaNumerosGenrados.add(numeroGerado);
+			} else {
+				listaGerada.add(listaBanda.get(numeroGerado));
+				listaNumerosGenrados.add(numeroGerado);
+			}
+		}
+
+		return listaGerada;
+	}
+
+	public List<Musica> mudarValoresLista(List<Musica> listaMusicas) {
+		Random gerador = new Random();
+		List<Integer> listaNumerosGenrados = new ArrayList<Integer>();
+		List<Musica> listaGerada = new ArrayList<Musica>();
+		Integer numeroGerado = 0;
+		int count;
+		for (int i = 0; i < listaMusicas.size(); i++) {
+			count = 0;
+			numeroGerado = gerador.nextInt(listaMusicas.size() - 1);
+
+			if (listaNumerosGenrados != null && listaNumerosGenrados.size() > 0) {
+				if (listaNumerosGenrados.contains(numeroGerado)) {
+					while (listaNumerosGenrados.contains(numeroGerado)
+							&& count != 10) {
+						count++;
+						numeroGerado = gerador.nextInt(listaMusicas.size() - 1);
+					}
+
+					if (count >= 10
+							&& listaNumerosGenrados.contains(numeroGerado)) {
+						for (int x = 0; x < listaMusicas.size(); x++) {
+							numeroGerado = x;
+							if (!listaNumerosGenrados.contains(numeroGerado)) {
+								break;
+							}
+						}
+					}
+				}
+
+				listaGerada.add(listaMusicas.get(numeroGerado));
+				listaNumerosGenrados.add(numeroGerado);
+			} else {
+				listaGerada.add(listaMusicas.get(numeroGerado));
+				listaNumerosGenrados.add(numeroGerado);
+			}
+		}
+
+		return listaGerada;
 	}
 
 	public List<Usuario> findAll() {
@@ -1205,5 +1427,21 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 
 	public void setListaPlaylists(List<Playlist> listaPlaylists) {
 		this.listaPlaylists = listaPlaylists;
+	}
+
+	public String getValorIdMusicaEchoAux() {
+		return valorIdMusicaEchoAux;
+	}
+
+	public void setValorIdMusicaEchoAux(String valorIdMusicaEchoAux) {
+		this.valorIdMusicaEchoAux = valorIdMusicaEchoAux;
+	}
+
+	public List<Musica> getMusicasRecomendadas() {
+		return musicasRecomendadas;
+	}
+
+	public void setMusicasRecomendadas(List<Musica> musicasRecomendadas) {
+		this.musicasRecomendadas = musicasRecomendadas;
 	}
 }
