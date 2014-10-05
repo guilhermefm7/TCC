@@ -7,8 +7,8 @@ public class Constantes
 	public static final int TIPO_STATUS_REMOVIDO = 999;
 	
 	//Género
-	public static final int TIPO_GENERO_MASCULINO = 1;
-	public static final int TIPO_GENERO_FEMININO = 2;
+	public static final int TIPO_GENERO_MASCULINO = 2;
+	public static final int TIPO_GENERO_FEMININO = 1;
 	
 	//Status Informacao Musica Cadastro Banda
 	public static final int STATUS_BANDA_FOI_CURTIDA = 10;

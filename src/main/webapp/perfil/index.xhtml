@@ -104,7 +104,7 @@
 													<h1
 														style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
 														<h:outputLabel
-															value="Login: #{PerfilBean.usuario.login}" />
+															value="Login: #{PerfilBean.usuario.login}" rendered="#{PerfilBean.usuario.login ne null}"/>
 													</h1>
 												</div>
 											</div>
