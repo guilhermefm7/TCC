@@ -36,7 +36,7 @@ public class RedefinirSenhaBean extends UtilidadesTelas implements Serializable
 			}
 			else
 			{
-				encerrarSessao();
+				redirecionarPerfil();
 			}
 		}
 		catch(Exception e)

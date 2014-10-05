@@ -51,15 +51,15 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 	private Boolean amigo = null;
 	private Boolean requisitouAmizade = false;
 	private boolean disabled = false;
-	private List<PlaylistIM> listaPIM  = null;
+	private List<PlaylistIM> listaPIM = null;
 
 	public PerfilBean() {
 	}
 
 	public void iniciar() {
 		try {
-			if (tokenPkUsuairo != null && tokenPkUsuairo.length() > 0) {
-				if (UtilidadesTelas.verificarSessao()) {
+			if (UtilidadesTelas.verificarSessao()) {
+				if (tokenPkUsuairo != null && tokenPkUsuairo.length() > 0) {
 					usuario = usuarioDAO.getUsuarioPk(Long
 							.valueOf(tokenPkUsuairo));
 					if (usuario != null && usuario.getPkUsuario() > 0) {
@@ -74,18 +74,21 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 							if (listaPlaylistsUsuario != null
 									&& listaPlaylistsUsuario.size() == 0) {
 								listaPlaylistsUsuario = null;
-							}
-							else if (listaPlaylistsUsuario != null && listaPlaylistsUsuario.size() > 0)
-							{
+							} else if (listaPlaylistsUsuario != null
+									&& listaPlaylistsUsuario.size() > 0) {
 								listaPIM = new ArrayList<PlaylistIM>();
 								PlaylistIM pIM;
-								DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+								DateFormat dateFormat = new SimpleDateFormat(
+										"dd/MM/yyyy");
 								for (Playlist playlist : listaPlaylistsUsuario) {
 									pIM = new PlaylistIM();
 									pIM.setNomePlaylist(playlist.getNome());
-									pIM.setDataLancamento(dateFormat.format(playlist.getLancamento()));
-									pIM.setQtdFaixas(playlist.getNumeroMusicas());
-									pIM.setPkPlaylist(Long.toString(playlist.getPkPlaylist()));
+									pIM.setDataLancamento(dateFormat
+											.format(playlist.getLancamento()));
+									pIM.setQtdFaixas(playlist
+											.getNumeroMusicas());
+									pIM.setPkPlaylist(Long.toString(playlist
+											.getPkPlaylist()));
 									listaPIM.add(pIM);
 								}
 							}
@@ -126,18 +129,23 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 								if (listaPlaylistsUsuario != null
 										&& listaPlaylistsUsuario.size() == 0) {
 									listaPlaylistsUsuario = null;
-								}
-								else if (listaPlaylistsUsuario != null && listaPlaylistsUsuario.size() > 0)
-								{
+								} else if (listaPlaylistsUsuario != null
+										&& listaPlaylistsUsuario.size() > 0) {
 									listaPIM = new ArrayList<PlaylistIM>();
 									PlaylistIM pIM;
-									DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+									DateFormat dateFormat = new SimpleDateFormat(
+											"dd/MM/yyyy");
 									for (Playlist playlist : listaPlaylistsUsuario) {
 										pIM = new PlaylistIM();
 										pIM.setNomePlaylist(playlist.getNome());
-										pIM.setDataLancamento(dateFormat.format(playlist.getLancamento()));
-										pIM.setQtdFaixas(playlist.getNumeroMusicas());
-										pIM.setPkPlaylist(Long.toString(playlist.getPkPlaylist()));
+										pIM.setDataLancamento(dateFormat
+												.format(playlist
+														.getLancamento()));
+										pIM.setQtdFaixas(playlist
+												.getNumeroMusicas());
+										pIM.setPkPlaylist(Long
+												.toString(playlist
+														.getPkPlaylist()));
 										listaPIM.add(pIM);
 									}
 								}
@@ -178,50 +186,52 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 						redirecionarErro();
 					}
 				} else {
-					encerrarSessao();
-				}
-			} else {
-				// Caso seja o usuário atual
-				setUsuario(getUsuarioGlobal());
-				amigo = null;
+					// Caso seja o usuário atual
+					setUsuario(getUsuarioGlobal());
+					amigo = null;
 
-				// Procura as Playlists
-				listaPlaylistsUsuario = playlistDAO
-						.getPlaylistsUsuario(getUsuarioGlobal());
-				if (listaPlaylistsUsuario != null
-						&& listaPlaylistsUsuario.size() == 0) {
-					listaPlaylistsUsuario = null;
-				}
-				else if (listaPlaylistsUsuario != null && listaPlaylistsUsuario.size() > 0)
-				{
-					listaPIM = new ArrayList<PlaylistIM>();
-					PlaylistIM pIM;
-					DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-					for (Playlist playlist : listaPlaylistsUsuario) {
-						pIM = new PlaylistIM();
-						pIM.setNomePlaylist(playlist.getNome());
-						pIM.setDataLancamento(dateFormat.format(playlist.getLancamento()));
-						pIM.setQtdFaixas(playlist.getNumeroMusicas());
-						pIM.setPkPlaylist(Long.toString(playlist.getPkPlaylist()));
-						listaPIM.add(pIM);
+					// Procura as Playlists
+					listaPlaylistsUsuario = playlistDAO
+							.getPlaylistsUsuario(getUsuarioGlobal());
+					if (listaPlaylistsUsuario != null
+							&& listaPlaylistsUsuario.size() == 0) {
+						listaPlaylistsUsuario = null;
+					} else if (listaPlaylistsUsuario != null
+							&& listaPlaylistsUsuario.size() > 0) {
+						listaPIM = new ArrayList<PlaylistIM>();
+						PlaylistIM pIM;
+						DateFormat dateFormat = new SimpleDateFormat(
+								"dd/MM/yyyy");
+						for (Playlist playlist : listaPlaylistsUsuario) {
+							pIM = new PlaylistIM();
+							pIM.setNomePlaylist(playlist.getNome());
+							pIM.setDataLancamento(dateFormat.format(playlist
+									.getLancamento()));
+							pIM.setQtdFaixas(playlist.getNumeroMusicas());
+							pIM.setPkPlaylist(Long.toString(playlist
+									.getPkPlaylist()));
+							listaPIM.add(pIM);
+						}
+					}
+
+					// Procura os Amigos
+					listaMusicaUsuario = avaliarMusicaDAO
+							.getAvaliacoesUsuario(getUsuarioGlobal());
+					if (listaMusicaUsuario != null
+							&& listaMusicaUsuario.size() == 0) {
+						listaMusicaUsuario = null;
+					}
+
+					// Procura as Musicas Avaliadas
+					listaAmigosUsuario = amigosUsuarioDAO
+							.getAmigosUsuario(getUsuarioGlobal().getPkUsuario());
+					if (listaAmigosUsuario != null
+							&& listaAmigosUsuario.size() == 0) {
+						listaAmigosUsuario = null;
 					}
 				}
-
-				// Procura os Amigos
-				listaMusicaUsuario = avaliarMusicaDAO
-						.getAvaliacoesUsuario(getUsuarioGlobal());
-				if (listaMusicaUsuario != null
-						&& listaMusicaUsuario.size() == 0) {
-					listaMusicaUsuario = null;
-				}
-
-				// Procura as Musicas Avaliadas
-				listaAmigosUsuario = amigosUsuarioDAO
-						.getAmigosUsuario(getUsuarioGlobal().getPkUsuario());
-				if (listaAmigosUsuario != null
-						&& listaAmigosUsuario.size() == 0) {
-					listaAmigosUsuario = null;
-				}
+			} else {
+				encerrarSessao();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -244,31 +254,43 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
-	
-	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho)
-	{
-		try
-		{
-			if(album!=null && album.length()>0)
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
+
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica,
+			String artistaBandaMusica, String album, String idEcho) {
+		try {
+			if (album != null && album.length() > 0) {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho
+										+ "&n=" + album);
+			} else {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho);
 			}
-			else
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
-			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
-	
+
 	public void redirecionaPlaylist(String pkPlaylist) {
 		try {
 			if (pkPlaylist != null && pkPlaylist.length() > 0) {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/playlistSelecionada/index.xhtml?t="+ pkPlaylist);
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/playlistSelecionada/index.xhtml?t="
+										+ pkPlaylist);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

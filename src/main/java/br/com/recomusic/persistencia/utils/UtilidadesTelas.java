@@ -102,6 +102,21 @@ public class UtilidadesTelas
 	}
 	
 	/**
+	 * Responsavel por enerrar a sessao
+	 */
+	public static void redirecionarPerfil()
+	{
+		try
+		{
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/perfil/index.xhtml");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Responsável por procurar se a lista de bandas curtidas pelo usuário existem e se elas já estão cadastradas nas informações de perfil do usuário
 	 */
 	
