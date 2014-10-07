@@ -49,6 +49,7 @@
 				</div>
 			</div>
 
+
 			<br />
 			<h1
 				style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 26px; text-align: center">
@@ -60,6 +61,16 @@
 				<script src="http://e-cdn-files.deezer.com/js/min/dz.js"></script>
 			</div>
 			<div id="player" style="width: 100%" align="center"></div>
+
+			<br />
+			<br />
+			<div class="col-xs-12" align="center">
+				<h:form>
+					<h:commandLink type="submit" class="btn btn-success"
+						style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
+						value="Adicionar Músicas" actionListener="#{PlaylistSelecionadaBean.redirecionaAdicionarMusicas}" />
+				</h:form>
+			</div>
 
 			<br />
 			<br />
@@ -91,7 +102,8 @@
 						<h:panelGroup layout="block" class="box-content no-padding">
 							<h:dataTable
 								class="table table-bordered table-striped table-hover table-heading table-datatable"
-								value="#{PlaylistSelecionadaBean.listaMusicas}" rendered="#{PlaylistSelecionadaBean.playlistUsuarioGlobal eq true}"
+								value="#{PlaylistSelecionadaBean.listaMusicas}"
+								rendered="#{PlaylistSelecionadaBean.playlistUsuarioGlobal eq true}"
 								var="musicaPlaylist" style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>
@@ -118,10 +130,11 @@
 										actionListener="#{PlaylistSelecionadaBean.excluir(musicaPlaylist.idDeezer)}" />
 								</h:column>
 							</h:dataTable>
-							
+
 							<h:dataTable
 								class="table table-bordered table-striped table-hover table-heading table-datatable"
-								value="#{PlaylistSelecionadaBean.listaMusicas}" rendered="#{PlaylistSelecionadaBean.playlistUsuarioGlobal eq false}"
+								value="#{PlaylistSelecionadaBean.listaMusicas}"
+								rendered="#{PlaylistSelecionadaBean.playlistUsuarioGlobal eq false}"
 								var="musicaPlaylist" style="color: #333;font-weight: bold;">
 								<h:column>
 									<f:facet name="header">#</f:facet>

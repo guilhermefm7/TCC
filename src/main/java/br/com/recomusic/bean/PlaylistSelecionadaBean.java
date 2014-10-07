@@ -150,6 +150,19 @@ public class PlaylistSelecionadaBean extends UtilidadesTelas implements Serializ
 		}
 	}
 	
+	public void redirecionaAdicionarMusicas()
+	{
+		try
+		{
+			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/curtidas/index.xhtml");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
 	public void excluir(String idDeezer)
 	{
 		try
