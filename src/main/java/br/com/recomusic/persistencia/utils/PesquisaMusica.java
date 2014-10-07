@@ -107,6 +107,7 @@ public class PesquisaMusica
 				 url = "http://developer.echonest.com/api/v4/song/search?api_key=9QB1EM63CLM2RR5V3&format=json&title=" + manipulaMusica[0].replace(" ", "%") + "&bucket=id:deezer&bucket=tracks&limit=true&results=100&artist=" + manipulaMusica[1].replace(" ", "%");
 				 
 		         String json = IOUtils.toString(new URL(url));
+		         
 		         String jsonDeezer = "";
 		         String pegaAlbum = "";
 		         String pegaUrl = "";

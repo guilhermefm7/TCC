@@ -106,10 +106,15 @@
 								<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
 								</a>
 								<div id="search">
-									<input style="width: 40%" stype="text"
-										placeholder="Pesquisar Músicas"
-										onkeydown="procurarMusicas(value, event);" /> <label>
-										<h:selectBooleanCheckbox value="#{GlobalBean.ckMusicaAux}"
+									<h:inputText style="width: 40%" type="text"
+										placeholder="Pesquisar Músicas" value="#{GlobalBean.campoNomeMusica}"
+										onkeydown="procurarMusicas(value, event);" /><label>
+										<label> <h:commandLink  actionListener="#{GlobalBean.redirecionaProcuraMusica}">
+																			<img
+										src="/RecoMusic/resources/imagens/icones/search.png" style="width: 20px; height: 20px"
+										alt=""/>
+										</h:commandLink>
+									</label> <h:selectBooleanCheckbox value="#{GlobalBean.ckMusicaAux}"
 											id="ckMusica">
 											<f:ajax event="change"
 												listener="#{GlobalBean.changeCheckBoxMusica}" />
@@ -120,6 +125,7 @@
 												listener="#{GlobalBean.changeCheckBoxBanda}" />
 										</h:selectBooleanCheckbox> Banda
 									</label>
+
 
 								</div>
 							</div>
