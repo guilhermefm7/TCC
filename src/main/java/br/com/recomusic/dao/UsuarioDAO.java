@@ -66,8 +66,8 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Usuario as u where UPPER(u.login) = UPPER(:usuario_login) and u.senha = :usuario_senha "));
     		query.setParameter("usuario_login", login.trim());
     		query.setParameter("usuario_senha", senha);
-    		Usuario usuario =  (Usuario) query.getSingleResult();
-    		return usuario;
+    		List<Usuario> usuario =  (List<Usuario>) query.getResultList();
+    		return usuario.get(0);
     	}
     	catch ( NoResultException nre )
     	{  

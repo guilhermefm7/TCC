@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.UploadedFile;
 
 import br.com.recomusic.dao.AmigosUsuarioDAO;
 import br.com.recomusic.dao.AvaliarMusicaDAO;
@@ -52,7 +53,8 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 	private Boolean requisitouAmizade = false;
 	private boolean disabled = false;
 	private List<PlaylistIM> listaPIM = null;
-
+	private UploadedFile uploadedFile;
+	
 	public PerfilBean() {
 	}
 
@@ -430,5 +432,13 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 
 	public void setListaPIM(List<PlaylistIM> listaPIM) {
 		this.listaPIM = listaPIM;
+	}
+
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
 	}
 }

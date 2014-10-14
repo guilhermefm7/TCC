@@ -42,7 +42,9 @@
 				<div class="col-xs-12" align="center">
 					<div class="col-xs-6" align="right">
 						<img src="../resources/imagens/img/eleven.png"
-							style="width: 150px; height: 150px" />
+							style="width: 150px; height: 150px" /> <br />
+						<p:fileUpload mode="simple" value="#{PerfilBean.uploadedFile}" 
+							showButtons="false" allowTypes="*.jpg;*.png;" />
 					</div>
 					<div class="col-xs-3" align="left">
 						<br /> <br />
@@ -103,8 +105,8 @@
 												<div class="col-xs-2" align="left">
 													<h1
 														style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
-														<h:outputLabel
-															value="Login: #{PerfilBean.usuario.login}" rendered="#{PerfilBean.usuario.login ne null}"/>
+														<h:outputLabel value="Login: #{PerfilBean.usuario.login}"
+															rendered="#{PerfilBean.usuario.login ne null}" />
 													</h1>
 												</div>
 											</div>
@@ -121,10 +123,10 @@
 												<div class="col-xs-2" align="left">
 													<h1
 														style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
-														<h:outputLabel
-															value="Sexo: Masculino" rendered="#{PerfilBean.usuario.sexo eq 2}"/>
-														<h:outputLabel
-															value="Sexo: Feminino" rendered="#{PerfilBean.usuario.sexo eq 1}"/>
+														<h:outputLabel value="Sexo: Masculino"
+															rendered="#{PerfilBean.usuario.sexo eq 2}" />
+														<h:outputLabel value="Sexo: Feminino"
+															rendered="#{PerfilBean.usuario.sexo eq 1}" />
 													</h1>
 												</div>
 											</div>
