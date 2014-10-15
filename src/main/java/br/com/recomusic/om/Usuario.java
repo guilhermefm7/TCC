@@ -61,12 +61,6 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario")
 	private List<PossivelAvaliacaoMusica> possivelAvaliacaoMusica;
 
-	@OneToMany(mappedBy = "usuarioEnviou")
-	private List<EnviaMensagem> enviaMensagemsUsuarioEnviou;
-
-	@OneToMany(mappedBy = "usuarioRecebeu")
-	private List<EnviaMensagem> enviaMensagemsUsuarioRecebeu;
-
 	/*-*-*-* Construtores *-*-*-*/
 	public Usuario() {
 	}
@@ -219,30 +213,6 @@ public class Usuario implements Serializable {
 
 	public void setAvaliarMusicas(List<AvaliarMusica> avaliarMusicas) {
 		this.avaliarMusicas = avaliarMusicas;
-	}
-
-	public List<EnviaMensagem> getEnviaMensagemsUsuarioEnviou() {
-		if (enviaMensagemsUsuarioEnviou == null) {
-			enviaMensagemsUsuarioEnviou = new ArrayList<EnviaMensagem>();
-		}
-		return enviaMensagemsUsuarioEnviou;
-	}
-
-	public void setEnviaMensagemsUsuarioEnviou(
-			List<EnviaMensagem> enviaMensagemsUsuarioEnviou) {
-		this.enviaMensagemsUsuarioEnviou = enviaMensagemsUsuarioEnviou;
-	}
-
-	public List<EnviaMensagem> getEnviaMensagemsUsuarioRecebeu() {
-		if (enviaMensagemsUsuarioRecebeu == null) {
-			enviaMensagemsUsuarioRecebeu = new ArrayList<EnviaMensagem>();
-		}
-		return enviaMensagemsUsuarioRecebeu;
-	}
-
-	public void setEnviaMensagemsUsuarioRecebeu(
-			List<EnviaMensagem> enviaMensagemsUsuarioRecebeu) {
-		this.enviaMensagemsUsuarioRecebeu = enviaMensagemsUsuarioRecebeu;
 	}
 
 	public List<MediaUsuarioGenero> getMediaUsuarioGenero() {

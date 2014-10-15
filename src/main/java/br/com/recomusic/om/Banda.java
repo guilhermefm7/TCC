@@ -37,9 +37,6 @@ public class Banda implements Serializable
 	private String idBanda;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
-	@ManyToOne @JoinColumn(name="fkPais")
-	private Pais pais;
-
 	@OneToMany(mappedBy="banda")
 	private List<Musica> musicas;
 
@@ -70,9 +67,6 @@ public class Banda implements Serializable
 	
 	public String getIdBanda() { return idBanda; }
 	public void setIdBanda(String idBanda) { this.idBanda = idBanda; }
-	
-	public Pais getPais() { return pais; }
-	public void setPais(Pais pais) { this.pais = pais; }
 	
 	public Integer getStatus() { return status; }
 	public void setStatus(Integer status) { this.status = status; }

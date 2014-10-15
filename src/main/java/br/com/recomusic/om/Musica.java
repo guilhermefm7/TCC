@@ -42,10 +42,6 @@ public class Musica implements Serializable {
 	private Double mediaAvaliacoes;
 
 	@ManyToOne
-	@JoinColumn(name = "fkPais")
-	private Pais pais;
-
-	@ManyToOne
 	@JoinColumn(name = "fkBanda")
 	private Banda banda;
 
@@ -120,14 +116,6 @@ public class Musica implements Serializable {
 
 	public void setIdDeezer(String idDeezer) {
 		this.idDeezer = idDeezer;
-	}
-
-	public Pais getPais() {
-		return pais;
-	}
-
-	public void setPais(Pais pais) {
-		this.pais = pais;
 	}
 
 	public Banda getBanda() {
