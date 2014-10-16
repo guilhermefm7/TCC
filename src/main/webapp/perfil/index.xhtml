@@ -43,8 +43,7 @@
 					<div class="col-xs-6" align="right">
 						<img src="../resources/imagens/img/eleven.png"
 							style="width: 150px; height: 150px" /> <br />
-						<p:fileUpload mode="simple" value="#{PerfilBean.uploadedFile}" 
-							showButtons="false" allowTypes="*.jpg;*.png;" />
+
 					</div>
 					<div class="col-xs-3" align="left">
 						<br /> <br />
@@ -70,6 +69,14 @@
 								value="Desfazer Amizade"
 								actionListener="#{PerfilBean.desfazerAmizade}"
 								rendered="#{PerfilBean.amigo == true}" />
+							<h:commandLink type="submit" class="btn btn-primary"
+								style="color:#FFFFFF;align:center;background-color:#85b2cb"
+								value="Alterar Foto" rendered="#{PerfilBean.amigo == null}"
+								actionListener="#{PerfilBean.adiconarAmigo}" />
+							<p:commandLink class="btn btn-primary" id="btfotos" type="submit" style="color:#FFFFFF;align:center;background-color:#85b2cb"
+								oncomplete="PF('dialogAlterarFoto').show()" update=":formFotos" value="Alterar Foto" rendered="#{PerfilBean.amigo == null}"
+								immediate="true" ajax="true">
+							</p:commandLink>
 						</h:form>
 					</div>
 				</div>
@@ -264,6 +271,39 @@
 					</p:accordionPanel>
 				</div>
 			</div>
+
+			<p:confirmDialog message="Alterar Fotos"
+				modal="true" header="Alteração de Fotos" width="450"
+				resizable="false" dynamic="true" widgetVar="dialogAlterarFoto"
+				style="margin: 5% 15%" closable="false" closeOnEscape="false">
+				<h:form id="formFotos">
+					<p:messages style="font-size: small;" showDetail="true"
+						autoUpdate="true" closable="true" />
+
+					<br></br>
+					<div class="form-group pull-right">
+						<br></br>
+
+						<div class="side-by-side clearfix row">
+							<div class="col-lg-6">
+
+								<p:commandLink styleClass="btn btn-default" title="Cancelar"
+									oncomplete="PF('dialogAlterarFoto').hide()" ajax="true"
+									async="true" immediate="true">
+									<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>
+
+							</div>
+							<div class="col-lg-6">
+
+								<p:commandLink styleClass="btn btn-info pull-right" ajax="true"
+									async="false">
+									<span class="fa fa-save"></span> Confirmar </p:commandLink>
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</p:confirmDialog>
 
 		</ui:define>
 	</ui:composition>
