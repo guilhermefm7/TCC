@@ -57,7 +57,7 @@
 						<p:accordionPanel multiple="true" style="text-align: left;">
 							<p:tab title="Top Músicas">
 								<h:panelGroup layout="block" class="box-content no-padding">
-									<p:dataTable
+									<p:dataTable emptyMessage="Nenhum registro encontrado"
 										class="table table-bordered table-striped table-hover table-heading table-datatable"
 										value="#{TopAvaliacoesBean.listaMusicas}" var="musicaAchada"
 										style="color: #333;font-weight: bold;">

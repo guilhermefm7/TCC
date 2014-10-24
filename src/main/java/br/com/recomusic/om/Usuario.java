@@ -232,4 +232,6 @@ public class Usuario implements Serializable {
 			List<PossivelAvaliacaoMusica> possivelAvaliacaoMusica) {
 		this.possivelAvaliacaoMusica = possivelAvaliacaoMusica;
 	}
+	
+	
 }

@@ -100,8 +100,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 					&& (valorIdMusicaEcho != null && valorIdMusicaEcho.length() > 0)) {
 
 				boolean flag = false;
-				if (valorIdMusicaEchoAux != null
-						&& (valorIdMusicaEchoAux == valorIdMusicaEcho)) {
+				if (valorIdMusicaEcho == null) {
 					flag = true;
 				}
 
@@ -1039,12 +1038,26 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 	public void carregarListaMusicasRecomendadas() {
 		try {
 			Musica m = null;
+			Banda bandaAuxAux = null;
 			m = musicaDAO.procuraMusicaByID(valorIdMusica);
+			List<String> listasGenerosBanda = null;
+			if (m == null) {
+				m = pesquisaMusica(valorIdMusicaEchoAux);
+				bandaAuxAux = bandaDAO.pesquisarBandaExiste(m.getBanda()
+						.getIdBanda());
+			}
 
-			if (m != null && m.getPkMusica() > 0) {
+			if ((m != null && m.getPkMusica() > 0)
+					|| (bandaAuxAux != null && bandaAuxAux.getPkBanda() > 0)) {
 				List<Musica> listaMusicasRecomendacao = null;
-				listaMusicasRecomendacao = musicaDAO.getMusicasByBanda(m
-						.getBanda());
+
+				if (m != null && m.getPkMusica() > 0) {
+					listaMusicasRecomendacao = musicaDAO.getMusicasByBanda(m
+							.getBanda());
+				} else {
+					listaMusicasRecomendacao = musicaDAO
+							.getMusicasByBanda(bandaAuxAux);
+				}
 
 				if (listaMusicasRecomendacao.size() >= 7) {
 					if (listaMusicasRecomendacao.size() == 7) {
@@ -1125,6 +1138,12 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 						}
 					}
 				}
+			} else {
+				List<Musica> listaMusicasRecomendacao = null;
+				listaMusicasRecomendacao = musicaDAO
+						.pesquisaMelhoresAvaliadas7();
+				musicasRecomendadas = new ArrayList<Musica>();
+				musicasRecomendadas.addAll(listaMusicasRecomendacao);
 			}
 
 			if (musicasRecomendadas == null || musicasRecomendadas.size() == 0) {
@@ -1135,30 +1154,48 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho, String url)
-	{
-		try
-		{
-			if(album!=null && album.length()>0 && url!=null && url.length()>0)
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album + "&u=" + url);
+
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica,
+			String artistaBandaMusica, String album, String idEcho, String url) {
+		try {
+			if (album != null && album.length() > 0 && url != null
+					&& url.length() > 0) {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho
+										+ "&n=" + album + "&u=" + url);
+			} else if (album != null && album.length() > 0) {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho
+										+ "&n=" + album);
+			} else if (url != null && url.length() > 0) {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho
+										+ "&u=" + url);
+			} else {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho);
 			}
-			else if(album!=null && album.length()>0)
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
-			}
-			else if(url!=null && url.length()>0)
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&u=" + url);
-			}
-			else
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
-			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}

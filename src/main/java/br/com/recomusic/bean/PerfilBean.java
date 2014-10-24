@@ -319,6 +319,33 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
+	
+/*	public void fileUploadPrincipal(UploadedFile file) {
+		
+
+		fotoPerfil = new FotoPerfil();
+
+		fotoPerfil.setPrincipal(true);
+		fotoPerfil.setUsuario(getUsuarioGlobal());
+		fotoPerfil.setFileNameOriginal(file.getFileName());
+		fotoPerfil.setFileName(getFileName(file.getContentType()));
+		fotoPerfil.setFilePath(FILE_PATH
+				+ getFileName(file.getContentType()));
+		fotoPerfil.setFileType(file.getContentType());
+		fotoPerfil.setFileSize(String.valueOf(file.getSize()));
+		try {
+			fotoPerfil.setInputStream(file.getInputstream());
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+		fotoPerfilDAO.save(fotoPerfil);
+		FacesMessage message = new FacesMessage("Imagem Principal",
+				file.getFileName() + "Cadastrada Com Sucesso");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+
+	}*/
 
 	public void desfazerAmizade() {
 		try {
@@ -441,4 +468,12 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 	public void setUploadedFile(UploadedFile uploadedFile) {
 		this.uploadedFile = uploadedFile;
 	}
+
+/*	public FotoPerfil getFotoPerfil() {
+		return fotoPerfil;
+	}
+
+	public void setFotoPerfil(FotoPerfil fotoPerfil) {
+		this.fotoPerfil = fotoPerfil;
+	}*/
 }

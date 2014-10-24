@@ -107,13 +107,14 @@
 								</a>
 								<div id="search">
 									<h:inputText style="width: 40%" type="text"
-										placeholder="Pesquisar Músicas" value="#{GlobalBean.campoNomeMusica}"
-										onkeydown="procurarMusicas(value, event);" /><label>
-										<label> <h:commandLink  actionListener="#{GlobalBean.redirecionaProcuraMusica}">
-																			<img
-										src="/RecoMusic/resources/imagens/icones/search.png" style="width: 20px; height: 20px"
-										alt=""/>
-										</h:commandLink>
+										placeholder="Pesquisar Músicas"
+										value="#{GlobalBean.campoNomeMusica}"
+										onkeydown="procurarMusicas(value, event);" />
+									<label> <label> <h:commandLink
+												actionListener="#{GlobalBean.redirecionaProcuraMusica}">
+												<img src="/RecoMusic/resources/imagens/icones/search.png"
+													style="width: 20px; height: 20px" alt="" />
+											</h:commandLink>
 									</label> <h:selectBooleanCheckbox value="#{GlobalBean.ckMusicaAux}"
 											id="ckMusica">
 											<f:ajax event="change"
@@ -287,6 +288,49 @@
 
 						<p:commandLink styleClass="btn btn-info pull-right"
 							actionListener="#{CadastroBean.atualizarCadastro}" ajax="true"
+							async="false">
+							<span class="fa fa-save"></span> Confirmar </p:commandLink>
+
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</p:confirmDialog>
+
+	<p:confirmDialog message="Alterar Foto" modal="true"
+		header="Alteração de Foto" width="550" resizable="false"
+		dynamic="true" widgetVar="dialogAlterarFoto" style="margin: 5% 15%"
+		closable="false" closeOnEscape="false">
+		<h:form id="formFotos">
+			<p:messages style="font-size: small;" showDetail="true"
+				autoUpdate="true" closable="true" />
+
+			<div class="row">
+				<div class="col-xs-12" align="center">
+					<img src="../resources/imagens/img/eleven.png"
+						style="width: 150px; height: 150px" /> <br />
+					<p:fileUpload value="#{PerfilBean.uploadedFile}"
+						mode="simple" />
+				</div>
+			</div>
+
+
+			<br></br>
+			<div class="form-group pull-right">
+				<br></br>
+
+				<div class="side-by-side clearfix row">
+					<div class="col-lg-6">
+
+						<p:commandLink styleClass="btn btn-default" title="Cancelar"
+							oncomplete="PF('dialogAlterarFoto').hide()" ajax="true"
+							async="true" immediate="true">
+							<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>
+
+					</div>
+					<div class="col-lg-6">
+
+						<p:commandLink styleClass="btn btn-info pull-right" ajax="true"
 							async="false">
 							<span class="fa fa-save"></span> Confirmar </p:commandLink>
 

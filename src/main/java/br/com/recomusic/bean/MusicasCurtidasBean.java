@@ -13,57 +13,68 @@ import br.com.recomusic.im.MusicaAvaliadaIM;
 import br.com.recomusic.persistencia.utils.UtilidadesTelas;
 import br.com.recomusic.singleton.ConectaBanco;
 
-
-@ManagedBean(name="MusicasCurtidasBean")
+@ManagedBean(name = "MusicasCurtidasBean")
 @ViewScoped
-public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
-{
+public class MusicasCurtidasBean extends UtilidadesTelas implements
+		Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<String> listaNomesMusica = null;
-	private List<MusicaAvaliadaIM> listaMusicas  = null;
-	private MusicaDAO musicaDAO = new MusicaDAO( ConectaBanco.getInstance().getEntityManager());
-	private AvaliarMusicaDAO avaliarMusicaDAO = new AvaliarMusicaDAO( ConectaBanco.getInstance().getEntityManager());
+	private List<MusicaAvaliadaIM> listaMusicas = null;
+	private MusicaDAO musicaDAO = new MusicaDAO(ConectaBanco.getInstance()
+			.getEntityManager());
+	private AvaliarMusicaDAO avaliarMusicaDAO = new AvaliarMusicaDAO(
+			ConectaBanco.getInstance().getEntityManager());
 	private int qtdFaixas = 0;
 
-	public MusicasCurtidasBean() {	}
+	public MusicasCurtidasBean() {
+	}
 
-	public void iniciar()
-	{
-		try
-		{
-			if(UtilidadesTelas.verificarSessao())
-			{
+	public void iniciar() {
+		try {
+			if (UtilidadesTelas.verificarSessao()) {
 				setUsuarioGlobal(getUsuarioGlobal());
-				listaMusicas = avaliarMusicaDAO.getAvaliacoesUsuario(getUsuarioGlobal());
-				this.qtdFaixas = listaMusicas.get(listaMusicas.size()-1).getQtd();
-			}
-			else
-			{
+				listaMusicas = null;
+				listaMusicas = avaliarMusicaDAO
+						.getAvaliacoesUsuario(getUsuarioGlobal());
+				if (listaMusicas != null && listaMusicas.size() > 0) {
+					this.qtdFaixas = listaMusicas.get(listaMusicas.size() - 1)
+							.getQtd();
+				}
+				else
+				{
+					this.qtdFaixas = 0;
+				}
+			} else {
 				encerrarSessao();
 			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
 
-	public void redirecionaPaginaMusica(String idMusica, String nomeMusica, String artistaBandaMusica, String album, String idEcho)
-	{
-		try
-		{
-			if(album!=null && album.length()>0)
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
+	public void redirecionaPaginaMusica(String idMusica, String nomeMusica,
+			String artistaBandaMusica, String album, String idEcho) {
+		try {
+			if (album != null && album.length() > 0) {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho
+										+ "&n=" + album);
+			} else {
+				FacesContext
+						.getCurrentInstance()
+						.getExternalContext()
+						.redirect(
+								"http://localhost:8080/RecoMusic/musica/index.xhtml?t="
+										+ idMusica + "&m=" + nomeMusica + "&a="
+										+ artistaBandaMusica + "&i=" + idEcho);
 			}
-			else
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
-			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
 		}
@@ -84,7 +95,7 @@ public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
 	public void setQtdFaixas(int qtdFaixas) {
 		this.qtdFaixas = qtdFaixas;
 	}
-	
+
 	public MusicaDAO getMusicaDAO() {
 		return musicaDAO;
 	}
@@ -92,7 +103,7 @@ public class MusicasCurtidasBean extends UtilidadesTelas implements Serializable
 	public void setMusicaDAO(MusicaDAO musicaDAO) {
 		this.musicaDAO = musicaDAO;
 	}
-	
+
 	public AvaliarMusicaDAO getAvaliarMusicaDAO() {
 		return avaliarMusicaDAO;
 	}

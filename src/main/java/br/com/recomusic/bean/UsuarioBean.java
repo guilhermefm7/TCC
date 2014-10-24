@@ -16,6 +16,7 @@ import br.com.recomusic.dao.BandaGeneroDAO;
 import br.com.recomusic.dao.GeneroDAO;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
 import br.com.recomusic.dao.InformacaoMusicalCadastroGeneroDAO;
+import br.com.recomusic.dao.MediaUsuarioGeneroDAO;
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.im.BandaGeneroIM;
 import br.com.recomusic.om.Banda;
@@ -23,6 +24,7 @@ import br.com.recomusic.om.BandaGenero;
 import br.com.recomusic.om.Genero;
 import br.com.recomusic.om.InformacaoMusicalCadastroBanda;
 import br.com.recomusic.om.InformacaoMusicalCadastroGenero;
+import br.com.recomusic.om.MediaUsuarioGenero;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.Constantes;
 import br.com.recomusic.persistencia.utils.Criptografia;
@@ -44,6 +46,7 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 	private UsuarioDAO usuarioDAO = new UsuarioDAO( ConectaBanco.getInstance().getEntityManager());
 	private BandaDAO bandaDAO = new BandaDAO( ConectaBanco.getInstance().getEntityManager());
 	private GeneroDAO generoDAO = new GeneroDAO( ConectaBanco.getInstance().getEntityManager());
+	private MediaUsuarioGeneroDAO mediaUsuarioGeneroDAO = new MediaUsuarioGeneroDAO( ConectaBanco.getInstance().getEntityManager());
 	private BandaGeneroDAO bandaGeneroDAO = new BandaGeneroDAO( ConectaBanco.getInstance().getEntityManager());
 	private InformacaoMusicalCadastroBandaDAO informacaoMusicalCadastroBandaDAO = new InformacaoMusicalCadastroBandaDAO( ConectaBanco.getInstance().getEntityManager());
 	private InformacaoMusicalCadastroGeneroDAO informacaoMusicalCadastroGeneroDAO = new InformacaoMusicalCadastroGeneroDAO( ConectaBanco.getInstance().getEntityManager());
@@ -248,6 +251,20 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 											 bandaGeneroDAO.salvarBandaGenero(getBandaGenero);
 										 }
 										 
+										 //Colocar aqui o MediaUsuarioGenero
+										 MediaUsuarioGenero mug = null;
+										 mug = mediaUsuarioGeneroDAO.pesquisarExiste(getUsuarioGlobal(), getBandaGenero.getGenero());
+										 if(!(mug!=null && mug.getPkMediaUsuarioGenero()>0))
+										 {
+											 mug = new MediaUsuarioGenero();
+											 mug.setGenero(getBandaGenero.getGenero());
+											 mug.setMedia(100D);
+											 mug.setQuantidadeMusicas(1D);
+											 mug.setUsuario(getUsuarioGlobal());
+											 mug.setMediaAvaliacoes(5D);
+											 mediaUsuarioGeneroDAO.save(mug);
+										 }
+										 
 										 imcg = null;
 										 imcg = informacaoMusicalCadastroGeneroDAO.pesquisarIMCG(usuarioFacebook, getGenero);
 										 if(imcg == null)
@@ -386,6 +403,20 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 													 getBandaGenero.setBanda(getBanda);
 													 getBandaGenero.setGenero(getGenero);
 													 bandaGeneroDAO.salvarBandaGenero(getBandaGenero);
+												 }
+												 
+												//Colocar aqui o MediaUsuarioGenero
+												 MediaUsuarioGenero mug = null;
+												 mug = mediaUsuarioGeneroDAO.pesquisarExiste(getUsuarioGlobal(), getBandaGenero.getGenero());
+												 if(!(mug!=null && mug.getPkMediaUsuarioGenero()>0))
+												 {
+													 mug = new MediaUsuarioGenero();
+													 mug.setGenero(getBandaGenero.getGenero());
+													 mug.setMedia(100D);
+													 mug.setQuantidadeMusicas(1D);
+													 mug.setUsuario(getUsuarioGlobal());
+													 mug.setMediaAvaliacoes(5D);
+													 mediaUsuarioGeneroDAO.save(mug);
 												 }
 												 
 												 imcg = null;

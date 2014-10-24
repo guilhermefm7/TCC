@@ -98,34 +98,34 @@
 				<p:accordionPanel>
 					<p:tab title="Playlists">
 						<h:panelGroup layout="block" class="box-content no-padding">
-							<h:dataTable class="table table-bordered table-striped table-hover table-heading table-datatable"
+							<p:dataTable class="table table-bordered table-striped table-hover table-heading table-datatable"
 								value="#{PlaylistBean.listaPIM}" var="playlistUsuario"
 								style="color: #333;font-weight: bold;">
-								<h:column>
+								<p:column>
 									<f:facet name="header">#</f:facet>
 			    				#{playlistUsuario.qtd}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column>
 									<f:facet name="header">Nome</f:facet>
 									<h:commandLink
 										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
 										actionListener="#{PlaylistBean.redirecionaPaginaMPlaylist(playlistUsuario.pkPlaylist)}">#{playlistUsuario.nomePlaylist} </h:commandLink>
-								</h:column>
-								<h:column>
+								</p:column>
+								<p:column>
 									<f:facet name="header">Data de Lançamento</f:facet>
 			    				#{playlistUsuario.dataLancamento}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column>
 									<f:facet name="header">Nº de Faixas</f:facet>
 			    				#{playlistUsuario.qtdFaixas}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column>
 									<h:commandLink
 										type="submit" class="btn btn-success" style="background-color: #4F7799;color:#FFFFFF;font-family:sans-serif;font-weight: bold"
 										value="Excluir"
 										actionListener="#{PlaylistBean.removePlaylist(playlistUsuario.pkPlaylist)}" />
-								</h:column>
-							</h:dataTable>
+								</p:column>
+							</p:dataTable>
 						</h:panelGroup>
 
 					</p:tab>

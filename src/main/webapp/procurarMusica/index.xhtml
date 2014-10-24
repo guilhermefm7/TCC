@@ -49,30 +49,27 @@
 				<p:accordionPanel>
 					<p:tab title="Músicas">
 						<h:panelGroup layout="block" class="box-content no-padding">
-							<h:dataTable
+							<p:dataTable
 								class="table table-bordered table-striped table-hover table-heading table-datatable"
 								id="datatable-1" value="#{ProcurarMusicaBean.listaMusicas}"
-								var="musicaAchada" 
+								var="musicaAchada" emptyMessage="Nenhum registro encontrado"
+								paginator="true" rows="50" 
 								style="color: #333;font-weight: bold;">
-								<h:column>
+								<p:column style="width:15%;text-align:center">
 									<f:facet name="header">#</f:facet>
 			    				#{musicaAchada.qtd}
-			    			</h:column>
-								<h:column>
+			    			</p:column>
+								<p:column>
 									<f:facet name="header">Nome</f:facet>
 									<h:commandLink
 										style="color:#4F7799;font-family:sans-serif;font-weight: bold"
 										actionListener="#{ProcurarMusicaBean.redirecionaPaginaMusica(musicaAchada.idDeezer,musicaAchada.nomeMusica, musicaAchada.nomeArtista, musicaAchada.albumMusica, musicaAchada.idMusica, musicaAchada.urlMusica)}">#{musicaAchada.nomeMusica} </h:commandLink>
-								</h:column>
-								<h:column>
+								</p:column>
+								<p:column>
 									<f:facet name="header">Artista/Banda</f:facet>
 			    				#{musicaAchada.nomeArtista}
-			    			</h:column>
-								<h:column>
-									<f:facet name="header">Álbum</f:facet>
-			    				#{musicaAchada.albumMusica}
-			    			</h:column>
-							</h:dataTable>
+			    			</p:column>
+							</p:dataTable>
 						</h:panelGroup>
 
 					</p:tab>

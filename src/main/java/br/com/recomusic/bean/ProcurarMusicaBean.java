@@ -1,12 +1,16 @@
 package br.com.recomusic.bean;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 
 import br.com.recomusic.im.MusicaIM;
 import br.com.recomusic.persistencia.utils.PesquisaMusica;
@@ -62,21 +66,27 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 	{
 		try
 		{
-			if(album!=null && album.length()>0 && url!=null && url.length()>0)
+			if(idMusica!=null && idMusica.length()>0)
 			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album + "&u=" + url);
-			}
-			else if(album!=null && album.length()>0)
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + album);
-			}
-			else if(url!=null && url.length()>0)
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&u=" + url);
-			}
-			else
-			{
-				FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
+				MusicaIM mIMAux = PesquisaMusica.requisitarAlbumImagem(idMusica);
+	  	    	
+	  	    	
+				if(mIMAux.getAlbumMusica()!=null && mIMAux.getAlbumMusica().length()>0 && mIMAux.getUrlMusica()!=null && mIMAux.getUrlMusica().length()>0)
+				{
+					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + mIMAux.getAlbumMusica() + "&u=" + mIMAux.getUrlMusica());
+				}
+				else if(mIMAux.getAlbumMusica()!=null && mIMAux.getAlbumMusica().length()>0)
+				{
+					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&n=" + mIMAux.getAlbumMusica());
+				}
+				else if(mIMAux.getUrlMusica()!=null && mIMAux.getUrlMusica().length()>0)
+				{
+					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho + "&u=" + mIMAux.getUrlMusica());
+				}
+				else
+				{
+					FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/musica/index.xhtml?t="+ idMusica + "&m=" + nomeMusica + "&a=" + artistaBandaMusica + "&i=" + idEcho);
+				}
 			}
 		}
 		catch(Exception e)

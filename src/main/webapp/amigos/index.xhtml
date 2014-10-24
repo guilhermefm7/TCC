@@ -102,7 +102,7 @@
 									<h:panelGrid columns="1" cellpadding="1">
 										<h:form class="navbar-form navbar-left">
 											<div class="col-mod-12" align="center">
-												<p:dataTable rendered="#{AmigosBean.listaAmigos ne null}"
+												<p:dataTable rendered="#{AmigosBean.listaAmigos ne null}" emptyMessage="Nenhum registro encontrado"
 													class="table table-bordered table-striped table-hover table-heading table-datatable"
 													value="#{AmigosBean.listaAmigos}" var="amigo"
 													style="color: #333;font-weight: bold;">
@@ -145,7 +145,7 @@
 									<h:panelGrid columns="1" cellpadding="1">
 										<h:form class="navbar-form navbar-left">
 											<p:dataTable
-												rendered="#{AmigosBean.listaRequisicoes ne null}"
+												rendered="#{AmigosBean.listaRequisicoes ne null}" emptyMessage="Nenhum registro encontrado"
 												class="table table-bordered table-striped table-hover table-heading table-datatable"
 												value="#{AmigosBean.listaRequisicoes}" var="amigo"
 												style="color: #333;font-weight: bold;">
@@ -192,7 +192,7 @@
 									<h:panelGrid columns="1" cellpadding="1">
 										<h:form class="navbar-form navbar-left">
 											<p:dataTable
-												rendered="#{AmigosBean.listaUsuarioProcurados ne null}"
+												rendered="#{AmigosBean.listaUsuarioProcurados ne null}" emptyMessage="Nenhum registro encontrado"
 												class="table table-bordered table-striped table-hover table-heading table-datatable"
 												value="#{AmigosBean.listaUsuarioProcurados}" var="amigo"
 												style="color: #333;font-weight: bold;">
