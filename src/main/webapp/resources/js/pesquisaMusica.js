@@ -26,3 +26,10 @@ function redirecionarPagina()
 {
 	window.location.href = "/RecoMusic/procurarMusica/index.xhtml?t="+musicaAux;
 }
+
+function centerAndShowDialog(dialog)
+{
+    $(dialog).css("top",Math.max(0,(($(window).height() - $(dialog).outerHeight()) / 2) + $(window).scrollTop()) + "px");
+    $(dialog).css("left",Math.max(0, (($(window).width() - $(dialog).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
+    PF('dialogCadastro1').show();
+}

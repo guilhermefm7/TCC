@@ -55,6 +55,7 @@
 </h:head>
 
 <h:body>
+
 	<header class="navbar"> <h:panelGroup id="header"
 		rendered="#{UsuarioBean.logado eq false}">
 		<ui:insert name="header">
@@ -149,7 +150,7 @@
 												</h:commandLink></li>
 
 											<li><p:commandLink id="btbt"
-													oncomplete="PF('dialogCadastro1').show()"
+													oncomplete="centerAndShowDialog(dialogCadastro1)"
 													update=":formDialog1" immediate="true" ajax="true"
 													actionListener="#{CadastroBean.iniciar}">
 													<span class="fa fa-cog"> Configurações</span>
@@ -301,7 +302,7 @@
 		header="Alteração de Foto" width="550" resizable="false"
 		dynamic="true" widgetVar="dialogAlterarFoto" style="margin: 5% 15%"
 		closable="false" closeOnEscape="false">
-		<h:form id="formFotos">
+		<h:form id="formFotos" enctype="multipart/form-data">
 			<p:messages style="font-size: small;" showDetail="true"
 				autoUpdate="true" closable="true" />
 
@@ -309,8 +310,20 @@
 				<div class="col-xs-12" align="center">
 					<img src="../resources/imagens/img/eleven.png"
 						style="width: 150px; height: 150px" /> <br />
-					<p:fileUpload value="#{PerfilBean.uploadedFile}"
-						mode="simple" />
+
+					<p:fileUpload value="#{TrocarFotoBean.file}" mode="simple"
+						skinSimple="true" />
+						
+					<p:commandButton value="Submit" ajax="false"
+						actionListener="#{TrocarFotoBean.uploadFoto2}"  />
+						
+					<p:fileUpload uploadLabel="Enviar"
+						fileUploadListener="#{TrocarFotoBean.uploadFoto}" mode="advanced"
+						multiple="true" sizeLimit="52428800" fileLimit="5" update="@form"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+
+					</p:fileUpload>
+
 				</div>
 			</div>
 
@@ -323,6 +336,7 @@
 					<div class="col-lg-6">
 
 						<p:commandLink styleClass="btn btn-default" title="Cancelar"
+							action="#{TrocarFotoBean.cancelar}"
 							oncomplete="PF('dialogAlterarFoto').hide()" ajax="true"
 							async="true" immediate="true">
 							<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>

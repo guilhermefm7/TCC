@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>RecoMusic</display-name>
+  
+      <!-- Context parameters -->   
+	<context-param>
+		<param-name>primefaces.UPLOADER</param-name>
+		<param-value>commons</param-value>
+	</context-param>
+  
   <context-param>
     <param-name>javax.faces.PROJECT_STAGE</param-name>
     <param-value>Production</param-value>
@@ -26,4 +33,27 @@
     <servlet-class>br.com.recomusic.aplicacao.MainRecMusic</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  
+      <!-- PrimeFaces FileUpload Filter -->
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>
+            org.primefaces.webapp.filter.FileUploadFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+    
+        <mime-mapping>
+        <extension>PNG</extension>
+        <mime-type>image/png</mime-type>
+    </mime-mapping>
+	
+	<mime-mapping>
+		<extension>JPG</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+  
 </web-app>

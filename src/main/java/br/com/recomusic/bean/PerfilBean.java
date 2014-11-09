@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
-import org.primefaces.model.UploadedFile;
 
 import br.com.recomusic.dao.AmigosUsuarioDAO;
 import br.com.recomusic.dao.AvaliarMusicaDAO;
@@ -25,6 +26,7 @@ import br.com.recomusic.im.PlaylistIM;
 import br.com.recomusic.om.AmigosUsuario;
 import br.com.recomusic.om.Playlist;
 import br.com.recomusic.om.RequisicaoAmizade;
+import br.com.recomusic.om.TrocarFoto;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.persistencia.utils.UtilidadesTelas;
 import br.com.recomusic.singleton.ConectaBanco;
@@ -53,7 +55,6 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 	private Boolean requisitouAmizade = false;
 	private boolean disabled = false;
 	private List<PlaylistIM> listaPIM = null;
-	private UploadedFile uploadedFile;
 	
 	public PerfilBean() {
 	}
@@ -320,32 +321,28 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 		}
 	}
 	
-/*	public void fileUploadPrincipal(UploadedFile file) {
-		
-
-		fotoPerfil = new FotoPerfil();
-
-		fotoPerfil.setPrincipal(true);
-		fotoPerfil.setUsuario(getUsuarioGlobal());
-		fotoPerfil.setFileNameOriginal(file.getFileName());
-		fotoPerfil.setFileName(getFileName(file.getContentType()));
-		fotoPerfil.setFilePath(FILE_PATH
-				+ getFileName(file.getContentType()));
-		fotoPerfil.setFileType(file.getContentType());
-		fotoPerfil.setFileSize(String.valueOf(file.getSize()));
+	public void uploadFoto(FileUploadEvent event)
+	{
 		try {
-			fotoPerfil.setInputStream(file.getInputstream());
-		} catch (IOException e) {
 
+			TrocarFoto trocarFoto = new TrocarFoto();
+
+			String finalname = getFileName(event.getFile().getFileName(), event
+					.getFile().getContentType());
+
+			trocarFoto.setNome(FILE_PATH + finalname);
+
+			trocarFoto.setTipo(event.getFile().getContentType());
+			trocarFoto.setTamanho(String.valueOf(event.getFile()
+					.getSize()));
+			trocarFoto.setInputStream(event.getFile().getInputstream());
+			trocarFoto.setUsuario(getUsuarioGlobal());
+
+		} catch (Exception e) {
 			e.printStackTrace();
+			addMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
 		}
-
-		fotoPerfilDAO.save(fotoPerfil);
-		FacesMessage message = new FacesMessage("Imagem Principal",
-				file.getFileName() + "Cadastrada Com Sucesso");
-		FacesContext.getCurrentInstance().addMessage(null, message);
-
-	}*/
+	}
 
 	public void desfazerAmizade() {
 		try {
@@ -460,20 +457,4 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 	public void setListaPIM(List<PlaylistIM> listaPIM) {
 		this.listaPIM = listaPIM;
 	}
-
-	public UploadedFile getUploadedFile() {
-		return uploadedFile;
-	}
-
-	public void setUploadedFile(UploadedFile uploadedFile) {
-		this.uploadedFile = uploadedFile;
-	}
-
-/*	public FotoPerfil getFotoPerfil() {
-		return fotoPerfil;
-	}
-
-	public void setFotoPerfil(FotoPerfil fotoPerfil) {
-		this.fotoPerfil = fotoPerfil;
-	}*/
 }

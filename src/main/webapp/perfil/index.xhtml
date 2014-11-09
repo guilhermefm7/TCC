@@ -70,7 +70,7 @@
 								actionListener="#{PerfilBean.desfazerAmizade}"
 								rendered="#{PerfilBean.amigo == true}" />
 							<p:commandLink class="btn btn-primary" id="btfotos" type="submit" style="color:#FFFFFF;align:center;background-color:#85b2cb"
-								oncomplete="PF('dialogAlterarFoto').show()"  value="Alterar Foto" rendered="#{PerfilBean.amigo == null}"
+								oncomplete="PF('dialogAlterarFoto').show()" actionListener="#{TrocarFotoBean.iniciar}" value="Alterar Foto" rendered="#{PerfilBean.amigo == null}"
 								immediate="true" ajax="true">
 							</p:commandLink>
 						</h:form>

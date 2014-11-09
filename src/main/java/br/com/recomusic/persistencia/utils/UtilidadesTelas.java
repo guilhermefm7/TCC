@@ -12,8 +12,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.model.UploadedFile;
-
 import br.com.recomusic.bean.UsuarioBean;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
 import br.com.recomusic.im.BandaGeneroIM;
@@ -35,17 +33,11 @@ public class UtilidadesTelas {
 	private boolean ckMusicaAux;
 	private boolean ckBandaAux;
 	private String campoNomeMusica;
-	
-/*    protected static final String FILE_PATH = "C://Users//Guilherme//FT";
-    
-    protected String FILE_PREFIX = "";
 
-    protected UploadedFile uploadedFile;
+	protected static final String FILE_PATH = "C://Users//Guilherme//FT";
 
-    protected List<UploadedFile> uploadedFileList = new ArrayList<UploadedFile>();
+	protected String FILE_PREFIX = "";
 
-    protected List<String> fileNames;*/
-    
 	protected Boolean enableMessage = Boolean.TRUE;
 	protected String tokenFacebook;
 	EchoNestAPI en = new EchoNestAPI("9QB1EM63CLM2RR5V3");
@@ -105,7 +97,7 @@ public class UtilidadesTelas {
 	}
 
 	/**
-	 * Responsavel por enerrar a sessao
+	 * Responsavel por encerrar a sessao
 	 */
 	public static void encerrarSessao() {
 		try {
@@ -335,26 +327,28 @@ public class UtilidadesTelas {
 	public void setCampoNomeMusica(String campoNomeMusica) {
 		this.campoNomeMusica = campoNomeMusica;
 	}
-	
-/*    public String getFileName(String mimetype) {
 
-        String fileName;
+	public String getFileName(String fileOriginalName, String mimetype) {
 
-        String type = "";
-        
-        if (mimetype.trim().equals("image/jpeg"))
-            type = ".jpg";
-        
+		long id = System.currentTimeMillis();
 
-        if (mimetype.trim().equals("image/png"))
-            type = ".png";
-            
-        if (mimetype.trim().equals("image/gif"))
-            type = ".gif"; 
-        
-        
-        
-        fileName = FILE_PREFIX  + System.currentTimeMillis() + type;
-        return fileName;
-    }*/
+		int index = fileOriginalName.lastIndexOf(".");
+		fileOriginalName = fileOriginalName.substring(0, index);
+
+		String type = "";
+
+		if (mimetype.trim().equals("image/jpeg"))
+			type = ".jpg";
+
+		if (mimetype.trim().equals("image/png"))
+			type = ".png";
+
+		if (mimetype.trim().equals("image/gif"))
+			type = ".gif";
+
+		StringBuffer fileName = new StringBuffer();
+		fileName.append(FILE_PREFIX).append(fileOriginalName).append(id)
+				.append(type);
+		return fileName.toString();
+	}
 }

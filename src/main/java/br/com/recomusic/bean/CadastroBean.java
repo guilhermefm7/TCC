@@ -31,8 +31,6 @@ public class CadastroBean extends UtilidadesTelas implements Serializable
 	public CadastroBean() { }
 	
 	/**
-	 * Responsavel por iniciar a pagina desktop.xhtml, carregando tdo oq ela precisa,
-	 * verificando sessao, etc.
 	 */
 	public void iniciar()
 	{
