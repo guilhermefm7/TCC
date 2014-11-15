@@ -393,6 +393,7 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			ConectaBanco.getInstance().rollBack();
 			addMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
 		}
 	}

@@ -39,7 +39,7 @@
 
 			<br />
 			<h:form enctype="multipart/form-data">
-				<div class="row">
+				<p:outputPanel id="pnUpFotos" class="row">
 					<div class="col-xs-12" align="center">
 						<div class="col-xs-6" align="right">
 							<h:graphicImage
@@ -77,19 +77,19 @@
 							</h:panelGroup>
 						</div>
 					</div>
-				</div>
+				</p:outputPanel>
 				<br />
 
 				<div class="col-mod-6" align="center">
 					<p:fileUpload uploadLabel="Enviar" label="Escolher Foto"  dragDropSupport="false"
-						rendered="#{PerfilBean.amigo == null}" process="@all" invalidFileMessage="Permitido apenas arquivos nos formatos jpg, png e gif" fileLimitMessage="Permitido o upload de apenas uma foto" invalidSizeMessage="Tamanho do arquivo inválido"
-						fileUploadListener="#{TrocarFotoBean.uploadFoto}" mode="advanced"
-						multiple="true" sizeLimit="52428800" fileLimit="1" update="@form" cancelLabel="Cancelar"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+						rendered="#{PerfilBean.amigo == null}" process="@this" widgetVar="uploadFotos" invalidFileMessage="Permitido apenas arquivos nos formatos jpg, png e gif" fileLimitMessage="Limite máximo de uploads atingido" invalidSizeMessage="Tamanho do arquivo inválido"
+						fileUploadListener="#{TrocarFotoBean.uploadFoto}" mode="advanced"  
+						sizeLimit="52428800" fileLimit="10" update="pnUpFotos" cancelLabel="Cancelar"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" >
+						</p:fileUpload>
 				</div>
 			</h:form>
 
-			<br />
 			<br />
 
 			<br />
