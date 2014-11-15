@@ -44,10 +44,10 @@
 						<div class="col-xs-6" align="right">
 							<h:graphicImage
 								value="/downloadedImages/#{PerfilBean.trocarFoto.pathFotoImagem}"
-								rendered="#{PerfilBean.amigo == null and PerfilBean.trocarFoto != null}"
+								rendered="#{PerfilBean.trocarFoto != null}"
 								style="width: 150px; height: 150px" />
 							<h:graphicImage value="../resources/imagens/img/eleven.png"
-								rendered="#{PerfilBean.amigo == null and PerfilBean.trocarFoto == null}"
+								rendered="#{PerfilBean.trocarFoto == null}"
 								style="width: 150px; height: 150px" />
 						</div>
 						<div class="col-xs-3" align="left">

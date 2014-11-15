@@ -68,8 +68,8 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 
 	public void iniciar() {
 		try {
+			trocarFoto = null;
 			if (UtilidadesTelas.verificarSessao()) {
-				trocarFoto = null;
 				if (tokenPkUsuairo != null && tokenPkUsuairo.length() > 0) {
 					usuario = usuarioDAO.getUsuarioPk(Long
 							.valueOf(tokenPkUsuairo));
@@ -80,6 +80,10 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 							
 							amigo = null;
 							disabled = false;
+							
+							trocarFoto = trocarFotoDAO
+									.getTrocarFotoUsuario(usuario);
+							
 							// Procura as Playlists
 							listaPlaylistsUsuario = playlistDAO
 									.getPlaylistsUsuario(getUsuarioGlobal());
@@ -122,6 +126,10 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 								listaAmigosUsuario = null;
 							}
 						} else {
+							
+							trocarFoto = trocarFotoDAO
+									.getTrocarFotoUsuario(usuario);
+							
 							// Procura se o usuário atual é amigo do usuário do
 							// perfil
 							Boolean amizade = amigosUsuarioDAO
