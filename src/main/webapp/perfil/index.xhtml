@@ -83,7 +83,7 @@
 				<div class="col-mod-6" align="center">
 					<p:fileUpload uploadLabel="Enviar" label="Escolher Foto"  dragDropSupport="false"
 						rendered="#{PerfilBean.amigo == null}" process="@this" widgetVar="uploadFotos" invalidFileMessage="Permitido apenas arquivos nos formatos jpg, png e gif" fileLimitMessage="Limite máximo de uploads atingido" invalidSizeMessage="Tamanho do arquivo inválido"
-						fileUploadListener="#{TrocarFotoBean.uploadFoto}" mode="advanced"  
+						fileUploadListener="#{PerfilBean.uploadFoto}" mode="advanced"  auto="true"
 						sizeLimit="52428800" fileLimit="10" update="pnUpFotos" cancelLabel="Cancelar"
 						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" >
 						</p:fileUpload>
