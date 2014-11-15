@@ -12,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.primefaces.model.UploadedFile;
-
 import br.com.recomusic.persistencia.utils.Constantes;
 
 @Entity
@@ -29,6 +27,7 @@ public class TrocarFoto implements Serializable {
 	private String nome;
 	private String tipo;
 	private String pathFoto;
+	private String pathFotoImagem;
 	private String tamanho;
 	private Integer status = Constantes.TIPO_STATUS_ATIVO;
 
@@ -101,15 +100,19 @@ public class TrocarFoto implements Serializable {
 		this.tamanho = tamanho;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getPathFotoImagem() {
+		return pathFotoImagem;
+	}
+
+	public void setPathFotoImagem(String pathFotoImagem) {
+		this.pathFotoImagem = pathFotoImagem;
 	}
 }

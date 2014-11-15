@@ -36,16 +36,13 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/gson-2.2.4-javadoc.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/gson-2.2.4-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/gson-2.2.4.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/primefaces-5.0.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/primefaces-5.0.jar" sourcepath="C:/Users/Guilherme/.m2/repository/org/primefaces/primefaces/5.0/primefaces-5.0-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jsp-api-2.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-fileupload-1.2.2.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-io-2.4-javadoc.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-io-2.4-sources.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-io-2.4-test-sources.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-io-2.4-tests.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/imgscalr-lib-4.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
 		<attributes>
 			<attribute name="owner.project.facets" value="#system#;jst.web"/>

@@ -118,12 +118,12 @@
 											</h:commandLink>
 									</label> <h:selectBooleanCheckbox value="#{GlobalBean.ckMusicaAux}"
 											id="ckMusica">
-											<f:ajax event="change"
+											<f:ajax event="change" execute="@this"
 												listener="#{GlobalBean.changeCheckBoxMusica}" />
 										</h:selectBooleanCheckbox> Música
 									</label> <label> <h:selectBooleanCheckbox
 											value="#{GlobalBean.ckBandaAux}" id="ckBanda">
-											<f:ajax event="change"
+											<f:ajax event="change" execute="@this"
 												listener="#{GlobalBean.changeCheckBoxBanda}" />
 										</h:selectBooleanCheckbox> Banda
 									</label>
@@ -298,64 +298,6 @@
 		</h:form>
 	</p:confirmDialog>
 
-	<p:confirmDialog message="Alterar Foto" modal="true"
-		header="Alteração de Foto" width="550" resizable="false"
-		dynamic="true" widgetVar="dialogAlterarFoto" style="margin: 5% 15%"
-		closable="false" closeOnEscape="false">
-		<h:form id="formFotos" enctype="multipart/form-data">
-			<p:messages style="font-size: small;" showDetail="true"
-				autoUpdate="true" closable="true" />
-
-			<div class="row">
-				<div class="col-xs-12" align="center">
-					<img src="../resources/imagens/img/eleven.png"
-						style="width: 150px; height: 150px" /> <br />
-
-					<p:fileUpload value="#{TrocarFotoBean.file}" mode="simple"
-						skinSimple="true" />
-						
-					<p:commandButton value="Submit" ajax="false"
-						actionListener="#{TrocarFotoBean.uploadFoto2}"  />
-						
-					<p:fileUpload uploadLabel="Enviar"
-						fileUploadListener="#{TrocarFotoBean.uploadFoto}" mode="advanced"
-						multiple="true" sizeLimit="52428800" fileLimit="5" update="@form"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
-
-					</p:fileUpload>
-
-				</div>
-			</div>
-
-
-			<br></br>
-			<div class="form-group pull-right">
-				<br></br>
-
-				<div class="side-by-side clearfix row">
-					<div class="col-lg-6">
-
-						<p:commandLink styleClass="btn btn-default" title="Cancelar"
-							action="#{TrocarFotoBean.cancelar}"
-							oncomplete="PF('dialogAlterarFoto').hide()" ajax="true"
-							async="true" immediate="true">
-							<span class="fa fa-arrow-circle-o-left"></span> Cancelar </p:commandLink>
-
-					</div>
-					<div class="col-lg-6">
-
-						<p:commandLink styleClass="btn btn-info pull-right" ajax="true"
-							async="false">
-							<span class="fa fa-save"></span> Confirmar </p:commandLink>
-
-					</div>
-				</div>
-			</div>
-		</h:form>
-	</p:confirmDialog>
-
-
-
 
 	<h:form id="hiddenFormPesquisa" style="display: none;">
 		<h:inputHidden id="idMusicaProcurada"
@@ -378,7 +320,7 @@
 	<script src="/RecoMusic/resources/js/get.key.with.callback.js"
 		type="text/javascript" /> -->
 
-	<script src="/RecoMusic/resources/plugins/jquery/jquery-2.1.0.min.js"></script>
+	<!-- 	<script src="/RecoMusic/resources/plugins/jquery/jquery-2.1.0.min.js"></script> -->
 	<script src="/RecoMusic/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/RecoMusic/resources/plugins/bootstrap/bootstrap.min.js"></script>

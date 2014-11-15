@@ -1,5 +1,7 @@
 package br.com.recomusic.bean;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import br.com.recomusic.dao.AmigosUsuarioDAO;
 import br.com.recomusic.dao.AvaliarMusicaDAO;
 import br.com.recomusic.dao.PlaylistDAO;
 import br.com.recomusic.dao.RequisicaoAmizadeDAO;
+import br.com.recomusic.dao.TrocarFotoDAO;
 import br.com.recomusic.dao.UsuarioDAO;
 import br.com.recomusic.im.MusicaAvaliadaIM;
 import br.com.recomusic.im.PlaylistIM;
@@ -55,13 +58,18 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 	private Boolean requisitouAmizade = false;
 	private boolean disabled = false;
 	private List<PlaylistIM> listaPIM = null;
+	private TrocarFotoDAO trocarFotoDAO = new TrocarFotoDAO(ConectaBanco
+			.getInstance().getEntityManager());
+	private TrocarFoto trocarFoto = null;
 	
 	public PerfilBean() {
+		this.FILE_PREFIX = "DOCUMENTO_";
 	}
 
 	public void iniciar() {
 		try {
 			if (UtilidadesTelas.verificarSessao()) {
+				trocarFoto = null;
 				if (tokenPkUsuairo != null && tokenPkUsuairo.length() > 0) {
 					usuario = usuarioDAO.getUsuarioPk(Long
 							.valueOf(tokenPkUsuairo));
@@ -69,6 +77,7 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 						// Verifica se é o usuário atual
 						if (usuario.getPkUsuario() == getUsuarioGlobal()
 								.getPkUsuario()) {
+							
 							amigo = null;
 							disabled = false;
 							// Procura as Playlists
@@ -192,7 +201,8 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 					// Caso seja o usuário atual
 					setUsuario(getUsuarioGlobal());
 					amigo = null;
-
+					trocarFoto = trocarFotoDAO
+							.getTrocarFotoUsuario(getUsuarioGlobal());
 					// Procura as Playlists
 					listaPlaylistsUsuario = playlistDAO
 							.getPlaylistsUsuario(getUsuarioGlobal());
@@ -320,29 +330,6 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 			ConectaBanco.getInstance().rollBack();
 		}
 	}
-	
-	public void uploadFoto(FileUploadEvent event)
-	{
-		try {
-
-			TrocarFoto trocarFoto = new TrocarFoto();
-
-			String finalname = getFileName(event.getFile().getFileName(), event
-					.getFile().getContentType());
-
-			trocarFoto.setNome(FILE_PATH + finalname);
-
-			trocarFoto.setTipo(event.getFile().getContentType());
-			trocarFoto.setTamanho(String.valueOf(event.getFile()
-					.getSize()));
-			trocarFoto.setInputStream(event.getFile().getInputstream());
-			trocarFoto.setUsuario(getUsuarioGlobal());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			addMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
-		}
-	}
 
 	public void desfazerAmizade() {
 		try {
@@ -369,6 +356,44 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			ConectaBanco.getInstance().rollBack();
+		}
+	}
+	
+	public void uploadFoto(FileUploadEvent event) throws FileNotFoundException, IOException{
+		try {
+
+			ConectaBanco.getInstance().beginTransaction();
+			TrocarFoto trocarFotoAux = new TrocarFoto();
+			TrocarFoto trocarFotoRemove = null;
+			
+			trocarFotoRemove = trocarFotoDAO
+					.getTrocarFotoUsuario(getUsuarioGlobal());
+			
+			if(trocarFotoRemove!=null && trocarFotoRemove.getPkTrocarFoto()>0)
+			{
+				deleteFoto(trocarFotoRemove.getNome(), FILE_PATH);
+				deleteFoto(trocarFotoRemove.getPathFotoImagem(), FILE_PATH);
+				trocarFotoDAO.delete(trocarFotoRemove);
+			}
+			
+			String finalname = getFileName(event.getFile().getFileName(), event
+					.getFile().getContentType());
+
+			trocarFotoAux.setNome(finalname);
+			trocarFotoAux.setPathFoto(FILE_PATH + finalname);
+
+			trocarFotoAux.setTipo(event.getFile().getContentType());
+			trocarFotoAux.setTamanho(String.valueOf(event.getFile().getSize()));
+			trocarFotoAux.setInputStream(event.getFile().getInputstream());
+			trocarFotoAux.setUsuario(getUsuarioGlobal());
+			uploadFile(trocarFotoAux);
+			trocarFotoDAO.save(trocarFotoAux);
+			ConectaBanco.getInstance().commit();
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
 		}
 	}
 
@@ -456,5 +481,13 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 
 	public void setListaPIM(List<PlaylistIM> listaPIM) {
 		this.listaPIM = listaPIM;
+	}
+
+	public TrocarFoto getTrocarFoto() {
+		return trocarFoto;
+	}
+
+	public void setTrocarFoto(TrocarFoto trocarFoto) {
+		this.trocarFoto = trocarFoto;
 	}
 }

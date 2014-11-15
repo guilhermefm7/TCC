@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fb="http://www.facebook.com/2008/fbml">
+<h:head>
+</h:head>
+<h:body>
+	<f:metadata>
+	</f:metadata>
+				<h:form enctype="multipart/form-data">
+						<h:panelGroup layout="block" class="box-content no-padding">
+									<p:fileUpload uploadLabel="Enviar" 
+						fileUploadListener="#{TrocarFotoBean.uploadFoto}" mode="advanced"
+						multiple="true" sizeLimit="52428800" fileLimit="5" update="@form"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+						</h:panelGroup>
+						</h:form>
+</h:body>
+</html>

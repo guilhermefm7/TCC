@@ -1,6 +1,10 @@
 package br.com.recomusic.persistencia.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +15,14 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import br.com.recomusic.bean.UsuarioBean;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
 import br.com.recomusic.im.BandaGeneroIM;
 import br.com.recomusic.om.Banda;
 import br.com.recomusic.om.Musica;
+import br.com.recomusic.om.TrocarFoto;
 import br.com.recomusic.om.Usuario;
 import br.com.recomusic.singleton.ConectaBanco;
 
@@ -30,6 +36,7 @@ public class UtilidadesTelas {
 	private boolean naoCurtiuMusica = false;
 	private static boolean ckMusica;
 	private static boolean ckBanda;
+	private static String campoNomeMusicaAux;
 	private boolean ckMusicaAux;
 	private boolean ckBandaAux;
 	private String campoNomeMusica;
@@ -326,6 +333,7 @@ public class UtilidadesTelas {
 
 	public void setCampoNomeMusica(String campoNomeMusica) {
 		this.campoNomeMusica = campoNomeMusica;
+		setCampoNomeMusicaAux(campoNomeMusicaAux);
 	}
 
 	public String getFileName(String fileOriginalName, String mimetype) {
@@ -350,5 +358,78 @@ public class UtilidadesTelas {
 		fileName.append(FILE_PREFIX).append(fileOriginalName).append(id)
 				.append(type);
 		return fileName.toString();
+	}
+	
+	public boolean uploadFile(TrocarFoto trocarFoto) {
+
+		boolean sucess = false;
+		File targetFolder = null;
+
+		FacesContext ctx = FacesContext.getCurrentInstance();
+
+		ServletContext servletContext = (ServletContext) ctx
+				.getExternalContext().getContext();
+
+		try {
+
+			if (trocarFoto != null
+					&& !trocarFoto.getNome().isEmpty()) {
+
+				targetFolder = new File(FILE_PATH);
+				InputStream inputStream = trocarFoto.getInputStream();
+				File file = new File(targetFolder,trocarFoto.getNome());
+				OutputStream out = new FileOutputStream(file);
+
+				int read = 0;
+				byte[] bytes = new byte[1024];
+
+				while ((read = inputStream.read(bytes)) != -1) {
+					out.write(bytes, 0, read);
+				}
+
+				inputStream.close();
+				out.flush();
+				out.close();
+
+				int index = trocarFoto.getNome().lastIndexOf(
+						".");
+				String thumbName = trocarFoto.getNome()
+						.substring(0, index - 1);
+				thumbName = thumbName.concat("_similar");
+
+				File thumbFile = ThumbnailGenerator
+						.generateThumbnail(file, thumbName,
+								trocarFoto.getTipo());
+
+				trocarFoto.setPathFotoImagem(thumbFile.getName());
+				trocarFoto.setPathFoto(file.getName());
+
+				sucess = true;
+
+			}
+		} catch (Exception e) {
+
+			sucess = false;
+		}
+
+		return sucess;
+	}
+
+	public static String isCampoNomeMusicaAux() {
+		return campoNomeMusicaAux;
+	}
+
+	public static void setCampoNomeMusicaAux(String campoNomeMusicaAux) {
+		UtilidadesTelas.campoNomeMusicaAux = campoNomeMusicaAux;
+	}
+	
+	public static void deleteFoto(final String fileName, String imagePath) {
+
+		// Decode the file name (might contain spaces and on) and prepare file
+		// object.
+		File image = new File(imagePath, fileName);
+		if (image != null && image.exists()) {
+			image.delete();
+		}
 	}
 }

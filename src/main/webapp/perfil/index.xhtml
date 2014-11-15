@@ -38,46 +38,56 @@
 			</div>
 
 			<br />
-			<div class="row">
-				<div class="col-xs-12" align="center">
-					<div class="col-xs-6" align="right">
-						<img src="../resources/imagens/img/eleven.png"
-							style="width: 150px; height: 150px" /> <br />
-
-					</div>
-					<div class="col-xs-3" align="left">
-						<br /> <br />
-						<h1
-							style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
-							<h:outputLabel
-								value="#{PerfilBean.usuario.nome} #{PerfilBean.usuario.sobrenome}" />
-						</h1>
-						<br />
-						<h:form class="navbar-form navbar-left" style="padding: 0;">
-							<h:commandLink type="submit" class="btn btn-primary"
-								style="color:#FFFFFF;align:center;background-color:#85b2cb"
-								value="Adicionar Amigo"
-								rendered="#{PerfilBean.amigo == false and PerfilBean.requisitouAmizade eq false}"
-								actionListener="#{PerfilBean.adiconarAmigo}" />
-							<h:commandLink type="submit" class="btn btn-primary"
-								disabled="true"
-								style="color:#FFFFFF;align:center;background-color:#85b2cb"
-								value="Solicitação de Amizade Enviada"
-								rendered="#{PerfilBean.requisitouAmizade eq true}" />
-							<h:commandLink type="submit" class="btn btn-primary"
-								style="color:#FFFFFF;align:center;background-color:#85b2cb"
-								value="Desfazer Amizade"
-								actionListener="#{PerfilBean.desfazerAmizade}"
-								rendered="#{PerfilBean.amigo == true}" />
-							<p:commandLink class="btn btn-primary" id="btfotos" type="submit" style="color:#FFFFFF;align:center;background-color:#85b2cb"
-								oncomplete="PF('dialogAlterarFoto').show()" actionListener="#{TrocarFotoBean.iniciar}" value="Alterar Foto" rendered="#{PerfilBean.amigo == null}"
-								immediate="true" ajax="true">
-							</p:commandLink>
-						</h:form>
+			<h:form enctype="multipart/form-data">
+				<div class="row">
+					<div class="col-xs-12" align="center">
+						<div class="col-xs-6" align="right">
+							<h:graphicImage
+								value="/downloadedImages/#{PerfilBean.trocarFoto.pathFotoImagem}"
+								rendered="#{PerfilBean.amigo == null and PerfilBean.trocarFoto != null}"
+								style="width: 150px; height: 150px" />
+							<h:graphicImage value="../resources/imagens/img/eleven.png"
+								rendered="#{PerfilBean.amigo == null and PerfilBean.trocarFoto == null}"
+								style="width: 150px; height: 150px" />
+						</div>
+						<div class="col-xs-3" align="left">
+							<br /> <br />
+							<h1
+								style="color: #4F7799; font-family: Open Sans, Arial, sans-serif; font-size: 20px; text-align: left">
+								<h:outputLabel
+									value="#{PerfilBean.usuario.nome} #{PerfilBean.usuario.sobrenome}" />
+							</h1>
+							<br />
+							<h:panelGroup class="navbar-form navbar-left" style="padding: 0;">
+								<h:commandLink type="submit" class="btn btn-primary"
+									style="color:#FFFFFF;align:center;background-color:#85b2cb"
+									value="Adicionar Amigo"
+									rendered="#{PerfilBean.amigo == false and PerfilBean.requisitouAmizade eq false}"
+									actionListener="#{PerfilBean.adiconarAmigo}" />
+								<h:commandLink type="submit" class="btn btn-primary"
+									disabled="true"
+									style="color:#FFFFFF;align:center;background-color:#85b2cb"
+									value="Solicitação de Amizade Enviada"
+									rendered="#{PerfilBean.requisitouAmizade eq true}" />
+								<h:commandLink type="submit" class="btn btn-primary"
+									style="color:#FFFFFF;align:center;background-color:#85b2cb"
+									value="Desfazer Amizade"
+									actionListener="#{PerfilBean.desfazerAmizade}"
+									rendered="#{PerfilBean.amigo == true}" />
+							</h:panelGroup>
+						</div>
 					</div>
 				</div>
-			</div>
+				<br />
 
+				<div class="col-mod-6" align="center">
+					<p:fileUpload uploadLabel="Enviar" label="Escolher Foto"  dragDropSupport="false"
+						rendered="#{PerfilBean.amigo == null}" process="@all" invalidFileMessage="Permitido apenas arquivos nos formatos jpg, png e gif" fileLimitMessage="Permitido o upload de apenas uma foto" invalidSizeMessage="Tamanho do arquivo inválido"
+						fileUploadListener="#{TrocarFotoBean.uploadFoto}" mode="advanced"
+						multiple="true" sizeLimit="52428800" fileLimit="1" update="@form" cancelLabel="Cancelar"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+				</div>
+			</h:form>
 
 			<br />
 			<br />
@@ -142,7 +152,8 @@
 									<h:panelGrid columns="1" cellpadding="1">
 										<h:form class="navbar-form navbar-left">
 											<p:dataTable
-												rendered="#{PerfilBean.listaAmigosUsuario ne null}" emptyMessage="Nenhum registro encontrado"
+												rendered="#{PerfilBean.listaAmigosUsuario ne null}"
+												emptyMessage="Nenhum registro encontrado"
 												class="table table-bordered table-striped table-hover table-heading table-datatable"
 												value="#{PerfilBean.listaAmigosUsuario}" var="amigo"
 												style="color: #333;font-weight: bold;">
@@ -184,7 +195,8 @@
 									<h:panelGrid columns="1" cellpadding="1">
 										<h:form class="navbar-form navbar-left">
 											<p:dataTable
-												rendered="#{PerfilBean.listaPlaylistsUsuario ne null}" emptyMessage="Nenhum registro encontrado"
+												rendered="#{PerfilBean.listaPlaylistsUsuario ne null}"
+												emptyMessage="Nenhum registro encontrado"
 												class="table table-bordered table-striped table-hover table-heading table-datatable"
 												value="#{PerfilBean.listaPIM}" var="playlist"
 												style="color: #333;font-weight: bold;">
@@ -223,7 +235,8 @@
 									<h:panelGrid columns="1" cellpadding="1">
 										<h:form class="navbar-form navbar-left">
 											<p:dataTable
-												rendered="#{PerfilBean.listaMusicaUsuario ne null}" emptyMessage="Nenhum registro encontrado"
+												rendered="#{PerfilBean.listaMusicaUsuario ne null}"
+												emptyMessage="Nenhum registro encontrado"
 												class="table table-bordered table-striped table-hover table-heading table-datatable"
 												value="#{PerfilBean.listaMusicaUsuario}" var="musicaAchada"
 												style="color: #333;font-weight: bold;">
@@ -268,7 +281,7 @@
 				</div>
 			</div>
 
-			
+
 
 		</ui:define>
 	</ui:composition>
