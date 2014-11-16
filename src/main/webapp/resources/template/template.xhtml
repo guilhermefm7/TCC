@@ -139,7 +139,7 @@
 											<div class="avatar"></div> <i
 											class="fa fa-angle-down pull-right"></i>
 											<div class="user-mini pull-right">
-												<span class="welcome">Welcome,</span>
+												<span class="welcome">Bem-Vindo,</span>
 												<h:outputLabel style="color:#0000"
 													value="#{UsuarioBean.usuario.nome}" />
 											</div>
@@ -149,7 +149,7 @@
 													actionListener="#{UsuarioBean.redirecionaPerfil}">
 												</h:commandLink></li>
 
-											<li><p:commandLink id="btbt"
+											<li><p:commandLink id="btbt" 
 													oncomplete="centerAndShowDialog(dialogCadastro1)"
 													update=":formDialog1" immediate="true" ajax="true"
 													actionListener="#{CadastroBean.iniciar}">
@@ -222,8 +222,8 @@
 		</h:panelGroup>
 	</h:panelGroup>
 
-	<p:confirmDialog id="dialogCadastro1" message="Dados do Usuário"
-		modal="true" header="Alteração de Cadastro" width="450"
+	<p:confirmDialog id="dialogCadastro1" message="Dados do Usuário" 
+		modal="true" header="Alteração de Cadastro" width="450" 
 		resizable="false" dynamic="true" widgetVar="dialogCadastro1"
 		style="margin: 5% 15%" closable="false" closeOnEscape="false">
 		<h:form id="formDialog1">

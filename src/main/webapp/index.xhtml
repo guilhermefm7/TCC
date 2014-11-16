@@ -12,8 +12,9 @@
 <h:body>
 	<f:metadata>
 		<f:viewParam name="token" value="#{UsuarioBean.token}" />
-		<f:event type="preRenderView"
+		<f:event type="preRenderView" 
 			listener="#{UsuarioBean.logarComFacebook}" />
+			
 	</f:metadata>
 	<ui:composition template="/resources/template/template.xhtml">
 		<ui:define name="titulo">RecMusic</ui:define>
