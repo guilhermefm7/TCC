@@ -23,12 +23,6 @@ public class BundleUtils {
     }
 
     /**
-    * getBundleMessage
-    * @author <a href="mailto:jesse.freitas@hdntecnologia.com.br">Jessé</a>
-    * @since 13/02/2009
-    * @see
-    * @param 
-    * @return ResourceBundle
     */
     public static ResourceBundle getBundleMessage() {
 
@@ -51,11 +45,6 @@ public class BundleUtils {
     }
 
     /**
-     * getMessage 
-     * @author <a href="mailto:jesse.freitas@hdntecnologia.com.br">Jessé</a>
-     * @since 13/02/2009
-     * @see
-     * @param 
      * @return String
      */
     public static String getMessage(String key) {
