@@ -29,30 +29,33 @@ public class ProcurarMusicaBean extends UtilidadesTelas implements Serializable
 	private List<MusicaIM> listaMusicas  = null;
 
 	public ProcurarMusicaBean() {	}
-
+	
+	
 	public void iniciar()
 	{
 		try
 		{
-			if((tokenRecebido!=null && tokenRecebido.length()>0))
+			if(UtilidadesTelas.verificarSessao())
 			{
-                String nomeMusicaAux = new String(tokenRecebido.getBytes(), Charset.forName("UTF-8"));
-                tokenRecebido = new String();
-                tokenRecebido = nomeMusicaAux;
-                
-				if(UtilidadesTelas.verificarSessao())
+				if((tokenRecebido!=null && tokenRecebido.length()>0))
 				{
-					setUsuarioGlobal(getUsuarioGlobal());
-					listaMusicas = PesquisaMusica.requisitarMusicaJson(tokenRecebido,isCkMusica() ,isCkBanda());
+					if(getMusicaPesquisada()!=null && getMusicaPesquisada().length()>0)
+					{
+						String nomeMusicaAux = new String(tokenRecebido.getBytes(), Charset.forName("UTF-8"));
+						tokenRecebido = new String();
+						tokenRecebido = nomeMusicaAux;
+						listaMusicas = PesquisaMusica.requisitarMusicaJson(tokenRecebido,isCkMusica() ,isCkBanda());
+						setMusicaPesquisada(null);
+					}
 				}
 				else
 				{
-					encerrarSessao();
+					redirecionarErro();
 				}
 			}
 			else
 			{
-				redirecionarErro();
+				encerrarSessao();
 			}
 		}
 		catch(Exception e)

@@ -14,7 +14,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.ServletContext;
 
 import br.com.recomusic.bean.UsuarioBean;
@@ -39,7 +41,9 @@ public class UtilidadesTelas {
 	private static String campoNomeMusicaAux;
 	private boolean ckMusicaAux;
 	private boolean ckBandaAux;
+	private static String musicaPesquisada;
 	private String campoNomeMusica;
+	private int keyCode;
 
 	protected static final String FILE_PATH = "C://Users//Guilherme//FT";
 
@@ -299,16 +303,16 @@ public class UtilidadesTelas {
 		return ckMusica;
 	}
 
-	public static void setCkMusica(boolean ckMusica) {
-		ckMusica = ckMusica;
+	public static void setCkMusica(boolean ckMusicaV) {
+		ckMusica = ckMusicaV;
 	}
 
 	public static boolean isCkBanda() {
 		return ckBanda;
 	}
 
-	public static void setCkBanda(boolean ckBanda) {
-		ckBanda = ckBanda;
+	public static void setCkBanda(boolean ckBandaV) {
+		ckBanda = ckBandaV;
 	}
 
 	public boolean isCkMusicaAux() {
@@ -359,7 +363,7 @@ public class UtilidadesTelas {
 				.append(type);
 		return fileName.toString();
 	}
-	
+
 	public boolean uploadFile(TrocarFoto trocarFoto) {
 
 		boolean sucess = false;
@@ -372,12 +376,11 @@ public class UtilidadesTelas {
 
 		try {
 
-			if (trocarFoto != null
-					&& !trocarFoto.getNome().isEmpty()) {
+			if (trocarFoto != null && !trocarFoto.getNome().isEmpty()) {
 
 				targetFolder = new File(FILE_PATH);
 				InputStream inputStream = trocarFoto.getInputStream();
-				File file = new File(targetFolder,trocarFoto.getNome());
+				File file = new File(targetFolder, trocarFoto.getNome());
 				OutputStream out = new FileOutputStream(file);
 
 				int read = 0;
@@ -391,15 +394,12 @@ public class UtilidadesTelas {
 				out.flush();
 				out.close();
 
-				int index = trocarFoto.getNome().lastIndexOf(
-						".");
-				String thumbName = trocarFoto.getNome()
-						.substring(0, index - 1);
+				int index = trocarFoto.getNome().lastIndexOf(".");
+				String thumbName = trocarFoto.getNome().substring(0, index - 1);
 				thumbName = thumbName.concat("_similar");
 
-				File thumbFile = ThumbnailGenerator
-						.generateThumbnail(file, thumbName,
-								trocarFoto.getTipo());
+				File thumbFile = ThumbnailGenerator.generateThumbnail(file,
+						thumbName, trocarFoto.getTipo());
 
 				trocarFoto.setPathFotoImagem(thumbFile.getName());
 				trocarFoto.setPathFoto(file.getName());
@@ -422,7 +422,7 @@ public class UtilidadesTelas {
 	public static void setCampoNomeMusicaAux(String campoNomeMusicaAux) {
 		UtilidadesTelas.campoNomeMusicaAux = campoNomeMusicaAux;
 	}
-	
+
 	public static void deleteFoto(final String fileName, String imagePath) {
 
 		// Decode the file name (might contain spaces and on) and prepare file
@@ -431,5 +431,62 @@ public class UtilidadesTelas {
 		if (image != null && image.exists()) {
 			image.delete();
 		}
+	}
+	
+	public static String getMusicaPesquisada() {
+		return musicaPesquisada;
+	}
+
+	public static void setMusicaPesquisada(String musicaPesquisadaAux) {
+		musicaPesquisada = musicaPesquisadaAux;
+	}
+
+	public void chamaFuncao(AjaxBehaviorEvent evento) {
+		try {
+			System.out.println(keyCode
+					+ ((HtmlInputText) evento.getSource()).getValue()
+							.toString());
+			String musica = ((HtmlInputText) evento.getSource()).getValue()
+					.toString();
+			switch (keyCode) {
+			case 13:
+				if (musica != null && musica.length() > 0) {
+					setMusicaPesquisada(musica);
+					FacesContext
+							.getCurrentInstance()
+							.getExternalContext()
+							.redirect(
+									"http://localhost:8080/RecoMusic/procurarMusica/index.xhtml?t="
+											+ musica);
+				}
+				else
+				{
+					FacesContext
+					.getCurrentInstance()
+					.getExternalContext()
+					.redirect(
+							"http://localhost:8080/RecoMusic/procurarMusica/index.xhtml?t="
+									);
+				}
+				break;
+			case 27:
+				// Escape key was pressed.
+				break;
+			default:
+				// Other key was pressed.
+				break;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getKeyCode() {
+		return keyCode;
+	}
+
+	public void setKeyCode(int keyCode) {
+		this.keyCode = keyCode;
 	}
 }

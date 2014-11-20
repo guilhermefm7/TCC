@@ -112,16 +112,23 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
 			
 			listaAux = new ArrayList<AvaliarMusica>();
 			
-			for (AvaliarMusica avaliarMusica : am)
+			if(am!=null && am.size()>0)
 			{
-				for (BandaGenero bg : avaliarMusica.getMusica().getBanda().getBandaGeneros())
+				for (AvaliarMusica avaliarMusica : am)
 				{
-					if(genero.getPkGenero()==bg.getGenero().getPkGenero())
+					for (BandaGenero bg : avaliarMusica.getMusica().getBanda().getBandaGeneros())
 					{
-						listaAux.add(avaliarMusica);
-						break;
+						if(genero.getPkGenero()==bg.getGenero().getPkGenero())
+						{
+							listaAux.add(avaliarMusica);
+							break;
+						}
 					}
 				}
+			}
+			else
+			{
+				return null;
 			}
 			
 			return listaAux;
@@ -150,16 +157,23 @@ public class AvaliarMusicaDAO extends GenericDAO<Long, AvaliarMusica>
 			
 			listaAux = new ArrayList<Musica>();
 			
-			for (AvaliarMusica avaliarMusica : am)
+			if(am!=null && am.size()>0)
 			{
-				for (BandaGenero bg : avaliarMusica.getMusica().getBanda().getBandaGeneros())
+				for (AvaliarMusica avaliarMusica : am)
 				{
-					if(genero.getPkGenero()==bg.getGenero().getPkGenero())
+					for (BandaGenero bg : avaliarMusica.getMusica().getBanda().getBandaGeneros())
 					{
-						listaAux.add(avaliarMusica.getMusica());
-						break;
+						if(genero.getPkGenero()==bg.getGenero().getPkGenero())
+						{
+							listaAux.add(avaliarMusica.getMusica());
+							break;
+						}
 					}
 				}
+			}
+			else
+			{
+				return null;
 			}
 			
 			return listaAux;

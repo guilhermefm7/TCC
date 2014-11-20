@@ -107,10 +107,13 @@
 								<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
 								</a>
 								<div id="search">
-									<h:inputText style="width: 40%" type="text"
-										placeholder="Pesquisar Músicas"
+								<h:inputHidden id="keyCode" binding="#{keyCode}" value="#{GlobalBean.keyCode}" />
+									<h:inputText style="width: 40%" type="text" 
+										placeholder="Pesquisar Músicas" onkeyup="document.getElementById('#{keyCode.clientId}').value=event.keyCode"
 										value="#{GlobalBean.campoNomeMusica}"
-										onkeydown="procurarMusicas(value, event);" />
+										>
+										   <f:ajax event="keyup" execute="@this keyCode" listener="#{GlobalBean.chamaFuncao}" />
+										</h:inputText>
 									<label> <label> <h:commandLink
 												actionListener="#{GlobalBean.redirecionaProcuraMusica}">
 												<img src="/RecoMusic/resources/imagens/icones/search.png"
@@ -297,6 +300,7 @@
 			</div>
 		</h:form>
 	</p:confirmDialog>
+
 
 
 	<h:form id="hiddenFormPesquisa" style="display: none;">

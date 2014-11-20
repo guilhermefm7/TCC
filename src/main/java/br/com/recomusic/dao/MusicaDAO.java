@@ -99,23 +99,30 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where 1 = 1 order by m.mediaAvaliacoes DESC, m.quantidadeAvaliacoes DESC"));
     		List<Musica> musica = (List<Musica>) query.getResultList();
     		
-    		for (Musica musica2 : musica) {
-    			
-    			if(musicaAux.size()==15)
-    			{
-    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
-						if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
-						{
-							musicaAux.set(i, musica2);
-							break;
+    		if(musica!=null && musica.size()>0)
+    		{
+	    		for (Musica musica2 : musica) {
+	    			
+	    			if(musicaAux.size()==15)
+	    			{
+	    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
+							if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
+							{
+								musicaAux.set(i, musica2);
+								break;
+							}
 						}
-					}
-    			}
-    			else
-    			{
-    				musicaAux.add(musica2);
-    			}
-			}
+	    			}
+	    			else
+	    			{
+	    				musicaAux.add(musica2);
+	    			}
+				}
+    		}
+    		else
+    		{
+    			return null;  
+    		}
     		
     		return musicaAux;
     	}
@@ -139,22 +146,29 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where 1 = 1 order by m.mediaAvaliacoes DESC, m.quantidadeAvaliacoes DESC"));
     		List<Musica> musica = (List<Musica>) query.getResultList();
     		
-    		for (Musica musica2 : musica) {
-    			
-    			if(musicaAux.size()==25)
-    			{
-    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
-    					if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
-    					{
-    						musicaAux.set(i, musica2);
-    						break;
-    					}
-    				}
-    			}
-    			else
-    			{
-    				musicaAux.add(musica2);
-    			}
+    		if(musica!=null && musica.size()>0)
+    		{
+	    		for (Musica musica2 : musica) {
+	    			
+	    			if(musicaAux.size()==25)
+	    			{
+	    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
+	    					if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
+	    					{
+	    						musicaAux.set(i, musica2);
+	    						break;
+	    					}
+	    				}
+	    			}
+	    			else
+	    			{
+	    				musicaAux.add(musica2);
+	    			}
+	    		}
+    		}
+    		else
+    		{
+        		return null;
     		}
     		
     		return musicaAux;
@@ -179,22 +193,29 @@ public class MusicaDAO extends GenericDAO<Long, Musica>
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Musica as m where 1 = 1 order by m.mediaAvaliacoes DESC, m.quantidadeAvaliacoes DESC"));
     		List<Musica> musica = (List<Musica>) query.getResultList();
     		
-    		for (Musica musica2 : musica) {
-    			
-    			if(musicaAux.size()==7)
-    			{
-    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
-    					if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
-    					{
-    						musicaAux.set(i, musica2);
-    						break;
-    					}
-    				}
-    			}
-    			else
-    			{
-    				musicaAux.add(musica2);
-    			}
+    		if(musica!=null && musica.size()>0)
+    		{
+	    		for (Musica musica2 : musica) {
+	    			
+	    			if(musicaAux.size()==7)
+	    			{
+	    				for (int i = musicaAux.size()-1; i >= 0 ; i--) {
+	    					if((musica2.getMediaAvaliacoes()*musica2.getQuantidadeAvaliacoes()) > (musicaAux.get(i).getMediaAvaliacoes()*musicaAux.get(i).getQuantidadeAvaliacoes()))
+	    					{
+	    						musicaAux.set(i, musica2);
+	    						break;
+	    					}
+	    				}
+	    			}
+	    			else
+	    			{
+	    				musicaAux.add(musica2);
+	    			}
+	    		}
+    		}
+    		else
+    		{
+    			return null; 
     		}
     		
     		return musicaAux;

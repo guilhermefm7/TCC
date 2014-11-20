@@ -439,9 +439,9 @@ public class PesquisaMusica
 						    	   array = pegaIDTrack.split(":"); 
 					  	    	   mIM.setIdDeezer(array[2].toString());
 					  	    	   mIM.setAlbumMusica("");
-					  	    	   urlDeezer = "http://api.deezer.com/2.0/track/" + mIM.getIdDeezer() + "?callback=?";
+/*					  	    	   urlDeezer = "http://api.deezer.com/2.0/track/" + mIM.getIdDeezer() + "?callback=?";
 					  	    	   jsonDeezer = IOUtils.toString(new URL(urlDeezer));
-					  	    	   objDeezer = new JSONObject(jsonDeezer);
+					  	    	   objDeezer = new JSONObject(jsonDeezer);*/
 /*					  	    	   if(objDeezer!=null && objDeezer.length()>0)
 					  	    	   {
 					  	    		   if(objDeezer.toString().contains("album"))

@@ -76,13 +76,16 @@ public class InformacaoMusicalCadastroBandaDAO extends GenericDAO<Long, Informac
     		//query.setParameter("usuario_pkUsuario", usuario.getPkUsuario());
     		List<InformacaoMusicalCadastroBanda> imcb = findAll();
     		
-    		for (InformacaoMusicalCadastroBanda informacaoMusicalCadastroBanda : imcb)
+    		if(imcb!=null && imcb.size()>0)
     		{
-    			if(informacaoMusicalCadastroBanda.getUsuario()!=null && informacaoMusicalCadastroBanda.getUsuario().getPkUsuario()>0 && informacaoMusicalCadastroBanda.getUsuario().getPkUsuario()==usuario.getPkUsuario())
-    			{
-    				listaBandas.add(informacaoMusicalCadastroBanda.getBanda());
-    			}
-			}
+	    		for (InformacaoMusicalCadastroBanda informacaoMusicalCadastroBanda : imcb)
+	    		{
+	    			if(informacaoMusicalCadastroBanda.getUsuario()!=null && informacaoMusicalCadastroBanda.getUsuario().getPkUsuario()>0 && informacaoMusicalCadastroBanda.getUsuario().getPkUsuario()==usuario.getPkUsuario())
+	    			{
+	    				listaBandas.add(informacaoMusicalCadastroBanda.getBanda());
+	    			}
+				}
+    		}
     		
     		return listaBandas;
     	}

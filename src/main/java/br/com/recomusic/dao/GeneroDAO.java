@@ -1,5 +1,7 @@
 package br.com.recomusic.dao;
  
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -32,8 +34,14 @@ public class GeneroDAO extends GenericDAO<Long, Genero>
     	{
     		Query query = ConectaBanco.getInstance().getEntityManager().createQuery(("FROM br.com.recomusic.om.Genero as g where g.nomeGenero = :genero_nomeGenero"));
         	query.setParameter("genero_nomeGenero", nome);
-        	Genero genero = (Genero) query.getSingleResult();
-        	return genero;
+        	List<Genero> generos = (List<Genero>) query.getResultList();
+        	
+        	if(generos!=null && generos.size()>0)
+        	{
+        		return generos.get(0);
+        	}
+        	
+        	return null;  
     	}
     	catch ( NoResultException nre )
     	{  

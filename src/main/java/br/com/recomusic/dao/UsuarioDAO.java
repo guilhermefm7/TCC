@@ -67,7 +67,14 @@ public class UsuarioDAO extends GenericDAO<Long, Usuario>
     		query.setParameter("usuario_login", login.trim());
     		query.setParameter("usuario_senha", senha);
     		List<Usuario> usuario =  (List<Usuario>) query.getResultList();
-    		return usuario.get(0);
+    		
+    		if(usuario!=null && usuario.size()>0)
+    		{
+    			return usuario.get(0);
+    		}
+    		
+    		return null;
+    		
     	}
     	catch ( NoResultException nre )
     	{  

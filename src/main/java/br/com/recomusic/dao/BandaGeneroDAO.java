@@ -66,10 +66,17 @@ public class BandaGeneroDAO extends GenericDAO<Long, BandaGenero>
     		
     		List<Genero> listaGeneros = new ArrayList<Genero>();
     		
-    		for (BandaGenero bg : bandaGenero)
+    		if(bandaGenero!=null && bandaGenero.size()>0)
     		{
-    			listaGeneros.add(bg.getGenero());
-			}
+	    		for (BandaGenero bg : bandaGenero)
+	    		{
+	    			listaGeneros.add(bg.getGenero());
+				}
+    		}
+    		else
+    		{
+    			return null;  
+    		}
     		
     		return listaGeneros;
     	}
@@ -95,9 +102,16 @@ public class BandaGeneroDAO extends GenericDAO<Long, BandaGenero>
     		query.setParameter("pk_genero", genero.getPkGenero());
     		List<BandaGenero> bandaGenero = (List<BandaGenero>) query.getResultList();
     		
-    		for (BandaGenero bg : bandaGenero)
+    		if(bandaGenero!=null && bandaGenero.size()>0)
     		{
-    			listaBandas.add(bg.getBanda());
+	    		for (BandaGenero bg : bandaGenero)
+	    		{
+	    			listaBandas.add(bg.getBanda());
+	    		}
+    		}
+    		else
+    		{
+    			return null; 
     		}
     		
     		return listaBandas;
