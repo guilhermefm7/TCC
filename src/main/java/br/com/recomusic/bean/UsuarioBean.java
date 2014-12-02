@@ -660,6 +660,13 @@ public class UsuarioBean extends UtilidadesTelas implements Serializable
 			//encerrarSessao();
 			setUsuario(null);
 			setUsuarioGlobal(null);
+			setEmailLogin(null);
+			
+			setCampoNomeMusica(null);
+			setCkMusica(false);
+			setCkBanda(false);
+			
+			limparComponentes();
 			FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/RecoMusic/index.xhtml");
 			this.logado = false;
 		}

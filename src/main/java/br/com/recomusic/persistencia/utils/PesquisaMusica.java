@@ -151,7 +151,7 @@ public class PesquisaMusica
 	 {
 		 try
 		 {
-			 Long l = System.currentTimeMillis();
+			// Long l = System.currentTimeMillis();
 			 List<MusicaIM> listaMusicas = new ArrayList<MusicaIM>();
 			 MusicaIM mIM;
 			 
@@ -553,8 +553,8 @@ public class PesquisaMusica
 				 }
 			 }
 			 
-			 long l1 = System.currentTimeMillis();
-			 System.out.println(l1-l);
+			 //long l1 = System.currentTimeMillis();
+			 //System.out.println(l1-l);
 			 
 			 return listaMusicas;
 		 }

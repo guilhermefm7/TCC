@@ -991,6 +991,7 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 		try {
 			PossivelAvaliacaoMusica pam = null;
 			Musica m = null;
+			ConectaBanco.getInstance().beginTransaction();
 			m = musicaDAO.procuraMusicaByID(valorIdMusica);
 			if (m != null && m.getPkMusica() > 0) {
 				AvaliarMusica am = null;
@@ -1010,7 +1011,6 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 						pam.setQuantidadeOuvida(1);
 					}
 
-					ConectaBanco.getInstance().beginTransaction();
 					possivelAvaliacaoMusicaDAO.save(pam);
 
 					if (pam.getQuantidadeOuvida() >= 5) {
@@ -1022,13 +1022,77 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 						am.setNota(3);
 
 						avaliarMusicaDAO.save(am);
+						
+						m.setQuantidadeAvaliacoes(m.getQuantidadeAvaliacoes() + 1);
+						m.setMediaAvaliacoes(((m.getMediaAvaliacoes() * (m
+								.getQuantidadeAvaliacoes() - 1)) + 3)
+								/ m.getQuantidadeAvaliacoes());
+						musicaDAO.salvarMusica(m);
+
 					}
-
-					ConectaBanco.getInstance().commit();
-
 				}
 
+			} else {
+				m = pesquisaMusica(valorIdMusicaEchoAux);
+
+				// Pesquisa se a banda existe
+				Banda banda = null;
+				banda = bandaDAO
+						.pesquisarBandaExiste(m.getBanda().getIdBanda());
+				if (banda != null && banda.getPkBanda() > 0) {
+					m.setBanda(banda);
+					m.setAlbum(this.nomeAlbum);
+					m.setUrlImagem(this.valorUrlMusica);
+					m.setIdDeezer(this.valorIdMusica);
+					m.setQuantidadeAvaliacoes(0);
+					m.setMediaAvaliacoes(0D);
+					musicaDAO.salvarMusica(m);
+				} else {
+					banda = new Banda();
+					banda = m.getBanda();
+					bandaDAO.salvarBanda(banda);
+					Genero genero;
+					BandaGenero bg;
+
+					List<String> listasGenerosBanda = requisitarAPIGeneroBanda(banda
+							.getIdBanda());
+					for (String nomeGenero : listasGenerosBanda) {
+						genero = null;
+						genero = generoDAO.pesquisarGenero(nomeGenero);
+
+						if (genero == null) {
+							genero = new Genero();
+							genero.setNomeGenero(nomeGenero);
+							genero = generoDAO.salvaListaGeneros(nomeGenero);
+						}
+
+						bg = null;
+						bg = bandaGeneroDAO.pesquisarBandaGenero(banda, genero);
+
+						if (bg == null) {
+							bg = new BandaGenero();
+							bg.setBanda(banda);
+							bg.setGenero(genero);
+							bandaGeneroDAO.salvarBandaGenero(bg);
+						}
+					}
+
+					m.setBanda(banda);
+					m.setAlbum(this.nomeAlbum);
+					m.setUrlImagem(this.valorUrlMusica);
+					m.setIdDeezer(this.valorIdMusica);
+					m.setQuantidadeAvaliacoes(0);
+					m.setMediaAvaliacoes(0D);
+					musicaDAO.salvarMusica(m);
+				}
+				
+				pam = new PossivelAvaliacaoMusica();
+				pam.setMusica(m);
+				pam.setUsuario(getUsuarioGlobal());
+				pam.setQuantidadeOuvida(1);
+				possivelAvaliacaoMusicaDAO.save(pam);
 			}
+			ConectaBanco.getInstance().commit();
 		} catch (Exception e) {
 			ConectaBanco.getInstance().rollBack();
 			e.printStackTrace();

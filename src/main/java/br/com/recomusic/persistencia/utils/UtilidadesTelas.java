@@ -18,6 +18,7 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import br.com.recomusic.bean.UsuarioBean;
 import br.com.recomusic.dao.InformacaoMusicalCadastroBandaDAO;
@@ -44,7 +45,6 @@ public class UtilidadesTelas {
 	private static String musicaPesquisada;
 	private String campoNomeMusica;
 	private int keyCode;
-
 	protected static final String FILE_PATH = "C://Users//Guilherme//FT";
 
 	protected String FILE_PREFIX = "";
@@ -114,6 +114,19 @@ public class UtilidadesTelas {
 		try {
 			FacesContext.getCurrentInstance().getExternalContext()
 					.redirect("http://localhost:8080/RecoMusic/index.xhtml");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Limpar Componentes da Tela
+	 */
+	public static void limparComponentes() {
+		
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GlobalBean", new UtilidadesTelas());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -240,6 +253,7 @@ public class UtilidadesTelas {
 
 	public void redirecionaProcuraMusica() {
 		try {
+			setMusicaPesquisada(campoNomeMusica);
 			FacesContext
 					.getCurrentInstance()
 					.getExternalContext()
