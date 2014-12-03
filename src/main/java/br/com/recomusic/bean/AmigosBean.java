@@ -270,7 +270,7 @@ public class AmigosBean extends UtilidadesTelas implements Serializable {
 			}
 
 			this.procurarAmigos = false;
-
+			nomeAmigo = null;
 			tabActiveIndex = 2;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1134,7 +1134,10 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 						}
 
 						for (Musica musica : listaMusicasRecomendacao) {
-
+							if(musicasRecomendadas==null)
+							{
+								musicasRecomendadas = new ArrayList<Musica>();
+							}
 							musicasRecomendadas.add(musica);
 							if (musicasRecomendadas.size() >= 7) {
 								break;
@@ -1212,6 +1215,48 @@ public class MusicaBean extends UtilidadesTelas implements Serializable {
 
 			if (musicasRecomendadas == null || musicasRecomendadas.size() == 0) {
 				musicasRecomendadas = null;
+			}
+			else if(musicasRecomendadas!=null && musicasRecomendadas.size()>0)
+			{
+				List<Musica> musicasAuxiliar = new ArrayList<Musica>();
+				boolean flag = false;
+				for (int i = (musicasRecomendadas.size()-1); i >= 0; i--)
+				{
+					flag = false;
+					if((musicasRecomendadas.get(i).getIdDeezer().equals(valorIdMusica)))
+					{
+						musicasRecomendadas.remove(i);
+					}
+					else
+					{
+						if(musicasAuxiliar.size()==0)
+						{
+							musicasAuxiliar.add(musicasRecomendadas.get(i));
+						}
+						else
+						{
+							for (Musica musicaRecomendada : musicasAuxiliar)
+							{
+								if(!(musicaRecomendada.getIdDeezer().equals(valorIdMusica)))
+								{
+									if(musicaRecomendada.getIdDeezer().equals(musicasRecomendadas.get(i).getIdDeezer()))
+									{
+										flag = true;
+									}
+								}
+							}
+							
+							if(!flag)
+							{
+								musicasAuxiliar.add(musicasRecomendadas.get(i));
+							}
+						}
+						
+					}
+				}
+				
+				musicasRecomendadas = new ArrayList<Musica>();
+				musicasRecomendadas.addAll(musicasAuxiliar);
 			}
 
 		} catch (Exception e) {

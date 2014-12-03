@@ -200,6 +200,15 @@ public class PerfilBean extends UtilidadesTelas implements Serializable {
 										&& req.getPkRequisicaoAmizade() > 0) {
 									requisitouAmizade = true;
 								}
+								
+								// Procura as Musicas Avaliadas
+								listaAmigosUsuario = amigosUsuarioDAO
+										.getAmigosUsuario(usuario
+												.getPkUsuario());
+								if (listaAmigosUsuario != null
+										&& listaAmigosUsuario.size() == 0) {
+									listaAmigosUsuario = null;
+								}
 							}
 						}
 					} else {
